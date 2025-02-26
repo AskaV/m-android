@@ -13,5 +13,26 @@
     <string name="edit_profile">Edit profile</string>
     <string name="view_contacts">VIEW MY CONTACTS</string>
 
+    <!-- sign-up page -->
+    <string name="signup_title">Let\'s get acquainted</string>
+    <string name="signup_subtitle">Fill out the profile and go to the application!</string>
+    <string name="email_error_text">Incorrect E-Mail address</string>
+    <string name="signup_google">Google</string>
+    <string name="signup_or">or</string>
+    <string name="signup_register">Register</string>
+    <string name="signup_terms">By clicking Register you agree to our Terms and Conditions</string>
+    <string name="signup_have_account">Already have an account?</string>
+    <string name="signup_sign_in">Sign in</string>
+
+    <!--  login page  -->
+    <string name="hello">Hello!</string>
+    <string name="enter_email_password">Enter your email and password below</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="login">Login</string>
+    <string name="dont_have_account">Don’t have account?</string>
+    <string name="sign_up">Sign up</string>
 
 </resources>
