@@ -1,0 +1,19 @@
+<resources>
+    <dimen name="margin_start_text">17dp</dimen>
+    <dimen name="margin_top_settings">48dp</dimen>
+    <dimen name="avatar_size">113dp</dimen>
+    <dimen name="margin_top_avatar">103dp</dimen>
+    <dimen name="margin_top_user_name">240dp</dimen>
+    <dimen name="margin_top_text">8dp</dimen>
+    <dimen name="social_button_size">60dp</dimen>
+    <dimen name="margin_start_social">64dp</dimen>
+    <dimen name="margin_between_social">36dp</dimen>
+    <dimen name="margin_top_social">64dp</dimen>
+    <dimen name="margin_end_social">56dp</dimen>
+    <dimen name="social_button_padding">15dp</dimen>
+    <dimen name="button_width">328dp</dimen>
+    <dimen name="button_height">40dp</dimen>
+    <dimen name="button_height_large">55dp</dimen>
+    <dimen name="button_margin_horizontal">16dp</dimen>
+    <dimen name="button_margin_bottom">16dp</dimen>
+</resources>
