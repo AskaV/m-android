@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.ui.components
+package com.spp.android.myapplication
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -11,26 +11,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import com.spp.android.myapplication.R
+import androidx.compose.ui.unit.Dp
+import com.spp.android.myapplication.ui.theme.*
 
 @Composable
-fun SocialButton(iconRes: Int, contentDescription: String) {
+fun SocialButton(
+    iconRes: Int,
+    contentDescription: String,
+    size: Dp = dimensionResource(id = R.dimen.social_button_size),
+    borderWidth: Dp = dimensionResource(id = R.dimen.button_border_width),
+    iconSize: Dp = dimensionResource(id = R.dimen.social_icon_size),
+    borderColor: Color = Orange,
+    backgroundColor: Color = White
+) {
     Box(
         modifier = Modifier
-            .size(60.dp)
-            .background(Color.White, shape = CircleShape)
-            .border(3.dp, colorResource(id = R.color.orange), shape = CircleShape),
+            .size(size)
+            .background(backgroundColor, shape = CircleShape)
+            .border(borderWidth, borderColor, shape = CircleShape),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = contentDescription,
-            tint = colorResource(id = R.color.orange),
-            modifier = Modifier.size(28.dp)
+            tint = borderColor,
+            modifier = Modifier.size(iconSize)
         )
     }
 }
@@ -45,13 +53,13 @@ fun CustomOrangeButton(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(50.dp),
-        shape = RoundedCornerShape(6.dp),
+            .height(dimensionResource(id = R.dimen.button_height)),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.button_corner_radius)),
         colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = R.color.orange),
-            contentColor = Color.White
+            containerColor = Orange,
+            contentColor = White
         ),
-        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = dimensionResource(id = R.dimen.button_elevation))
     ) {
         Text(text = text, style = MaterialTheme.typography.titleMedium)
     }
@@ -63,12 +71,12 @@ fun EditProfileButton(onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp),
-        shape = RoundedCornerShape(6.dp),
-        border = BorderStroke(2.dp, Color.Black),
+            .height(dimensionResource(id = R.dimen.button_height)),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.button_corner_radius)),
+        border = BorderStroke(dimensionResource(id = R.dimen.button_border_width), GrayText),
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = Color.Transparent,
-            contentColor = Color.Black
+            contentColor = GrayText
         )
     ) {
         Text(

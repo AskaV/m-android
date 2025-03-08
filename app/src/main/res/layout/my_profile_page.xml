@@ -1,79 +1,76 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <View
+        android:id="@+id/topBackground"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/blue"
-        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/user_avatar"
+        app:layout_constraintDimensionRatio="@string/ratio_1_1_8"/>
+
+    <TextView
+        style="@style/Heading_24sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_text"
+        android:layout_marginTop="@dimen/margin_top_settings"
+        android:text="@string/settings"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/user_avatar"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:layout_marginTop="@dimen/margin_top_avatar"
+        android:contentDescription="@string/user_avatar"
+        android:scaleType="centerCrop"
+        android:src="@drawable/baseline_account_circle_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            style="@style/Heading_24sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_start_text"
-            android:layout_marginTop="@dimen/margin_top_settings"
-            android:text="@string/settings"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/user_name"
+        style="@style/Heading_18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_user_name"
+        android:text="@string/user_name"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/user_avatar"
-            android:layout_width="@dimen/avatar_size"
-            android:layout_height="@dimen/avatar_size"
-            android:layout_marginTop="@dimen/margin_top_avatar"
-            android:contentDescription="@string/user_avatar"
-            android:scaleType="centerCrop"
-            android:src="@drawable/baseline_account_circle_avatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/user_profession"
+        style="@style/Subheading_14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_text"
+        android:text="@string/user_profession"
+        android:textColor="@color/grayText2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_name" />
 
-        <TextView
-            android:id="@+id/user_name"
-            style="@style/Heading_18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top_user_name"
-            android:text="@string/user_name"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.486"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/user_profession"
-            style="@style/Subheading_14sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top_text"
-            android:text="@string/user_profession"
-            android:textColor="@color/grayText2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_name" />
-
-        <TextView
-            android:id="@+id/user_address"
-            style="@style/Subheading_14sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top_text"
-            android:text="@string/user_address"
-            android:textColor="@color/grayText2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_profession" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/user_address"
+        style="@style/Subheading_14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_text"
+        android:text="@string/user_address"
+        android:textColor="@color/grayText2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_profession" />
 
     <ImageButton
         android:id="@+id/imageButtonFacebook"
@@ -89,7 +86,7 @@
         android:src="@drawable/social_facebook"
         android:tint="@color/orange"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@id/topBackground" />
 
     <ImageButton
         android:id="@+id/imageButtonInstagram"
@@ -104,7 +101,7 @@
         android:src="@drawable/social_instagram"
         android:tint="@color/orange"
         app:layout_constraintStart_toEndOf="@+id/imageButtonFacebook"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@id/topBackground" />
 
     <ImageButton
         android:id="@+id/imageButtonTelegram"
@@ -119,7 +116,7 @@
         android:src="@drawable/social_telegram"
         android:tint="@color/orange"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@id/topBackground" />
 
     <Button
         android:id="@+id/editProfileBtn"
@@ -149,4 +146,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
