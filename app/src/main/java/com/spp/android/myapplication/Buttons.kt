@@ -14,31 +14,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
 import com.spp.android.myapplication.ui.theme.*
 
 @Composable
-fun SocialButton(
-    iconRes: Int,
-    contentDescription: String,
-    size: Dp = dimensionResource(id = R.dimen.social_button_size),
-    borderWidth: Dp = dimensionResource(id = R.dimen.button_border_width),
-    iconSize: Dp = dimensionResource(id = R.dimen.social_icon_size),
-    borderColor: Color = Orange,
-    backgroundColor: Color = White
-) {
+fun SocialButton(iconRes: Int, contentDescription: String) {
+
     Box(
         modifier = Modifier
-            .size(size)
-            .background(backgroundColor, shape = CircleShape)
-            .border(borderWidth, borderColor, shape = CircleShape),
+            .size(dimensionResource(id = R.dimen.social_button_size))
+            .background(White, shape = CircleShape)
+            .border(
+                dimensionResource(id = R.dimen.button_border_width),
+                Orange,
+                shape = CircleShape
+            ),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = contentDescription,
-            tint = borderColor,
-            modifier = Modifier.size(iconSize)
+            tint = Orange,
+            modifier = Modifier.size(dimensionResource(id = R.dimen.social_icon_size))
         )
     }
 }

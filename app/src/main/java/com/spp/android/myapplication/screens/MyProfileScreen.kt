@@ -25,7 +25,7 @@ import com.spp.android.myapplication.ui.theme.*
 @Preview(
     showBackground = true,
     name = "FigmaMobileSize",
-    device = "spec:width=${PreviewConfig.SCREEN_WIDTH}px,height=${PreviewConfig.SCREEN_HEIGHT}px,dpi=${PreviewConfig.SCREEN_DPI}"
+    device = "spec:width=${PreviewConfig.FIGMA_SCREEN_WIDTH}px,height=${PreviewConfig.FIGMA_SCREEN_HEIGHT}px,dpi=${PreviewConfig.FIGMA_SCREEN_DPI}"
 
 )
 @Composable

@@ -11,10 +11,10 @@
         android:background="@color/blue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/user_avatar"
-        app:layout_constraintDimensionRatio="@string/ratio_1_1_8"/>
+        app:layout_constraintDimensionRatio="@string/profile_background_ratio"/>
 
     <TextView
-        style="@style/Heading_24sp"
+        style="@style/HeadingLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_start_text"
@@ -38,7 +38,7 @@
 
     <TextView
         android:id="@+id/user_name"
-        style="@style/Heading_18sp"
+        style="@style/HeadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_user_name"
@@ -50,7 +50,7 @@
 
     <TextView
         android:id="@+id/user_profession"
-        style="@style/Subheading_14sp"
+        style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_text"
@@ -62,7 +62,7 @@
 
     <TextView
         android:id="@+id/user_address"
-        style="@style/Subheading_14sp"
+        style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_text"
@@ -134,7 +134,7 @@
 
     <Button
         android:id="@+id/viewMyContactsBtn"
-        style="@style/Subheading_16sp"
+        style="@style/SubheadingLarge"
         android:layout_width="@dimen/button_width"
         android:layout_height="@dimen/button_height_large"
         android:layout_marginStart="@dimen/button_margin_horizontal"
