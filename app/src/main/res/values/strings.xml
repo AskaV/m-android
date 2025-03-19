@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">My Application</string>
+
+    <!-- my profile -->
+    <string name="settings">Settings</string>
+    <string name="user_name">Lucile Alvarado</string>
+    <string name="user_avatar">User avatar</string>
+    <string name="user_profession">Graphic designer</string>
+    <string name="user_address">5295 Gaylord Walks Apk. 110</string>
+    <string name="facebook">Facebook</string>
+    <string name="instagram">Instagram</string>
+    <string name="telegram">Telegram</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="view_contacts">View my contacts</string>
+
+</resources>

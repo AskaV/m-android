@@ -7,6 +7,9 @@ local.properties
 
 # Log/OS Files
 *.log
+.DS_Store
+Thumbs.db
+desktop.ini
 
 # Android Studio generated files and folders
 captures/
@@ -14,13 +17,20 @@ captures/
 .cxx/
 *.apk
 output.json
+/app/release/
 
-# IntelliJ
+# IntelliJ / Android Studio
 *.iml
 .idea/
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
 
 # Keystore files
 *.jks
@@ -28,6 +38,24 @@ render.experimental.xml
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
+service-account.json
+crashlytics.properties
+fabric.properties
+
+# Kotlin-specific
+/kotlin/
+
+# Build system files
+gradlew
+gradlew.bat
+*.gradle
+*.gradle.kts
 
 # Android Profiling
 *.hprof
+
+# Fastlane & CI/CD
+fastlane/report.xml
+fastlane/metadata/
+fastlane/screenshots/
+fastlane/*.jks

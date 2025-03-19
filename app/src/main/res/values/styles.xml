@@ -1,0 +1,22 @@
+<resources>
+
+    <style name="HeadingLarge">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="HeadingMedium">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="SubheadingLarge">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="SubheadingMedium">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BodyText">
+        <item name="android:textSize">12sp</item>
+    </style>
+</resources>

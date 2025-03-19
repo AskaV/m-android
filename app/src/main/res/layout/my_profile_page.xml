@@ -1,0 +1,150 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/topBackground"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/blue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/user_avatar"
+        app:layout_constraintDimensionRatio="@string/profile_background_ratio"/>
+
+    <TextView
+        style="@style/HeadingLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_text"
+        android:layout_marginTop="@dimen/margin_top_settings"
+        android:text="@string/settings"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/user_avatar"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:layout_marginTop="@dimen/margin_top_avatar"
+        android:contentDescription="@string/user_avatar"
+        android:scaleType="centerCrop"
+        android:src="@drawable/baseline_account_circle_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/user_name"
+        style="@style/HeadingMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_user_name"
+        android:text="@string/user_name"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/user_profession"
+        style="@style/SubheadingMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_text"
+        android:text="@string/user_profession"
+        android:textColor="@color/grayText2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_name" />
+
+    <TextView
+        android:id="@+id/user_address"
+        style="@style/SubheadingMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_text"
+        android:text="@string/user_address"
+        android:textColor="@color/grayText2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_profession" />
+
+    <ImageButton
+        android:id="@+id/imageButtonFacebook"
+        android:layout_width="@dimen/social_button_size"
+        android:layout_height="@dimen/social_button_size"
+        android:layout_marginStart="@dimen/margin_start_social"
+        android:layout_marginTop="@dimen/margin_top_social"
+        android:background="@drawable/social_button_border"
+        android:contentDescription="@string/facebook"
+        android:foreground="@null"
+        android:padding="@dimen/social_button_padding"
+        android:scaleType="centerInside"
+        android:src="@drawable/social_facebook"
+        android:tint="@color/orange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBackground" />
+
+    <ImageButton
+        android:id="@+id/imageButtonInstagram"
+        android:layout_width="@dimen/social_button_size"
+        android:layout_height="@dimen/social_button_size"
+        android:layout_marginStart="@dimen/margin_between_social"
+        android:layout_marginTop="@dimen/margin_top_social"
+        android:background="@drawable/social_button_border"
+        android:contentDescription="@string/instagram"
+        android:padding="@dimen/social_button_padding"
+        android:scaleType="centerInside"
+        android:src="@drawable/social_instagram"
+        android:tint="@color/orange"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonFacebook"
+        app:layout_constraintTop_toBottomOf="@id/topBackground" />
+
+    <ImageButton
+        android:id="@+id/imageButtonTelegram"
+        android:layout_width="@dimen/social_button_size"
+        android:layout_height="@dimen/social_button_size"
+        android:layout_marginTop="@dimen/margin_top_social"
+        android:layout_marginEnd="@dimen/margin_end_social"
+        android:background="@drawable/social_button_border"
+        android:contentDescription="@string/telegram"
+        android:padding="@dimen/social_button_padding"
+        android:scaleType="centerInside"
+        android:src="@drawable/social_telegram"
+        android:tint="@color/orange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBackground" />
+
+    <Button
+        android:id="@+id/editProfileBtn"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginStart="@dimen/button_margin_horizontal"
+        android:layout_marginEnd="@dimen/button_margin_horizontal"
+        android:layout_marginBottom="@dimen/button_margin_bottom"
+        android:background="@drawable/button_outlined"
+        android:text="@string/edit_profile"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/viewMyContactsBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/viewMyContactsBtn"
+        style="@style/SubheadingLarge"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height_large"
+        android:layout_marginStart="@dimen/button_margin_horizontal"
+        android:layout_marginEnd="@dimen/button_margin_horizontal"
+        android:layout_marginBottom="@dimen/button_margin_bottom"
+        android:background="@drawable/button_filled_orange"
+        android:text="@string/view_contacts"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
