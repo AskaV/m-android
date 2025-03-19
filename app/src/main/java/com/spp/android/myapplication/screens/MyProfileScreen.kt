@@ -151,7 +151,7 @@ fun ActionButtons() {
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.default_spacing)))
 
         CustomOrangeButton(
-            text = stringResource(R.string.view_contacts),
+            text = stringResource(R.string.view_contacts).uppercase(),
             onClick = { /* TODO: View Contacts Action */ }
         )
     }

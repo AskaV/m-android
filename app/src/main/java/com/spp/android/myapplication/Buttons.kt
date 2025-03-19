@@ -25,7 +25,7 @@ fun SocialButton(iconRes: Int, contentDescription: String) {
             .background(White, shape = CircleShape)
             .border(
                 dimensionResource(id = R.dimen.button_border_width),
-                Orange,
+                color = Orange,
                 shape = CircleShape
             ),
         contentAlignment = Alignment.Center
