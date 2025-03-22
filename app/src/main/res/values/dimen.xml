@@ -1,4 +1,6 @@
 <resources>
+
+    <!-- =============== MY PROFILE PAGE DIMENSIONS =============== -->
     <!-- Margins -->
     <dimen name="margin_start_text">17dp</dimen>
     <dimen name="margin_top_settings">48dp</dimen>
@@ -41,5 +43,56 @@
 
     <!-- Screen ratio of view of my profile page -->
     <string name="profile_background_ratio">1:1.8</string>
+
+
+    <!-- =============== SIGN UP PAGE DIMENSIONS =============== -->
+    <!-- Margins for title and subtitle -->
+    <dimen name="margin_top_large">178dp</dimen>
+    <dimen name="margin_top_medium">16dp</dimen>
+    <dimen name="margin_top_small">8dp</dimen>
+
+    <!-- Distance between elements -->
+    <dimen name="margin_between_texts">17dp</dimen>
+    <dimen name="margin_between_buttons">41dp</dimen>
+
+    <!-- Margins for buttons -->
+    <dimen name="margin_button_start">14dp</dimen>
+    <dimen name="margin_button_end">18dp</dimen>
+    <dimen name="margin_button_bottom">90dp</dimen>
+
+    <!-- Margin for "or" text -->
+    <dimen name="margin_bottom_or_text">8dp</dimen>
+
+    <!-- Distance from the top for the include block -->
+    <dimen name="layout_margin_top_include">257dp</dimen>
+
+    <!-- Margin for account-related text -->
+    <dimen name="margin_account_text_start">71dp</dimen>
+    <dimen name="margin_account_text_end">12dp</dimen>
+    <dimen name="margin_account_text_bottom">16dp</dimen>
+    <dimen name="margin_signup_text_start">6dp</dimen>
+    <dimen name="margin_signup_text_bottom">16dp</dimen>
+
+    <!-- "Don't have account" text width in sign up page -->
+    <dimen name="signup_text_width">265dp</dimen>
+
+
+    <!-- =============== LOGIN PAGE DIMENSIONS =============== -->
+    <!-- Margins -->
+    <dimen name="login_margin_top_large">178dp</dimen>
+    <dimen name="login_margin_top_small">6dp</dimen>
+    <dimen name="login_margin_end_forgot_password">16dp</dimen>
+    <dimen name="login_button_width">328dp</dimen>
+    <dimen name="login_button_height">55dp</dimen>
+    <dimen name="login_margin_start_account_text">81dp</dimen>
+    <dimen name="login_margin_end_signup_text">80dp</dimen>
+    <dimen name="login_margin_bottom_text">16dp</dimen>
+    <dimen name="login_layout_margin_top_include">257dp</dimen>
+
+    <!-- =============== COMMON LOGIN FIELDS DIMENSIONS =============== -->
+    <dimen name="common_login_padding_start">16dp</dimen>
+    <dimen name="common_login_padding_end">16dp</dimen>
+    <dimen name="common_login_margin_bottom_small">4dp</dimen>
+    <dimen name="common_login_margin_top_medium">16dp</dimen>
 
 </resources>
