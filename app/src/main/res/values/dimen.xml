@@ -97,4 +97,17 @@
     <!-- =============== CONTACTS PAGE DIMENSIONS =============== -->
     <dimen name="contacts_avatar_size">50dp</dimen>
 
+    <!-- General spacing -->
+    <dimen name="spacer_extra_small">4dp</dimen>
+    <dimen name="spacer_small">8dp</dimen>
+    <dimen name="spacer_medium">16dp</dimen>
+    <dimen name="spacer_large">24dp</dimen>
+    <dimen name="padding_screen">16dp</dimen>
+
+    <!-- Checkbox spacing -->
+    <dimen name="checkbox_frame_size">20dp</dimen>
+    <dimen name="checkbox_inner_size">16dp</dimen>
+    <dimen name="checkbox_corner_radius">4dp</dimen>
+    <dimen name="checkbox_border_width">1dp</dimen>
+
 </resources>
