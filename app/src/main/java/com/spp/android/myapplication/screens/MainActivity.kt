@@ -1,10 +1,24 @@
 package com.spp.android.myapplication.screens
 
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,13 +28,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.spp.android.myapplication.FilledButton
+import com.spp.android.myapplication.OutlinedBorderButton
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.SocialButton
-import com.spp.android.myapplication.CustomOrangeButton
-import com.spp.android.myapplication.EditProfileButton
 import com.spp.android.myapplication.ui.preview.PreviewConfig
-import com.spp.android.myapplication.ui.theme.*
+import com.spp.android.myapplication.ui.theme.Blue
+import com.spp.android.myapplication.ui.theme.GrayText2
+import com.spp.android.myapplication.ui.theme.MyApplicationTheme
+import com.spp.android.myapplication.ui.theme.White
 
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val email = intent.getStringExtra("email")
+        val displayName = email?.let { parseNameFromEmail(it) } ?: "User"
+        super.onCreate(savedInstanceState)
+        setContent {
+            MyApplicationTheme {
+                MyProfileScreen(displayName)
+            }
+        }
+    }
+}
 
 @Preview(
     showBackground = true,
@@ -31,13 +60,18 @@ import com.spp.android.myapplication.ui.theme.*
 @Composable
 fun MyProfileScreenPreview() {
     MaterialTheme {
-        MyProfileScreen()
+        MyProfileScreen(userName = stringResource(R.string.user_name))
     }
 }
 
+fun parseNameFromEmail(email: String): String {
+    return email.substringBefore("@")
+        .split(".", "_", "-")
+        .joinToString(" ") { part -> part.replaceFirstChar { it.uppercase() } }
+}
 
 @Composable
-fun MyProfileScreen(modifier: Modifier = Modifier) {
+fun MyProfileScreen(userName: String, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxSize()
     ) {
@@ -76,7 +110,7 @@ fun MyProfileScreen(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.small_spacing)))
 
                 Text(
-                    text = stringResource(R.string.user_name),
+                    text = userName,
                     style = MaterialTheme.typography.headlineMedium,
                     color = White
                 )
@@ -146,11 +180,14 @@ fun ActionButtons() {
             .padding(horizontal = dimensionResource(id = R.dimen.default_padding))
             .padding(bottom = dimensionResource(id = R.dimen.default_padding))
     ) {
-        EditProfileButton(onClick = { /* TODO: Edit Profile Action */ })
+        OutlinedBorderButton(
+            text = stringResource(R.string.edit_profile),
+            onClick = { /* TODO: Edit Profile Action */ }
+        )
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.default_spacing)))
 
-        CustomOrangeButton(
+        FilledButton(
             text = stringResource(R.string.view_contacts).uppercase(),
             onClick = { /* TODO: View Contacts Action */ }
         )
