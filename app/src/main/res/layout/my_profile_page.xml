@@ -1,5 +1,4 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,9 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/blue"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/user_avatar"
-        app:layout_constraintDimensionRatio="@string/profile_background_ratio"/>
+        app:layout_constraintDimensionRatio="@string/profile_background_ratio"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         style="@style/HeadingLarge"
@@ -84,39 +83,39 @@
         android:padding="@dimen/social_button_padding"
         android:scaleType="centerInside"
         android:src="@drawable/social_facebook"
-        android:tint="@color/orange"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBackground" />
+        app:layout_constraintTop_toBottomOf="@id/topBackground"
+        app:tint="@color/orange" />
 
     <ImageButton
         android:id="@+id/imageButtonInstagram"
         android:layout_width="@dimen/social_button_size"
         android:layout_height="@dimen/social_button_size"
-        android:layout_marginStart="@dimen/margin_between_social"
         android:layout_marginTop="@dimen/margin_top_social"
         android:background="@drawable/social_button_border"
         android:contentDescription="@string/instagram"
         android:padding="@dimen/social_button_padding"
         android:scaleType="centerInside"
         android:src="@drawable/social_instagram"
-        android:tint="@color/orange"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonTelegram"
         app:layout_constraintStart_toEndOf="@+id/imageButtonFacebook"
-        app:layout_constraintTop_toBottomOf="@id/topBackground" />
+        app:layout_constraintTop_toBottomOf="@id/topBackground"
+        app:tint="@color/orange" />
 
     <ImageButton
         android:id="@+id/imageButtonTelegram"
         android:layout_width="@dimen/social_button_size"
         android:layout_height="@dimen/social_button_size"
         android:layout_marginTop="@dimen/margin_top_social"
-        android:layout_marginEnd="@dimen/margin_end_social"
+        android:layout_marginEnd="@dimen/margin_top_social"
         android:background="@drawable/social_button_border"
         android:contentDescription="@string/telegram"
         android:padding="@dimen/social_button_padding"
         android:scaleType="centerInside"
         android:src="@drawable/social_telegram"
-        android:tint="@color/orange"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBackground" />
+        app:layout_constraintTop_toBottomOf="@id/topBackground"
+        app:tint="@color/orange" />
 
     <Button
         android:id="@+id/editProfileBtn"

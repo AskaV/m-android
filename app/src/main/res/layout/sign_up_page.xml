@@ -39,10 +39,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <CheckBox
+        android:id="@+id/checkBox"
+        style="@style/SubheadingMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginTop="@dimen/login_checkbox_margin_top"
+        android:buttonTint="@color/white"
+        android:text="@string/remember_me"
+        android:textColor="@color/grayText2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signup_subtitle" />
+
     <Button
         android:id="@+id/googleLoginButton"
         style="@style/SubheadingLarge"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/login_button_width"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_button_start"
         android:layout_marginEnd="@dimen/margin_button_end"
@@ -61,7 +74,7 @@
         android:fontFamily="@font/open_sans_semi_bold"
         android:text="@string/signup_or"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="@dimen/subheading_medium_text_size"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -69,7 +82,7 @@
     <Button
         android:id="@+id/loginButton"
         style="@style/SubheadingLarge"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/login_button_width"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_button_start"
         android:layout_marginEnd="@dimen/margin_button_end"
@@ -107,11 +120,11 @@
         android:text="@string/signup_have_account"
         android:textColor="@color/grayText2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/signUpText"
+        app:layout_constraintEnd_toStartOf="@id/signInText"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/signUpText"
+        android:id="@+id/signInText"
         style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

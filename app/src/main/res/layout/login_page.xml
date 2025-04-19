@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue">
@@ -37,30 +36,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <CheckBox
+        android:id="@+id/checkBox"
+        style="@style/SubheadingMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/login_checkbox_text_height"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginTop="@dimen/login_checkbox_margin_top"
+        android:buttonTint="@color/white"
+        android:text="@string/remember_me"
+        android:textColor="@color/grayText2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtitleText" />
+
     <TextView
         android:id="@+id/forgotPasswordText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/login_margin_end_forgot_password"
+        android:layout_height="@dimen/login_checkbox_text_height"
+        android:layout_marginTop="@dimen/login_checkbox_margin_top"
+        android:layout_marginEnd="@dimen/spacer_medium"
+        android:gravity="center"
         android:text="@string/forgot_password"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="419dp" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/checkBox"
+        app:layout_constraintTop_toBottomOf="@+id/subtitleText" />
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="@dimen/login_button_width"
         android:layout_height="@dimen/login_button_height"
+        android:layout_marginBottom="@dimen/login_button_margin_bottom"
         android:background="@drawable/button_border"
         android:text="@string/login"
         android:textColor="@color/white"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="610dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/dontHaveAccountText"
         android:layout_width="wrap_content"
-        android:layout_height="18dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/login_margin_start_account_text"
         android:layout_marginBottom="@dimen/login_margin_bottom_text"
         android:text="@string/dont_have_account"
@@ -73,7 +91,7 @@
         android:id="@+id/signUpText"
         style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
-        android:layout_height="18dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/login_margin_end_signup_text"
         android:layout_marginBottom="@dimen/login_margin_bottom_text"
         android:fontFamily="@font/open_sans_semi_bold"
