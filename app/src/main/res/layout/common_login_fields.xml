@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -26,6 +25,16 @@
         android:textColor="@color/white" />
 
     <TextView
+        android:id="@+id/emailErrorText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_login_margin_bottom_small"
+        android:text=""
+        android:textColor="@color/errorRed"
+        android:textSize="@dimen/body_text_size"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/passwordTextLabel"
         style="@style/SubheadingMedium"
         android:layout_width="match_parent"
@@ -45,12 +54,13 @@
         android:inputType="textPassword"
         android:textColor="@color/white" />
 
-    <CheckBox
-        android:id="@+id/checkBox"
-        style="@style/SubheadingMedium"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/passwordErrorText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:buttonTint="@color/white"
-        android:text="@string/remember_me"
-        android:textColor="@color/grayText2" />
+        android:layout_marginTop="@dimen/common_login_margin_bottom_small"
+        android:text=""
+        android:textColor="@color/errorRed"
+        android:textSize="@dimen/body_text_size"
+        android:visibility="gone" />
 </LinearLayout>
