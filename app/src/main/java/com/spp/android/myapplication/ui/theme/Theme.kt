@@ -1,53 +1,69 @@
 package com.spp.android.myapplication.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
+import androidx.compose.ui.graphics.Color
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    background = BackgroundLight,       // Main background color for the entire screen.
+    onBackground = TextPrimaryLight,    // Color of content (text/icons) displayed on the background.
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = AccentLight,              // Primary accent color — used for buttons, active elements, toggles, etc.
+    onPrimary = TextPrimaryLight,       // Color of text and icons displayed on top of the primary color.
+
+    surface = TextPrimaryLight,         // Surface color — used for cards, sheets, panels, and other containers.
+    onSurface = TextSecondaryLight,     // Color of text and icons displayed on top of surfaces.
+
+//    secondary = TextSecondaryLight,     // Secondary accent — typically used for chips, icons, and subtle highlights.
+    onSecondary = TextTertiaryLight,    // Color used on top of the secondary color — typically for text inside chips or badges.
+
+    error = ErrorLight,                 // Error color — used for validation messages, error states, and indicators.
+    //onError = TextPrimaryLight          // Color of text/icons displayed on top of the error color.
+)
+
+private val DarkColorScheme = darkColorScheme(
+    background = BackgroundDark,
+    onBackground = TextPrimaryDark,
+
+    primary = AccentDark,
+    onPrimary = TextPrimaryDark,
+
+    surface = TextPrimaryDark,
+    onSurface = TextSecondaryDark,
+
+    onSecondary = TextTertiaryDark,
+
+    error = ErrorDark,
+)
+
+private val ColoredColorScheme = lightColorScheme(
+    background = BackgroundColored,
+    onBackground = TextPrimaryColored,
+
+    primary = AccentColored,
+    onPrimary = TextPrimaryColored,
+
+    surface = TextPrimaryColored,
+    onSurface = TextSecondaryColored,
+
+    onSecondary = TextTertiaryColored,
+
+    error = ErrorColored,
 )
 
 @Composable
 fun MyApplicationTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    themePref: String = "system",
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+    val systemDark = isSystemInDarkTheme()
+    val colorScheme = when (themePref) {
+        "colored" -> ColoredColorScheme
+        else -> if (systemDark) DarkColorScheme else LightColorScheme
     }
 
     MaterialTheme(
@@ -56,3 +72,10 @@ fun MyApplicationTheme(
         content = content
     )
 }
+
+val ColorScheme.socialIcon: Color
+    @Composable get() = when {
+        this === LightColorScheme -> AccentLight
+        this === DarkColorScheme -> AccentDark
+        else -> AccentColored
+    }

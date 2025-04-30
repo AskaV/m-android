@@ -23,9 +23,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.spp.android.myapplication.ui.theme.GrayText
-import com.spp.android.myapplication.ui.theme.Orange
-import com.spp.android.myapplication.ui.theme.White
+import com.spp.android.myapplication.ui.theme.AccentLight
+import com.spp.android.myapplication.ui.theme.TextPrimaryLight
+import com.spp.android.myapplication.ui.theme.TextTertiaryLight
+import com.spp.android.myapplication.ui.theme.socialIcon
 
 @Composable
 fun SocialButton(
@@ -36,10 +37,13 @@ fun SocialButton(
     Box(
         modifier = modifier
             .size(dimensionResource(id = R.dimen.social_button_size))
-            .background(White, shape = CircleShape)
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = CircleShape
+            )
             .border(
-                dimensionResource(id = R.dimen.button_border_width),
-                color = Orange,
+                width = dimensionResource(id = R.dimen.button_border_width),
+                color = MaterialTheme.colorScheme.socialIcon,
                 shape = CircleShape
             ),
         contentAlignment = Alignment.Center
@@ -47,7 +51,7 @@ fun SocialButton(
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = contentDescription,
-            tint = Orange,
+            tint = MaterialTheme.colorScheme.socialIcon,
             modifier = Modifier.size(dimensionResource(id = R.dimen.social_icon_size))
         )
     }
@@ -58,8 +62,8 @@ fun FilledButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = Orange,
-    contentColor: Color = White
+    containerColor: Color = AccentLight,
+    contentColor: Color = TextPrimaryLight
 ) {
     Button(
         onClick = onClick,
@@ -84,8 +88,8 @@ fun OutlinedBorderButton(
     text: String = stringResource(R.string.edit_profile),
     onClick: () -> Unit,
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
-    borderColor: Color = GrayText,
-    contentColor: Color = GrayText
+    borderColor: Color = TextTertiaryLight,
+    contentColor: Color = TextTertiaryLight
 ) {
     OutlinedButton(
         onClick = onClick,

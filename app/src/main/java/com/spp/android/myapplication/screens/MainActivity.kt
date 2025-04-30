@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.screens
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,18 +34,20 @@ import com.spp.android.myapplication.OutlinedBorderButton
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.SocialButton
 import com.spp.android.myapplication.ui.preview.PreviewConfig
-import com.spp.android.myapplication.ui.theme.Blue
-import com.spp.android.myapplication.ui.theme.GrayText2
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
-import com.spp.android.myapplication.ui.theme.White
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val themePref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+            .getString("theme_pref", "system") ?: "system"
+
         val email = intent.getStringExtra("email")
         val displayName = email?.let { parseNameFromEmail(it) } ?: "User"
-        super.onCreate(savedInstanceState)
+
         setContent {
-            MyApplicationTheme {
+            MyApplicationTheme(themePref = themePref) {
                 MyProfileScreen(displayName)
             }
         }
@@ -54,12 +57,13 @@ class MainActivity : ComponentActivity() {
 @Preview(
     showBackground = true,
     name = "FigmaMobileSize",
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_NO,  //UI_MODE_NIGHT_YES,
     device = "spec:width=${PreviewConfig.FIGMA_SCREEN_WIDTH}px,height=${PreviewConfig.FIGMA_SCREEN_HEIGHT}px,dpi=${PreviewConfig.FIGMA_SCREEN_DPI}"
 
 )
 @Composable
 fun MyProfileScreenPreview() {
-    MaterialTheme {
+    MyApplicationTheme(themePref = "system") { // colored or system
         MyProfileScreen(userName = stringResource(R.string.user_name))
     }
 }
@@ -79,7 +83,7 @@ fun MyProfileScreen(userName: String, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.5f)
-                .background(Blue)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             Column(
                 modifier = Modifier
@@ -99,7 +103,7 @@ fun MyProfileScreen(userName: String, modifier: Modifier = Modifier) {
                     Text(
                         text = stringResource(R.string.settings),
                         style = MaterialTheme.typography.headlineLarge,
-                        color = White
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
 
@@ -112,17 +116,17 @@ fun MyProfileScreen(userName: String, modifier: Modifier = Modifier) {
                 Text(
                     text = userName,
                     style = MaterialTheme.typography.headlineMedium,
-                    color = White
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = stringResource(R.string.user_profession),
                     style = MaterialTheme.typography.titleMedium,
-                    color = GrayText2
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = stringResource(R.string.user_address),
                     style = MaterialTheme.typography.titleMedium,
-                    color = GrayText2
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -130,7 +134,7 @@ fun MyProfileScreen(userName: String, modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(White),
+                .background(MaterialTheme.colorScheme.surface),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.weight(1f / 3f))
@@ -165,7 +169,7 @@ fun MyProfileScreen(userName: String, modifier: Modifier = Modifier) {
 @Composable
 fun ProfileAvatar() {
     Image(
-        painter = painterResource(id = R.drawable.baseline_account_circle_avatar),
+        painter = painterResource(id = R.drawable.profile_avatar),
         contentDescription = stringResource(R.string.user_avatar),
         modifier = Modifier
             .size(dimensionResource(id = R.dimen.profile_avatar_size))
@@ -182,14 +186,18 @@ fun ActionButtons() {
     ) {
         OutlinedBorderButton(
             text = stringResource(R.string.edit_profile),
-            onClick = { /* TODO: Edit Profile Action */ }
+            onClick = { /* TODO: Edit Profile Action */ },
+            borderColor = MaterialTheme.colorScheme.onSecondary,
+            contentColor = MaterialTheme.colorScheme.onSecondary
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.default_spacing)))
 
         FilledButton(
             text = stringResource(R.string.view_contacts).uppercase(),
-            onClick = { /* TODO: View Contacts Action */ }
+            onClick = { /* TODO: View Contacts Action */ },
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onBackground
         )
     }
 }
