@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.screens.LoginScreen
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
-//import com.spp.android.myapplication.xmlscreens.LoginActivityXml
+import com.spp.android.myapplication.xmlscreens.LoginActivityXml
 import kotlinx.coroutines.launch
 
 class StartSelection : ComponentActivity() {
@@ -29,8 +29,8 @@ class StartSelection : ComponentActivity() {
         if (!USE_COMPOSE) {
             when (themePref) {
                 "light" -> setTheme(R.style.Theme_MyApplication)
-//                "dark" -> setTheme(R.style.Theme_MyApplication_Dark)
-//                "colored" -> setTheme(R.style.Theme_MyApplication_Colored)
+                "dark" -> setTheme(R.style.Theme_MyApplication_Dark)
+                "colored" -> setTheme(R.style.Theme_MyApplication_Colored)
                 "system" -> setTheme(R.style.Theme_MyApplication)
             }
         }
@@ -56,7 +56,7 @@ class StartSelection : ComponentActivity() {
                 }
             }
         } else {
-//            startActivity(Intent(this, LoginActivityXml::class.java))
+            startActivity(Intent(this, LoginActivityXml::class.java))
             finish()
         }
     }
