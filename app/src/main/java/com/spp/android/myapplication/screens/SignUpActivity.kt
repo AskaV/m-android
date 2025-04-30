@@ -1,6 +1,7 @@
 package com.spp.android.myapplication.screens
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -27,11 +28,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -45,22 +45,22 @@ import com.spp.android.myapplication.R
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.ui.components.MaterialStyledTextField
 import com.spp.android.myapplication.ui.preview.PreviewConfig
-import com.spp.android.myapplication.ui.theme.Blue
-import com.spp.android.myapplication.ui.theme.GrayText2
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
-import com.spp.android.myapplication.ui.theme.Orange
-import com.spp.android.myapplication.ui.theme.White
+import com.spp.android.myapplication.ui.theme.Transparent
 import kotlinx.coroutines.launch
 
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val themePref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+            .getString("theme_pref", "system") ?: "system"
+
         setContent {
-            MyApplicationTheme {
+            MyApplicationTheme(themePref = themePref) {
                 SignUpScreen(onSuccessfulSignUp = { email ->
                     lifecycleScope.launch {
                         UserPreferences.saveEmail(this@SignUpActivity, email)
-
                         startActivity(Intent(this@SignUpActivity, MainActivity::class.java).apply {
                             putExtra("email", email)
                         })
@@ -76,12 +76,13 @@ class SignUpActivity : ComponentActivity() {
 @Preview(
     showBackground = true,
     name = "SignUpScreenPreview",
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_NO,  //UI_MODE_NIGHT_YES,
     device = "spec:width=${PreviewConfig.FIGMA_SCREEN_WIDTH}px,height=${PreviewConfig.FIGMA_SCREEN_HEIGHT}px,dpi=${PreviewConfig.FIGMA_SCREEN_DPI}"
 )
 
 @Composable
 fun SignUpScreenPreview() {
-    MaterialTheme {
+    MyApplicationTheme(themePref = "system") { // colored or system
         SignUpScreen(onSuccessfulSignUp = {})
     }
 }
@@ -92,16 +93,16 @@ fun SignUpScreen(
     onSuccessfulSignUp: (String) -> Unit
 ) {
     val context = LocalContext.current
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var rememberMe by remember { mutableStateOf(true) }
-    var emailError by remember { mutableStateOf<String?>(null) }
-    var passwordError by remember { mutableStateOf<String?>(null) }
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var rememberMe by rememberSaveable { mutableStateOf(true) }
+    var emailError by rememberSaveable { mutableStateOf<String?>(null) }
+    var passwordError by rememberSaveable { mutableStateOf<String?>(null) }
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Blue)
+            .background(MaterialTheme.colorScheme.background)
             .padding(
                 start = dimensionResource(id = R.dimen.common_login_padding_start),
                 end = dimensionResource(id = R.dimen.common_login_padding_end),
@@ -116,7 +117,7 @@ fun SignUpScreen(
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
-                color = White
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_spacing)))
             Text(
@@ -124,13 +125,13 @@ fun SignUpScreen(
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
-                color = GrayText2
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.common_login_margin_top_medium)))
             Text(
                 text = stringResource(R.string.email),
                 style = MaterialTheme.typography.bodySmall,
-                color = GrayText2
+                color = MaterialTheme.colorScheme.onSurface
             )
             MaterialStyledTextField(
                 value = email,
@@ -144,7 +145,7 @@ fun SignUpScreen(
             Text(
                 text = stringResource(R.string.password),
                 style = MaterialTheme.typography.bodySmall,
-                color = GrayText2
+                color = MaterialTheme.colorScheme.onSurface
             )
             MaterialStyledTextField(
                 value = password,
@@ -162,7 +163,7 @@ fun SignUpScreen(
                         .size(dimensionResource(id = R.dimen.checkbox_frame_size))
                         .border(
                             width = dimensionResource(id = R.dimen.checkbox_border_width),
-                            color = White,
+                            color = MaterialTheme.colorScheme.onBackground,
                             shape = RoundedCornerShape(dimensionResource(id = R.dimen.checkbox_corner_radius))
                         ),
                     contentAlignment = Alignment.Center
@@ -171,9 +172,9 @@ fun SignUpScreen(
                         checked = rememberMe,
                         onCheckedChange = { rememberMe = it },
                         colors = CheckboxDefaults.colors(
-                            checkedColor = Color.Transparent,
-                            uncheckedColor = Color.Transparent,
-                            checkmarkColor = Color.White
+                            checkedColor = Transparent,
+                            uncheckedColor = Transparent,
+                            checkmarkColor = MaterialTheme.colorScheme.onBackground
                         ),
                         modifier = Modifier.size(dimensionResource(id = R.dimen.checkbox_inner_size))
                     )
@@ -183,7 +184,7 @@ fun SignUpScreen(
                 Text(
                     text = stringResource(R.string.remember_me),
                     style = MaterialTheme.typography.bodySmall,
-                    color = GrayText2
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -192,14 +193,14 @@ fun SignUpScreen(
             FilledButton(
                 text = stringResource(R.string.signup_google).uppercase(),
                 onClick = { /* TODO: Google sign-up */ },
-                containerColor = White,
-                contentColor = GrayText2
+                containerColor = MaterialTheme.colorScheme.onPrimary,
+                contentColor = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_spacing)))
             Text(
                 text = stringResource(R.string.signup_or),
                 style = MaterialTheme.typography.bodySmall,
-                color = White
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_spacing)))
             OutlinedBorderButton(
@@ -220,8 +221,8 @@ fun SignUpScreen(
                     if (!isValid) return@OutlinedBorderButton
                     onSuccessfulSignUp(email)
                 },
-                borderColor = Orange,
-                contentColor = White
+                borderColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_spacing)))
             Text(
@@ -230,7 +231,7 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
 
-                color = GrayText2
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(4.dp))
             Row(
@@ -239,7 +240,7 @@ fun SignUpScreen(
                 Text(
                     text = stringResource(R.string.signup_have_account),
                     style = MaterialTheme.typography.bodySmall,
-                    color = GrayText2
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
@@ -249,7 +250,7 @@ fun SignUpScreen(
                         (context as? Activity)?.finish()
                     },
                     style = MaterialTheme.typography.bodySmall,
-                    color = White
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
