@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue">
+    android:background="?android:windowBackground">
 
     <TextView
         android:id="@+id/signup_title"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_large"
         android:text="@string/signup_title"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +25,7 @@
         android:layout_marginTop="@dimen/margin_top_small"
         android:text="@string/signup_subtitle"
         android:textAlignment="center"
-        android:textColor="@color/grayText2"
+        android:textColor="?android:textColorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_title" />
@@ -46,9 +46,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacer_medium"
         android:layout_marginTop="@dimen/login_checkbox_margin_top"
-        android:buttonTint="@color/white"
+        android:buttonTint="?android:textColorPrimary"
         android:text="@string/remember_me"
-        android:textColor="@color/grayText2"
+        android:textColor="?android:textColorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_subtitle" />
 
@@ -60,6 +60,7 @@
         android:layout_marginStart="@dimen/margin_button_start"
         android:layout_marginEnd="@dimen/margin_button_end"
         android:text="@string/signup_google"
+        android:textColor="?android:textColorTertiary"
         app:layout_constraintBottom_toTopOf="@+id/TextViewOr"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +74,7 @@
         android:layout_marginBottom="@dimen/margin_bottom_or_text"
         android:fontFamily="@font/open_sans_semi_bold"
         android:text="@string/signup_or"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/subheading_medium_text_size"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +90,7 @@
         android:layout_marginBottom="@dimen/margin_button_bottom"
         android:background="@drawable/button_border"
         android:text="@string/signup_register"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +105,7 @@
         android:layout_marginBottom="@dimen/margin_between_buttons"
         android:text="@string/signup_terms"
         android:textAlignment="center"
-        android:textColor="@color/grayText2"
+        android:textColor="?android:textColorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,13 +115,13 @@
         android:id="@+id/alreadyHaveAccountText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_account_text_start"
-        android:layout_marginEnd="@dimen/margin_account_text_end"
+        android:layout_marginEnd="@dimen/spacer_extra_small"
         android:layout_marginBottom="@dimen/margin_account_text_bottom"
         android:text="@string/signup_have_account"
-        android:textColor="@color/grayText2"
+        android:textColor="?android:textColorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/signInText"
+        app:layout_constraintEnd_toStartOf="@+id/signInText"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -128,12 +129,12 @@
         style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_signup_text_start"
-        android:layout_marginBottom="@dimen/margin_signup_text_bottom"
+        android:layout_marginBottom="@dimen/margin_account_text_bottom"
         android:fontFamily="@font/open_sans_semi_bold"
         android:text="@string/signup_sign_in"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/alreadyHaveAccountText" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/alreadyHaveAccountText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

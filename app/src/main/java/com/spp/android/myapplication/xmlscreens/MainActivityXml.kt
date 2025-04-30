@@ -5,12 +5,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.spp.android.myapplication.R
 
-class MainActivityXml : AppCompatActivity() {
+class MainActivityXml : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.my_profile_page)
         val avatarImage = findViewById<ImageView>(R.id.user_avatar)

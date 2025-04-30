@@ -13,16 +13,18 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/common_login_margin_bottom_small"
         android:text="@string/email"
-        android:textColor="@color/grayText2" />
+        android:textColor="?android:textColorSecondary" />
 
     <EditText
         android:id="@+id/editTextTextEmailAddress"
         style="@style/HeadingMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:background="?android:editTextBackground"
+        android:backgroundTint="?android:textColorSecondary"
         android:inputType="textEmailAddress"
-        android:textColor="@color/white" />
+        android:textColor="?android:textColorPrimary"
+        android:textCursorDrawable="?android:textColorSecondary" />
 
     <TextView
         android:id="@+id/emailErrorText"
@@ -30,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_login_margin_bottom_small"
         android:text=""
-        android:textColor="@color/errorRed"
+        android:textColor="?android:colorAccent"
         android:textSize="@dimen/body_text_size"
         android:visibility="gone" />
 
@@ -42,17 +44,18 @@
         android:layout_marginTop="@dimen/common_login_margin_top_medium"
         android:layout_marginBottom="@dimen/common_login_margin_bottom_small"
         android:text="@string/password"
-        android:textColor="@color/grayText2" />
+        android:textColor="?android:textColorSecondary" />
 
     <EditText
         android:id="@+id/editTextTextPassword"
         style="@style/HeadingMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints="password"
-        android:backgroundTint="@color/white"
+        android:background="?android:editTextBackground"
+        android:backgroundTint="?android:textColorSecondary"
         android:inputType="textPassword"
-        android:textColor="@color/white" />
+        android:textColor="?android:textColorPrimary"
+        android:textCursorDrawable="?android:textColorSecondary" />
 
     <TextView
         android:id="@+id/passwordErrorText"
@@ -60,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_login_margin_bottom_small"
         android:text=""
-        android:textColor="@color/errorRed"
+        android:textColor="?android:colorAccent"
         android:textSize="@dimen/body_text_size"
         android:visibility="gone" />
 </LinearLayout>
