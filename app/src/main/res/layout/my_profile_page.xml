@@ -7,10 +7,18 @@
         android:id="@+id/topBackground"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/blue"
+        android:background="?android:windowBackground"
         app:layout_constraintBottom_toTopOf="@id/user_avatar"
         app:layout_constraintDimensionRatio="@string/profile_background_ratio"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/bottomBackground"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?android:textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBackground" />
 
     <TextView
         style="@style/HeadingLarge"
@@ -19,7 +27,7 @@
         android:layout_marginStart="@dimen/margin_start_text"
         android:layout_marginTop="@dimen/margin_top_settings"
         android:text="@string/settings"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +38,7 @@
         android:layout_marginTop="@dimen/margin_top_avatar"
         android:contentDescription="@string/user_avatar"
         android:scaleType="centerCrop"
-        android:src="@drawable/baseline_account_circle_avatar"
+        android:src="@drawable/profile_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -42,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_user_name"
         android:text="@string/user_name"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -54,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_text"
         android:text="@string/user_profession"
-        android:textColor="@color/grayText2"
+        android:textColor="?android:textColorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/user_name" />
@@ -66,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_text"
         android:text="@string/user_address"
-        android:textColor="@color/grayText2"
+        android:textColor="?android:textColorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/user_profession" />
@@ -85,7 +93,7 @@
         android:src="@drawable/social_facebook"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBackground"
-        app:tint="@color/orange" />
+        app:tint="?android:colorAccent" />
 
     <ImageButton
         android:id="@+id/imageButtonInstagram"
@@ -100,7 +108,7 @@
         app:layout_constraintEnd_toStartOf="@+id/imageButtonTelegram"
         app:layout_constraintStart_toEndOf="@+id/imageButtonFacebook"
         app:layout_constraintTop_toBottomOf="@id/topBackground"
-        app:tint="@color/orange" />
+        app:tint="?android:colorAccent" />
 
     <ImageButton
         android:id="@+id/imageButtonTelegram"
@@ -115,7 +123,7 @@
         android:src="@drawable/social_telegram"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBackground"
-        app:tint="@color/orange" />
+        app:tint="?android:colorAccent" />
 
     <Button
         android:id="@+id/editProfileBtn"
@@ -127,6 +135,8 @@
         android:background="@drawable/button_outlined"
         android:text="@string/edit_profile"
         android:textAllCaps="false"
+        android:textColor="?android:textColorTertiary"
+
         app:layout_constraintBottom_toTopOf="@+id/viewMyContactsBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -141,7 +151,7 @@
         android:layout_marginBottom="@dimen/button_margin_bottom"
         android:background="@drawable/button_filled_orange"
         android:text="@string/view_contacts"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

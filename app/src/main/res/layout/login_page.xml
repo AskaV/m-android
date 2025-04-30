@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue">
+    android:background="?android:windowBackground">
 
     <TextView
         android:id="@+id/titleText"
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/login_margin_top_large"
         android:text="@string/hello"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/login_margin_top_small"
         android:text="@string/enter_email_password"
-        android:textColor="@color/grayText2"
+        android:textColor="?android:textColorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleText" />
@@ -43,9 +43,9 @@
         android:layout_height="@dimen/login_checkbox_text_height"
         android:layout_marginStart="@dimen/spacer_medium"
         android:layout_marginTop="@dimen/login_checkbox_margin_top"
-        android:buttonTint="@color/white"
+        android:buttonTint="?android:textColorPrimary"
         android:text="@string/remember_me"
-        android:textColor="@color/grayText2"
+        android:textColor="?android:textColorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subtitleText" />
 
@@ -57,7 +57,7 @@
         android:layout_marginEnd="@dimen/spacer_medium"
         android:gravity="center"
         android:text="@string/forgot_password"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/checkBox"
@@ -70,7 +70,7 @@
         android:layout_marginBottom="@dimen/login_button_margin_bottom"
         android:background="@drawable/button_border"
         android:text="@string/login"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -82,7 +82,7 @@
         android:layout_marginStart="@dimen/login_margin_start_account_text"
         android:layout_marginBottom="@dimen/login_margin_bottom_text"
         android:text="@string/dont_have_account"
-        android:textColor="@color/grayText2"
+        android:textColor="?android:textColorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/signUpText"
         app:layout_constraintStart_toStartOf="parent" />
@@ -96,7 +96,7 @@
         android:layout_marginBottom="@dimen/login_margin_bottom_text"
         android:fontFamily="@font/open_sans_semi_bold"
         android:text="@string/sign_up"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

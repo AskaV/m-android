@@ -49,7 +49,7 @@
     <dimen name="profile_avatar_size">113dp</dimen>
 
     <!-- Screen ratio of view of my profile page -->
-    <string name="profile_background_ratio">1:1.8</string>
+    <string name="profile_background_ratio" translatable="false">1:1.8</string>
 
 
     <!-- =============== SIGN UP PAGE DIMENSIONS =============== -->

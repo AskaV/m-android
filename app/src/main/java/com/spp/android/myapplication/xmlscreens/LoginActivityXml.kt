@@ -5,15 +5,15 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.data.UserPreferences
 import kotlinx.coroutines.launch
 
-class LoginActivityXml : AppCompatActivity() {
+class LoginActivityXml : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
@@ -23,6 +23,13 @@ class LoginActivityXml : AppCompatActivity() {
             } else {
                 setContentView(R.layout.login_page)
                 setupViews()
+
+                if (savedInstanceState != null) {
+                    val email = savedInstanceState.getString("email_text", "")
+                    val password = savedInstanceState.getString("password_text", "")
+                    findViewById<EditText>(R.id.editTextTextEmailAddress).setText(email)
+                    findViewById<EditText>(R.id.editTextTextPassword).setText(password)
+                }
             }
         }
     }
@@ -67,5 +74,17 @@ class LoginActivityXml : AppCompatActivity() {
         startActivity(intent)
         overridePendingTransition(R.anim.scale_in, R.anim.scale_out)
         finish()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(
+            "email_text",
+            findViewById<EditText>(R.id.editTextTextEmailAddress).text.toString()
+        )
+        outState.putString(
+            "password_text",
+            findViewById<EditText>(R.id.editTextTextPassword).text.toString()
+        )
     }
 }
