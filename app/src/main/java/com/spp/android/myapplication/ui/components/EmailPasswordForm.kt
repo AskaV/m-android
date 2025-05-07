@@ -110,8 +110,8 @@ fun MaterialStyledTextField(
                 color = MaterialTheme.colorScheme.error,
                 style = TextStyle(fontSize = dimensionResource(id = R.dimen.body_text_size).value.sp),
                 modifier = Modifier.padding(
-                    start = dimensionResource(id = R.dimen.small_spacing),
-                    top = dimensionResource(id = R.dimen.common_login_margin_bottom_small)
+                    start = dimensionResource(id = R.dimen.spacer_small),
+                    top = dimensionResource(id = R.dimen.spacer_extra_small)
                 )
             )
         }
