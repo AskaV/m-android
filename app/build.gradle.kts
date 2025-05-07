@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.datastore.preferences.core.jvm)
+    implementation(libs.androidx.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -64,5 +65,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.compose.compiler)
     implementation (libs.androidx.datastore.preferences)
-
+    implementation(libs.androidx.lifecycle.common)
 }

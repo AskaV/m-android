@@ -15,6 +15,8 @@
         <activity android:name=".screens.LoginActivity" android:exported="true"/>
         <activity android:name=".screens.MainActivity" android:exported="true"/>
         <activity android:name=".screens.SignUpActivity" android:exported="true"/>
+        <activity android:name=".screens.ContactsActivity" android:exported="true"/>
+
         <activity
             android:name=".StartSelection"
             android:exported="true"
@@ -27,5 +29,7 @@
         <activity android:name=".xmlscreens.LoginActivityXml"  android:exported="true"/>
         <activity android:name=".xmlscreens.MainActivityXml"  android:exported="true"/>
         <activity android:name=".xmlscreens.SignUpActivityXml" android:exported="true"/>
+        <activity android:name=".xmlscreens.contacts.ContactsActivityXml" android:exported="true"/>
+
     </application>
 </manifest>
