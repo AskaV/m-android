@@ -126,9 +126,9 @@ fun LoginScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .padding(
-                start = dimensionResource(id = R.dimen.common_login_padding_start),
-                end = dimensionResource(id = R.dimen.common_login_padding_end),
-                bottom = dimensionResource(id = R.dimen.button_margin_bottom)
+                start = dimensionResource(id = R.dimen.spacer_medium),
+                end = dimensionResource(id = R.dimen.spacer_medium),
+                bottom = dimensionResource(id = R.dimen.spacer_medium)
             )
     ) {
         Column(
@@ -216,7 +216,7 @@ fun LoginScreen(
                             modifier = Modifier.size(dimensionResource(id = R.dimen.checkbox_inner_size))
                         )
                     }
-                    Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.small_spacing)))
+                    Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_small)))
                     Text(
                         text = stringResource(R.string.remember_me),
                         color = MaterialTheme.colorScheme.onSurface,
@@ -261,12 +261,12 @@ fun LoginScreen(
                 contentColor = MaterialTheme.colorScheme.onBackground
             )
 
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.small_spacing)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_small)))
 
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.login_margin_bottom_text))
+                modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.spacer_medium))
             ) {
                 Text(
                     text = stringResource(id = R.string.dont_have_account),
@@ -274,7 +274,7 @@ fun LoginScreen(
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.small_spacing)))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_small)))
                 Text(
                     text = stringResource(id = R.string.sign_up),
                     style = MaterialTheme.typography.bodySmall,
