@@ -39,4 +39,10 @@
     <string name="password_error_text">Пароль має містити щонайменше 8 символів</string>
     <string name="user_name_error">Ім’я користувача повинно містити щонайменше 3 літери</string>
     <string name="phone_length_error">Номер телефону має містити щонайменше 10 цифр</string>
+
+    <!--   сторінка списку контактів  -->
+    <string name="contacts_text">Контакти</string>
+    <string name="add_contacts_text">Додати контакти</string>
+    <string name="wastebasket_description">Сміттєвий кошик</string>
+
 </resources>

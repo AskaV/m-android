@@ -15,17 +15,21 @@
         <activity android:name=".screens.LoginActivity" android:exported="true"/>
         <activity android:name=".screens.MainActivity" android:exported="true"/>
         <activity android:name=".screens.SignUpActivity" android:exported="true"/>
+        <activity android:name=".screens.ContactsActivity" android:exported="true"/>
+
         <activity
             android:name=".StartSelection"
             android:exported="true"
-            android:theme="@style/Theme.MyApplication">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".xmlscreens.LoginActivityXml" android:theme="@style/Theme.MyApplication"  android:exported="true"/>
-        <activity android:name=".xmlscreens.MainActivityXml" android:theme="@style/Theme.MyApplication" android:exported="true"/>
-        <activity android:name=".xmlscreens.SignUpActivityXml" android:theme="@style/Theme.MyApplication" android:exported="true"/>
+        <activity android:name=".xmlscreens.LoginActivityXml"  android:exported="true"/>
+        <activity android:name=".xmlscreens.MainActivityXml"  android:exported="true"/>
+        <activity android:name=".xmlscreens.SignUpActivityXml" android:exported="true"/>
+        <activity android:name=".xmlscreens.contacts.ContactsActivityXml" android:exported="true"/>
+
     </application>
 </manifest>
