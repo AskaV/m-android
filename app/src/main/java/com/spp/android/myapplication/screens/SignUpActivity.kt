@@ -104,8 +104,8 @@ fun SignUpScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .padding(
-                start = dimensionResource(id = R.dimen.common_login_padding_start),
-                end = dimensionResource(id = R.dimen.common_login_padding_end),
+                start = dimensionResource(id = R.dimen.spacer_medium),
+                end = dimensionResource(id = R.dimen.spacer_medium),
                 bottom = 24.dp
             ),
         verticalArrangement = Arrangement.SpaceBetween
@@ -119,7 +119,7 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
                 color = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_spacing)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_small)))
             Text(
                 text = stringResource(R.string.signup_subtitle),
                 style = MaterialTheme.typography.bodySmall,
@@ -127,7 +127,7 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
                 color = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.common_login_margin_top_medium)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_medium)))
             Text(
                 text = stringResource(R.string.email),
                 style = MaterialTheme.typography.bodySmall,
@@ -141,7 +141,7 @@ fun SignUpScreen(
                 },
                 errorMessage = emailError
             )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_spacing)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_small)))
             Text(
                 text = stringResource(R.string.password),
                 style = MaterialTheme.typography.bodySmall,
@@ -156,7 +156,7 @@ fun SignUpScreen(
                 isPassword = true,
                 errorMessage = passwordError
             )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_spacing)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_small)))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     modifier = Modifier
@@ -179,7 +179,7 @@ fun SignUpScreen(
                         modifier = Modifier.size(dimensionResource(id = R.dimen.checkbox_inner_size))
                     )
                 }
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.small_spacing)))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_small)))
 
                 Text(
                     text = stringResource(R.string.remember_me),
@@ -196,13 +196,13 @@ fun SignUpScreen(
                 containerColor = MaterialTheme.colorScheme.onPrimary,
                 contentColor = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_spacing)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_small)))
             Text(
                 text = stringResource(R.string.signup_or),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_spacing)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_small)))
             OutlinedBorderButton(
                 text = stringResource(R.string.signup_register).uppercase(),
                 onClick = {
@@ -224,7 +224,7 @@ fun SignUpScreen(
                 borderColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_spacing)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_small)))
             Text(
                 text = stringResource(R.string.signup_terms),
                 style = MaterialTheme.typography.bodySmall,

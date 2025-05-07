@@ -88,14 +88,14 @@ fun MyProfileScreen(userName: String, modifier: Modifier = Modifier) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = dimensionResource(id = R.dimen.default_padding)),
+                    .padding(horizontal = dimensionResource(id = R.dimen.spacer_medium)),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = dimensionResource(id = R.dimen.default_padding),
+                            start = dimensionResource(id = R.dimen.spacer_medium),
                             top = dimensionResource(id = R.dimen.margin_top_settings)
                         ),
                     contentAlignment = Alignment.TopStart
@@ -107,11 +107,11 @@ fun MyProfileScreen(userName: String, modifier: Modifier = Modifier) {
                     )
                 }
 
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.default_spacing)))
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_medium)))
 
                 ProfileAvatar()
 
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.small_spacing)))
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_small)))
 
                 Text(
                     text = userName,
@@ -181,8 +181,8 @@ fun ProfileAvatar() {
 fun ActionButtons() {
     Column(
         modifier = Modifier
-            .padding(horizontal = dimensionResource(id = R.dimen.default_padding))
-            .padding(bottom = dimensionResource(id = R.dimen.default_padding))
+            .padding(horizontal = dimensionResource(id = R.dimen.spacer_medium))
+            .padding(bottom = dimensionResource(id = R.dimen.spacer_medium))
     ) {
         OutlinedBorderButton(
             text = stringResource(R.string.edit_profile),
@@ -191,7 +191,7 @@ fun ActionButtons() {
             contentColor = MaterialTheme.colorScheme.onSecondary
         )
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.default_spacing)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_medium)))
 
         FilledButton(
             text = stringResource(R.string.view_contacts).uppercase(),
