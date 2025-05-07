@@ -40,4 +40,10 @@
     <string name="user_name_error">User name must contain at least 3 letters</string>
     <string name="phone_length_error">Phone must be at least 10 digits long</string>
 
+    <!--   my contacts recycler view  -->
+
+    <string name="contacts_text">Contacts</string>
+    <string name="add_contacts_text">Add contacts</string>
+    <string name="wastebasket_description">Wastebasket</string>
+
 </resources>
