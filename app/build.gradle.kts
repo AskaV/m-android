@@ -66,4 +66,9 @@ dependencies {
     implementation(libs.androidx.compose.compiler)
     implementation (libs.androidx.datastore.preferences)
     implementation(libs.androidx.lifecycle.common)
+    implementation(libs.glide)
+    implementation(libs.picasso)
+    implementation(libs.fresco)
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
 }

@@ -8,16 +8,16 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.data.UserPreferences
-import com.spp.android.myapplication.screens.LoginScreen
+import com.spp.android.myapplication.screens.ContactsScreen
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
-import com.spp.android.myapplication.xmlscreens.LoginActivityXml
+import com.spp.android.myapplication.xmlscreens.contacts.ContactsActivityXml
 import kotlinx.coroutines.launch
 
 class StartSelection : ComponentActivity() {
 
     companion object {
         /** If true – use Compose version, if false – XML version. */
-        const val USE_COMPOSE = true
+        const val USE_COMPOSE = false
         const val TEST_MODE = true
     }
 
@@ -52,11 +52,13 @@ class StartSelection : ComponentActivity() {
         if (USE_COMPOSE) {
             setContent {
                 MyApplicationTheme(themePref = themePref) {
-                    LoginScreen(onValidLogin = {})
+                    //LoginScreen(onValidLogin = {})
+                    ContactsScreen()
                 }
             }
         } else {
-            startActivity(Intent(this, LoginActivityXml::class.java))
+            //startActivity(Intent(this, LoginActivityXml::class.java))
+            startActivity(Intent(this, ContactsActivityXml::class.java))
             finish()
         }
     }
