@@ -28,9 +28,13 @@ class ContactsViewModel : ViewModel() {
             Contact("Annie King", "Nurse", generateAvatarUrl())
         )
     }
-}
 
-private fun generateAvatarUrl(): String {
-    val id = (1..70).random()
-    return "https://i.pravatar.cc/150?img=$id"
+    private fun generateAvatarUrl(): String {
+        val id = (1..70).random()
+        return "https://i.pravatar.cc/150?img=$id"
+    }
+
+    fun setContacts(list: List<Contact>) {
+        _contacts.value = list
+    }
 }
