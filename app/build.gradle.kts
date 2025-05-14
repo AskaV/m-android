@@ -71,4 +71,5 @@ dependencies {
     implementation(libs.fresco)
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 }
