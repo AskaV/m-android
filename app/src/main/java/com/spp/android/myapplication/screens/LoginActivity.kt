@@ -97,7 +97,7 @@ class LoginActivity : ComponentActivity() {
 
 @Preview(
     showBackground = true,
-    name = "SignUpScreenPreview",
+    name = "LoginScreenPreview",
     uiMode = android.content.res.Configuration.UI_MODE_NIGHT_NO,  //UI_MODE_NIGHT_YES,
     device = "spec:width=${PreviewConfig.FIGMA_SCREEN_WIDTH}px,height=${PreviewConfig.FIGMA_SCREEN_HEIGHT}px,dpi=${PreviewConfig.FIGMA_SCREEN_DPI}"
 )
