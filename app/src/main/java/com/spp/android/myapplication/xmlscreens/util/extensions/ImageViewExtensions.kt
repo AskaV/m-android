@@ -11,13 +11,18 @@ import com.squareup.picasso.Picasso
 class ImageViewExtensions {
 }
 
-var currentImageLoader: ImageLoaderType = ImageLoaderType.COIL
+enum class ImageLoaderType {
+    GLIDE, PICASSO, COIL, FRESCO
+}
+
+var currentImageLoader: ImageLoaderType = ImageLoaderType.GLIDE
 
 fun ImageView.loadAvatar(url: String?) {
     when (currentImageLoader) {
         ImageLoaderType.GLIDE -> loadWithGlide(url)
         ImageLoaderType.PICASSO -> loadWithPicasso(url)
         ImageLoaderType.COIL -> loadWithCoil(url)
+        ImageLoaderType.FRESCO -> loadWithFresco(url)
     }
 }
 
@@ -49,5 +54,10 @@ private fun ImageView.loadWithCoil(url: String?) {
         .build()
 
     this.context.imageLoader.enqueue(request)
+}
+
+fun ImageView.loadWithFresco(url: String?) {
+    if (this !is com.facebook.drawee.view.SimpleDraweeView) return
+    this.setImageURI(url)
 }
 
