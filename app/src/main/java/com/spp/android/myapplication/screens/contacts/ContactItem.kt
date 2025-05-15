@@ -1,7 +1,5 @@
 package com.spp.android.myapplication.screens.contacts
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.screens.util.extensions.LoadAvatarComposable
 
 @Composable
 fun ContactItem(contact: Contact, onDeleteClick: () -> Unit) {
@@ -40,11 +39,9 @@ fun ContactItem(contact: Contact, onDeleteClick: () -> Unit) {
             .padding(dimensionResource(id = R.dimen.spacer_small)),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.profile_avatar),
-            contentDescription = stringResource(R.string.user_avatar),
-            modifier = Modifier
-                .size(dimensionResource(id = R.dimen.contacts_avatar_size))
+        LoadAvatarComposable(
+            url = contact.avatarUrl,
+            modifier = Modifier.size(dimensionResource(id = R.dimen.contacts_avatar_size))
         )
 
         Column(
