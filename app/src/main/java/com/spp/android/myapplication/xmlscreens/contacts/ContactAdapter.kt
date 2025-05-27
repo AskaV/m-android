@@ -11,8 +11,8 @@ import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
 
 
 class ContactAdapter(
-    private val contacts: List<Contact>,
-    private val onDeleteClick: (Contact) -> Unit
+    private val contacts: MutableList<Contact>,
+    private val onDeleteClick: (Contact, Int) -> Unit
 ) : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
 
     inner class ContactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -31,6 +31,29 @@ class ContactAdapter(
         val contact = contacts[position]
         holder.avatarImageView.loadAvatar(contact.avatarUrl)
         holder.nameTextView.text = contact.name
+
+        holder.itemView.findViewById<ImageView>(R.id.deleteButton).setOnClickListener {
+            val currentPosition = holder.bindingAdapterPosition
+            if (currentPosition != RecyclerView.NO_POSITION) {
+                val contactToDelete = contacts[currentPosition]
+                onDeleteClick(contactToDelete, currentPosition)
+            }
+        }
     }
+
     override fun getItemCount(): Int = contacts.size
+
+    fun removeContactAt(position: Int) {
+        contacts.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    fun restoreContact(contact: Contact, position: Int) {
+        contacts.add(position, contact)
+        notifyItemInserted(position)
+    }
+
+    fun getContactAt(position: Int): Contact {
+        return contacts[position]
+    }
 }
