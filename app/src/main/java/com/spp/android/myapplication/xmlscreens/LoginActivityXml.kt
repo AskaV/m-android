@@ -18,7 +18,7 @@ class LoginActivityXml : BaseActivity() {
 
         lifecycleScope.launch {
             val savedEmail = UserPreferences.getEmail(this@LoginActivityXml)
-            if (!savedEmail.isNullOrBlank() && savedEmail != "null") {
+            if (!savedEmail.isNullOrBlank()) {
                 navigateToMain(savedEmail)
             } else {
                 setContentView(R.layout.login_page)
