@@ -8,6 +8,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,15 +18,18 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -87,6 +91,7 @@ fun ContactsScreen(
     val contacts by viewModel.contacts.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    var showDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
@@ -145,6 +150,7 @@ fun ContactsScreen(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
                         .padding(bottom = dimensionResource(id = R.dimen.spacer_large))
+                        .clickable { showDialog = true }
                 )
             }
             Box(
@@ -167,7 +173,7 @@ fun ContactsScreen(
 
                                 scope.launch {
                                     val result = snackbarHostState.showSnackbar(
-                                        message =message,
+                                        message = message,
                                         actionLabel = actionLabel,
                                         duration = SnackbarDuration.Short
                                     )
@@ -195,6 +201,11 @@ fun ContactsScreen(
                 }
             }
         }
+        AddContactDialog(
+            showDialog = showDialog,
+            onDismiss = { showDialog = false },
+            onAddContact = { contact -> viewModel.addContact(contact) }
+        )
     }
 }
 
@@ -245,4 +256,60 @@ fun SwipeToDeleteContainer(
             content()
         }
     }
+}
+
+@Composable
+fun AddContactDialog(
+    showDialog: Boolean,
+    onDismiss: () -> Unit,
+    onAddContact: (Contact) -> Unit
+) {
+    if (!showDialog) return
+
+    var name by remember { mutableStateOf("") }
+    var position by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.add_contacts_text)) },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text(stringResource(R.string.add_contacts_name)) },
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = position,
+                    onValueChange = { position = it },
+                    label = { Text(stringResource(R.string.add_contacts_position)) },
+                    singleLine = true
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    if (name.isNotBlank() && position.isNotBlank()) {
+                        onAddContact(
+                            Contact(
+                                name = name,
+                                position = position,
+                                avatarUrl = "https://i.pravatar.cc/150?img=${(1..70).random()}"
+                            )
+                        )
+                        onDismiss()
+                    }
+                }
+            ) {
+                Text(stringResource(R.string.add_contacts_save_text))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.add_contacts_cancel_text))
+            }
+        }
+    )
 }

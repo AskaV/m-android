@@ -46,5 +46,9 @@
     <string name="wastebasket_description">Сміттєвий кошик</string>
     <string name="deleted_contact_toast_text">контакт видалено</string>
     <string name="return_contact_toast_text">повернути</string>
+    <string name="add_contacts_name">Ім\'я</string>
+    <string name="add_contacts_position">Позиція</string>
+    <string name="add_contacts_save_text">Зберегти</string>
+    <string name="add_contacts_cancel_text">Відмінити</string>
 
 </resources>
