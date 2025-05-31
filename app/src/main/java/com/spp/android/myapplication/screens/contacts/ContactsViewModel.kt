@@ -9,6 +9,20 @@ class ContactsViewModel : ViewModel() {
 
     private val _contacts = MutableStateFlow(generateContacts())
     val contacts: StateFlow<List<Contact>> = _contacts.asStateFlow()
+    private val deletedContacts = mutableListOf<Contact>()
+
+
+    fun deleteContact(contact: Contact) {
+        deletedContacts.add(contact)
+        _contacts.value = _contacts.value - contact
+    }
+
+    fun undoDelete() {
+        if (deletedContacts.isNotEmpty()) {
+            val lastDeleted = deletedContacts.removeAt(deletedContacts.lastIndex)
+            _contacts.value = listOf(lastDeleted) + _contacts.value
+        }
+    }
 
     fun setContacts(list: List<Contact>) {
         _contacts.value = list

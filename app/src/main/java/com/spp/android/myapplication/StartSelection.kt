@@ -17,7 +17,7 @@ class StartSelection : ComponentActivity() {
 
     companion object {
         /** If true – use Compose version, if false – XML version. */
-        const val USE_COMPOSE = false
+        const val USE_COMPOSE = true
         const val TEST_MODE = true
     }
 

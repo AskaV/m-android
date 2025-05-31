@@ -51,11 +51,13 @@ fun ContactItem(contact: Contact, onDeleteClick: () -> Unit) {
         ) {
             Text(
                 text = contact.name,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSecondary
             )
             Text(
                 text = contact.position,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSecondary
             )
         }
 
