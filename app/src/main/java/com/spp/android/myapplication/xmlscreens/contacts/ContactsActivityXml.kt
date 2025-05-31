@@ -4,7 +4,10 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.ContactsContract
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -33,7 +36,9 @@ class ContactsActivityXml : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         viewModel = ViewModelProvider(this)[ContactsViewModel::class.java]
-
+        findViewById<TextView>(R.id.addContactsText).setOnClickListener {
+            showAddContactDialog()
+        }
         if (useRealContacts) {
             if (checkSelfPermission(android.Manifest.permission.READ_CONTACTS)
                 == PackageManager.PERMISSION_GRANTED
@@ -167,5 +172,33 @@ class ContactsActivityXml : AppCompatActivity() {
                 snackbar.dismiss()
             }
         }.start()
+    }
+
+    private fun showAddContactDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_add_contact, null)
+        val nameEditText = dialogView.findViewById<EditText>(R.id.nameEditText)
+        val positionEditText = dialogView.findViewById<EditText>(R.id.positionEditText)
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.add_contacts_text))
+            .setView(dialogView)
+            .setPositiveButton(getString(R.string.add_contacts_save_text)) { _, _ ->
+                val name = nameEditText.text.toString()
+                val position = positionEditText.text.toString()
+                if (name.isNotBlank() && position.isNotBlank()) {
+                    val newContact = Contact(
+                        name = name,
+                        position = position,
+                        avatarUrl = "https://i.pravatar.cc/150?img=${(1..70).random()}"
+                    )
+
+                    val currentList = viewModel.contacts.value?.toMutableList() ?: mutableListOf()
+                    currentList.add(0, newContact)
+                    viewModel.setContacts(currentList)
+                    adapter.notifyItemInserted(0)
+                }
+            }
+            .setNegativeButton(getString(R.string.add_contacts_cancel_text), null)
+            .show()
     }
 }
