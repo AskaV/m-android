@@ -24,6 +24,10 @@ class ContactsViewModel : ViewModel() {
         }
     }
 
+    fun addContact(contact: Contact) {
+        _contacts.value = listOf(contact) + _contacts.value
+    }
+
     fun setContacts(list: List<Contact>) {
         _contacts.value = list
     }
