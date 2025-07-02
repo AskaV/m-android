@@ -43,6 +43,7 @@ import com.spp.android.myapplication.FilledButton
 import com.spp.android.myapplication.OutlinedBorderButton
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.data.UserPreferences
+import com.spp.android.myapplication.screens.util.extensions.CustomGoogleButton
 import com.spp.android.myapplication.ui.components.MaterialStyledTextField
 import com.spp.android.myapplication.ui.preview.PreviewConfig
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
@@ -190,11 +191,9 @@ fun SignUpScreen(
         }
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            FilledButton(
-                text = stringResource(R.string.signup_google).uppercase(),
-                onClick = { /* TODO: Google sign-up */ },
-                containerColor = MaterialTheme.colorScheme.onPrimary,
-                contentColor = MaterialTheme.colorScheme.onSurface
+            CustomGoogleButton(
+                text = stringResource(R.string.signup_google),
+                onClick = { /* ToDo Google Sign-In */ }
             )
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_small)))
             Text(
