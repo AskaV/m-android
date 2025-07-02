@@ -52,19 +52,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_subtitle" />
 
-    <Button
+    <com.spp.android.myapplication.xmlscreens.util.extensions.CustomGoogleButton
         android:id="@+id/googleLoginButton"
-        style="@style/SubheadingLarge"
         android:layout_width="@dimen/login_button_width"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_button_start"
         android:layout_marginEnd="@dimen/margin_button_end"
-        android:text="@string/signup_google"
-        android:textColor="?android:textColorTertiary"
         app:layout_constraintBottom_toTopOf="@+id/TextViewOr"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_default="spread" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/TextViewOr"
