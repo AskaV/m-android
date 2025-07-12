@@ -20,7 +20,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/profile_avatar"
         fresco:placeholderImage="@drawable/baseline_account_circle_avatar"
-        fresco:roundAsCircle="true"/>
+        fresco:roundAsCircle="true" />
 
     <LinearLayout
         android:layout_width="0dp"

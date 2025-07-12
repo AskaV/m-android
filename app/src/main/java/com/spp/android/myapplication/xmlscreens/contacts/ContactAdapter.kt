@@ -12,13 +12,21 @@ import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
 
 class ContactAdapter(
     private val contacts: MutableList<Contact>,
-    private val onDeleteClick: (Contact, Int) -> Unit
+    private val onDeleteClick: (Contact, Int) -> Unit,
+    private val onItemClick: (Contact, View) -> Unit
 ) : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
 
     inner class ContactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val avatarImageView: ImageView = itemView.findViewById(R.id.avatarImageView)
         val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
         val professionTextView: TextView = itemView.findViewById(R.id.positionTextView)
+
+        init {
+            view.setOnClickListener {
+                val contact = contacts[bindingAdapterPosition]
+                onItemClick(contact, avatarImageView)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {

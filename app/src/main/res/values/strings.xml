@@ -13,6 +13,11 @@
     <string name="edit_profile">Edit profile</string>
     <string name="view_contacts">View my contacts</string>
 
+    <!-- contact's profile -->
+    <string name="profile_text">Profile</string>
+    <string name="message_text">Message</string>
+
+
     <!--  sign-up page  -->
     <string name="signup_title">Let\'s get acquainted</string>
     <string name="signup_subtitle">Fill out the profile and go to the application!</string>
