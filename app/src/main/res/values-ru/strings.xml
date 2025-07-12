@@ -13,6 +13,10 @@
     <string name="edit_profile">Редагувати профіль</string>
     <string name="view_contacts">Переглянути мої контакти</string>
 
+    <!-- contact's profile -->
+    <string name="profile_text">Профіль</string>
+    <string name="message_text">Повідомлення</string>
+
     <!-- сторінка реєстрації -->
     <string name="signup_title">Познайомимось ближче</string>
     <string name="signup_subtitle">Заповни профіль і переходь до додатку!</string>
