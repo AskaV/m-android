@@ -52,15 +52,15 @@ class ContactsActivityXml : AppCompatActivity() {
         viewModel.contacts.observe(this) { contactList ->
             val mutableList = contactList.toMutableList()
 
-            adapter = ContactAdapter(mutableList) { contactToDelete, position ->
-                adapter.removeContactAt(position)
-
-                snackbarQueue.addLast(Pair(contactToDelete, position))
-
-                if (currentSnackbar == null || !currentSnackbar!!.isShown) {
-                    showNextSnackbar()
-                }
-            }
+//            adapter = ContactAdapter(mutableList) { contactToDelete, position ->
+//                adapter.removeContactAt(position)
+//
+//                snackbarQueue.addLast(Pair(contactToDelete, position))
+//
+//                if (currentSnackbar == null || !currentSnackbar!!.isShown) {
+//                    showNextSnackbar()
+//                }
+//            }
 
             recyclerView.adapter = adapter
             enableSwipeToDelete(adapter, recyclerView)
