@@ -18,6 +18,7 @@
         <activity android:name=".screens.MainActivity" android:exported="true"/>
         <activity android:name=".screens.SignUpActivity" android:exported="true"/>
         <activity android:name=".screens.contacts.ContactsActivity" android:exported="true"/>
+        <activity android:name=".screens.fragment.FragmentHostActivity" android:exported="false" />
 
         <activity
             android:name=".StartSelection"

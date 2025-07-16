@@ -1,6 +1,7 @@
 package com.spp.android.myapplication.screens.contacts
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +23,11 @@ import com.spp.android.myapplication.R
 import com.spp.android.myapplication.screens.util.extensions.LoadAvatarComposable
 
 @Composable
-fun ContactItem(contact: Contact, onDeleteClick: () -> Unit) {
+fun ContactItem(
+    contact: Contact,
+    onClick: () -> Unit,
+    onDeleteClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .padding(
@@ -36,12 +41,15 @@ fun ContactItem(contact: Contact, onDeleteClick: () -> Unit) {
                 shape = MaterialTheme.shapes.medium
             )
             .clip(MaterialTheme.shapes.medium)
+            .clickable { onClick() }
             .padding(dimensionResource(id = R.dimen.spacer_small)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         LoadAvatarComposable(
             url = contact.avatarUrl,
-            modifier = Modifier.size(dimensionResource(id = R.dimen.contacts_avatar_size))
+            modifier = Modifier
+                .size(dimensionResource(id = R.dimen.contacts_avatar_size))
+                .clickable { onClick() }
         )
 
         Column(
