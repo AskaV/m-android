@@ -11,6 +11,7 @@ import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.screens.contacts.ContactsScreen
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 import com.spp.android.myapplication.xmlscreens.contacts.ContactsActivityXml
+import com.spp.android.myapplication.xmlscreens.fragment.ContactsFragmentActivityXml
 import kotlinx.coroutines.launch
 
 class StartSelection : ComponentActivity() {
@@ -58,7 +59,8 @@ class StartSelection : ComponentActivity() {
             }
         } else {
             //startActivity(Intent(this, LoginActivityXml::class.java))
-            startActivity(Intent(this, ContactsActivityXml::class.java))
+            //startActivity(Intent(this, ContactsActivityXml::class.java))
+            startActivity(Intent(this, ContactsFragmentActivityXml::class.java))
             finish()
         }
     }
