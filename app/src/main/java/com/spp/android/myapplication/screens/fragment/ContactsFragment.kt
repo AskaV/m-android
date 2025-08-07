@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.screens.fragment
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -143,7 +144,12 @@ class ContactsFragment : Fragment() {
                                         ContactItem(
                                             contact = contact,
                                             onClick = {
-                                                findNavController().navigate("contact_detail")
+                                                val route = "contact_detail" +
+                                                        "?name=${Uri.encode(contact.name)}" +
+                                                        "&position=${Uri.encode(contact.position)}" +
+                                                        "&avatarUrl=${Uri.encode(contact.avatarUrl)}"
+
+                                                findNavController().navigate(route)
                                             },
                                             onDeleteClick = {
                                                 viewModel.deleteContact(contact)
