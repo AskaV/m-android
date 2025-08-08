@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
@@ -39,6 +40,9 @@ class ContactAdapter(
         val contact = contacts[position]
         holder.avatarImageView.loadAvatar(contact.avatarUrl)
         holder.nameTextView.text = contact.name
+
+        val tn = "avatar_${contact.name}_${position}"
+        ViewCompat.setTransitionName(holder.avatarImageView, tn)
 
         holder.itemView.findViewById<ImageView>(R.id.deleteButton).setOnClickListener {
             val currentPosition = holder.bindingAdapterPosition

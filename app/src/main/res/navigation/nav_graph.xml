@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/contactsFragmentXml"
         android:name="com.spp.android.myapplication.xmlscreens.fragment.ContactsFragmentXml"
-        android:label="Contacts" >
+        android:label="Contacts">
         <action
             android:id="@+id/action_contactsFragmentXml_to_contactDetailFragment"
             app:destination="@id/contactDetailFragment" />
@@ -17,6 +17,9 @@
         android:id="@+id/contactDetailFragment"
         android:name="com.spp.android.myapplication.xmlscreens.fragment.ContactDetailFragment"
         android:label="Details">
+        <argument
+            android:name="transitionName"
+            app:argType="string" />
         <argument
             android:name="contactName"
             app:argType="string" />
@@ -28,8 +31,8 @@
             app:argType="string" />
         <argument
             android:name="address"
-            app:argType="string"
-            android:defaultValue="" />
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
 
 
