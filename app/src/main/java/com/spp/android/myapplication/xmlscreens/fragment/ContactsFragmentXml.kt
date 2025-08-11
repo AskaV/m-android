@@ -65,17 +65,12 @@ class ContactsFragmentXml : Fragment(R.layout.my_contacts_page) {
                     }
                 },
                 onItemClick = { contact, sharedView ->
-                    val bundle = Bundle().apply {
-                        putString("name", contact.name)
-                        putString("position", contact.position)
-                        putString("avatarUrl", contact.avatarUrl)
-                        putString("address", "New York, USA")
-                    }
-
                     findNavController().navigate(
-                        R.id.contactDetailFragment,
-                        bundle,
-                        null
+                        ContactsFragmentXmlDirections.actionContactsFragmentXmlToContactDetailFragment(
+                            contact.name,
+                            contact.position,
+                            contact.avatarUrl
+                        )
                     )
                 }
             )
