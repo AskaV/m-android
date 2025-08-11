@@ -21,6 +21,7 @@ import com.spp.android.myapplication.R
 import com.spp.android.myapplication.xmlscreens.contacts.Contact
 import com.spp.android.myapplication.xmlscreens.contacts.ContactAdapter
 import com.spp.android.myapplication.xmlscreens.contacts.ContactsViewModel
+import com.spp.android.myapplication.xmlscreens.util.extensions.FakeAddressProvider
 
 class ContactsFragmentXml : Fragment(R.layout.my_contacts_page) {
 
@@ -71,13 +72,15 @@ class ContactsFragmentXml : Fragment(R.layout.my_contacts_page) {
                         ?: "avatar_${contact.name}_${System.nanoTime()}"
                     val extras = FragmentNavigatorExtras(sharedView to tn)
 
+                    val addr = FakeAddressProvider.forName(contact.name)
+
                     val action = ContactsFragmentXmlDirections
                         .actionContactsFragmentXmlToContactDetailFragment(
                             transitionName = tn,
                             contactName = contact.name,
                             position = contact.position,
                             avatarUrl = contact.avatarUrl,
-                            address = "New York, USA"
+                            address = addr
                         )
                     findNavController().navigate(action, extras)
                 }
