@@ -8,8 +8,10 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -65,13 +67,19 @@ class ContactsFragmentXml : Fragment(R.layout.my_contacts_page) {
                     }
                 },
                 onItemClick = { contact, sharedView ->
-                    findNavController().navigate(
-                        ContactsFragmentXmlDirections.actionContactsFragmentXmlToContactDetailFragment(
-                            contact.name,
-                            contact.position,
-                            contact.avatarUrl
+                    val tn = ViewCompat.getTransitionName(sharedView)
+                        ?: "avatar_${contact.name}_${System.nanoTime()}"
+                    val extras = FragmentNavigatorExtras(sharedView to tn)
+
+                    val action = ContactsFragmentXmlDirections
+                        .actionContactsFragmentXmlToContactDetailFragment(
+                            transitionName = tn,
+                            contactName = contact.name,
+                            position = contact.position,
+                            avatarUrl = contact.avatarUrl,
+                            address = "New York, USA"
                         )
-                    )
+                    findNavController().navigate(action, extras)
                 }
             )
             recyclerView.adapter = adapter
