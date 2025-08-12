@@ -6,8 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
-import com.spp.android.myapplication.data.UserPreferences
-import com.spp.android.myapplication.screens.LoginScreen
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 import com.spp.android.myapplication.xmlscreens.LoginActivityXml
 import kotlinx.coroutines.launch
@@ -27,7 +25,7 @@ class StartSelection : ComponentActivity() {
 
         if (TEST_MODE) {
             lifecycleScope.launch {
-                UserPreferences.saveEmail(this@StartSelection, "")
+                //UserPreferences.saveEmail(this@StartSelection, "")
                 launchApp()
             }
         } else {
@@ -39,7 +37,7 @@ class StartSelection : ComponentActivity() {
         if (USE_COMPOSE) {
             setContent {
                 MyApplicationTheme {
-                    LoginScreen(onValidLogin = {})
+                    //LoginScreen(onValidLogin = {})
                 }
             }
         } else {
