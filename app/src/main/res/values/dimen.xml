@@ -1,5 +1,12 @@
 <resources>
 
+    <!-- =============== TEXT SIZES =============== -->
+    <dimen name="heading_large_text_size">24sp</dimen>
+    <dimen name="heading_medium_text_size">18sp</dimen>
+    <dimen name="subheading_large_text_size">16sp</dimen>
+    <dimen name="subheading_medium_text_size">14sp</dimen>
+    <dimen name="body_text_size">12sp</dimen>
+
     <!-- =============== MY PROFILE PAGE DIMENSIONS =============== -->
     <!-- Margins -->
     <dimen name="margin_start_text">17dp</dimen>
@@ -94,5 +101,18 @@
     <dimen name="common_login_padding_end">16dp</dimen>
     <dimen name="common_login_margin_bottom_small">4dp</dimen>
     <dimen name="common_login_margin_top_medium">16dp</dimen>
+
+    <!-- General spacing -->
+    <dimen name="spacer_extra_small">4dp</dimen>
+    <dimen name="spacer_small">8dp</dimen>
+    <dimen name="spacer_medium">16dp</dimen>
+    <dimen name="spacer_large">24dp</dimen>
+    <dimen name="padding_screen">16dp</dimen>
+
+    <!-- Checkbox spacing -->
+    <dimen name="checkbox_frame_size">20dp</dimen>
+    <dimen name="checkbox_inner_size">16dp</dimen>
+    <dimen name="checkbox_corner_radius">4dp</dimen>
+    <dimen name="checkbox_border_width">1dp</dimen>
 
 </resources>
