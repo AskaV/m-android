@@ -32,14 +32,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.toRoute
 import com.spp.android.myapplication.FilledButton
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.SocialButton
+import com.spp.android.myapplication.nav.ContactDetailRoute
 import com.spp.android.myapplication.screens.util.extensions.LoadWithGlide
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 
-
 class ContactDetailFragment : Fragment() {
+
+    private lateinit var route: ContactDetailRoute
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +52,10 @@ class ContactDetailFragment : Fragment() {
         sharedElementReturnTransition =
             TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
         postponeEnterTransition()
+
+        route = findNavController()
+            .getBackStackEntry<ContactDetailRoute>()
+            .toRoute()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,10 +70,10 @@ class ContactDetailFragment : Fragment() {
     ): View = ComposeView(requireContext()).apply {
         setContent {
             MyApplicationTheme {
-                val name = arguments?.getString("name") ?: "Unknown"
-                val position = arguments?.getString("position") ?: "Position"
-                val avatarUrl = arguments?.getString("avatarUrl") ?: ""
-                val transitionName = arguments?.getString("transitionName").orEmpty()
+                val name = route.name
+                val position = route.position
+                val avatarUrl = route.avatarUrl
+                val transitionName = route.transitionName
 
                 Column(modifier = Modifier.fillMaxSize()) {
 

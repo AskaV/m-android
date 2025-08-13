@@ -1,6 +1,5 @@
 package com.spp.android.myapplication.screens.fragment
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +39,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.nav.ContactDetailRoute
 import com.spp.android.myapplication.screens.contacts.AddContactDialog
 import com.spp.android.myapplication.screens.contacts.ContactItem
 import com.spp.android.myapplication.screens.contacts.ContactsViewModel
@@ -157,15 +157,12 @@ class ContactsFragment : Fragment() {
                                             },
 
                                             onClick = {
-                                                val route = "contact_detail" +
-                                                        "?name=${Uri.encode(contact.name)}" +
-                                                        "&position=${Uri.encode(contact.position)}" +
-                                                        "&avatarUrl=${Uri.encode(contact.avatarUrl)}" +
-                                                        "&transitionName=${
-                                                            Uri.encode(
-                                                                avatarTransitionName
-                                                            )
-                                                        }"
+                                                val route = ContactDetailRoute(
+                                                    name = contact.name,
+                                                    position = contact.position,
+                                                    avatarUrl = contact.avatarUrl,
+                                                    transitionName = avatarTransitionName
+                                                )
 
                                                 avatarViewState.value?.let { view ->
                                                     val extras =
@@ -175,7 +172,9 @@ class ContactsFragment : Fragment() {
                                                         null,
                                                         extras
                                                     )
-                                                } ?: findNavController().navigate(route)
+                                                } ?: run {
+                                                    findNavController().navigate(route)
+                                                }
                                             },
                                             onDeleteClick = {
                                                 viewModel.deleteContact(contact)
