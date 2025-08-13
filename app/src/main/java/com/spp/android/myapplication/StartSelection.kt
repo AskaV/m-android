@@ -8,10 +8,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.data.UserPreferences
-import com.spp.android.myapplication.screens.contacts.ContactsScreen
-import com.spp.android.myapplication.screens.fragment.FragmentHostActivity
-import com.spp.android.myapplication.ui.theme.MyApplicationTheme
-import com.spp.android.myapplication.xmlscreens.contacts.ContactsActivityXml
+//import com.spp.android.myapplication.screens.contacts.ContactsScreen
+//import com.spp.android.myapplication.screens.fragment.FragmentHostActivity
+//import com.spp.android.myapplication.ui.theme.MyApplicationTheme
+//import com.spp.android.myapplication.xmlscreens.contacts.ContactsActivityXml
 import com.spp.android.myapplication.xmlscreens.fragment.ContactsFragmentActivityXml
 import kotlinx.coroutines.launch
 
@@ -53,11 +53,11 @@ class StartSelection : ComponentActivity() {
     private fun launchApp(themePref: String) {
         if (USE_COMPOSE) {
             setContent {
-                MyApplicationTheme(themePref = themePref) {
-                    //LoginScreen(onValidLogin = {})
-                    //ContactsScreen(onValidLogin = {})
-                    startActivity(Intent(this, FragmentHostActivity::class.java))
-                }
+//                MyApplicationTheme(themePref = themePref) {
+//                    //LoginScreen(onValidLogin = {})
+//                    //ContactsScreen(onValidLogin = {})
+//                    startActivity(Intent(this, FragmentHostActivity::class.java))
+//                }
             }
         } else {
             //startActivity(Intent(this, LoginActivityXml::class.java))
