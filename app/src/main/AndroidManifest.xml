@@ -24,8 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".xmlscreens.LoginActivityXml"  android:exported="true"/>
-        <activity android:name=".xmlscreens.MainActivityXml"  android:exported="true"/>
-        <activity android:name=".xmlscreens.SignUpActivityXml" android:exported="true"/>
+<!--        <activity android:name=".xmlscreens.LoginActivityXml"  android:exported="true"/>-->
+<!--        <activity android:name=".xmlscreens.MainActivityXml"  android:exported="true"/>-->
+<!--        <activity android:name=".xmlscreens.SignUpActivityXml" android:exported="true"/>-->
     </application>
 </manifest>
