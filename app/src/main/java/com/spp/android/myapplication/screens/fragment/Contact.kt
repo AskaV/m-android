@@ -1,11 +1,6 @@
 package com.spp.android.myapplication.screens.fragment
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.spp.android.myapplication.screens.contacts.Contact
 
-@Parcelize
-data class Contact(
-    val name: String,
-    val position: String,
-    val avatarUrl: String
-) : Parcelable
+fun Contact.getAvatarTransitionName(index: Int): String =
+    "avatar_${index}_${name.replace(" ", "_")}"

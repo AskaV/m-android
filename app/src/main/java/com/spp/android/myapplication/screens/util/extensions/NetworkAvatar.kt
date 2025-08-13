@@ -69,19 +69,24 @@ fun LoadWithCoil(
 @Composable
 fun LoadWithGlide(
     url: String?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    transitionName: String? = null,
+    onViewReady: ((ImageView) -> Unit)? = null
 ) {
     AndroidView(
         modifier = modifier,
         factory = {
             ImageView(it).apply {
                 scaleType = ImageView.ScaleType.CENTER_CROP
+                transitionName?.let { this.transitionName = it }
                 Glide.with(it)
                     .load(url)
                     .placeholder(R.drawable.baseline_account_circle_avatar)
                     .error(android.R.drawable.ic_dialog_alert)
                     .circleCrop()
                     .into(this)
+
+                onViewReady?.invoke(this)
             }
         }
     )

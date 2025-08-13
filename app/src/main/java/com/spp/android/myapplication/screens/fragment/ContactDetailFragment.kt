@@ -1,6 +1,7 @@
 package com.spp.android.myapplication.screens.fragment
 
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,14 +30,30 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import com.spp.android.myapplication.FilledButton
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.SocialButton
-import com.spp.android.myapplication.screens.util.extensions.LoadAvatarComposable
+import com.spp.android.myapplication.screens.util.extensions.LoadWithGlide
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 
+
 class ContactDetailFragment : Fragment() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition =
+            TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+        sharedElementReturnTransition =
+            TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+        postponeEnterTransition()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.doOnPreDraw { startPostponedEnterTransition() }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +65,7 @@ class ContactDetailFragment : Fragment() {
                 val name = arguments?.getString("name") ?: "Unknown"
                 val position = arguments?.getString("position") ?: "Position"
                 val avatarUrl = arguments?.getString("avatarUrl") ?: ""
+                val transitionName = arguments?.getString("transitionName").orEmpty()
 
                 Column(modifier = Modifier.fillMaxSize()) {
 
@@ -93,11 +111,19 @@ class ContactDetailFragment : Fragment() {
 
                             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_medium)))
 
-                            LoadAvatarComposable(
+//                            LoadAvatarComposable(
+//                                url = avatarUrl,
+//                                modifier = Modifier
+//                                    .size(dimensionResource(id = R.dimen.profile_avatar_size))
+//                                    .clip(CircleShape)
+//                            )
+
+                            LoadWithGlide(
                                 url = avatarUrl,
                                 modifier = Modifier
                                     .size(dimensionResource(id = R.dimen.profile_avatar_size))
-                                    .clip(CircleShape)
+                                    .clip(CircleShape),
+                                transitionName = transitionName
                             )
 
                             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_small)))

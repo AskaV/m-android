@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -36,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.screens.contacts.AddContactDialog
@@ -44,6 +46,7 @@ import com.spp.android.myapplication.screens.contacts.ContactsViewModel
 import com.spp.android.myapplication.screens.contacts.SwipeToDeleteContainer
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.launch
+
 
 class ContactsFragment : Fragment() {
 
@@ -127,6 +130,11 @@ class ContactsFragment : Fragment() {
                                         stringResource(R.string.deleted_contact_toast_text)
                                     val actionLabel =
                                         stringResource(R.string.return_contact_toast_text)
+                                    val avatarTransitionName =
+                                        contact.getAvatarTransitionName(index)
+                                    val avatarViewState =
+                                        remember(contact) { mutableStateOf<ImageView?>(null) }
+
 
                                     SwipeToDeleteContainer(contact = contact, onDelete = {
                                         viewModel.deleteContact(contact)
@@ -143,13 +151,31 @@ class ContactsFragment : Fragment() {
                                     }) {
                                         ContactItem(
                                             contact = contact,
+                                            avatarTransitionName = avatarTransitionName,
+                                            onAvatarViewReady = { view ->
+                                                avatarViewState.value = view
+                                            },
+
                                             onClick = {
                                                 val route = "contact_detail" +
                                                         "?name=${Uri.encode(contact.name)}" +
                                                         "&position=${Uri.encode(contact.position)}" +
-                                                        "&avatarUrl=${Uri.encode(contact.avatarUrl)}"
+                                                        "&avatarUrl=${Uri.encode(contact.avatarUrl)}" +
+                                                        "&transitionName=${
+                                                            Uri.encode(
+                                                                avatarTransitionName
+                                                            )
+                                                        }"
 
-                                                findNavController().navigate(route)
+                                                avatarViewState.value?.let { view ->
+                                                    val extras =
+                                                        FragmentNavigatorExtras(view to avatarTransitionName)
+                                                    findNavController().navigate(
+                                                        route,
+                                                        null,
+                                                        extras
+                                                    )
+                                                } ?: findNavController().navigate(route)
                                             },
                                             onDeleteClick = {
                                                 viewModel.deleteContact(contact)

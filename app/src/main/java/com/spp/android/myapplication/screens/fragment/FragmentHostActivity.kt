@@ -27,10 +27,13 @@ class FragmentHostActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         val navGraph = navController.createGraph(startDestination = "contacts") {
             fragment<ContactsFragment>("contacts")
-            fragment<ContactDetailFragment>("contact_detail?name={name}&position={position}&avatarUrl={avatarUrl}") {
+            fragment<ContactDetailFragment>(
+                "contact_detail?name={name}&position={position}&avatarUrl={avatarUrl}&transitionName={transitionName}"
+            ) {
                 argument("name") { defaultValue = "" }
                 argument("position") { defaultValue = "" }
                 argument("avatarUrl") { defaultValue = "" }
+                argument("transitionName") { defaultValue = "" }
             }
         }
 

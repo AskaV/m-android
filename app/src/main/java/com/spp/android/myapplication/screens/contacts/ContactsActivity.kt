@@ -187,20 +187,23 @@ fun ContactsScreen(
                         ) {
                             ContactItem(
                                 contact = contact,
-                                onClick = {}
-                            ) {
-                                viewModel.deleteContact(contact)
-                                scope.launch {
-                                    val result = snackbarHostState.showSnackbar(
-                                        message = message,
-                                        actionLabel = actionLabel,
-                                        duration = SnackbarDuration.Short
-                                    )
-                                    if (result == SnackbarResult.ActionPerformed) {
-                                        viewModel.undoDelete()
+                                avatarTransitionName = "preview_avatar_$index",
+                                onAvatarViewReady = { /* no-op in preview */ },
+                                onClick = { /* no-op in preview */ },
+                                onDeleteClick = {
+                                    viewModel.deleteContact(contact)
+                                    scope.launch {
+                                        val result = snackbarHostState.showSnackbar(
+                                            message = message,
+                                            actionLabel = actionLabel,
+                                            duration = SnackbarDuration.Short
+                                        )
+                                        if (result == SnackbarResult.ActionPerformed) {
+                                            viewModel.undoDelete()
+                                        }
                                     }
                                 }
-                            }
+                            )
                         }
                     }
                 }
