@@ -1,13 +1,16 @@
 package com.spp.android.myapplication.xmlscreens.fragment
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.ContactsContract
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
-import android.widget.TextView
+import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -18,41 +21,58 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.databinding.DialogAddContactBinding
+import com.spp.android.myapplication.databinding.MyContactsPageBinding
 import com.spp.android.myapplication.xmlscreens.contacts.Contact
 import com.spp.android.myapplication.xmlscreens.contacts.ContactAdapter
 import com.spp.android.myapplication.xmlscreens.contacts.ContactsViewModel
 import com.spp.android.myapplication.xmlscreens.util.extensions.FakeAddressProvider
 
-class ContactsFragmentXml : Fragment(R.layout.my_contacts_page) {
+class ContactsFragmentXml : Fragment() {
+
+    private var _binding: MyContactsPageBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var viewModel: ContactsViewModel
     private lateinit var adapter: ContactAdapter
-    private lateinit var recyclerView: RecyclerView
 
     private val snackbarQueue = ArrayDeque<Pair<Contact, Int>>()
     private var currentSnackbar: Snackbar? = null
     private var countdownTimer: CountDownTimer? = null
     private val useRealContacts = true
 
+    private val requestContactsPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) loadContactsFromPhone()
+        }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = MyContactsPageBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel = ViewModelProvider(requireActivity())[ContactsViewModel::class.java]
 
-        view.findViewById<TextView>(R.id.addContactsText).setOnClickListener {
-            showAddContactDialog()
-        }
+        binding.addContactsText.setOnClickListener { showAddContactDialog() }
 
         if (useRealContacts) {
-            if (requireContext().checkSelfPermission(android.Manifest.permission.READ_CONTACTS)
-                == PackageManager.PERMISSION_GRANTED
-            ) {
+            val granted = ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.READ_CONTACTS
+            ) == PackageManager.PERMISSION_GRANTED
+
+            if (granted) {
                 loadContactsFromPhone()
             } else {
-                requestPermissions(arrayOf(android.Manifest.permission.READ_CONTACTS), 100)
+                requestContactsPermission.launch(Manifest.permission.READ_CONTACTS)
             }
         }
 
@@ -85,7 +105,7 @@ class ContactsFragmentXml : Fragment(R.layout.my_contacts_page) {
                     findNavController().navigate(action, extras)
                 }
             )
-            recyclerView.adapter = adapter
+            binding.recyclerView.adapter = adapter
             enableSwipeToDelete(adapter)
         }
     }
@@ -136,7 +156,7 @@ class ContactsFragmentXml : Fragment(R.layout.my_contacts_page) {
                 }
             }
         })
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
     private fun showNextSnackbar() {
@@ -148,7 +168,7 @@ class ContactsFragmentXml : Fragment(R.layout.my_contacts_page) {
     private fun showUndoSnackbar(contact: Contact, position: Int, durationSec: Int = 5) {
         var secondsLeft = durationSec
         val snackbar = Snackbar.make(
-            requireView(),
+            binding.root,
             getString(R.string.deleted_contact_toast_text) + " ($secondsLeft)",
             Snackbar.LENGTH_INDEFINITE
         )
@@ -177,16 +197,14 @@ class ContactsFragmentXml : Fragment(R.layout.my_contacts_page) {
     }
 
     private fun showAddContactDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_add_contact, null)
-        val nameEditText = dialogView.findViewById<EditText>(R.id.nameEditText)
-        val positionEditText = dialogView.findViewById<EditText>(R.id.positionEditText)
+        val dialogBinding = DialogAddContactBinding.inflate(layoutInflater)
 
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.add_contacts_text))
-            .setView(dialogView)
+            .setView(dialogBinding.root)
             .setPositiveButton(getString(R.string.add_contacts_save_text)) { _, _ ->
-                val name = nameEditText.text.toString()
-                val position = positionEditText.text.toString()
+                val name = dialogBinding.nameEditText.text.toString()
+                val position = dialogBinding.positionEditText.text.toString()
                 if (name.isNotBlank() && position.isNotBlank()) {
                     val newContact = Contact(
                         name = name,
@@ -202,5 +220,12 @@ class ContactsFragmentXml : Fragment(R.layout.my_contacts_page) {
             }
             .setNegativeButton(getString(R.string.add_contacts_cancel_text), null)
             .show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        countdownTimer?.cancel()
+        currentSnackbar?.dismiss()
+        _binding = null
     }
 }

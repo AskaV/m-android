@@ -1,33 +1,29 @@
 package com.spp.android.myapplication.xmlscreens
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.databinding.MyProfilePageBinding
 
 class MainActivityXml : BaseActivity() {
 
+    private lateinit var binding: MyProfilePageBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.my_profile_page)
-        val avatarImage = findViewById<ImageView>(R.id.user_avatar)
-        avatarImage.setImageResource(R.drawable.profile_avatar)
 
-        val email = intent.getStringExtra("email")
-        val userName = parseNameFromEmail(email ?: "User")
-        val userNameTextView = findViewById<TextView>(R.id.user_name)
+        binding = MyProfilePageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        userNameTextView.text = userName
+        binding.userAvatar.setImageResource(R.drawable.profile_avatar)
 
-        findViewById<Button>(R.id.editProfileBtn).setOnClickListener {
+        val email = intent.getStringExtra("email").orEmpty()
+        binding.userName.text = parseNameFromEmail(if (email.isBlank()) "User" else email)
+
+        binding.editProfileBtn.setOnClickListener {
             Toast.makeText(this, "Edit Profile clicked", Toast.LENGTH_SHORT).show()
         }
-
-        findViewById<Button>(R.id.viewMyContactsBtn).setOnClickListener {
+        binding.viewMyContactsBtn.setOnClickListener {
             Toast.makeText(this, "View Contacts clicked", Toast.LENGTH_SHORT).show()
         }
     }
@@ -35,6 +31,7 @@ class MainActivityXml : BaseActivity() {
     private fun parseNameFromEmail(email: String): String {
         return email.substringBefore("@")
             .split(".", "_", "-")
+            .filter { it.isNotBlank() }
             .joinToString(" ") { it.replaceFirstChar(Char::uppercase) }
     }
 }

@@ -2,18 +2,23 @@ package com.spp.android.myapplication.xmlscreens.fragment
 
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
-import com.spp.android.myapplication.R
-import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
 import androidx.navigation.fragment.navArgs
+import com.spp.android.myapplication.databinding.DetailViewPageBinding
+import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
 
 
-class ContactDetailFragment : Fragment(R.layout.detail_view_page) {
+class ContactDetailFragment : Fragment() {
+
+    private var _binding: DetailViewPageBinding? = null
+    private val binding get() = _binding!!
+
+    private val args: ContactDetailFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +26,15 @@ class ContactDetailFragment : Fragment(R.layout.detail_view_page) {
             TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
         sharedElementReturnTransition =
             TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = DetailViewPageBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,20 +47,23 @@ class ContactDetailFragment : Fragment(R.layout.detail_view_page) {
         val address = args.address
         val tn = args.transitionName
 
-        view.findViewById<TextView>(R.id.user_name).text = name
-        view.findViewById<TextView>(R.id.user_profession).text = position
-        view.findViewById<TextView>(R.id.user_address).text = address
+        binding.userName.text = name
+        binding.userProfession.text = position
+        binding.userAddress.text = address
 
-        val avatarImage = view.findViewById<ImageView>(R.id.user_avatar)
-
-        ViewCompat.setTransitionName(avatarImage, tn)
+        ViewCompat.setTransitionName(binding.userAvatar, tn)
 
         postponeEnterTransition()
-        avatarImage.loadAvatar(avatarUrl)
+        binding.userAvatar.loadAvatar(avatarUrl)
         view.doOnPreDraw { startPostponedEnterTransition() }
 
-        view.findViewById<ImageView>(R.id.backArrow).setOnClickListener {
+        binding.backArrow.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
