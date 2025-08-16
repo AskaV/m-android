@@ -31,6 +31,7 @@ class StartSelection : ComponentActivity() {
         prefs.edit().putString("theme_pref", "system").apply()
 
         if (!USE_COMPOSE) {
+
             when (themePref) {
                 "light" -> setTheme(R.style.Theme_MyApplication)
                 "dark" -> setTheme(R.style.Theme_MyApplication_Dark)

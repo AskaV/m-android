@@ -15,7 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,6 +41,10 @@ class ContactsFragmentXml : Fragment() {
     private var countdownTimer: CountDownTimer? = null
     private val useRealContacts = true
 
+    private val parentNav by lazy {
+        NavHostFragment.findNavController(requireParentFragment())
+    }
+
     private val requestContactsPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) loadContactsFromPhone()
@@ -62,6 +66,10 @@ class ContactsFragmentXml : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[ContactsViewModel::class.java]
 
         binding.addContactsText.setOnClickListener { showAddContactDialog() }
+
+        binding.backArrow.setOnClickListener {
+            (parentFragment as? MainTabsFragment)?.switchToProfile()
+        }
 
         if (useRealContacts) {
             val granted = ContextCompat.checkSelfPermission(
@@ -102,7 +110,8 @@ class ContactsFragmentXml : Fragment() {
                             avatarUrl = contact.avatarUrl,
                             address = addr
                         )
-                    findNavController().navigate(action, extras)
+
+                    parentNav.navigate(action, extras)
                 }
             )
             binding.recyclerView.adapter = adapter
