@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.xmlscreens
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
@@ -52,8 +53,13 @@ class LoginActivityXml : BaseActivity() {
         }
 
         binding.signUpText.setOnClickListener {
-            startActivity(Intent(this, SignUpActivityXml::class.java))
-            overridePendingTransition(R.anim.scale_in, R.anim.scale_out)
+            val intent = Intent(this, SignUpActivityXml::class.java)
+            val options = ActivityOptions.makeCustomAnimation(
+                this,
+                R.anim.scale_in,
+                R.anim.scale_out
+            )
+            startActivity(intent, options.toBundle())
         }
     }
 
