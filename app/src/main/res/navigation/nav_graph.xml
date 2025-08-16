@@ -13,10 +13,12 @@
         android:id="@+id/contactsFragmentXml"
         android:name="com.spp.android.myapplication.xmlscreens.fragment.ContactsFragmentXml"
         android:label="Contacts">
-        <action
-            android:id="@+id/action_contactsFragmentXml_to_contactDetailFragment"
-            app:destination="@id/contactDetailFragment" />
+
     </fragment>
+
+    <action
+        android:id="@+id/action_contactsFragmentXml_to_contactDetailFragment"
+        app:destination="@id/contactDetailFragment" />
 
     <fragment
         android:id="@+id/contactDetailFragment"

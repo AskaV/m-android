@@ -27,6 +27,7 @@ import com.spp.android.myapplication.xmlscreens.contacts.Contact
 import com.spp.android.myapplication.xmlscreens.contacts.ContactAdapter
 import com.spp.android.myapplication.xmlscreens.contacts.ContactsViewModel
 import com.spp.android.myapplication.xmlscreens.util.extensions.FakeAddressProvider
+import androidx.navigation.fragment.findNavController
 
 class ContactsFragmentXml : Fragment() {
 
@@ -40,10 +41,6 @@ class ContactsFragmentXml : Fragment() {
     private var currentSnackbar: Snackbar? = null
     private var countdownTimer: CountDownTimer? = null
     private val useRealContacts = true
-
-    private val parentNav by lazy {
-        NavHostFragment.findNavController(requireParentFragment())
-    }
 
     private val requestContactsPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -111,7 +108,7 @@ class ContactsFragmentXml : Fragment() {
                             address = addr
                         )
 
-                    parentNav.navigate(action, extras)
+                    findNavController().navigate(action, extras)
                 }
             )
             binding.recyclerView.adapter = adapter
