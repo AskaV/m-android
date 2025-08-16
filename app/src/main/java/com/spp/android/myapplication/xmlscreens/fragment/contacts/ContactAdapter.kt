@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens.contacts
+package com.spp.android.myapplication.xmlscreens.fragment.contacts
 
 import android.view.LayoutInflater
 import android.view.View

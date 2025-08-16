@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens.fragment
+package com.spp.android.myapplication.xmlscreens.fragment.contacts
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -15,7 +15,6 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,11 +22,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.DialogAddContactBinding
 import com.spp.android.myapplication.databinding.MyContactsPageBinding
-import com.spp.android.myapplication.xmlscreens.contacts.Contact
-import com.spp.android.myapplication.xmlscreens.contacts.ContactAdapter
-import com.spp.android.myapplication.xmlscreens.contacts.ContactsViewModel
 import com.spp.android.myapplication.xmlscreens.util.extensions.FakeAddressProvider
 import androidx.navigation.fragment.findNavController
+import com.spp.android.myapplication.xmlscreens.fragment.MainTabsFragment
 
 class ContactsFragmentXml : Fragment() {
 

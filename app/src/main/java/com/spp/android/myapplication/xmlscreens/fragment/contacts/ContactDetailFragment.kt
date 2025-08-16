@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens.fragment
+package com.spp.android.myapplication.xmlscreens.fragment.contacts
 
 import android.os.Bundle
 import android.transition.TransitionInflater
@@ -12,13 +12,10 @@ import androidx.navigation.fragment.navArgs
 import com.spp.android.myapplication.databinding.DetailViewPageBinding
 import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
 
-
 class ContactDetailFragment : Fragment() {
 
     private var _binding: DetailViewPageBinding? = null
     private val binding get() = _binding!!
-
-    private val args: ContactDetailFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

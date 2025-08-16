@@ -9,12 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.xmlscreens.LoginActivityXml
-import com.spp.android.myapplication.xmlscreens.MainActivityXml
-import com.spp.android.myapplication.xmlscreens.SignUpActivityXml
-import com.spp.android.myapplication.ui.theme.MyApplicationTheme
-import com.spp.android.myapplication.xmlscreens.contacts.ContactsActivityXml
-import com.spp.android.myapplication.xmlscreens.fragment.ContactsFragmentActivityXml
-
+import com.spp.android.myapplication.xmlscreens.fragment.contacts.ContactsFragmentActivityXml
 import kotlinx.coroutines.launch
 
 class StartSelection : ComponentActivity() {
@@ -23,6 +18,10 @@ class StartSelection : ComponentActivity() {
         /** If true – use Compose version, if false – XML version. */
         const val USE_COMPOSE = false
         const val TEST_MODE = true
+
+        enum class StartTarget { AUTH, CONTACTS }
+
+        val START_TARGET = StartTarget.AUTH
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,13 +30,7 @@ class StartSelection : ComponentActivity() {
         prefs.edit().putString("theme_pref", "system").apply()
 
         if (!USE_COMPOSE) {
-
-            when (themePref) {
-                "light" -> setTheme(R.style.Theme_MyApplication)
-                "dark" -> setTheme(R.style.Theme_MyApplication_Dark)
-                "colored" -> setTheme(R.style.Theme_MyApplication_Colored)
-                "system" -> setTheme(R.style.Theme_MyApplication)
-            }
+            applyTheme(themePref)
         }
 
         super.onCreate(savedInstanceState)
@@ -56,19 +49,31 @@ class StartSelection : ComponentActivity() {
     private fun launchApp(themePref: String) {
         if (USE_COMPOSE) {
             setContent {
-//                MyApplicationTheme(themePref = themePref) {
-//                    //LoginScreen(onValidLogin = {})
-//                    //ContactsScreen(onValidLogin = {})
-//                    startActivity(Intent(this, FragmentHostActivity::class.java))
-//                }
             }
         } else {
-//            startActivity(Intent(this, MainActivityXml::class.java))
-//            startActivity(Intent(this, SignUpActivityXml::class.java))
-//            startActivity(Intent(this, LoginActivityXml::class.java))
-//            startActivity(Intent(this, ContactsActivityXml::class.java))
-            startActivity(Intent(this, ContactsFragmentActivityXml::class.java))
+            when (START_TARGET) {
+                StartTarget.AUTH -> {
+                    startActivity(Intent(this, LoginActivityXml::class.java))
+                }
+
+                StartTarget.CONTACTS -> {
+                    startActivity(
+                        Intent(this, ContactsFragmentActivityXml::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    )
+                }
+            }
             finish()
+        }
+    }
+
+    private fun applyTheme(themePref: String) {
+        when (themePref) {
+            "light" -> setTheme(R.style.Theme_MyApplication)
+            "dark" -> setTheme(R.style.Theme_MyApplication_Dark)
+            "colored" -> setTheme(R.style.Theme_MyApplication_Colored)
+            "system" -> setTheme(R.style.Theme_MyApplication)
+            else -> setTheme(R.style.Theme_MyApplication) // fallback
         }
     }
 }

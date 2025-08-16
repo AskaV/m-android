@@ -6,6 +6,8 @@ import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.databinding.SignUpPageBinding
+import com.spp.android.myapplication.xmlscreens.fragment.contacts.ContactsFragmentActivityXml
+import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
 import kotlinx.coroutines.launch
 
 
@@ -18,11 +20,10 @@ class SignUpActivityXml : BaseActivity() {
 
         binding.signInText.setOnClickListener {
             startActivity(Intent(this, LoginActivityXml::class.java))
+            overridePendingTransition(R.anim.scale_in, R.anim.scale_out)
             finish()
         }
-
         binding.loginButton.setOnClickListener {
-
             val emailField = binding.commonLoginFields.editTextTextEmailAddress
             val emailText = emailField.text.toString()
 
@@ -37,12 +38,15 @@ class SignUpActivityXml : BaseActivity() {
             if (allValid) {
                 lifecycleScope.launch {
                     UserPreferences.saveEmail(this@SignUpActivityXml, emailText)
-                    val intent = Intent(this@SignUpActivityXml, MainActivityXml::class.java).apply {
+                    val intent = Intent(
+                        this@SignUpActivityXml,
+                        ContactsFragmentActivityXml::class.java
+                    ).apply {
                         putExtra("email", emailText)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     }
                     startActivity(intent)
                     overridePendingTransition(R.anim.scale_in, R.anim.scale_out)
-                    finish()
                 }
             }
         }

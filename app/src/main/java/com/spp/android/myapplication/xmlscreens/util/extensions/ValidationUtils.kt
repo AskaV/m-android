@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens
+package com.spp.android.myapplication.xmlscreens.util.extensions
 
 import android.content.Context
 import android.util.Patterns
