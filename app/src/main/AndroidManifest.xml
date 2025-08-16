@@ -24,6 +24,6 @@
         </activity>
         <activity android:name=".xmlscreens.LoginActivityXml"  android:exported="true"/>
         <activity android:name=".xmlscreens.SignUpActivityXml" android:exported="true"/>
-        <activity android:name=".xmlscreens.fragment.contacts.ContactsFragmentActivityXml" android:exported="true"/>
+        <activity android:name=".xmlscreens.MainActivityXml" android:exported="true"/>
     </application>
 </manifest>

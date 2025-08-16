@@ -6,7 +6,6 @@ import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.databinding.LoginPageBinding
-import com.spp.android.myapplication.xmlscreens.fragment.contacts.ContactsFragmentActivityXml
 import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
 import kotlinx.coroutines.launch
 
@@ -68,7 +67,7 @@ class LoginActivityXml : BaseActivity() {
     }
 
     private fun navigateToMain(email: String) {
-        val intent = Intent(this, ContactsFragmentActivityXml::class.java).apply {
+        val intent = Intent(this, MainActivityXml::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             putExtra("email", email)
         }

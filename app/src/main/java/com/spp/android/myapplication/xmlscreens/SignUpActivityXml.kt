@@ -6,7 +6,6 @@ import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.databinding.SignUpPageBinding
-import com.spp.android.myapplication.xmlscreens.fragment.contacts.ContactsFragmentActivityXml
 import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
 import kotlinx.coroutines.launch
 
@@ -40,7 +39,7 @@ class SignUpActivityXml : BaseActivity() {
                     UserPreferences.saveEmail(this@SignUpActivityXml, emailText)
                     val intent = Intent(
                         this@SignUpActivityXml,
-                        ContactsFragmentActivityXml::class.java
+                        MainActivityXml::class.java
                     ).apply {
                         putExtra("email", emailText)
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

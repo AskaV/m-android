@@ -9,7 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.xmlscreens.LoginActivityXml
-import com.spp.android.myapplication.xmlscreens.fragment.contacts.ContactsFragmentActivityXml
+import com.spp.android.myapplication.xmlscreens.MainActivityXml
 import kotlinx.coroutines.launch
 
 class StartSelection : ComponentActivity() {
@@ -58,7 +58,7 @@ class StartSelection : ComponentActivity() {
 
                 StartTarget.CONTACTS -> {
                     startActivity(
-                        Intent(this, ContactsFragmentActivityXml::class.java)
+                        Intent(this, MainActivityXml::class.java)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     )
                 }
