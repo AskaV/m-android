@@ -62,4 +62,6 @@
     <string name="tab_profile">My Profile</string>
     <string name="tab_contacts">Contacts</string>
 
+    <string name="delete">Delete</string>
+
 </resources>

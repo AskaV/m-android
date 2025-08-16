@@ -3,6 +3,7 @@
     <color name="background_dark">#121212</color>
     <color name="text_primary_dark">#C9A4FF</color>
     <color name="text_secondary_dark">#B897FF</color>
+    <color name="text_font_secondary_dark_accent">#D3B7FF</color>
     <color name="accent_dark">#A8FF00</color>
     <color name="error_dark">#F44336</color>
     <color name="text_tertiary_dark">#242235</color>

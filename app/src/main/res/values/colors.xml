@@ -4,6 +4,7 @@
     <color name="background_light">#242235</color>
     <color name="text_primary_light">#FFFAFAFA</color>
     <color name="text_secondary_light">#B2B2B3</color>
+    <color name="text_font_secondary_accent">#E7E7E7</color>
     <color name="accent_light">#FB5E06</color>
     <color name="error_light">#F93E3E</color>
     <color name="text_tertiary_light">#18181F</color>
@@ -12,6 +13,7 @@
     <color name="background_dark">#121212</color>
     <color name="text_primary_dark">#C9A4FF</color>
     <color name="text_secondary_dark">#B897FF</color>
+    <color name="text_font_secondary_dark_accent">#D3B7FF</color>
     <color name="accent_dark">#A8FF00</color>
     <color name="error_dark">#F44336</color>
     <color name="text_tertiary_dark">#242235</color>
@@ -20,6 +22,7 @@
     <color name="background_colored">#4B0082</color>
     <color name="text_primary_colored">#FFD700</color>
     <color name="text_secondary_colored">#FFF176</color>
+    <color name="text_font_secondary_colored_accent">#FFF59D</color>
     <color name="accent_colored">#0057B7</color>
     <color name="error_colored">#FF4081</color>
     <color name="text_tertiary_colored">#1B1F3B</color>

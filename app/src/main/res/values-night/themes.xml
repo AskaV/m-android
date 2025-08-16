@@ -9,5 +9,7 @@
 
         <item name="colorAccent">@color/accent_dark</item>
         <item name="colorError">@color/error_dark</item>
+        <item name="colorOnSecondary">@color/text_font_secondary_dark_accent</item>
+
     </style>
 </resources>

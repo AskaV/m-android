@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacer_medium"
     android:layout_marginTop="@dimen/spacer_small"
-    android:background="?android:textColorPrimary"
+    android:background="@drawable/contact_outlined"
     android:gravity="center_vertical"
     android:orientation="horizontal"
+
     android:padding="@dimen/spacer_small">
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/selectCheck"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="12dp"
+        android:button="@drawable/selector_contact_checkbox"
+        android:clickable="false"
+        android:focusable="false"
+        android:visibility="gone"
+        app:buttonTint="@null" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatarImageView"
         android:layout_width="@dimen/contacts_avatar_size"
         android:layout_height="@dimen/contacts_avatar_size"
-        android:background="@drawable/social_button_border"
         android:contentDescription="@string/user_avatar"
         android:scaleType="centerCrop"
         android:src="@drawable/profile_avatar"

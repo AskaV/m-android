@@ -60,4 +60,6 @@
     <string name="tab_profile">Мій профіль</string>
     <string name="tab_contacts">Контакти</string>
 
+    <string name="delete">Видалити</string>
+
 </resources>
