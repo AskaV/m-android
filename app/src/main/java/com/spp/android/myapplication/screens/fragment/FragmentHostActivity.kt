@@ -11,6 +11,7 @@ import androidx.navigation.fragment.fragment
 import com.spp.android.myapplication.nav.ContactDetailRoute
 import com.spp.android.myapplication.nav.ContactsRoute
 import com.spp.android.myapplication.nav.MainRoute
+import com.spp.android.myapplication.screens.fragment.contact.ContactDetailFragment
 
 class FragmentHostActivity : AppCompatActivity() {
 

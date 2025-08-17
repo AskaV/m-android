@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.fragment
+package com.spp.android.myapplication.screens.fragment.contact
 
 import android.os.Bundle
 import android.transition.TransitionInflater

@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.contacts
+package com.spp.android.myapplication.screens.fragment.contact
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,10 +26,6 @@ class ContactsViewModel : ViewModel() {
 
     fun addContact(contact: Contact) {
         _contacts.value = listOf(contact) + _contacts.value
-    }
-
-    fun setContacts(list: List<Contact>) {
-        _contacts.value = list
     }
 
     companion object {

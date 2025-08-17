@@ -67,7 +67,7 @@ class MainFragment : Fragment() {
 
         pagerAdapter = MainPagerAdapter(this)
         viewPager.adapter = pagerAdapter
-        viewPager.setCurrentItem(2, false)
+        viewPager.setCurrentItem(0, false)
 
         // Привязываем табы к вьюпейджеру
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->

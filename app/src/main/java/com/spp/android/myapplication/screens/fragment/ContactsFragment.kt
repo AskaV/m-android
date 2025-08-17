@@ -40,10 +40,11 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.nav.ContactDetailRoute
-import com.spp.android.myapplication.screens.contacts.AddContactDialog
-import com.spp.android.myapplication.screens.contacts.ContactItem
-import com.spp.android.myapplication.screens.contacts.ContactsViewModel
-import com.spp.android.myapplication.screens.contacts.SwipeToDeleteContainer
+import com.spp.android.myapplication.screens.fragment.contact.AddContactDialog
+import com.spp.android.myapplication.screens.fragment.contact.ContactItem
+import com.spp.android.myapplication.screens.fragment.contact.ContactsViewModel
+import com.spp.android.myapplication.screens.fragment.contact.SwipeToDeleteContainer
+import com.spp.android.myapplication.screens.fragment.contact.getAvatarTransitionName
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.launch
 

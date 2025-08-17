@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.contacts
+package com.spp.android.myapplication.screens.fragment.contact
 
 import android.widget.ImageView
 import androidx.compose.foundation.border
