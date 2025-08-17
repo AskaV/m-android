@@ -18,7 +18,7 @@ private val LightColorScheme = lightColorScheme(
     surface = TextPrimaryLight,         // Surface color — used for cards, sheets, panels, and other containers.
     onSurface = TextSecondaryLight,     // Color of text and icons displayed on top of surfaces.
 
-//    secondary = TextSecondaryLight,     // Secondary accent — typically used for chips, icons, and subtle highlights.
+    secondary = TextFontSecondaryAccent,     // Secondary accent — typically used for chips, icons, and subtle highlights.
     onSecondary = TextTertiaryLight,    // Color used on top of the secondary color — typically for text inside chips or badges.
 
     error = ErrorLight,                 // Error color — used for validation messages, error states, and indicators.
@@ -35,6 +35,7 @@ private val DarkColorScheme = darkColorScheme(
     surface = TextPrimaryDark,
     onSurface = TextSecondaryDark,
 
+    secondary = TextFontSecondaryDarkAccent,
     onSecondary = TextTertiaryDark,
 
     error = ErrorDark,
@@ -50,6 +51,7 @@ private val ColoredColorScheme = lightColorScheme(
     surface = TextPrimaryColored,
     onSurface = TextSecondaryColored,
 
+    secondary = TextFontSecondaryColoredAccent,
     onSecondary = TextTertiaryColored,
 
     error = ErrorColored,
