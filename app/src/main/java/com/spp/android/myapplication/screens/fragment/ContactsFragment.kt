@@ -47,7 +47,6 @@ import com.spp.android.myapplication.screens.contacts.SwipeToDeleteContainer
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.launch
 
-
 class ContactsFragment : Fragment() {
 
     private val viewModel: ContactsViewModel by viewModels()

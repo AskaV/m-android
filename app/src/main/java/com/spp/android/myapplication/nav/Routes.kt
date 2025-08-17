@@ -3,7 +3,7 @@ package com.spp.android.myapplication.nav
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object ContactsRoute // стартовый экран, без аргументов
+data object ContactsRoute
 
 @Serializable
 data class ContactDetailRoute(
@@ -12,3 +12,6 @@ data class ContactDetailRoute(
     val avatarUrl: String,
     val transitionName: String = ""
 )
+
+@Serializable
+data object MainRoute

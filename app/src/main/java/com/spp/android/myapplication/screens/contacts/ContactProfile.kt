@@ -32,10 +32,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.FilledButton
-import com.spp.android.myapplication.OutlinedBorderButton
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.SocialButton
-import com.spp.android.myapplication.screens.parseNameFromEmail
 import com.spp.android.myapplication.ui.preview.PreviewConfig
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 

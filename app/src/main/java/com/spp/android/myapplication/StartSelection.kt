@@ -4,13 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.data.UserPreferences
+import com.spp.android.myapplication.screens.LoginActivity
 import com.spp.android.myapplication.screens.fragment.FragmentHostActivity
-import com.spp.android.myapplication.ui.theme.MyApplicationTheme
-
 import kotlinx.coroutines.launch
 
 class StartSelection : ComponentActivity() {
@@ -22,7 +19,7 @@ class StartSelection : ComponentActivity() {
 
         enum class StartTarget { AUTH, CONTACTS }
 
-        val START_TARGET = StartTarget.AUTH
+        val START_TARGET = StartTarget.CONTACTS
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +32,6 @@ class StartSelection : ComponentActivity() {
         }
 
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         if (TEST_MODE) {
             lifecycleScope.launch {
@@ -49,11 +45,15 @@ class StartSelection : ComponentActivity() {
 
     private fun launchApp(themePref: String) {
         if (USE_COMPOSE) {
-            setContent {
-                MyApplicationTheme(themePref = themePref) {
-                    //LoginScreen(onValidLogin = {})
-                    //ContactsScreen(onValidLogin = {})
+            when (START_TARGET) {
+                StartTarget.AUTH -> {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                }
+
+                StartTarget.CONTACTS -> {
                     startActivity(Intent(this, FragmentHostActivity::class.java))
+                    finish()
                 }
             }
         } else {
