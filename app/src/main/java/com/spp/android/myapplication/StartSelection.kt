@@ -21,7 +21,7 @@ class StartSelection : ComponentActivity() {
 
         enum class StartTarget { AUTH, CONTACTS }
 
-        val START_TARGET = StartTarget.AUTH
+        val START_TARGET = StartTarget.CONTACTS
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +73,7 @@ class StartSelection : ComponentActivity() {
             "dark" -> setTheme(R.style.Theme_MyApplication_Dark)
             "colored" -> setTheme(R.style.Theme_MyApplication_Colored)
             "system" -> setTheme(R.style.Theme_MyApplication)
-            else -> setTheme(R.style.Theme_MyApplication) // fallback
+            else -> setTheme(R.style.Theme_MyApplication)
         }
     }
 }

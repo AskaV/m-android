@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,9 +23,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.DialogAddContactBinding
 import com.spp.android.myapplication.databinding.MyContactsPageBinding
-import com.spp.android.myapplication.xmlscreens.util.extensions.FakeAddressProvider
-import androidx.navigation.fragment.findNavController
 import com.spp.android.myapplication.xmlscreens.fragment.MainTabsFragment
+import com.spp.android.myapplication.xmlscreens.util.extensions.FakeAddressProvider
 
 class ContactsFragmentXml : Fragment() {
 
@@ -37,6 +37,7 @@ class ContactsFragmentXml : Fragment() {
     private val snackbarQueue = ArrayDeque<Pair<Contact, Int>>()
     private var currentSnackbar: Snackbar? = null
     private var countdownTimer: CountDownTimer? = null
+
     private val useRealContacts = true
 
     private val requestContactsPermission =
@@ -65,6 +66,21 @@ class ContactsFragmentXml : Fragment() {
             (parentFragment as? MainTabsFragment)?.switchToProfile()
         }
 
+        binding.fabDelete.visibility = View.GONE
+        binding.fabDelete.setOnClickListener {
+            val positions = adapter.getSelectedPositions().sortedDescending()
+            positions.forEach { pos ->
+                val contact = adapter.getContactAt(pos)
+                adapter.removeContactAt(pos)
+                snackbarQueue.addLast(contact to pos)
+            }
+            currentSnackbar?.dismiss()
+            showNextSnackbar()
+
+            adapter.setSelectionMode(false)
+            binding.fabDelete.visibility = View.GONE
+        }
+
         if (useRealContacts) {
             val granted = ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -80,22 +96,21 @@ class ContactsFragmentXml : Fragment() {
 
         viewModel.contacts.observe(viewLifecycleOwner) { contactList ->
             val mutableList = contactList.toMutableList()
+
             adapter = ContactAdapter(
-                mutableList,
+                contacts = mutableList,
+
                 onDeleteClick = { contactToDelete, position ->
                     adapter.removeContactAt(position)
-                    snackbarQueue.addLast(Pair(contactToDelete, position))
-                    if (currentSnackbar == null || !currentSnackbar!!.isShown) {
-                        showNextSnackbar()
-                    }
+                    snackbarQueue.addLast(contactToDelete to position)
+                    if (currentSnackbar == null || !currentSnackbar!!.isShown) showNextSnackbar()
                 },
+
                 onItemClick = { contact, sharedView ->
                     val tn = ViewCompat.getTransitionName(sharedView)
                         ?: "avatar_${contact.name}_${System.nanoTime()}"
                     val extras = FragmentNavigatorExtras(sharedView to tn)
-
                     val addr = FakeAddressProvider.forName(contact.name)
-
                     val action = ContactsFragmentXmlDirections
                         .actionContactsFragmentXmlToContactDetailFragment(
                             transitionName = tn,
@@ -104,13 +119,30 @@ class ContactsFragmentXml : Fragment() {
                             avatarUrl = contact.avatarUrl,
                             address = addr
                         )
-
                     findNavController().navigate(action, extras)
+                },
+
+                onItemLongClick = { _ ->
+                    adapter.setSelectionMode(true)
+                    updateFab()
+                },
+
+                onItemSelectToggle = {
+                    if (!adapter.isAnySelected()) {
+                        adapter.setSelectionMode(false)
+                    }
+                    updateFab()
                 }
             )
+
             binding.recyclerView.adapter = adapter
             enableSwipeToDelete(adapter)
         }
+    }
+
+    private fun updateFab() {
+        val visible = adapter.isAnySelected() && adapter.isSelectionMode()
+        binding.fabDelete.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     private fun loadContactsFromPhone() {
@@ -150,10 +182,14 @@ class ContactsFragmentXml : Fragment() {
             ) = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                if (adapter.isSelectionMode()) {
+                    adapter.notifyItemChanged(viewHolder.bindingAdapterPosition)
+                    return
+                }
                 val position = viewHolder.bindingAdapterPosition
                 val contactToDelete = adapter.getContactAt(position)
                 adapter.removeContactAt(position)
-                snackbarQueue.addLast(Pair(contactToDelete, position))
+                snackbarQueue.addLast(contactToDelete to position)
                 if (currentSnackbar == null || !currentSnackbar!!.isShown) {
                     showNextSnackbar()
                 }
@@ -169,9 +205,11 @@ class ContactsFragmentXml : Fragment() {
     }
 
     private fun showUndoSnackbar(contact: Contact, position: Int, durationSec: Int = 5) {
+        val anchor = anchorViewOrNull() ?: return
+
         var secondsLeft = durationSec
         val snackbar = Snackbar.make(
-            binding.root,
+            anchor,
             getString(R.string.deleted_contact_toast_text) + " ($secondsLeft)",
             Snackbar.LENGTH_INDEFINITE
         )
@@ -182,19 +220,23 @@ class ContactsFragmentXml : Fragment() {
         snackbar.addCallback(object : Snackbar.Callback() {
             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                 currentSnackbar = null
-                showNextSnackbar()
+                if (isAdded && view != null) showNextSnackbar()
             }
         })
         snackbar.show()
         currentSnackbar = snackbar
+
+        countdownTimer?.cancel()
         countdownTimer = object : CountDownTimer((durationSec * 1000).toLong(), 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 secondsLeft--
-                snackbar.setText(getString(R.string.deleted_contact_toast_text) + " ($secondsLeft)")
+                if (currentSnackbar === snackbar) {
+                    snackbar.setText(getString(R.string.deleted_contact_toast_text) + " ($secondsLeft)")
+                }
             }
 
             override fun onFinish() {
-                snackbar.dismiss()
+                if (currentSnackbar === snackbar) snackbar.dismiss()
             }
         }.start()
     }
@@ -229,6 +271,11 @@ class ContactsFragmentXml : Fragment() {
         super.onDestroyView()
         countdownTimer?.cancel()
         currentSnackbar?.dismiss()
+        currentSnackbar = null
         _binding = null
+    }
+
+    private fun anchorViewOrNull(): View? {
+        return binding.root
     }
 }
