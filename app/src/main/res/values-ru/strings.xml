@@ -55,4 +55,7 @@
     <string name="add_contacts_save_text">Зберегти</string>
     <string name="add_contacts_cancel_text">Відмінити</string>
 
+    <!--   текст вкладок табу  -->
+    <string name="tab_profile">Мій профіль</string>
+    <string name="tab_contacts">Контакти</string>
 </resources>

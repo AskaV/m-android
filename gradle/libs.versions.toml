@@ -53,12 +53,14 @@ picasso = "2.8"
 fresco = "3.1.3"
 coil = "2.5.0"
 coilCompose = "2.5.0"
+accompanistDrawablepainter = "0.32.0"
 
 # --- ********* ---
 # --- LIBRARIES ---
 # --- ********* ---
 [libraries]
 # --- AndroidX Core & AppCompat ---
+accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanistDrawablepainter" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }
