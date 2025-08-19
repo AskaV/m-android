@@ -82,6 +82,5 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.kotlinx.serialization.json)
-    compileOnly ("com.facebook.infer.annotation:infer-annotation:0.18.0")
-
+    compileOnly (libs.infer.annotation)
 }
