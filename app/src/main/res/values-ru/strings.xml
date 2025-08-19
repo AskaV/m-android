@@ -27,6 +27,18 @@
     <string name="signup_have_account">Вже маєш акаунт?</string>
     <string name="signup_sign_in">Увійти</string>
 
+    <!--  розширена сторінка реєстрації  -->
+    <string name="signup_extended_title">Дані вашого профілю</string>
+    <string name="signup_extended_subtitle">Заповніть профіль та перейдіть до заявки!</string>
+    <string name="signup_extended_user_name">Ім\'я користувача</string>
+    <string name="signup_extended_mobile_phone">Мобільний телефон</string>
+
+    <string name="signup_extended_avatar_image">Картинка аватару</string>
+    <string name="signup_extended_add_photo_btn">Кнопка додати фоно</string>
+
+    <string name="signup_extended_cancel">Відміна</string>
+    <string name="signup_extended_forward">Далі</string>
+
     <!-- сторінка входу -->
     <string name="hello">Привіт!</string>
     <string name="enter_email_password">Введи свій e-mail та пароль нижче</string>

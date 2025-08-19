@@ -106,11 +106,15 @@
     <dimen name="common_login_margin_top_medium">16dp</dimen>
 
     <!-- General spacing -->
+    <dimen name="border_size">2dp</dimen>
+
     <dimen name="spacer_extra_small">4dp</dimen>
     <dimen name="spacer_small">8dp</dimen>
     <dimen name="spacer_medium">16dp</dimen>
     <dimen name="spacer_large">24dp</dimen>
     <dimen name="padding_screen">16dp</dimen>
+    <dimen name="margin_top">100dp</dimen>
+
 
     <!-- Checkbox spacing -->
     <dimen name="checkbox_frame_size">20dp</dimen>
@@ -120,5 +124,14 @@
 
     <!-- =============== CONTACTS PAGE DIMENSIONS =============== -->
     <dimen name="contacts_avatar_size">50dp</dimen>
+
+
+    <!-- =============== SIGN UP EXTENDED PAGE DIMENSIONS =============== -->
+    <!-- Margins for title and subtitle -->
+    <dimen name="margin_top_extended_large">240dp</dimen>
+
+    <!-- Distance from the top for the sign up extended  block -->
+    <dimen name="layout_margin_top_sign_up">319dp</dimen>
+
 
 </resources>

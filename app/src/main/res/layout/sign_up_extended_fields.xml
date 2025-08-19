@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/common_login_padding_start"
+    android:paddingEnd="@dimen/common_login_padding_end">
+
+    <TextView
+        android:id="@+id/user_name_text"
+        style="@style/SubheadingMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/common_login_margin_bottom_small"
+        android:text="@string/signup_extended_user_name"
+        android:textColor="?android:textColorSecondary" />
+
+    <EditText
+        android:id="@+id/user_name_field"
+        style="@style/HeadingMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:editTextBackground"
+        android:backgroundTint="?android:textColorSecondary"
+        android:inputType="textEmailAddress"
+        android:textColor="?android:textColorPrimary"
+        android:textCursorDrawable="?android:textColorSecondary" />
+
+    <TextView
+        android:id="@+id/mobile_phone_text"
+        style="@style/SubheadingMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_login_margin_top_medium"
+        android:layout_marginBottom="@dimen/common_login_margin_bottom_small"
+        android:text="@string/signup_extended_mobile_phone"
+        android:textColor="?android:textColorSecondary" />
+
+    <EditText
+        android:id="@+id/mobile_phone_field"
+        style="@style/HeadingMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:editTextBackground"
+        android:backgroundTint="?android:textColorSecondary"
+        android:textColor="?android:textColorPrimary"
+        android:textCursorDrawable="?android:textColorSecondary" />
+</LinearLayout>
