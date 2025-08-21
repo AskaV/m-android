@@ -69,17 +69,19 @@
     <string name="add_contacts_cancel_text">Відмінити</string>
     <string name="search_button_description">Кнопка пошуку</string>
     <string name="scroll_to_top_description">Скрол вверх</string>
+    <string name="add_text">Додати</string>
 
     <!--   текст вкладок табу  -->
     <string name="tab_profile">Мій профіль</string>
     <string name="tab_contacts">Контакти</string>
     <string name="delete">Видалити</string>
+    <string name="ic_add_circle">ic_кнопка додати</string>
 
-    <!--    search text     -->
+    <!--    текст пошуку     -->
     <string name="search_no_results_text">Результатів не знайдено</string>
     <string name="search_more_info_text">Ви можете побачити більше контактів у рекомендації</string>
 
-    <!--    edit form     -->
+    <!--    форма редагування     -->
     <string name="cd_back">Назад</string>
     <string name="cd_change_avatar">Змінити аватар</string>
     <string name="add_contact">Додати контакт</string>
@@ -89,5 +91,12 @@
     <string name="phone">Телефон</string>
     <string name="address">Адресса</string>
     <string name="date_of_birth">День народження</string>
+
+    <!--    відкрити галерею     -->
+    <string name="action_open_gallery">Відкрити галерею</string>
+    <string name="action_delete_current_photo">Видалити поточне фото</string>
+    <string name="action_cancel">Відмінити</string>
+    <string name="cd_take_photo">Зробити фото</string>
+    <string name="cd_gallery_photo">Фото галереї</string>
 
 </resources>

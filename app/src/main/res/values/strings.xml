@@ -69,11 +69,13 @@
     <string name="add_contacts_cancel_text">Cancel</string>
     <string name="search_button_description">Search button</string>
     <string name="scroll_to_top_description">Scroll to top</string>
+    <string name="add_text">Add</string>
 
     <!--    tab text     -->
     <string name="tab_profile">My Profile</string>
     <string name="tab_contacts">Contacts</string>
     <string name="delete">Delete</string>
+    <string name="ic_add_circle">ic_add circle</string>
 
     <!--    search text     -->
     <string name="search_no_results_text">No results found</string>
@@ -89,5 +91,12 @@
     <string name="phone">Phone</string>
     <string name="address">Address</string>
     <string name="date_of_birth">Date of birth</string>
+
+    <!--    open gallery     -->
+    <string name="action_open_gallery">Open gallery</string>
+    <string name="action_delete_current_photo">Delete current photo</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="cd_take_photo">Take a photo</string>
+    <string name="cd_gallery_photo">Gallery photo</string>
 
 </resources>

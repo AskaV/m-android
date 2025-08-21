@@ -1,8 +1,372 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:textColorPrimary">
 
+    <View
+        android:id="@+id/topBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="-16dp"
+        android:background="?android:windowBackground"
+        android:clickable="false"
+        android:focusable="false"
+        app:layout_constraintBottom_toBottomOf="@id/avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/spacer_large"
+        android:layout_height="@dimen/spacer_large"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginTop="@dimen/spacer_medium"
+        android:contentDescription="@string/back_arrow_description"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/topBackground" />
+
+    <TextView
+        android:id="@+id/titleText"
+        style="@style/HeadingLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacer_medium"
+        android:textColor="?android:textColorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/topBackground"
+        app:layout_goneMarginTop="@dimen/spacer_medium"
+        tools:text="Add contact" />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/profile_avatar_size"
+        android:layout_height="@dimen/profile_avatar_size"
+        android:layout_marginTop="@dimen/spacer_large"
+        android:layout_marginBottom="@dimen/spacer_medium"
+        android:contentDescription="@string/user_avatar"
+        android:scaleType="centerCrop"
+        android:src="@drawable/profile_avatar"
+        app:layout_constraintBottom_toBottomOf="@id/topBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleText" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cameraBtn"
+        android:layout_width="@dimen/contacts_avatar_size"
+        android:layout_height="@dimen/contacts_avatar_size"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:contentDescription="@string/cd_change_avatar"
+        app:backgroundTint="?android:textColorSecondary"
+        app:fabCustomSize="@dimen/contacts_avatar_size"
+        app:layout_constraintBottom_toBottomOf="@id/avatar"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintTop_toTopOf="@id/avatar"
+        app:maxImageSize="@dimen/checkbox_size"
+        app:srcCompat="@drawable/baseline_add_a_photo"
+        app:tint="@android:color/white" />
+
+    <!--Username -->
+    <TextView
+        android:id="@+id/labelUsername"
+        style="@style/SubheadingMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginTop="@dimen/spacer_large"
+        android:text="@string/username"
+        android:textColor="?android:textColorSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBackground" />
+
+    <EditText
+        android:id="@+id/inputUsername"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:autofillHints="personName"
+        android:background="@android:color/transparent"
+        android:hint="@string/username"
+        android:imeOptions="actionNext"
+        android:inputType="textPersonName"
+        android:maxLines="1"
+        android:textColor="?android:textColorPrimary"
+        android:textColorHint="?android:textColorTertiary"
+        android:textCursorDrawable="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelUsername"
+        tools:text="Jenny Walker" />
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:background="?android:textColorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputUsername" />
+
+    <!-- Career -->
+    <TextView
+        android:id="@+id/labelCareer"
+        style="@style/SubheadingMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginTop="@dimen/spacer_large"
+        android:text="@string/career"
+        android:textColor="?android:textColorSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider1" />
+
+    <EditText
+        android:id="@+id/inputCareer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:background="@android:color/transparent"
+        android:hint="@string/career"
+        android:imeOptions="actionNext"
+        android:importantForAutofill="no"
+        android:inputType="textCapWords"
+        android:maxLines="1"
+        android:textColor="?android:textColorPrimary"
+        android:textColorHint="?android:textColorTertiary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelCareer"
+        tools:text="Make‑up artist" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:background="?android:textColorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputCareer" />
+
+    <!-- Email -->
+    <TextView
+        android:id="@+id/labelEmail"
+        style="@style/SubheadingMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginTop="@dimen/spacer_large"
+        android:text="@string/email"
+        android:textColor="?android:textColorSecondary"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider2"
+        tools:visibility="visible" />
+
+    <EditText
+        android:id="@+id/inputEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:autofillHints="emailAddress"
+        android:background="@android:color/transparent"
+        android:hint="@string/email"
+        android:imeOptions="actionNext"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:textColor="?android:textColorPrimary"
+        android:textColorHint="?android:textColorTertiary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelEmail"
+        tools:text="name@gmail.com"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/dividerEmail"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:background="?android:textColorSecondary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputEmail"
+        tools:visibility="visible" />
+
+    <!-- Phone -->
+    <TextView
+        android:id="@+id/labelPhone"
+        style="@style/SubheadingMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginTop="@dimen/spacer_large"
+        android:text="@string/phone"
+        android:textColor="?android:textColorSecondary"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dividerEmail"
+        tools:visibility="visible" />
+
+    <EditText
+        android:id="@+id/inputPhone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:autofillHints="phone"
+        android:background="@android:color/transparent"
+        android:hint="@string/phone"
+        android:imeOptions="actionNext"
+        android:inputType="phone"
+        android:maxLines="1"
+        android:textColor="?android:textColorPrimary"
+        android:textColorHint="?android:textColorTertiary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelPhone"
+        tools:text="(264)-654-3452"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:background="?android:textColorSecondary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputPhone"
+        tools:visibility="visible" />
+
+    <!-- Address -->
+    <TextView
+        android:id="@+id/labelAddress"
+        style="@style/SubheadingMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginTop="@dimen/spacer_large"
+        android:text="@string/address"
+        android:textColor="?android:textColorSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider3" />
+
+    <EditText
+        android:id="@+id/inputAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:autofillHints="postalAddress"
+        android:background="@android:color/transparent"
+        android:hint="@string/address"
+        android:imeOptions="actionNext"
+        android:inputType="textPostalAddress|textMultiLine"
+        android:maxLines="3"
+        android:textColor="?android:textColorPrimary"
+        android:textColorHint="?android:textColorTertiary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelAddress"
+        tools:text="5295 Gaylord Walks Apk. 110" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:background="?android:textColorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputAddress" />
+
+    <!-- Date of birth -->
+    <TextView
+        android:id="@+id/labelDob"
+        style="@style/SubheadingMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginTop="@dimen/spacer_large"
+        android:text="@string/date_of_birth"
+        android:textColor="?android:textColorSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider4" />
+
+    <EditText
+        android:id="@+id/inputDob"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:background="@android:color/transparent"
+
+        android:clickable="false"
+        android:focusable="false"
+        android:hint="@string/date_of_birth"
+        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
+        android:inputType="date"
+        android:textColor="?android:textColorPrimary"
+        android:textColorHint="?android:textColorTertiary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelDob"
+        tools:text="12/05/1994" />
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/spacer_large"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:background="?android:textColorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputDob" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/saveBtn"
+        style="@style/SubheadingLarge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginEnd="@dimen/spacer_medium"
+        android:layout_marginBottom="@dimen/spacer_medium"
+        android:paddingStart="@dimen/spacer_medium"
+        android:paddingTop="@dimen/spacer_medium"
+        android:paddingEnd="@dimen/spacer_medium"
+        android:paddingBottom="@dimen/spacer_medium"
+        android:text="@string/save"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        app:backgroundTint="?attr/colorAccent"
+        app:cornerRadius="@dimen/corner_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
