@@ -5,64 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/topView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="?android:windowBackground"
-        app:layout_constraintBottom_toTopOf="@+id/bottomView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="0.8" />
-
-    <View
-        android:id="@+id/bottomView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="?android:textColorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topView"
-        app:layout_constraintVertical_weight="5" />
-
-    <TextView
-        android:id="@+id/contactsText"
-        style="@style/HeadingLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/contacts_text"
-        android:textColor="?android:textColorPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/topView"
-        app:layout_constraintEnd_toStartOf="@+id/searchIcon"
-        app:layout_constraintStart_toEndOf="@+id/backArrow"
-        app:layout_constraintTop_toTopOf="@id/topView" />
-
-
     <ImageView
         android:id="@+id/backArrow"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="@dimen/spacer_large"
+        android:layout_height="@dimen/spacer_large"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginTop="@dimen/spacer_medium"
+        android:contentDescription="@string/back_arrow_description"
         android:src="@drawable/ic_arrow_back"
-        app:layout_constraintBottom_toBottomOf="@id/topView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/topView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/searchIcon"
         android:layout_width="@dimen/spacer_large"
         android:layout_height="@dimen/spacer_large"
+        android:layout_marginTop="@dimen/spacer_medium"
         android:layout_marginEnd="@dimen/spacer_medium"
         android:clickable="true"
+        android:contentDescription="@string/search_button_description"
         android:focusable="true"
         android:src="@drawable/search_button"
-        app:layout_constraintBottom_toBottomOf="@id/topView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/topView"
-        tools:layout_editor_absoluteY="33dp" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/contactsText"
+        style="@style/HeadingLarge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacer_medium"
+        android:gravity="center"
+        android:text="@string/contacts_text"
+        android:textAlignment="center"
+        android:textColor="?android:textColorPrimary"
+        app:layout_constraintEnd_toStartOf="@id/searchIcon"
+        app:layout_constraintStart_toEndOf="@id/backArrow"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/addContactsText"
@@ -70,37 +49,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacer_medium"
-        android:layout_marginBottom="@dimen/spacer_medium"
+        android:layout_marginTop="@dimen/spacer_small"
+        android:layout_marginBottom="@dimen/spacer_large"
         android:text="@string/add_contacts_text"
         android:textColor="?android:textColorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/topView"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contactsText" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacer_medium"
+        android:background="?android:textColorPrimary"
         android:clipToPadding="false"
         android:fitsSystemWindows="true"
         android:padding="@dimen/spacer_medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topView"
-        app:layout_constraintVertical_weight="5" />
+        app:layout_constraintTop_toBottomOf="@id/addContactsText" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabScrollTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacer_large"
+        android:layout_marginBottom="@dimen/spacer_medium"
+        android:contentDescription="@string/scroll_to_top_description"
+        android:visibility="gone"
+        app:backgroundTint="?attr/colorAccent"
+        app:layout_constraintBottom_toTopOf="@id/fabDelete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_arrow_up"
+        app:tint="@android:color/white"
+        tools:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/spacer_large"
         android:contentDescription="@string/delete"
         app:backgroundTint="?attr/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:srcCompat="@drawable/recycle_bin"
         app:tint="@android:color/white" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

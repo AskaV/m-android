@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -20,11 +21,13 @@
         style="@style/HeadingMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:background="?android:editTextBackground"
         android:backgroundTint="?android:textColorSecondary"
         android:inputType="textEmailAddress"
         android:textColor="?android:textColorPrimary"
-        android:textCursorDrawable="?android:textColorSecondary" />
+        android:textCursorDrawable="?android:textColorSecondary"
+        tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/emailErrorText"
@@ -51,11 +54,13 @@
         style="@style/HeadingMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:background="?android:editTextBackground"
         android:backgroundTint="?android:textColorSecondary"
         android:inputType="textPassword"
         android:textColor="?android:textColorPrimary"
-        android:textCursorDrawable="?android:textColorSecondary" />
+        android:textCursorDrawable="?android:textColorSecondary"
+        tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/passwordErrorText"
@@ -66,4 +71,5 @@
         android:textColor="?android:colorAccent"
         android:textSize="@dimen/body_text_size"
         android:visibility="gone" />
+
 </LinearLayout>

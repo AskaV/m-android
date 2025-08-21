@@ -35,10 +35,10 @@
         layout="@layout/common_login_fields"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/layout_margin_top_include"
+        android:layout_marginTop="@dimen/spacer_large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_subtitle" />
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -46,19 +46,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacer_medium"
-        android:layout_marginTop="@dimen/login_checkbox_margin_top"
+        android:layout_marginTop="@dimen/spacer_medium"
         android:buttonTint="?android:textColorPrimary"
         android:text="@string/remember_me"
         android:textColor="?android:textColorSecondary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signup_subtitle" />
+        app:layout_constraintTop_toBottomOf="@+id/commonLoginFields" />
 
     <com.spp.android.myapplication.xmlscreens.util.extensions.CustomGoogleButton
         android:id="@+id/googleLoginButton"
-        android:layout_width="@dimen/login_button_width"
+        style="@style/SubheadingLarge"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_button_start"
-        android:layout_marginEnd="@dimen/margin_button_end"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginEnd="@dimen/spacer_medium"
+        android:layout_marginBottom="@dimen/spacer_small"
+        android:paddingStart="@dimen/spacer_medium"
+        android:paddingTop="@dimen/spacer_medium"
+        android:paddingEnd="@dimen/spacer_medium"
+        android:paddingBottom="@dimen/spacer_medium"
         app:layout_constraintBottom_toTopOf="@+id/TextViewOr"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -68,71 +74,79 @@
         style="@style/HeadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_bottom_or_text"
+        android:layout_marginBottom="@dimen/spacer_small"
         android:fontFamily="@font/open_sans_semi_bold"
         android:text="@string/signup_or"
         android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/subheading_medium_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/loginButton"
+        app:layout_constraintBottom_toTopOf="@+id/registerButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/loginButton"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/registerButton"
+
         style="@style/SubheadingLarge"
-        android:layout_width="@dimen/login_button_width"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_button_start"
-        android:layout_marginEnd="@dimen/margin_button_end"
-        android:layout_marginBottom="@dimen/margin_button_bottom"
-        android:background="@drawable/button_border"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginEnd="@dimen/spacer_medium"
+        android:layout_marginBottom="@dimen/spacer_small"
+        android:paddingStart="@dimen/spacer_medium"
+        android:paddingTop="@dimen/spacer_medium"
+        android:paddingEnd="@dimen/spacer_medium"
+        android:paddingBottom="@dimen/spacer_medium"
         android:text="@string/signup_register"
         android:textColor="?android:textColorPrimary"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:backgroundTint="@android:color/transparent"
+        app:cornerRadius="@dimen/corner_radius"
+        app:layout_constraintBottom_toTopOf="@+id/dontHaveAccountText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_default="spread" />
+        app:strokeColor="?attr/colorAccent"
+        app:strokeWidth="@dimen/border_size" />
 
     <TextView
         android:id="@+id/dontHaveAccountText"
         style="@style/BodyText"
-        android:layout_width="@dimen/signup_text_width"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_between_texts"
-        android:layout_marginBottom="@dimen/margin_between_buttons"
+        android:layout_marginBottom="8dp"
         android:text="@string/signup_terms"
         android:textAlignment="center"
         android:textColor="?android:textColorSecondary"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/alreadyHaveAccountText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/alreadyHaveAccountText"
+        style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spacer_extra_small"
-        android:layout_marginBottom="@dimen/margin_account_text_bottom"
+        android:layout_marginBottom="@dimen/spacer_medium"
         android:text="@string/signup_have_account"
         android:textColor="?android:textColorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/signInText"
+        app:layout_constraintEnd_toStartOf="@id/signInText"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_goneMarginEnd="@dimen/spacer_medium" />
 
     <TextView
         android:id="@+id/signInText"
         style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_account_text_bottom"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginBottom="@dimen/spacer_medium"
         android:fontFamily="@font/open_sans_semi_bold"
         android:text="@string/signup_sign_in"
         android:textColor="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/alreadyHaveAccountText" />
+        app:layout_constraintStart_toEndOf="@id/alreadyHaveAccountText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

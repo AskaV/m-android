@@ -10,7 +10,6 @@ import com.spp.android.myapplication.databinding.SignUpPageBinding
 import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
 import kotlinx.coroutines.launch
 
-
 class SignUpActivityXml : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +27,7 @@ class SignUpActivityXml : BaseActivity() {
             startActivity(intent, options.toBundle())
             finish()
         }
-        binding.loginButton.setOnClickListener {
+        binding.registerButton.setOnClickListener {
             val emailField = binding.commonLoginFields.editTextTextEmailAddress
             val emailText = emailField.text.toString()
 

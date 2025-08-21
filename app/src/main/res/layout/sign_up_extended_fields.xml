@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingStart="@dimen/common_login_padding_start"
-    android:paddingEnd="@dimen/common_login_padding_end">
+    android:paddingStart="@dimen/spacer_medium"
+    android:paddingEnd="@dimen/spacer_medium">
 
     <TextView
         android:id="@+id/user_name_text"
         style="@style/SubheadingMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/common_login_margin_bottom_small"
+        android:layout_marginBottom="@dimen/spacer_extra_small"
         android:text="@string/signup_extended_user_name"
         android:textColor="?android:textColorSecondary" />
 
@@ -22,17 +23,18 @@
         android:layout_height="wrap_content"
         android:background="?android:editTextBackground"
         android:backgroundTint="?android:textColorSecondary"
-        android:inputType="textEmailAddress"
+        android:importantForAutofill="no"
         android:textColor="?android:textColorPrimary"
-        android:textCursorDrawable="?android:textColorSecondary" />
+        android:textCursorDrawable="?android:textColorSecondary"
+        tools:ignore="LabelFor,TextFields" />
 
     <TextView
         android:id="@+id/mobile_phone_text"
         style="@style/SubheadingMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_login_margin_top_medium"
-        android:layout_marginBottom="@dimen/common_login_margin_bottom_small"
+        android:layout_marginTop="@dimen/spacer_medium"
+        android:layout_marginBottom="@dimen/spacer_extra_small"
         android:text="@string/signup_extended_mobile_phone"
         android:textColor="?android:textColorSecondary" />
 
@@ -43,6 +45,8 @@
         android:layout_height="wrap_content"
         android:background="?android:editTextBackground"
         android:backgroundTint="?android:textColorSecondary"
+        android:importantForAutofill="no"
         android:textColor="?android:textColorPrimary"
-        android:textCursorDrawable="?android:textColorSecondary" />
+        android:textCursorDrawable="?android:textColorSecondary"
+        tools:ignore="LabelFor,TextFields" />
 </LinearLayout>

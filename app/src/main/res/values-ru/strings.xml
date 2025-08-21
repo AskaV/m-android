@@ -5,17 +5,20 @@
     <string name="settings">Налаштування</string>
     <string name="user_name">Люсіль Альварадо</string>
     <string name="user_avatar">Аватар користувача</string>
-    <string name="user_profession">Графічна дизайнерка</string>
-    <string name="user_address">вул. Гейлорд, 5295, кв. 110</string>
+    <string name="user_profession">Кар\'єра</string>
+    <string name="user_address">Домашня адреса</string>
     <string name="facebook">Фейсбук</string>
     <string name="instagram">Інстаграм</string>
     <string name="telegram">Телеграм</string>
     <string name="edit_profile">Редагувати профіль</string>
     <string name="view_contacts">Переглянути мої контакти</string>
+    <string name="log_out_text">Вийти</string>
+    <string name="go_to_settings_text">Перейдіть до налаштувань та заповніть профіль</string>
 
     <!-- contact's profile -->
     <string name="profile_text">Профіль</string>
     <string name="message_text">Повідомлення</string>
+    <string name="back_arrow_description">Стрілка назад</string>
 
     <!-- сторінка реєстрації -->
     <string name="signup_title">Познайомимось ближче</string>
@@ -32,10 +35,8 @@
     <string name="signup_extended_subtitle">Заповніть профіль та перейдіть до заявки!</string>
     <string name="signup_extended_user_name">Ім\'я користувача</string>
     <string name="signup_extended_mobile_phone">Мобільний телефон</string>
-
     <string name="signup_extended_avatar_image">Картинка аватару</string>
-    <string name="signup_extended_add_photo_btn">Кнопка додати фоно</string>
-
+    <string name="signup_extended_add_photo_btn">Кнопка додати фото</string>
     <string name="signup_extended_cancel">Відміна</string>
     <string name="signup_extended_forward">Далі</string>
 
@@ -46,7 +47,7 @@
     <string name="password">Пароль</string>
     <string name="remember_me">Запам\'ятати мене</string>
     <string name="forgot_password">Забули пароль?</string>
-    <string name="login">Увійти</string>
+    <string name="login_text">Увійти</string>
     <string name="dont_have_account">Немає акаунту?</string>
     <string name="sign_up">Зареєструватися</string>
 
@@ -66,12 +67,27 @@
     <string name="add_contacts_position">Позиція</string>
     <string name="add_contacts_save_text">Зберегти</string>
     <string name="add_contacts_cancel_text">Відмінити</string>
+    <string name="search_button_description">Кнопка пошуку</string>
+    <string name="scroll_to_top_description">Скрол вверх</string>
 
     <!--   текст вкладок табу  -->
-
     <string name="tab_profile">Мій профіль</string>
     <string name="tab_contacts">Контакти</string>
-
     <string name="delete">Видалити</string>
+
+    <!--    search text     -->
+    <string name="search_no_results_text">Результатів не знайдено</string>
+    <string name="search_more_info_text">Ви можете побачити більше контактів у рекомендації</string>
+
+    <!--    edit form     -->
+    <string name="cd_back">Назад</string>
+    <string name="cd_change_avatar">Змінити аватар</string>
+    <string name="add_contact">Додати контакт</string>
+    <string name="save">Зберегти</string>
+    <string name="username">Ім\'я користувача</string>
+    <string name="career">Кар\'эра</string>
+    <string name="phone">Телефон</string>
+    <string name="address">Адресса</string>
+    <string name="date_of_birth">День народження</string>
 
 </resources>

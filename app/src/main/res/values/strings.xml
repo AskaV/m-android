@@ -5,18 +5,20 @@
     <string name="settings">Settings</string>
     <string name="user_name">Lucile Alvarado</string>
     <string name="user_avatar">User avatar</string>
-    <string name="user_profession">Graphic designer</string>
-    <string name="user_address">5295 Gaylord Walks Apk. 110</string>
+    <string name="user_profession">Career</string>
+    <string name="user_address">Home address</string>
     <string name="facebook">Facebook</string>
     <string name="instagram">Instagram</string>
     <string name="telegram">Telegram</string>
     <string name="edit_profile">Edit profile</string>
     <string name="view_contacts">View my contacts</string>
+    <string name="log_out_text">Log out</string>
+    <string name="go_to_settings_text">Go to settings and fill out the profile</string>
 
     <!-- contact's profile -->
     <string name="profile_text">Profile</string>
     <string name="message_text">Message</string>
-
+    <string name="back_arrow_description">Back arrow</string>
 
     <!--  sign-up page  -->
     <string name="signup_title">Let\'s get acquainted</string>
@@ -33,10 +35,8 @@
     <string name="signup_extended_subtitle">Fill out the profile and go to the application!</string>
     <string name="signup_extended_user_name">User name</string>
     <string name="signup_extended_mobile_phone">Mobile phone</string>
-
     <string name="signup_extended_avatar_image">Avatar image</string>
     <string name="signup_extended_add_photo_btn">Add photo bnt</string>
-
     <string name="signup_extended_cancel">Cancel</string>
     <string name="signup_extended_forward">Forward</string>
 
@@ -47,7 +47,7 @@
     <string name="password">Password</string>
     <string name="remember_me">Remember me</string>
     <string name="forgot_password">Forgot your password?</string>
-    <string name="login">Login</string>
+    <string name="login_text">Login</string>
     <string name="dont_have_account">Don’t have account?</string>
     <string name="sign_up">Sign up</string>
 
@@ -58,7 +58,6 @@
     <string name="phone_length_error">Phone must be at least 10 digits long</string>
 
     <!--   my contacts recycler view  -->
-
     <string name="contacts_text">Contacts</string>
     <string name="add_contacts_text">Add contacts</string>
     <string name="wastebasket_description">Wastebasket</string>
@@ -68,12 +67,27 @@
     <string name="add_contacts_position">Position</string>
     <string name="add_contacts_save_text">Save</string>
     <string name="add_contacts_cancel_text">Cancel</string>
+    <string name="search_button_description">Search button</string>
+    <string name="scroll_to_top_description">Scroll to top</string>
 
     <!--    tab text     -->
-
     <string name="tab_profile">My Profile</string>
     <string name="tab_contacts">Contacts</string>
-
     <string name="delete">Delete</string>
+
+    <!--    search text     -->
+    <string name="search_no_results_text">No results found</string>
+    <string name="search_more_info_text">You can see more contacts in the recommendation</string>
+
+    <!--    edit form     -->
+    <string name="cd_back">Back</string>
+    <string name="cd_change_avatar">Change avatar</string>
+    <string name="add_contact">Add contact</string>
+    <string name="save">Save</string>
+    <string name="username">Username</string>
+    <string name="career">Career</string>
+    <string name="phone">Phone</string>
+    <string name="address">Address</string>
+    <string name="date_of_birth">Date of birth</string>
 
 </resources>

@@ -7,9 +7,10 @@
 
     <TextView
         android:id="@+id/titleText"
+        style="@style/HeadingLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/login_margin_top_large"
+        android:layout_marginTop="@dimen/margin_top_large"
         android:text="@string/hello"
         android:textColor="?android:textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,9 +19,10 @@
 
     <TextView
         android:id="@+id/subtitleText"
+        style="@style/BodyText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/login_margin_top_small"
+        android:layout_marginTop="@dimen/spacer_small"
         android:text="@string/enter_email_password"
         android:textColor="?android:textColorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,29 +34,30 @@
         layout="@layout/common_login_fields"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/login_layout_margin_top_include"
+        android:layout_marginTop="@dimen/spacer_large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/subtitleText" />
 
     <CheckBox
         android:id="@+id/checkBox"
         style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/login_checkbox_text_height"
+        android:layout_height="@dimen/checkbox_size"
         android:layout_marginStart="@dimen/spacer_medium"
-        android:layout_marginTop="@dimen/login_checkbox_margin_top"
+        android:layout_marginTop="@dimen/spacer_medium"
         android:buttonTint="?android:textColorPrimary"
         android:text="@string/remember_me"
         android:textColor="?android:textColorSecondary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subtitleText" />
+        app:layout_constraintTop_toBottomOf="@+id/commonLoginFields" />
 
     <TextView
         android:id="@+id/forgotPasswordText"
+        style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/login_checkbox_text_height"
-        android:layout_marginTop="@dimen/login_checkbox_margin_top"
+        android:layout_height="@dimen/checkbox_size"
+        android:layout_marginTop="@dimen/spacer_medium"
         android:layout_marginEnd="@dimen/spacer_medium"
         android:gravity="center"
         android:text="@string/forgot_password"
@@ -62,45 +65,56 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/checkBox"
-        app:layout_constraintTop_toBottomOf="@+id/subtitleText" />
+        app:layout_constraintTop_toBottomOf="@+id/commonLoginFields" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"
-        android:layout_width="@dimen/login_button_width"
-        android:layout_height="@dimen/login_button_height"
-        android:layout_marginBottom="@dimen/login_button_margin_bottom"
-        android:background="@drawable/button_border"
-        android:text="@string/login"
+        style="@style/SubheadingLarge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginEnd="@dimen/spacer_medium"
+        android:layout_marginBottom="@dimen/spacer_medium"
+        android:paddingStart="@dimen/spacer_medium"
+        android:paddingTop="@dimen/spacer_medium"
+        android:paddingEnd="@dimen/spacer_medium"
+        android:paddingBottom="@dimen/spacer_medium"
+        android:text="@string/login_text"
         android:textColor="?android:textColorPrimary"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:backgroundTint="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/dontHaveAccountText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="?attr/colorAccent"
+        app:strokeWidth="@dimen/border_size" />
 
     <TextView
         android:id="@+id/dontHaveAccountText"
+        style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/login_margin_start_account_text"
-        android:layout_marginBottom="@dimen/login_margin_bottom_text"
+        android:layout_marginBottom="@dimen/spacer_medium"
         android:text="@string/dont_have_account"
         android:textColor="?android:textColorSecondary"
-        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/signUpText"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/signUpText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_goneMarginEnd="@dimen/spacer_medium" />
 
     <TextView
         android:id="@+id/signUpText"
         style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/login_margin_end_signup_text"
-        android:layout_marginBottom="@dimen/login_margin_bottom_text"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginBottom="@dimen/spacer_medium"
         android:fontFamily="@font/open_sans_semi_bold"
         android:text="@string/sign_up"
         android:textColor="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dontHaveAccountText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

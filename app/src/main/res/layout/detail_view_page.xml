@@ -1,6 +1,5 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -26,47 +25,49 @@
         android:layout_width="@dimen/spacer_large"
         android:layout_height="@dimen/spacer_large"
         android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginTop="@dimen/spacer_medium"
         android:clickable="true"
+        android:contentDescription="@string/back_arrow_description"
         android:focusable="true"
         android:src="@drawable/ic_arrow_back"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="33dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/addContactsText"
         style="@style/HeadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacer_medium"
         android:text="@string/profile_text"
         android:textColor="?android:textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="33dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/user_avatar"
-        android:layout_width="@dimen/avatar_size"
-        android:layout_height="@dimen/avatar_size"
-        android:layout_marginTop="@dimen/margin_top_avatar"
+        android:layout_width="@dimen/profile_avatar_size"
+        android:layout_height="@dimen/profile_avatar_size"
+        android:layout_marginTop="@dimen/spacer_large"
         android:contentDescription="@string/user_avatar"
         android:scaleType="centerCrop"
         android:src="@drawable/profile_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/addContactsText" />
 
     <TextView
         android:id="@+id/user_name"
         style="@style/HeadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_user_name"
+        android:layout_marginTop="@dimen/spacer_large"
         android:text="@string/user_name"
         android:textColor="?android:textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/user_avatar" />
 
     <TextView
         android:id="@+id/user_profession"
@@ -85,73 +86,42 @@
         style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacer_small"
+        android:layout_marginTop="@dimen/spacer_medium"
         android:text="@string/user_address"
         android:textColor="?android:textColorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/user_profession" />
 
-    <ImageButton
-        android:id="@+id/imageButtonFacebook"
-        android:layout_width="@dimen/social_button_size"
-        android:layout_height="@dimen/social_button_size"
-        android:layout_marginStart="@dimen/margin_start_social"
-        android:layout_marginTop="@dimen/margin_top_social"
-        android:background="@drawable/social_button_border"
-        android:contentDescription="@string/facebook"
-        android:foreground="@null"
-        android:padding="@dimen/social_button_padding"
-        android:scaleType="centerInside"
-        android:src="@drawable/social_facebook"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBackground"
-        app:tint="?android:colorAccent" />
-
-    <ImageButton
-        android:id="@+id/imageButtonInstagram"
-        android:layout_width="@dimen/social_button_size"
-        android:layout_height="@dimen/social_button_size"
-        android:layout_marginTop="@dimen/margin_top_social"
-        android:background="@drawable/social_button_border"
-        android:contentDescription="@string/instagram"
-        android:padding="@dimen/social_button_padding"
-        android:scaleType="centerInside"
-        android:src="@drawable/social_instagram"
-        app:layout_constraintEnd_toStartOf="@+id/imageButtonTelegram"
-        app:layout_constraintStart_toEndOf="@+id/imageButtonFacebook"
-        app:layout_constraintTop_toBottomOf="@id/topBackground"
-        app:tint="?android:colorAccent" />
-
-    <ImageButton
-        android:id="@+id/imageButtonTelegram"
-        android:layout_width="@dimen/social_button_size"
-        android:layout_height="@dimen/social_button_size"
-        android:layout_marginTop="@dimen/margin_top_social"
-        android:layout_marginEnd="@dimen/margin_top_social"
-        android:background="@drawable/social_button_border"
-        android:contentDescription="@string/telegram"
-        android:padding="@dimen/social_button_padding"
-        android:scaleType="centerInside"
-        android:src="@drawable/social_telegram"
+    <include
+        android:id="@+id/includeSocialButtons"
+        layout="@layout/include_social_buttons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/social_button_size"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBackground"
-        app:tint="?android:colorAccent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBackground" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/viewMyContactsBtn"
         style="@style/SubheadingLarge"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height_large"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacer_medium"
         android:layout_marginEnd="@dimen/spacer_medium"
         android:layout_marginBottom="@dimen/spacer_medium"
-        android:background="@drawable/button_filled_orange"
+        android:paddingStart="@dimen/spacer_medium"
+        android:paddingTop="@dimen/spacer_medium"
+        android:paddingEnd="@dimen/spacer_medium"
+        android:paddingBottom="@dimen/spacer_medium"
         android:text="@string/message_text"
         android:textColor="?android:textColorPrimary"
-        app:backgroundTint="@null"
+        app:backgroundTint="?attr/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="?attr/colorAccent"
+        app:strokeWidth="@dimen/border_size" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

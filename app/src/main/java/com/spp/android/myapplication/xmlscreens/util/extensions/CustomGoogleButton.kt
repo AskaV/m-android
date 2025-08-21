@@ -30,7 +30,7 @@ class CustomGoogleButton @JvmOverloads constructor(
 
         setTextColor(Color.TRANSPARENT)
 
-        iconSize = icon?.intrinsicWidth ?: dpToPx(24) // на случай null
+        iconSize = icon?.intrinsicWidth ?: dpToPx(24)
         paddingBetween = resources.getDimensionPixelSize(R.dimen.spacer_medium)
 
         isAllCaps = false

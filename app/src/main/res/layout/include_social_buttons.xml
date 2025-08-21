@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFacebook"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="@dimen/social_button_size"
+        android:layout_height="@dimen/social_button_size2"
+        app:backgroundTint="?attr/colorSurface"
+        app:cornerRadius="999dp"
+        app:icon="@drawable/social_facebook"
+        app:iconSize="@dimen/social_icon_size"
+        app:iconTint="?attr/colorAccent"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnLinkedin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="?attr/colorAccent"
+        app:strokeWidth="@dimen/border_size" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLinkedin"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="@dimen/social_button_size"
+        android:layout_height="@dimen/social_button_size2"
+        app:backgroundTint="?attr/colorSurface"
+        app:cornerRadius="999dp"
+        app:icon="@drawable/social_instagram"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="?attr/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="?attr/colorAccent"
+        app:strokeWidth="@dimen/border_size" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnTelegram"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="@dimen/social_button_size"
+        android:layout_height="@dimen/social_button_size2"
+        app:backgroundTint="?attr/colorSurface"
+        app:cornerRadius="999dp"
+        app:icon="@drawable/social_telegram"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="?attr/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnLinkedin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="?attr/colorAccent"
+        app:strokeWidth="@dimen/border_size" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

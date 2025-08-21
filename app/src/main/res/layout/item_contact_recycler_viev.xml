@@ -9,7 +9,6 @@
     android:background="@drawable/contact_outlined"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-
     android:padding="@dimen/spacer_small">
 
     <androidx.appcompat.widget.AppCompatCheckBox
@@ -65,4 +64,5 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/wastebasket_description"
         android:src="@drawable/recycle_bin" />
+
 </LinearLayout>

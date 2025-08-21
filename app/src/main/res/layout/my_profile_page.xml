@@ -1,5 +1,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -21,39 +22,61 @@
         app:layout_constraintTop_toBottomOf="@id/topBackground" />
 
     <TextView
+        android:id="@+id/textView"
         style="@style/HeadingLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_start_text"
-        android:layout_marginTop="@dimen/margin_top_settings"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginTop="@dimen/spacer_medium"
         android:text="@string/settings"
         android:textColor="?android:textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logoutBtn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacer_medium"
+        android:layout_marginEnd="@dimen/spacer_medium"
+        android:paddingStart="@dimen/spacer_medium"
+        android:paddingTop="@dimen/spacer_small"
+        android:paddingEnd="@dimen/spacer_medium"
+        android:paddingBottom="@dimen/spacer_small"
+        android:text="@string/log_out_text"
+        android:textAllCaps="false"
+        android:textColor="?android:textColorSecondary"
+        app:backgroundTint="@android:color/transparent"
+        app:cornerRadius="@dimen/corner_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="?android:textColorSecondary"
+        app:strokeWidth="@dimen/border_size" />
+
     <ImageView
         android:id="@+id/user_avatar"
-        android:layout_width="@dimen/avatar_size"
-        android:layout_height="@dimen/avatar_size"
-        android:layout_marginTop="@dimen/margin_top_avatar"
+        android:layout_width="@dimen/profile_avatar_size"
+        android:layout_height="@dimen/profile_avatar_size"
+        android:layout_marginTop="@dimen/spacer_large"
         android:contentDescription="@string/user_avatar"
         android:scaleType="centerCrop"
         android:src="@drawable/profile_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/user_name"
         style="@style/HeadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_user_name"
+        android:layout_marginTop="@dimen/spacer_large"
         android:text="@string/user_name"
         android:textColor="?android:textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/user_avatar" />
 
     <TextView
         android:id="@+id/user_profession"
@@ -72,89 +95,80 @@
         style="@style/SubheadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_text"
+        android:layout_marginTop="@dimen/spacer_medium"
         android:text="@string/user_address"
         android:textColor="?android:textColorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/user_profession" />
 
-    <ImageButton
-        android:id="@+id/imageButtonFacebook"
-        android:layout_width="@dimen/social_button_size"
-        android:layout_height="@dimen/social_button_size"
-        android:layout_marginStart="@dimen/margin_start_social"
-        android:layout_marginTop="@dimen/margin_top_social"
-        android:background="@drawable/social_button_border"
-        android:contentDescription="@string/facebook"
-        android:foreground="@null"
-        android:padding="@dimen/social_button_padding"
-        android:scaleType="centerInside"
-        android:src="@drawable/social_facebook"
+    <include
+        android:id="@+id/includeSocialButtons"
+        layout="@layout/include_social_buttons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/social_button_size"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBackground"
-        app:tint="?android:colorAccent" />
+        tools:visibility="visible" />
 
-    <ImageButton
-        android:id="@+id/imageButtonInstagram"
-        android:layout_width="@dimen/social_button_size"
-        android:layout_height="@dimen/social_button_size"
-        android:layout_marginTop="@dimen/margin_top_social"
-        android:background="@drawable/social_button_border"
-        android:contentDescription="@string/instagram"
-        android:padding="@dimen/social_button_padding"
-        android:scaleType="centerInside"
-        android:src="@drawable/social_instagram"
-        app:layout_constraintEnd_toStartOf="@+id/imageButtonTelegram"
-        app:layout_constraintStart_toEndOf="@+id/imageButtonFacebook"
-        app:layout_constraintTop_toBottomOf="@id/topBackground"
-        app:tint="?android:colorAccent" />
-
-    <ImageButton
-        android:id="@+id/imageButtonTelegram"
-        android:layout_width="@dimen/social_button_size"
-        android:layout_height="@dimen/social_button_size"
-        android:layout_marginTop="@dimen/margin_top_social"
-        android:layout_marginEnd="@dimen/margin_top_social"
-        android:background="@drawable/social_button_border"
-        android:contentDescription="@string/telegram"
-        android:padding="@dimen/social_button_padding"
-        android:scaleType="centerInside"
-        android:src="@drawable/social_telegram"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBackground"
-        app:tint="?android:colorAccent" />
-
-    <Button
-        android:id="@+id/editProfileBtn"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginStart="@dimen/button_margin_horizontal"
-        android:layout_marginEnd="@dimen/button_margin_horizontal"
-        android:layout_marginBottom="@dimen/button_margin_bottom"
-        android:background="@drawable/button_outlined"
-        android:text="@string/edit_profile"
-        android:textAllCaps="false"
+    <TextView
+        android:id="@+id/go_to_settings_text"
+        style="@style/SubheadingMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacer_medium"
+        android:text="@string/go_to_settings_text"
         android:textColor="?android:textColorTertiary"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toTopOf="@+id/viewMyContactsBtn"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/editProfileBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/editProfileBtn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginEnd="@dimen/spacer_medium"
+        android:layout_marginBottom="@dimen/spacer_medium"
+        android:paddingStart="@dimen/spacer_medium"
+        android:paddingTop="@dimen/spacer_medium"
+        android:paddingEnd="@dimen/spacer_medium"
+        android:paddingBottom="@dimen/spacer_medium"
+        android:text="@string/edit_profile"
+        android:textColor="?android:textColorTertiary"
+        app:cornerRadius="6dp"
+        app:layout_constraintBottom_toTopOf="@id/viewMyContactsBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="?android:textColorTertiary"
+        app:strokeWidth="2dp" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/viewMyContactsBtn"
         style="@style/SubheadingLarge"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height_large"
-        android:layout_marginStart="@dimen/button_margin_horizontal"
-        android:layout_marginEnd="@dimen/button_margin_horizontal"
-        android:layout_marginBottom="@dimen/button_margin_bottom"
-        android:background="@drawable/button_filled_orange"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacer_medium"
+        android:layout_marginEnd="@dimen/spacer_medium"
+        android:layout_marginBottom="@dimen/spacer_medium"
+        android:paddingStart="@dimen/spacer_medium"
+        android:paddingTop="@dimen/spacer_medium"
+        android:paddingEnd="@dimen/spacer_medium"
+        android:paddingBottom="@dimen/spacer_medium"
         android:text="@string/view_contacts"
         android:textColor="?android:textColorPrimary"
-        app:backgroundTint="@null"
+        app:backgroundTint="?attr/colorAccent"
+        app:cornerRadius="@dimen/corner_radius"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="?attr/colorAccent"
+        app:strokeWidth="@dimen/border_size" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,6 +36,8 @@
 
     <!-- Social Buttons -->
     <dimen name="social_button_size">60dp</dimen>
+    <dimen name="social_button_size2">70dp</dimen>
+
     <dimen name="social_icon_size">28dp</dimen>
     <dimen name="social_button_spacing">24dp</dimen>
 
@@ -46,7 +48,6 @@
 
     <!-- Avatar -->
     <dimen name="avatar_size">113dp</dimen>
-    <dimen name="profile_avatar_size">113dp</dimen>
 
     <!-- Screen ratio of view of my profile page -->
     <string name="profile_background_ratio" translatable="false">1:1.8</string>
@@ -54,7 +55,6 @@
 
     <!-- =============== SIGN UP PAGE DIMENSIONS =============== -->
     <!-- Margins for title and subtitle -->
-    <dimen name="margin_top_large">178dp</dimen>
     <dimen name="margin_top_medium">16dp</dimen>
     <dimen name="margin_top_small">8dp</dimen>
 
@@ -107,13 +107,13 @@
 
     <!-- General spacing -->
     <dimen name="border_size">2dp</dimen>
-
     <dimen name="spacer_extra_small">4dp</dimen>
     <dimen name="spacer_small">8dp</dimen>
     <dimen name="spacer_medium">16dp</dimen>
     <dimen name="spacer_large">24dp</dimen>
     <dimen name="padding_screen">16dp</dimen>
     <dimen name="margin_top">100dp</dimen>
+    <dimen name="margin_top_large">150dp</dimen>
 
 
     <!-- Checkbox spacing -->
@@ -123,7 +123,9 @@
     <dimen name="checkbox_border_width">1dp</dimen>
 
     <!-- =============== CONTACTS PAGE DIMENSIONS =============== -->
+    <dimen name="profile_avatar_size">115dp</dimen>
     <dimen name="contacts_avatar_size">50dp</dimen>
+    <dimen name="corner_radius">6dp</dimen>
 
 
     <!-- =============== SIGN UP EXTENDED PAGE DIMENSIONS =============== -->
@@ -133,5 +135,6 @@
     <!-- Distance from the top for the sign up extended  block -->
     <dimen name="layout_margin_top_sign_up">319dp</dimen>
 
+    <dimen name="checkbox_size">35dp</dimen>
 
 </resources>
