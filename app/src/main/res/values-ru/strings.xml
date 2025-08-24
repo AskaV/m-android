@@ -29,6 +29,9 @@
     <string name="signup_terms">Натискаючи «Зареєструватися», ви погоджуєтесь з нашими умовами</string>
     <string name="signup_have_account">Вже маєш акаунт?</string>
     <string name="signup_sign_in">Увійти</string>
+    <string name="signup_reg_email_msg">Емейл вже використовуєтся</string>
+    <string name="signup_user_name_error_min3">Ім\'я користувача має містити щонайменше 3 літери</string>
+    <string name="signup_phone_error_min10">Номер телефону має містити щонайменше 10 цифр</string>
 
     <!--  розширена сторінка реєстрації  -->
     <string name="signup_extended_title">Дані вашого профілю</string>

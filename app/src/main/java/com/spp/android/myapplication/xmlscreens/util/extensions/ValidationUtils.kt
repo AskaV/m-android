@@ -43,4 +43,46 @@ object ValidationUtils {
 
         return allValid
     }
+
+    fun validateNameAndPhone(
+        context: Context,
+        nameField: EditText,
+        phoneField: EditText,
+        nameErrorView: TextView,
+        phoneErrorView: TextView
+    ): Boolean {
+        val name = nameField.text?.toString()?.trim().orEmpty()
+        val phoneRaw = phoneField.text?.toString()?.trim().orEmpty()
+        context.resources.getInteger(R.integer.password_length)
+        val minNameLetters = context.resources.getInteger(R.integer.min_name_length)
+        val minPhoneDigits =  context.resources.getInteger(R.integer.min_phone_digits)
+
+        val lettersCount = name.count { it.isLetter() }
+        val isNameValid = lettersCount >= minNameLetters
+
+        val digits = normalizePhone(phoneRaw)
+        val isPhoneValid = digits.length in minPhoneDigits..15
+
+        var allValid = true
+
+        if (!isNameValid) {
+            nameErrorView.text = context.getString(R.string.signup_user_name_error_min3)
+            nameErrorView.visibility = View.VISIBLE
+            allValid = false
+        } else {
+            nameErrorView.visibility = View.GONE
+        }
+
+        if (!isPhoneValid) {
+            phoneErrorView.text = context.getString(R.string.signup_phone_error_min10)
+            phoneErrorView.visibility = View.VISIBLE
+            allValid = false
+        } else {
+            phoneErrorView.visibility = View.GONE
+        }
+
+        return allValid
+    }
+
+    fun normalizePhone(phone: String): String = phone.filter { it.isDigit() }
 }

@@ -75,7 +75,7 @@
         app:srcCompat="@drawable/baseline_add_a_photo"
         app:tint="@android:color/white" />
 
-    <!--Username -->
+
     <TextView
         android:id="@+id/labelUsername"
         style="@style/SubheadingMedium"
@@ -119,7 +119,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/inputUsername" />
 
-    <!-- Career -->
+
     <TextView
         android:id="@+id/labelCareer"
         style="@style/SubheadingMedium"
@@ -162,7 +162,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/inputCareer" />
 
-    <!-- Email -->
+
     <TextView
         android:id="@+id/labelEmail"
         style="@style/SubheadingMedium"
@@ -211,7 +211,7 @@
         app:layout_constraintTop_toBottomOf="@id/inputEmail"
         tools:visibility="visible" />
 
-    <!-- Phone -->
+
     <TextView
         android:id="@+id/labelPhone"
         style="@style/SubheadingMedium"
@@ -260,7 +260,7 @@
         app:layout_constraintTop_toBottomOf="@id/inputPhone"
         tools:visibility="visible" />
 
-    <!-- Address -->
+
     <TextView
         android:id="@+id/labelAddress"
         style="@style/SubheadingMedium"
@@ -303,7 +303,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/inputAddress" />
 
-    <!-- Date of birth -->
+
     <TextView
         android:id="@+id/labelDob"
         style="@style/SubheadingMedium"
@@ -323,7 +323,6 @@
         android:layout_marginStart="@dimen/spacer_large"
         android:layout_marginEnd="@dimen/spacer_large"
         android:background="@android:color/transparent"
-
         android:clickable="false"
         android:focusable="false"
         android:hint="@string/date_of_birth"

@@ -29,6 +29,16 @@
         tools:ignore="LabelFor,TextFields" />
 
     <TextView
+        android:id="@+id/user_name_error_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacer_extra_small"
+        android:text=""
+        android:textColor="?android:colorAccent"
+        android:textSize="@dimen/body_text_size"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/mobile_phone_text"
         style="@style/SubheadingMedium"
         android:layout_width="match_parent"
@@ -49,4 +59,14 @@
         android:textColor="?android:textColorPrimary"
         android:textCursorDrawable="?android:textColorSecondary"
         tools:ignore="LabelFor,TextFields" />
+
+    <TextView
+        android:id="@+id/phone_error_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacer_extra_small"
+        android:text=""
+        android:textColor="?android:colorAccent"
+        android:textSize="@dimen/body_text_size"
+        android:visibility="gone" />
 </LinearLayout>

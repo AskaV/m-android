@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorBackgroundPrimary" format="color"/>
+    <attr name="colorBackgroundSecondary" format="color"/>
+    <attr name="colorBackgroundLighter" format="color"/>
+    <attr name="colorGalleryGrayLight" format="color"/>
+</resources>

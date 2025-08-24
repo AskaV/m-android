@@ -3,5 +3,7 @@
 
     <!-- =============== AUTHORISATION DIMENSIONS =============== -->
     <integer name="password_length">8</integer>
+    <integer name="min_name_length">3</integer>
+    <integer name="min_phone_digits">10</integer>
 
 </resources>

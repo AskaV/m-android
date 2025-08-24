@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.xmlscreens.LoginActivityXml
 import com.spp.android.myapplication.xmlscreens.MainActivityXml
+import com.spp.android.myapplication.xmlscreens.SignUpExtendedActivityXml
 import kotlinx.coroutines.launch
 
 class StartSelection : ComponentActivity() {
@@ -19,9 +20,9 @@ class StartSelection : ComponentActivity() {
         const val USE_COMPOSE = false
         const val TEST_MODE = true
 
-        enum class StartTarget { AUTH, CONTACTS }
+        enum class StartTarget { AUTH, CONTACTS, SIGNUP_EXTENDED }
 
-        val START_TARGET = StartTarget.CONTACTS
+        val START_TARGET = StartTarget.SIGNUP_EXTENDED
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,25 +47,30 @@ class StartSelection : ComponentActivity() {
         }
     }
 
-    private fun launchApp(themePref: String) {
-        if (USE_COMPOSE) {
-            setContent {
-            }
-        } else {
-            when (START_TARGET) {
-                StartTarget.AUTH -> {
-                    startActivity(Intent(this, LoginActivityXml::class.java))
-                }
-
-                StartTarget.CONTACTS -> {
-                    startActivity(
-                        Intent(this, MainActivityXml::class.java)
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    )
-                }
-            }
-            finish()
+    private fun launchApp(themePref: String) = if (USE_COMPOSE) {
+        setContent {
         }
+    } else {
+        when (START_TARGET) {
+            StartTarget.AUTH -> {
+                startActivity(Intent(this, LoginActivityXml::class.java))
+            }
+
+            StartTarget.CONTACTS -> {
+                startActivity(
+                    Intent(this, MainActivityXml::class.java)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                )
+            }
+
+            StartTarget.SIGNUP_EXTENDED -> {
+                startActivity(Intent(this, SignUpExtendedActivityXml::class.java).apply {
+                    putExtra("email", "test@example.com")
+                    putExtra("password", "Qwerty123!")
+                })
+            }
+        }
+        finish()
     }
 
     private fun applyTheme(themePref: String) {

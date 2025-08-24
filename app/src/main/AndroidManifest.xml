@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"/>
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".screens.util.extensions.MyApplication"
         android:allowBackup="true"
@@ -23,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".xmlscreens.LoginActivityXml"  android:exported="true"/>
+        <activity  android:name=".xmlscreens.SignUpExtendedActivityXml" android:exported="false" />
         <activity android:name=".xmlscreens.SignUpActivityXml" android:exported="true"/>
         <activity android:name=".xmlscreens.MainActivityXml" android:exported="true"/>
     </application>

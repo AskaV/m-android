@@ -5,9 +5,8 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
 
-    <!-- Корпус камеры (заливка, без обводок) -->
     <path
-        android:fillColor="?android:textColorSecondary"
+        android:fillColor="?android:textColorPrimary"
         android:pathData="
             M4,7
             h3 l1.2,-2 h7.6 l1.2,2 h3
@@ -18,11 +17,11 @@
 
     <path
         android:fillColor="@android:color/transparent"
-        android:strokeColor="?android:windowBackground"
-        android:strokeWidth="1.6"
         android:pathData="
         M12,12.2
         m -3.3,0
         a 3.3,3.3 0 1,0 6.6,0
-        a 3.3,3.3 0 1,0 -6.6,0" />
+        a 3.3,3.3 0 1,0 -6.6,0"
+        android:strokeWidth="1.6"
+        android:strokeColor="?android:windowBackground" />
 </vector>

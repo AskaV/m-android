@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/photoCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="?attr/colorSurfaceVariant">
+    app:cardBackgroundColor="?attr/colorBackgroundSecondary"
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/galleryPicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacer_large">
+        android:padding="@dimen/spacer_small"
+        app:cornerRadius="@dimen/corner_radius">
 
         <ImageView
             android:id="@+id/ic_Camera"
             android:layout_width="0dp"
             android:layout_height="@dimen/social_button_size2"
-            android:layout_marginEnd="@dimen/spacer_medium"
+            android:layout_marginEnd="@dimen/spacer_small"
             android:background="@drawable/bg_thumb"
             android:contentDescription="@string/cd_take_photo"
             android:foreground="?attr/selectableItemBackgroundBorderless"
@@ -31,7 +34,7 @@
             android:id="@+id/thumb1"
             android:layout_width="0dp"
             android:layout_height="@dimen/social_button_size2"
-            android:layout_marginEnd="@dimen/spacer_medium"
+            android:layout_marginEnd="@dimen/spacer_small"
             android:background="@drawable/bg_thumb"
             android:contentDescription="@string/cd_gallery_photo"
             android:foreground="?attr/selectableItemBackgroundBorderless"
@@ -45,7 +48,7 @@
             android:id="@+id/thumb2"
             android:layout_width="0dp"
             android:layout_height="@dimen/social_button_size2"
-            android:layout_marginEnd="@dimen/spacer_medium"
+            android:layout_marginEnd="@dimen/spacer_small"
             android:background="@drawable/bg_thumb"
             android:contentDescription="@string/cd_gallery_photo"
             android:foreground="?attr/selectableItemBackgroundBorderless"
@@ -68,49 +71,58 @@
             app:layout_constraintStart_toEndOf="@id/thumb2"
             app:layout_constraintTop_toTopOf="@id/thumb2" />
 
-        <TextView
-            android:id="@+id/actionOpenGallery"
-            style="@style/TextAppearance.Material3.BodyLarge"
+        <View
+            android:id="@+id/actionsTopSpacer"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacer_medium"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:gravity="center"
-            android:paddingVertical="@dimen/spacer_small"
-            android:text="@string/action_open_gallery"
-            android:textColor="?attr/colorOnSurface"
+            android:layout_height="@dimen/checkbox_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ic_Camera" />
 
         <TextView
-            android:id="@+id/actionDelete"
-            style="@style/TextAppearance.Material3.BodyLarge"
+            android:id="@+id/actionOpenGallery"
+            style="@style/SubheadingMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginTop="@dimen/spacer_medium"
             android:gravity="center"
+            android:minHeight="@dimen/spacer_large"
+            android:paddingVertical="@dimen/spacer_small"
+            android:text="@string/action_open_gallery"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/actionsTopSpacer" />
+
+        <TextView
+            android:id="@+id/actionDelete"
+            style="@style/SubheadingMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacer_medium"
+            android:gravity="center"
+            android:minHeight="@dimen/spacer_large"
             android:paddingVertical="@dimen/spacer_small"
             android:text="@string/action_delete_current_photo"
-            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textColor="?attr/colorOnSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/actionOpenGallery" />
 
         <TextView
             android:id="@+id/actionCancel"
-            style="@style/TextAppearance.Material3.BodyLarge"
+            style="@style/SubheadingMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacer_small"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginTop="@dimen/spacer_medium"
             android:gravity="center"
+            android:minHeight="@dimen/spacer_large"
             android:paddingVertical="@dimen/spacer_small"
             android:text="@string/action_cancel"
-            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textColor="?attr/colorOnSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/actionDelete" />
+            app:layout_constraintTop_toBottomOf="@id/actionDelete"
+            app:layout_goneMarginTop="@dimen/spacer_medium" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </com.google.android.material.card.MaterialCardView>

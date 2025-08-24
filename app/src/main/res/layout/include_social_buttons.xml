@@ -15,7 +15,6 @@
         app:icon="@drawable/social_facebook"
         app:iconSize="@dimen/social_icon_size"
         app:iconTint="?attr/colorAccent"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnLinkedin"
         app:layout_constraintStart_toStartOf="parent"

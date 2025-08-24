@@ -2,6 +2,7 @@
 <resources>
     <style name="Theme.MyApplication" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/background_dark</item>
+        <item name="colorBackgroundSecondary">@color/background_dark_2</item>
 
         <item name="android:textColorPrimary">@color/text_primary_dark</item>
         <item name="android:textColorSecondary">@color/text_secondary_dark</item>
@@ -11,5 +12,6 @@
         <item name="colorError">@color/error_dark</item>
         <item name="colorOnSecondary">@color/text_font_secondary_dark_accent</item>
 
+        <item name="colorGalleryGrayLight">@color/gallery_gray_light</item>
     </style>
 </resources>

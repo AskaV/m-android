@@ -8,10 +8,10 @@ import com.bumptech.glide.Glide
 import com.spp.android.myapplication.R
 import com.squareup.picasso.Picasso
 
-class ImageViewExtensions {
-}
-
 var currentImageLoader: ImageLoaderType = ImageLoaderType.COIL
+
+val ImageView.avatarSize: Int
+    get() = context.resources.getDimensionPixelSize(R.dimen.profile_avatar_size)
 
 fun ImageView.loadAvatar(url: String?) {
     when (currentImageLoader) {
@@ -27,6 +27,7 @@ fun ImageView.loadWithGlide(url: String?) {
         .placeholder(R.drawable.baseline_account_circle_avatar)
         .error(android.R.drawable.ic_dialog_alert)
         .circleCrop()
+        .override(avatarSize, avatarSize)
         .into(this)
 }
 
@@ -36,6 +37,7 @@ fun ImageView.loadWithPicasso(url: String?) {
         .placeholder(R.drawable.baseline_account_circle_avatar)
         .error(android.R.drawable.ic_dialog_alert)
         .transform(CircleTransform())
+        .resize(avatarSize, avatarSize)
         .into(this)
 }
 
@@ -46,8 +48,13 @@ private fun ImageView.loadWithCoil(url: String?) {
         .placeholder(R.drawable.baseline_account_circle_avatar)
         .error(android.R.drawable.ic_dialog_alert)
         .transformations(CircleCropTransformation())
+        .size(avatarSize, avatarSize)
         .build()
 
     this.context.imageLoader.enqueue(request)
 }
 
+fun randomAvatarUrl(sizePx: Int): String {
+    val id = (1..70).random()
+    return "https://i.pravatar.cc/$sizePx?img=$id"
+}

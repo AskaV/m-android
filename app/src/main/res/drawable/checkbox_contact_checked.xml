@@ -8,15 +8,15 @@
                 android:height="20dp" />
             <solid android:color="?android:textColorPrimary" />
             <stroke
-                android:width="2dp"
+                android:width="@dimen/border_size"
                 android:color="?android:textColorPrimary" />
 
         </shape>
     </item>
     <item
-        android:bottom="4dp"
+        android:bottom="@dimen/spacer_extra_small"
         android:drawable="@drawable/ic_check"
-        android:left="4dp"
-        android:right="4dp"
-        android:top="4dp" />
+        android:left="@dimen/spacer_extra_small"
+        android:right="@dimen/spacer_extra_small"
+        android:top="@dimen/spacer_extra_small" />
 </layer-list>

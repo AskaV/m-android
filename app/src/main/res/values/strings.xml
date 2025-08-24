@@ -29,6 +29,9 @@
     <string name="signup_terms">By clicking Register you agree to our Terms and Conditions</string>
     <string name="signup_have_account">Already have an account?</string>
     <string name="signup_sign_in">Sign in</string>
+    <string name="signup_reg_email_msg">Email is already used</string>
+    <string name="signup_user_name_error_min3">User name must contain at least 3 letters</string>
+    <string name="signup_phone_error_min10">Phone must be at least 10 digits long</string>
 
     <!--  sign-up extended page  -->
     <string name="signup_extended_title">Your profile data</string>

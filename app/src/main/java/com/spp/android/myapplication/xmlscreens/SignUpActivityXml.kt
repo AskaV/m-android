@@ -3,9 +3,9 @@ package com.spp.android.myapplication.xmlscreens
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.databinding.SignUpPageBinding
 import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
 import kotlinx.coroutines.launch
@@ -29,34 +29,49 @@ class SignUpActivityXml : BaseActivity() {
         }
         binding.registerButton.setOnClickListener {
             val emailField = binding.commonLoginFields.editTextTextEmailAddress
-            val emailText = emailField.text.toString()
+            val passwordField = binding.commonLoginFields.editTextTextPassword
+
+            val emailText = emailField.text?.toString()?.trim().orEmpty()
+            val passwordText = passwordField.text?.toString()?.trim().orEmpty()
 
             val allValid = ValidationUtils.validateEmailAndPassword(
                 context = this,
                 emailField = emailField,
-                passwordField = binding.commonLoginFields.editTextTextPassword,
+                passwordField = passwordField,
                 emailErrorView = binding.commonLoginFields.emailErrorText,
                 passwordErrorView = binding.commonLoginFields.passwordErrorText
             )
+            if (!allValid) return@setOnClickListener
 
-            if (allValid) {
-                lifecycleScope.launch {
-                    UserPreferences.saveEmail(this@SignUpActivityXml, emailText)
-                    val intent = Intent(
-                        this@SignUpActivityXml,
-                        MainActivityXml::class.java
-                    ).apply {
-                        putExtra("email", emailText)
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            lifecycleScope.launch {
+                val isNew = isEmailNew(emailText)
+                if (!isNew) {
+                    binding.commonLoginFields.emailErrorText.apply {
+                        text = getString(R.string.signup_reg_email_msg)
+                        visibility = View.VISIBLE
                     }
-                    val options = ActivityOptions.makeCustomAnimation(
-                        this@SignUpActivityXml,
-                        R.anim.scale_in,
-                        R.anim.scale_out
-                    )
-                    startActivity(intent, options.toBundle())
+                    return@launch
                 }
+
+                val intent = Intent(
+                    this@SignUpActivityXml,
+                    SignUpExtendedActivityXml::class.java
+                ).apply {
+                    putExtra("email", emailText)
+                    putExtra("password", passwordText)
+                }
+                val options = ActivityOptions.makeCustomAnimation(
+                    this@SignUpActivityXml,
+                    R.anim.scale_in,
+                    R.anim.scale_out
+                )
+                startActivity(intent, options.toBundle())
             }
         }
+    }
+
+    private suspend fun isEmailNew(email: String): Boolean {
+        // TODO: PoST?
+        return true
     }
 }
