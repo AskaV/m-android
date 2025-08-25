@@ -40,4 +40,24 @@
     <string name="user_name_error">User name must contain at least 3 letters</string>
     <string name="phone_length_error">Phone must be at least 10 digits long</string>
 
+    <!--   my contacts recycler view  -->
+
+    <string name="contacts_text">Contacts</string>
+    <string name="add_contacts_text">Add contacts</string>
+    <string name="wastebasket_description">Wastebasket</string>
+    <string name="deleted_contact_toast_text">contact has been removed</string>
+    <string name="return_contact_toast_text">undo</string>
+    <string name="add_contacts_name">Name</string>
+    <string name="add_contacts_position">Position</string>
+    <string name="add_contacts_save_text">Save</string>
+    <string name="add_contacts_cancel_text">Cancel</string>
+
+    <!--   keys for Bundle/Intent extras   -->
+    <string name="key_email">email_text</string>
+    <string name="key_password">password_text</string>
+    <string name="extra_email">email</string>
+
+    <!--   toast messages   -->
+    <string name="toast_edit_profile">Edit Profile clicked</string>
+    <string name="toast_view_contacts">View Contacts clicked</string>
 </resources>

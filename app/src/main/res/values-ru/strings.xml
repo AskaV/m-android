@@ -39,4 +39,24 @@
     <string name="password_error_text">Пароль має містити щонайменше 8 символів</string>
     <string name="user_name_error">Ім’я користувача повинно містити щонайменше 3 літери</string>
     <string name="phone_length_error">Номер телефону має містити щонайменше 10 цифр</string>
+
+    <!--   сторінка списку контактів  -->
+    <string name="contacts_text">Контакти</string>
+    <string name="add_contacts_text">Додати контакти</string>
+    <string name="wastebasket_description">Сміттєвий кошик</string>
+    <string name="deleted_contact_toast_text">контакт видалено</string>
+    <string name="return_contact_toast_text">повернути</string>
+    <string name="add_contacts_name">Ім\'я</string>
+    <string name="add_contacts_position">Позиція</string>
+    <string name="add_contacts_save_text">Зберегти</string>
+    <string name="add_contacts_cancel_text">Відмінити</string>
+
+    <!--   ключі для Bundle/Intent extras   -->
+    <string name="key_email">текст емейл</string>
+    <string name="key_password">текст пароля</string>
+    <string name="extra_email">Емейл</string>
+
+    <!--   Повідомлення Toast   -->
+    <string name="toast_edit_profile">Натиснута кнопка редагування профіля</string>
+    <string name="toast_view_contacts">Натиснута кнопка перегляду контактів</string>
 </resources>

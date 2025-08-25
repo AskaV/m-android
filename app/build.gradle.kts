@@ -36,6 +36,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
@@ -43,7 +44,8 @@ android {
 }
 
 dependencies {
-
+    implementation (libs.androidx.activity.ktx)
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -55,6 +57,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.datastore.preferences.core.jvm)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -64,5 +68,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.compose.compiler)
     implementation (libs.androidx.datastore.preferences)
-
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.glide)
+    implementation(libs.picasso)
+    implementation(libs.fresco)
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
 }

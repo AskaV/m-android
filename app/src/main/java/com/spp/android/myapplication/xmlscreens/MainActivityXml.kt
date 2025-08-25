@@ -6,35 +6,32 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.databinding.MyProfilePageBinding
+import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
+import com.spp.android.myapplication.xmlscreens.util.extensions.showToast
 
 class MainActivityXml : BaseActivity() {
+    private lateinit var binding: MyProfilePageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.my_profile_page)
-        val avatarImage = findViewById<ImageView>(R.id.user_avatar)
-        avatarImage.setImageResource(R.drawable.profile_avatar)
+        binding = MyProfilePageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val email = intent.getStringExtra("email")
-        val userName = parseNameFromEmail(email ?: "User")
-        val userNameTextView = findViewById<TextView>(R.id.user_name)
+        binding.userAvatar.setImageResource(R.drawable.profile_avatar)
 
-        userNameTextView.text = userName
+        val email = intent.getStringExtra("email") ?: ""
+        val userName = ValidationUtils.parseNameFromEmail(email)
+        binding.userName.text = userName
 
-        findViewById<Button>(R.id.editProfileBtn).setOnClickListener {
-            Toast.makeText(this, "Edit Profile clicked", Toast.LENGTH_SHORT).show()
+        binding.editProfileBtn.setOnClickListener {
+            showToast(getString(R.string.toast_edit_profile))
         }
 
-        findViewById<Button>(R.id.viewMyContactsBtn).setOnClickListener {
-            Toast.makeText(this, "View Contacts clicked", Toast.LENGTH_SHORT).show()
+        binding.viewMyContactsBtn.setOnClickListener {
+            showToast(getString(R.string.toast_view_contacts))
         }
     }
 
-    private fun parseNameFromEmail(email: String): String {
-        return email.substringBefore("@")
-            .split(".", "_", "-")
-            .joinToString(" ") { it.replaceFirstChar(Char::uppercase) }
-    }
+
 }
