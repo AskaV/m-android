@@ -8,11 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.data.UserPreferences
-import com.spp.android.myapplication.xmlscreens.LoginActivityXml
-import com.spp.android.myapplication.xmlscreens.MainActivityXml
-import com.spp.android.myapplication.xmlscreens.SignUpActivityXml
-import com.spp.android.myapplication.ui.theme.MyApplicationTheme
-import com.spp.android.myapplication.xmlscreens.contacts.ContactsActivityXml
 import com.spp.android.myapplication.xmlscreens.fragment.ContactsFragmentActivityXml
 
 import kotlinx.coroutines.launch
@@ -54,12 +49,7 @@ class StartSelection : ComponentActivity() {
 
     private fun launchApp(themePref: String) {
         if (USE_COMPOSE) {
-            setContent {
-//                MyApplicationTheme(themePref = themePref) {
-//                    //LoginScreen(onValidLogin = {})
-//                    //ContactsScreen(onValidLogin = {})
-//                    startActivity(Intent(this, FragmentHostActivity::class.java))
-//                }
+
             }
         } else {
 //            startActivity(Intent(this, MainActivityXml::class.java))

@@ -7,7 +7,6 @@ import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
 import com.spp.android.myapplication.xmlscreens.util.extensions.showToast
 
 class MainActivityXml : BaseActivity() {
-
     private lateinit var binding: MyProfilePageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

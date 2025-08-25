@@ -5,12 +5,10 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.ContactsContract
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +30,7 @@ class ContactsActivityXml : AppCompatActivity() {
     private lateinit var adapter: ContactAdapter
     private lateinit var binding: MyContactsPageBinding
 
+    private lateinit var binding: MyContactsPageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +61,7 @@ class ContactsActivityXml : AppCompatActivity() {
                     if (currentSnackbar == null || !currentSnackbar!!.isShown) showNextSnackbar()
                 },
                 onItemClick = TODO()
+                }
             )
 
             binding.recyclerView.adapter = adapter
@@ -76,6 +76,7 @@ class ContactsActivityXml : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_CONTACTS_PERMISSION && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
+
             loadContactsFromPhone()
         } else {
             Toast.makeText(this, getString(R.string.deleted_contact_toast_text), Toast.LENGTH_SHORT)

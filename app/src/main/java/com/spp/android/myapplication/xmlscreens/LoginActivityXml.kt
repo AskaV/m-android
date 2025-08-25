@@ -13,16 +13,17 @@ import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
 import kotlinx.coroutines.launch
 
 class LoginActivityXml : BaseActivity() {
+    private lateinit var binding: LoginPageBinding
+    private val viewModel: LoginViewModel by viewModels()
 
     private lateinit var binding: LoginPageBinding
     private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = LoginPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        
         restoreInputs(savedInstanceState)
 
         lifecycleScope.launchWhenStarted {
@@ -49,12 +50,14 @@ class LoginActivityXml : BaseActivity() {
 
     private fun setupViews() = with(binding) {
         val fields = commonLoginFields
+
         fields.editTextTextEmailAddress.doAfterTextChanged {
             viewModel.setEmail(it?.toString().orEmpty())
         }
         fields.editTextTextPassword.doAfterTextChanged {
             viewModel.setPassword(it?.toString().orEmpty())
         }
+
         loginButton.setOnClickListener {
 
             val allValid = ValidationUtils.validateEmailAndPassword(
@@ -64,7 +67,6 @@ class LoginActivityXml : BaseActivity() {
                 emailErrorView = fields.emailErrorText,
                 passwordErrorView = fields.passwordErrorText
             )
-
             if (allValid) {
                 val email = viewModel.email.value
                 lifecycleScope.launch {
@@ -75,6 +77,7 @@ class LoginActivityXml : BaseActivity() {
         }
 
         binding.signUpText.setOnClickListener {
+
             startActivity(Intent(this@LoginActivityXml, SignUpActivityXml::class.java))
             overridePendingTransition(R.anim.scale_in, R.anim.scale_out)
         }
@@ -86,8 +89,7 @@ class LoginActivityXml : BaseActivity() {
                 .setText(state.getString("email_text", ""))
             binding.commonLoginFields.editTextTextPassword
                 .setText(state.getString("password_text", ""))
-        }
-    }
+
 
     private fun navigateToMain(email: String) {
         startActivity(
