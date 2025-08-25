@@ -8,8 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.data.UserPreferences
-//import com.spp.android.myapplication.screens.ContactsScreen
-import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 import com.spp.android.myapplication.xmlscreens.contacts.ContactsActivityXml
 import kotlinx.coroutines.launch
 
@@ -52,7 +50,7 @@ class StartSelection : ComponentActivity() {
         if (USE_COMPOSE) {
             setContent {
 //                MyApplicationTheme(themePref = themePref) {
-                    //LoginScreen(onValidLogin = {})
+                //LoginScreen(onValidLogin = {})
 //                    ContactsScreen()
 //                }
             }

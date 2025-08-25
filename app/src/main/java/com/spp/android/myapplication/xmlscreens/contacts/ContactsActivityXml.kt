@@ -4,41 +4,40 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.ContactsContract
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.spp.android.myapplication.R
-
+import com.spp.android.myapplication.databinding.DialogAddContactBinding
+import com.spp.android.myapplication.databinding.MyContactsPageBinding
 
 class ContactsActivityXml : AppCompatActivity() {
 
+    private val REQUEST_CODE_CONTACTS_PERMISSION = 100
     private val snackbarQueue = ArrayDeque<Pair<Contact, Int>>()
     private var currentSnackbar: Snackbar? = null
     private var countdownTimer: CountDownTimer? = null
-    private lateinit var viewModel: ContactsViewModel
+    private val viewModel: ContactsViewModel by viewModels()
     private val useRealContacts =
         true // true - download contacts from the phone book. false - download fake contacts.
     private lateinit var adapter: ContactAdapter
 
+    private lateinit var binding: MyContactsPageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.my_contacts_page)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        binding = MyContactsPageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[ContactsViewModel::class.java]
-        findViewById<TextView>(R.id.addContactsText).setOnClickListener {
-            showAddContactDialog()
-        }
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.addContactsText.setOnClickListener { showAddContactDialog() }
+
         if (useRealContacts) {
             if (checkSelfPermission(android.Manifest.permission.READ_CONTACTS)
                 == PackageManager.PERMISSION_GRANTED
@@ -52,18 +51,17 @@ class ContactsActivityXml : AppCompatActivity() {
         viewModel.contacts.observe(this) { contactList ->
             val mutableList = contactList.toMutableList()
 
-            adapter = ContactAdapter(mutableList) { contactToDelete, position ->
-                adapter.removeContactAt(position)
-
-                snackbarQueue.addLast(Pair(contactToDelete, position))
-
-                if (currentSnackbar == null || !currentSnackbar!!.isShown) {
-                    showNextSnackbar()
+            adapter = ContactAdapter(
+                mutableList,
+                onDeleteContact = { contactToDelete, position ->
+                    adapter.removeContactAt(position)
+                    snackbarQueue.addLast(contactToDelete to position)
+                    if (currentSnackbar == null || !currentSnackbar!!.isShown) showNextSnackbar()
                 }
-            }
+            )
 
-            recyclerView.adapter = adapter
-            enableSwipeToDelete(adapter, recyclerView)
+            binding.recyclerView.adapter = adapter
+            enableSwipeToDelete(adapter, binding.recyclerView)
         }
     }
 
@@ -73,7 +71,7 @@ class ContactsActivityXml : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 100 && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_CODE_CONTACTS_PERMISSION  && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
             loadContactsFromPhone()
         } else {
             Toast.makeText(this, getString(R.string.deleted_contact_toast_text), Toast.LENGTH_SHORT)
@@ -142,7 +140,7 @@ class ContactsActivityXml : AppCompatActivity() {
         var secondsLeft = durationSec
 
         val snackbar = Snackbar.make(
-            findViewById(android.R.id.content),
+            binding.root,
             getString(R.string.deleted_contact_toast_text) + " ($secondsLeft)",
             Snackbar.LENGTH_INDEFINITE
         )
@@ -175,21 +173,19 @@ class ContactsActivityXml : AppCompatActivity() {
     }
 
     private fun showAddContactDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_add_contact, null)
-        val nameEditText = dialogView.findViewById<EditText>(R.id.nameEditText)
-        val positionEditText = dialogView.findViewById<EditText>(R.id.positionEditText)
+        val dialogBinding = DialogAddContactBinding.inflate(layoutInflater)
 
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.add_contacts_text))
-            .setView(dialogView)
+            .setView(dialogBinding.root)
             .setPositiveButton(getString(R.string.add_contacts_save_text)) { _, _ ->
-                val name = nameEditText.text.toString()
-                val position = positionEditText.text.toString()
+                val name = dialogBinding.nameEditText.text.toString()
+                val position = dialogBinding.positionEditText.text.toString()
                 if (name.isNotBlank() && position.isNotBlank()) {
                     val newContact = Contact(
                         name = name,
                         position = position,
-                        avatarUrl = "https://i.pravatar.cc/150?img=${(1..70).random()}"
+                        avatarUrl = viewModel.generateAvatarUrl()
                     )
 
                     val currentList = viewModel.contacts.value?.toMutableList() ?: mutableListOf()

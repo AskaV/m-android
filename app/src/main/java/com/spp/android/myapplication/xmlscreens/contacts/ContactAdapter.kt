@@ -1,42 +1,39 @@
 package com.spp.android.myapplication.xmlscreens.contacts
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.spp.android.myapplication.R
-import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
-
+import com.spp.android.myapplication.databinding.ItemContactRecyclerVievBinding
+import com.spp.android.myapplication.xmlscreens.util.extensions.ImageViewExtensions.loadAvatar
 
 class ContactAdapter(
     private val contacts: MutableList<Contact>,
-    private val onDeleteClick: (Contact, Int) -> Unit
+    private val onDeleteContact: (contact: Contact, position: Int) -> Unit
 ) : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
 
-    inner class ContactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val avatarImageView: ImageView = itemView.findViewById(R.id.avatarImageView)
-        val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
-        val professionTextView: TextView = itemView.findViewById(R.id.positionTextView)
-    }
+    inner class ContactViewHolder(val binding: ItemContactRecyclerVievBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_contact_recycler_viev, parent, false)
-        return ContactViewHolder(view)
+        val binding = ItemContactRecyclerVievBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ContactViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         val contact = contacts[position]
-        holder.avatarImageView.loadAvatar(contact.avatarUrl)
-        holder.nameTextView.text = contact.name
-
-        holder.itemView.findViewById<ImageView>(R.id.deleteButton).setOnClickListener {
-            val currentPosition = holder.bindingAdapterPosition
-            if (currentPosition != RecyclerView.NO_POSITION) {
-                val contactToDelete = contacts[currentPosition]
-                onDeleteClick(contactToDelete, currentPosition)
+        with(holder.binding) {
+            avatarImageView.loadAvatar(contact.avatarUrl)
+            nameTextView.text = contact.name
+            deleteButton.setOnClickListener {
+                val currentPosition = holder.bindingAdapterPosition
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    val contactToDelete = contacts[currentPosition]
+                    onDeleteContact(contactToDelete, currentPosition)
+                }
             }
         }
     }
