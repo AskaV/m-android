@@ -3,15 +3,13 @@ package com.spp.android.myapplication.xmlscreens.contacts
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.spp.android.myapplication.databinding.ItemContactRecyclerVievBinding
-import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
-
+import com.spp.android.myapplication.xmlscreens.util.extensions.ImageViewExtensions.loadAvatar
 
 class ContactAdapter(
     private val contacts: MutableList<Contact>,
-    private val onDeleteClick: (Contact, Int) -> Unit,
+    private val onDeleteContact: (contact: Contact, position: Int) -> Unit,
     private val onItemClick: (Contact, View) -> Unit
 ) : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
 
@@ -29,25 +27,25 @@ class ContactAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemContactRecyclerVievBinding.inflate(inflater, parent, false)
+        val binding = ItemContactRecyclerVievBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return ContactViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         val contact = contacts[position]
-        val b = holder.binding
-
-        b.avatarImageView.loadAvatar(contact.avatarUrl)
-        b.nameTextView.text = contact.name
-
-        val tn = "avatar_${contact.name}_$position"
-        ViewCompat.setTransitionName(b.avatarImageView, tn)
-
-        b.deleteButton.setOnClickListener {
-            val pos = holder.bindingAdapterPosition
-            if (pos != RecyclerView.NO_POSITION) {
-                onDeleteClick(contacts[pos], pos)
+        with(holder.binding) {
+            avatarImageView.loadAvatar(contact.avatarUrl)
+            nameTextView.text = contact.name
+            deleteButton.setOnClickListener {
+                val currentPosition = holder.bindingAdapterPosition
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    val contactToDelete = contacts[currentPosition]
+                    onDeleteContact(contactToDelete, currentPosition)
+                }
             }
         }
     }

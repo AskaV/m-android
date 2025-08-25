@@ -2,15 +2,20 @@ package com.spp.android.myapplication.xmlscreens
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.databinding.LoginPageBinding
+import com.spp.android.myapplication.xmlscreens.util.extensions.LoginViewModel
+import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
 import kotlinx.coroutines.launch
 
 class LoginActivityXml : BaseActivity() {
 
     private lateinit var binding: LoginPageBinding
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +24,19 @@ class LoginActivityXml : BaseActivity() {
         setContentView(binding.root)
 
         restoreInputs(savedInstanceState)
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.email.collect { text ->
+                val et = binding.commonLoginFields.editTextTextEmailAddress
+                if (et.text.toString() != text) et.setText(text)
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.password.collect { text ->
+                val et = binding.commonLoginFields.editTextTextPassword
+                if (et.text.toString() != text) et.setText(text)
+            }
+        }
 
         lifecycleScope.launch {
             val savedEmail = UserPreferences.getEmail(this@LoginActivityXml)
@@ -29,20 +47,26 @@ class LoginActivityXml : BaseActivity() {
         setupViews()
     }
 
-    private fun setupViews() {
-        binding.loginButton.setOnClickListener {
-            val emailField = binding.commonLoginFields.editTextTextEmailAddress
+    private fun setupViews() = with(binding) {
+        val fields = commonLoginFields
+        fields.editTextTextEmailAddress.doAfterTextChanged {
+            viewModel.setEmail(it?.toString().orEmpty())
+        }
+        fields.editTextTextPassword.doAfterTextChanged {
+            viewModel.setPassword(it?.toString().orEmpty())
+        }
+        loginButton.setOnClickListener {
 
             val allValid = ValidationUtils.validateEmailAndPassword(
-                context = this,
-                emailField = emailField,
-                passwordField = binding.commonLoginFields.editTextTextPassword,
-                emailErrorView = binding.commonLoginFields.emailErrorText,
-                passwordErrorView = binding.commonLoginFields.passwordErrorText
+                context = this@LoginActivityXml,
+                emailField = fields.editTextTextEmailAddress,
+                passwordField = fields.editTextTextPassword,
+                emailErrorView = fields.emailErrorText,
+                passwordErrorView = fields.passwordErrorText
             )
 
             if (allValid) {
-                val email = emailField.text.toString()
+                val email = viewModel.email.value
                 lifecycleScope.launch {
                     UserPreferences.saveEmail(this@LoginActivityXml, email)
                     navigateToMain(email)
@@ -51,7 +75,7 @@ class LoginActivityXml : BaseActivity() {
         }
 
         binding.signUpText.setOnClickListener {
-            startActivity(Intent(this, SignUpActivityXml::class.java))
+            startActivity(Intent(this@LoginActivityXml, SignUpActivityXml::class.java))
             overridePendingTransition(R.anim.scale_in, R.anim.scale_out)
         }
     }
@@ -66,7 +90,12 @@ class LoginActivityXml : BaseActivity() {
     }
 
     private fun navigateToMain(email: String) {
-        startActivity(Intent(this, MainActivityXml::class.java).putExtra("email", email))
+        startActivity(
+            Intent(
+                this,
+                MainActivityXml::class.java
+            ).putExtra(getString(R.string.extra_email), email)
+        )
         overridePendingTransition(R.anim.scale_in, R.anim.scale_out)
         finish()
     }
@@ -74,11 +103,11 @@ class LoginActivityXml : BaseActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(
-            "email_text",
+            getString(R.string.key_email),
             binding.commonLoginFields.editTextTextEmailAddress.text.toString()
         )
         outState.putString(
-            "password_text",
+            getString(R.string.key_password),
             binding.commonLoginFields.editTextTextPassword.text.toString()
         )
     }

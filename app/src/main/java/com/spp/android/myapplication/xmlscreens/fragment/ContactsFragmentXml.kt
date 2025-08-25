@@ -80,7 +80,7 @@ class ContactsFragmentXml : Fragment() {
             val mutableList = contactList.toMutableList()
             adapter = ContactAdapter(
                 mutableList,
-                onDeleteClick = { contactToDelete, position ->
+                onDeleteContact = { contactToDelete, position ->
                     adapter.removeContactAt(position)
                     snackbarQueue.addLast(Pair(contactToDelete, position))
                     if (currentSnackbar == null || !currentSnackbar!!.isShown) {

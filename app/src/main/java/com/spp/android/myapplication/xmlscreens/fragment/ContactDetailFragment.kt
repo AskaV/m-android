@@ -10,7 +10,7 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.spp.android.myapplication.databinding.DetailViewPageBinding
-import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
+import com.spp.android.myapplication.xmlscreens.util.extensions.ImageViewExtensions.loadAvatar
 
 
 class ContactDetailFragment : Fragment() {

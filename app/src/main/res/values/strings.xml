@@ -56,4 +56,13 @@
     <string name="add_contacts_position">Position</string>
     <string name="add_contacts_save_text">Save</string>
     <string name="add_contacts_cancel_text">Cancel</string>
+
+    <!--   keys for Bundle/Intent extras   -->
+    <string name="key_email">email_text</string>
+    <string name="key_password">password_text</string>
+    <string name="extra_email">email</string>
+
+    <!--   toast messages   -->
+    <string name="toast_edit_profile">Edit Profile clicked</string>
+    <string name="toast_view_contacts">View Contacts clicked</string>
 </resources>
