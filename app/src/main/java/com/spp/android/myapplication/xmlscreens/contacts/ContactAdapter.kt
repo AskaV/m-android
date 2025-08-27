@@ -1,6 +1,7 @@
 package com.spp.android.myapplication.xmlscreens.contacts
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.spp.android.myapplication.databinding.ItemContactRecyclerVievBinding

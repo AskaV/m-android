@@ -16,14 +16,11 @@ class LoginActivityXml : BaseActivity() {
     private lateinit var binding: LoginPageBinding
     private val viewModel: LoginViewModel by viewModels()
 
-    private lateinit var binding: LoginPageBinding
-    private val viewModel: LoginViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LoginPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
         restoreInputs(savedInstanceState)
 
         lifecycleScope.launchWhenStarted {
@@ -90,6 +87,8 @@ class LoginActivityXml : BaseActivity() {
             binding.commonLoginFields.editTextTextPassword
                 .setText(state.getString("password_text", ""))
 
+        }
+    }
 
     private fun navigateToMain(email: String) {
         startActivity(

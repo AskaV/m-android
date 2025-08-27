@@ -30,7 +30,6 @@ class ContactsActivityXml : AppCompatActivity() {
     private lateinit var adapter: ContactAdapter
     private lateinit var binding: MyContactsPageBinding
 
-    private lateinit var binding: MyContactsPageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +59,7 @@ class ContactsActivityXml : AppCompatActivity() {
                     snackbarQueue.addLast(contactToDelete to position)
                     if (currentSnackbar == null || !currentSnackbar!!.isShown) showNextSnackbar()
                 },
-                onItemClick = TODO()
-                }
+                onItemClick = TODO(),
             )
 
             binding.recyclerView.adapter = adapter
