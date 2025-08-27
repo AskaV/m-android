@@ -254,7 +254,7 @@ class ContactsFragmentXml : Fragment() {
                     val newContact = Contact(
                         name = name,
                         position = position,
-                        avatarUrl = "https://i.pravatar.cc/150?img=${(1..70).random()}"
+                        avatarUrl = viewModel.generateAvatarUrl()
                     )
 
                     val currentList = viewModel.contacts.value?.toMutableList() ?: mutableListOf()

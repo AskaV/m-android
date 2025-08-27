@@ -9,6 +9,16 @@ import com.spp.android.myapplication.R
 
 object ValidationUtils {
 
+    fun parseNameFromEmail(email: String): String {
+        if (email.isBlank()) return "User"
+        return email.substringBefore('@')
+            .split('.', '_', '-', ' ')
+            .filter { it.isNotBlank() }
+            .joinToString(" ") { part ->
+                part.lowercase().replaceFirstChar { it.titlecase() }
+            }
+    }
+
     fun validateEmailAndPassword(
         context: Context,
         emailField: EditText,

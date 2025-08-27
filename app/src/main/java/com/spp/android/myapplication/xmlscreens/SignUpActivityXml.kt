@@ -10,8 +10,8 @@ import com.spp.android.myapplication.databinding.SignUpPageBinding
 import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
 import kotlinx.coroutines.launch
 
-
 class SignUpActivityXml : BaseActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,7 +47,7 @@ class SignUpActivityXml : BaseActivity() {
                         this@SignUpActivityXml,
                         MainActivityXml::class.java
                     ).apply {
-                        putExtra("email", emailText)
+                        putExtra(getString(R.string.extra_email), emailText)
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     }
                     val options = ActivityOptions.makeCustomAnimation(

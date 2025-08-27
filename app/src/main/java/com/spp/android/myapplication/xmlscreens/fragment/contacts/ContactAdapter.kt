@@ -7,7 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.ItemContactRecyclerVievBinding
-import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
+import com.spp.android.myapplication.xmlscreens.util.extensions.ImageViewExtensions.loadAvatar
 
 class ContactAdapter(
     private val contacts: MutableList<Contact>,

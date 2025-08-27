@@ -29,7 +29,7 @@ class ContactsViewModel : ViewModel() {
         )
     }
 
-    private fun generateAvatarUrl(): String {
+    fun generateAvatarUrl(): String {
         val id = (1..70).random()
         return "https://i.pravatar.cc/150?img=$id"
     }

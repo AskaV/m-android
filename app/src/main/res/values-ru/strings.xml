@@ -62,4 +62,12 @@
 
     <string name="delete">Видалити</string>
 
+    <!--   ключі для Bundle/Intent extras   -->
+    <string name="key_email">текст емейл</string>
+    <string name="key_password">текст пароля</string>
+    <string name="extra_email">Емейл</string>
+
+    <!--   Повідомлення Toast   -->
+    <string name="toast_edit_profile">Натиснута кнопка редагування профіля</string>
+    <string name="toast_view_contacts">Натиснута кнопка перегляду контактів</string>
 </resources>
