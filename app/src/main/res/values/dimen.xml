@@ -118,4 +118,7 @@
     <dimen name="checkbox_corner_radius">4dp</dimen>
     <dimen name="checkbox_border_width">1dp</dimen>
 
+    <!-- =============== CONTACTS PAGE DIMENSIONS =============== -->
+    <dimen name="contacts_avatar_size">50dp</dimen>
+
 </resources>

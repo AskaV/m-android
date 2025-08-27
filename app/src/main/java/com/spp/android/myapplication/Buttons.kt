@@ -1,6 +1,7 @@
 package com.spp.android.myapplication
 
 import android.annotation.SuppressLint
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,7 +31,7 @@ import com.spp.android.myapplication.ui.theme.socialIcon
 
 @Composable
 fun SocialButton(
-    iconRes: Int,
+    @DrawableRes iconRes: Int,
     contentDescription: String,
     modifier: Modifier = Modifier
 ) {
