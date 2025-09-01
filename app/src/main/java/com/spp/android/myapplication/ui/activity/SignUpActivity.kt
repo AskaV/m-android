@@ -1,9 +1,10 @@
-package com.spp.android.myapplication.screens
+package com.spp.android.myapplication.ui.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Patterns
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -39,22 +40,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
-import com.spp.android.myapplication.OutlinedBorderButton
+import com.spp.android.myapplication.ui.components.OutlinedBorderButton
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.data.UserPreferences
-import com.spp.android.myapplication.screens.fragment.FragmentHostActivity
-import com.spp.android.myapplication.screens.util.extensions.CustomGoogleButton
+import com.spp.android.myapplication.ui.screens.fragment.FragmentHostActivity
+import com.spp.android.myapplication.ui.screens.util.extensions.CustomGoogleButton
 import com.spp.android.myapplication.ui.components.MaterialStyledTextField
-import com.spp.android.myapplication.ui.preview.PreviewConfig
+import com.spp.android.myapplication.ui.screens.util.preview.PreviewConfig
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 import com.spp.android.myapplication.ui.theme.Transparent
 import kotlinx.coroutines.launch
 
-class SignUpActivity : ComponentActivity() {
+//todo same errors as in Login Activity
+class SignUpActivity : ComponentActivity() { //todo DELETE. use screen for Login Activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val themePref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val themePref = getSharedPreferences("user_prefs", MODE_PRIVATE)
             .getString("theme_pref", "system") ?: "system"
 
         setContent {
@@ -65,6 +67,7 @@ class SignUpActivity : ComponentActivity() {
                         UserPreferences.saveEmail(activity, email)
                         val intent = Intent(activity, FragmentHostActivity::class.java)
                         startActivity(intent)
+                        //todo deprecated!
                         overridePendingTransition(R.anim.scale_in, R.anim.scale_out)
                         finish()
                     }
@@ -73,13 +76,13 @@ class SignUpActivity : ComponentActivity() {
         }
     }
 
+    //todo own preview annotation - annotation class PreviewMy
     @Preview(
         showBackground = true,
         name = "SignUpScreenPreview",
-        uiMode = android.content.res.Configuration.UI_MODE_NIGHT_NO,  //UI_MODE_NIGHT_YES,
+        uiMode = Configuration.UI_MODE_NIGHT_NO,  //UI_MODE_NIGHT_YES,
         device = "spec:width=${PreviewConfig.FIGMA_SCREEN_WIDTH}px,height=${PreviewConfig.FIGMA_SCREEN_HEIGHT}px,dpi=${PreviewConfig.FIGMA_SCREEN_DPI}"
     )
-
     @Composable
     fun SignUpScreenPreview() {
         MyApplicationTheme(themePref = "system") { // colored or system
@@ -112,6 +115,8 @@ class SignUpActivity : ComponentActivity() {
         ) {
             Column {
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.margin_top_large)))
+
+                //todo component (Title with subtitle)
                 Text(
                     text = stringResource(R.string.signup_title),
                     style = MaterialTheme.typography.titleLarge,
@@ -128,6 +133,7 @@ class SignUpActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_medium)))
+                //todo reuse component from Auth
                 Text(
                     text = stringResource(R.string.email),
                     style = MaterialTheme.typography.bodySmall,
@@ -157,6 +163,7 @@ class SignUpActivity : ComponentActivity() {
                     errorMessage = passwordError
                 )
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_small)))
+                //todo component
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
@@ -205,7 +212,7 @@ class SignUpActivity : ComponentActivity() {
                     text = stringResource(R.string.signup_register).uppercase(),
                     onClick = {
                         val emailValid =
-                            android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                            Patterns.EMAIL_ADDRESS.matcher(email).matches()
                         val passwordValid =
                             password.length >= context.resources.getInteger(R.integer.password_length)
                         var isValid = true

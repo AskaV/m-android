@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.fragment.contact
+package com.spp.android.myapplication.ui.screens.fragment.contact
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,17 +8,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class ContactsViewModel : ViewModel() {
+class ContactsViewModel : ViewModel() { //todo place near Composable
+
     private val _selected = MutableStateFlow<Set<Contact>>(emptySet())
     val selected: StateFlow<Set<Contact>> = _selected.asStateFlow()
 
     val isSelectionMode: StateFlow<Boolean> = _selected
-        .map { it.isNotEmpty() }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+            .map { it.isNotEmpty() }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     private val _contacts = MutableStateFlow(generateContacts())
     val contacts: StateFlow<List<Contact>> = _contacts.asStateFlow()
+
     private val deletedContacts = mutableListOf<Contact>()
 
     private var lastBatchDeleted: List<Contact> = emptyList()
@@ -40,28 +43,26 @@ class ContactsViewModel : ViewModel() {
         _contacts.value = listOf(contact) + _contacts.value
     }
 
-    companion object {
-        private fun generateContacts(): List<Contact> {
-            return listOf(
-                Contact("Ava Smith", "Photograph", generateAvatarUrl()),
-                Contact("Jessie Brown", "Actress", generateAvatarUrl()),
-                Contact("Jackie Taylor", "Financier", generateAvatarUrl()),
-                Contact("Jenny Walker", "Make-up artist", generateAvatarUrl()),
-                Contact("Freddy Harris", "Secretary", generateAvatarUrl()),
-                Contact("Annie King", "Nurse", generateAvatarUrl()),
-                Contact("Ava Smith", "Photograph", generateAvatarUrl()),
-                Contact("Jessie Brown", "Actress", generateAvatarUrl()),
-                Contact("Jackie Taylor", "Financier", generateAvatarUrl()),
-                Contact("Jenny Walker", "Make-up artist", generateAvatarUrl()),
-                Contact("Freddy Harris", "Secretary", generateAvatarUrl()),
-                Contact("Annie King", "Nurse", generateAvatarUrl())
-            )
-        }
+    private fun generateContacts(): List<Contact> {
+        return listOf(
+            Contact("Ava Smith", "Photograph", generateAvatarUrl()),
+            Contact("Jessie Brown", "Actress", generateAvatarUrl()),
+            Contact("Jackie Taylor", "Financier", generateAvatarUrl()),
+            Contact("Jenny Walker", "Make-up artist", generateAvatarUrl()),
+            Contact("Freddy Harris", "Secretary", generateAvatarUrl()),
+            Contact("Annie King", "Nurse", generateAvatarUrl()),
+            Contact("Ava Smith", "Photograph", generateAvatarUrl()),
+            Contact("Jessie Brown", "Actress", generateAvatarUrl()),
+            Contact("Jackie Taylor", "Financier", generateAvatarUrl()),
+            Contact("Jenny Walker", "Make-up artist", generateAvatarUrl()),
+            Contact("Freddy Harris", "Secretary", generateAvatarUrl()),
+            Contact("Annie King", "Nurse", generateAvatarUrl())
+        )
+    }
 
-        private fun generateAvatarUrl(): String {
-            val id = (1..70).random()
-            return "https://i.pravatar.cc/150?img=$id"
-        }
+    private fun generateAvatarUrl(): String {
+        val id = (1..70).random()
+        return "https://i.pravatar.cc/150?img=$id"
     }
 
     fun startSelection(with: Contact) {

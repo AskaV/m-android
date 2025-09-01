@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.fragment.contact
+package com.spp.android.myapplication.ui.screens.fragment.contact
 
 import android.os.Bundle
 import android.transition.TransitionInflater
@@ -34,13 +34,14 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.toRoute
-import com.spp.android.myapplication.FilledButton
+import com.spp.android.myapplication.ui.components.FilledButton
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.SocialButton
-import com.spp.android.myapplication.nav.ContactDetailRoute
-import com.spp.android.myapplication.screens.util.extensions.LoadWithGlide
+import com.spp.android.myapplication.ui.components.SocialButton
+import com.spp.android.myapplication.ui.nav.ContactDetailRoute
+import com.spp.android.myapplication.ui.screens.util.extensions.LoadWithGlide
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 
+//todo separate package and Composable
 class ContactDetailFragment : Fragment() {
 
     private lateinit var route: ContactDetailRoute

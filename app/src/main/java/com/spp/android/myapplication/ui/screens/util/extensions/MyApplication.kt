@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.util.extensions
+package com.spp.android.myapplication.ui.screens.util.extensions
 
 import android.app.Application
 import com.facebook.drawee.backends.pipeline.Fresco

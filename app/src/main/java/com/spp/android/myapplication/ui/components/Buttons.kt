@@ -1,4 +1,4 @@
-package com.spp.android.myapplication
+package com.spp.android.myapplication.ui.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
@@ -23,11 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.spp.android.myapplication.R
 import com.spp.android.myapplication.ui.theme.AccentLight
 import com.spp.android.myapplication.ui.theme.TextPrimaryLight
 import com.spp.android.myapplication.ui.theme.TextTertiaryLight
 import com.spp.android.myapplication.ui.theme.socialIcon
-
+//todo preview?
 @Composable
 fun SocialButton(
     iconRes: Int,
@@ -57,6 +58,8 @@ fun SocialButton(
     }
 }
 
+//todo preview?
+//todo to other file
 @Composable
 fun FilledButton(
     text: String,
@@ -83,6 +86,8 @@ fun FilledButton(
     }
 }
 
+//todo preview?
+//todo to other file
 @Composable
 fun OutlinedBorderButton(
     text: String = stringResource(R.string.edit_profile),

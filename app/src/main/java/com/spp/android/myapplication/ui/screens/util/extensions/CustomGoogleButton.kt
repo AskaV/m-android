@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.util.extensions
+package com.spp.android.myapplication.ui.screens.util.extensions
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

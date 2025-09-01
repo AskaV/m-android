@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.fragment
+package com.spp.android.myapplication.ui.screens.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -43,18 +44,20 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.nav.ContactDetailRoute
-import com.spp.android.myapplication.screens.fragment.contact.AddContactDialog
-import com.spp.android.myapplication.screens.fragment.contact.Contact
-import com.spp.android.myapplication.screens.fragment.contact.ContactItem
-import com.spp.android.myapplication.screens.fragment.contact.ContactsViewModel
-import com.spp.android.myapplication.screens.fragment.contact.SwipeToDeleteContainer
-import com.spp.android.myapplication.screens.fragment.contact.getAvatarTransitionName
+import com.spp.android.myapplication.ui.nav.ContactDetailRoute
+import com.spp.android.myapplication.ui.screens.fragment.contact.AddContactDialog
+import com.spp.android.myapplication.ui.screens.fragment.contact.Contact
+import com.spp.android.myapplication.ui.screens.fragment.contact.ContactItem
+import com.spp.android.myapplication.ui.screens.fragment.contact.ContactsViewModel
+import com.spp.android.myapplication.ui.screens.fragment.contact.SwipeToDeleteContainer
+import com.spp.android.myapplication.ui.screens.fragment.contact.getAvatarTransitionName
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class ContactsFragment : Fragment() {
+//todo WARN Skipped 47 frames!  The application may be doing too much work on its main thread.
+
+class ContactsFragment : Fragment() { //todo Composable!
 
     private val viewModel: ContactsViewModel by viewModels()
 
@@ -64,6 +67,7 @@ class ContactsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
         setContent {
+
             MyApplicationTheme {
                 val contacts by viewModel.contacts.collectAsState()
                 val selected by viewModel.selected.collectAsState()
@@ -113,7 +117,7 @@ class ContactsFragment : Fragment() {
                     ) {
                         ContactsTopBar(
                             onBackClick = { requireActivity().onBackPressedDispatcher.onBackPressed() },
-                            onSearchClick = { /* TODO */ }
+                            onSearchClick = { /* TODO */ } //todo empty
                         )
 
                         Text(
@@ -159,7 +163,7 @@ class ContactsFragment : Fragment() {
                         )
                     }
 
-                    AddContactDialog(
+                    AddContactDialog( //todo as in design + add on end of list
                         showDialog = showDialog,
                         onDismiss = { showDialog = false },
                         onAddContact = { contact ->
@@ -172,10 +176,10 @@ class ContactsFragment : Fragment() {
     }
 }
 
-
+//todo separate file + preview
 @Composable
 private fun ContactsTopBar(
-    onBackClick: () -> Unit,
+    onBackClick: () -> Unit, //todo ERROR! FATAL EXCEPTION
     onSearchClick: () -> Unit,
 ) {
     Box(
@@ -216,6 +220,7 @@ private fun ContactsTopBar(
     }
 }
 
+//todo separate file + preview
 @Composable
 private fun ContactList(
     contacts: List<Contact>,
@@ -235,7 +240,8 @@ private fun ContactList(
             .background(MaterialTheme.colorScheme.surface)
     ) {
         LazyColumn {
-            items(contacts.size) { index ->
+            //todo decompose to own fun
+            items(contacts.size) { index -> //todo itemsIndexed(contacts) { index, contact  ->
                 val contact = contacts[index]
                 val avatarTransitionName = contact.getAvatarTransitionName(index)
                 val avatarViewState = remember(contact) { mutableStateOf<ImageView?>(null) }

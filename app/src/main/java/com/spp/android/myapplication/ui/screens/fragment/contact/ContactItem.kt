@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.fragment.contact
+package com.spp.android.myapplication.ui.screens.fragment.contact
 
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.screens.util.extensions.LoadWithGlide
+import com.spp.android.myapplication.ui.screens.util.extensions.LoadWithGlide
 
 @Composable
 fun ContactItem(

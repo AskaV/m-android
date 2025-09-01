@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.fragment
+package com.spp.android.myapplication.ui.screens.fragment
 
 import android.content.Context
 import android.os.Bundle
@@ -38,12 +38,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import com.spp.android.myapplication.FilledButton
-import com.spp.android.myapplication.OutlinedBorderButton
+import com.spp.android.myapplication.ui.components.FilledButton
+import com.spp.android.myapplication.ui.components.OutlinedBorderButton
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.SocialButton
+import com.spp.android.myapplication.ui.components.SocialButton
 import com.spp.android.myapplication.data.UserPreferences
-import com.spp.android.myapplication.ui.preview.PreviewConfig
+import com.spp.android.myapplication.ui.screens.util.preview.PreviewConfig
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -54,6 +54,7 @@ class MyProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
+        //todo to Navigtor
         setContent {
             val themePref = remember {
                 requireContext()
@@ -61,6 +62,7 @@ class MyProfileFragment : Fragment() {
                     .getString("theme_pref", "system") ?: "system"
             }
 
+            //todo move to MyProfileScreen
             var displayName by remember { mutableStateOf("User") }
             LaunchedEffect(Unit) {
                 val email =
@@ -81,6 +83,7 @@ class MyProfileFragment : Fragment() {
     }
 }
 
+//todo separate file
 @Preview(
     showBackground = true,
     name = "FigmaMobileSize",
@@ -95,6 +98,7 @@ fun MyProfileScreenPreview() {
     }
 }
 
+//todo viewmodel
 fun parseNameFromEmail(email: String): String {
     return email.substringBefore("@")
         .split(".", "_", "-")
@@ -103,6 +107,9 @@ fun parseNameFromEmail(email: String): String {
 
 @Composable
 fun MyProfileScreen(userName: String, modifier: Modifier = Modifier) {
+    //todo MVVM
+
+    //todo Logout button
     Column(
         modifier = modifier.fillMaxSize()
     ) {
@@ -193,6 +200,7 @@ fun MyProfileScreen(userName: String, modifier: Modifier = Modifier) {
     }
 }
 
+//todo separate file + preview
 @Composable
 fun ProfileAvatar() {
     Image(
@@ -204,6 +212,7 @@ fun ProfileAvatar() {
     )
 }
 
+//todo separate file + preview
 @Composable
 fun ActionButtons() {
     Column(
@@ -213,7 +222,7 @@ fun ActionButtons() {
     ) {
         OutlinedBorderButton(
             text = stringResource(R.string.edit_profile),
-            onClick = { /* TODO: Edit Profile Action */ },
+            onClick = { /* TODO: Edit Profile Action */ }, //todo empty
             borderColor = MaterialTheme.colorScheme.onSecondary,
             contentColor = MaterialTheme.colorScheme.onSecondary
         )
@@ -222,7 +231,7 @@ fun ActionButtons() {
 
         FilledButton(
             text = stringResource(R.string.view_contacts).uppercase(),
-            onClick = { /* TODO: View Contacts Action */ },
+            onClick = { /* TODO: View Contacts Action */ },  //todo empty
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onBackground
         )

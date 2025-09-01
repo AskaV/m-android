@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.ui.preview
+package com.spp.android.myapplication.ui.screens.util.preview
 
 object PreviewConfig {
     const val FIGMA_SCREEN_WIDTH = 360

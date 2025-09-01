@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.fragment.contact
+package com.spp.android.myapplication.ui.screens.fragment.contact
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState

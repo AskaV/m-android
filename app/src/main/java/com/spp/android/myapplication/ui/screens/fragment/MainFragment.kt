@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.fragment
+package com.spp.android.myapplication.ui.screens.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,9 +13,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.screens.util.extensions.MainPagerAdapter
+import com.spp.android.myapplication.ui.screens.util.extensions.MainPagerAdapter
+import java.time.DayOfWeek
 
 class MainFragment : Fragment() {
+
+    //todo migrate to Compose
 
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
@@ -67,13 +70,14 @@ class MainFragment : Fragment() {
 
         pagerAdapter = MainPagerAdapter(this)
         viewPager.adapter = pagerAdapter
-        viewPager.setCurrentItem(0, false)
+        viewPager.setCurrentItem(0 /*todo enum*/, false)
 
         // Привязываем табы к вьюпейджеру
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
-                0 -> getString(R.string.profile_text)   // "My profile"
-                else -> getString(R.string.contacts_text) // "Contacts"
+                0 -> getString(R.string.profile_text)   // "My profile" //todo enum
+                else -> getString(R.string.contacts_text) // "Contacts" //todo enum
+                //todo else - throw exception
             }
         }.attach()
     }

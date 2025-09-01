@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.fragment
+package com.spp.android.myapplication.ui.screens.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -8,10 +8,10 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.createGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.fragment
-import com.spp.android.myapplication.nav.ContactDetailRoute
-import com.spp.android.myapplication.nav.ContactsRoute
-import com.spp.android.myapplication.nav.MainRoute
-import com.spp.android.myapplication.screens.fragment.contact.ContactDetailFragment
+import com.spp.android.myapplication.ui.nav.ContactDetailRoute
+import com.spp.android.myapplication.ui.nav.ContactsRoute
+import com.spp.android.myapplication.ui.nav.MainRoute
+import com.spp.android.myapplication.ui.screens.fragment.contact.ContactDetailFragment
 
 class FragmentHostActivity : AppCompatActivity() {
 
@@ -30,6 +30,7 @@ class FragmentHostActivity : AppCompatActivity() {
 
         val navController = navHostFragment.navController
 
+        //todo use navigation from Compose
         val navGraph = navController.createGraph(startDestination = MainRoute) {
             fragment<MainFragment, MainRoute> { }
             fragment<ContactsFragment, ContactsRoute> { }

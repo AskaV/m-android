@@ -1,8 +1,8 @@
-package com.spp.android.myapplication.screens
+package com.spp.android.myapplication.ui.activity
 
 import android.app.ActivityOptions
-import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Patterns
 import androidx.activity.ComponentActivity
@@ -39,26 +39,30 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
-import com.spp.android.myapplication.OutlinedBorderButton
+import com.spp.android.myapplication.ui.components.OutlinedBorderButton
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.data.UserPreferences
-import com.spp.android.myapplication.screens.fragment.FragmentHostActivity
+import com.spp.android.myapplication.ui.screens.fragment.FragmentHostActivity
 import com.spp.android.myapplication.ui.components.EmailPasswordForm
-import com.spp.android.myapplication.ui.preview.PreviewConfig
+import com.spp.android.myapplication.ui.screens.util.preview.PreviewConfig
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 import com.spp.android.myapplication.ui.theme.Transparent
 import kotlinx.coroutines.launch
 
 class LoginActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val themePref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        //todo same as in StartSelection
+        val themePref = getSharedPreferences("user_prefs", MODE_PRIVATE)
             .getString("theme_pref", "system") ?: "system"
 
         lifecycleScope.launch {
+            //todo same as in StartSelection
             val savedEmail = UserPreferences.getEmail(this@LoginActivity)
 
+            //todo move to StartSelection (where  launchApp(themePref)) and rename it to LoginActivity
             if (!savedEmail.isNullOrBlank()) {
                 navigateToMain(savedEmail)
             } else {
@@ -70,8 +74,8 @@ class LoginActivity : ComponentActivity() {
     private fun setContentWithLogin(themePref: String) {
         setContent {
             MyApplicationTheme(themePref = themePref) {
-                LoginScreen(onValidLogin = { email ->
-                    lifecycleScope.launch {
+                LoginScreen(onValidLogin = { email -> //todo Navigator?
+                    lifecycleScope.launch {  //todo just email -> navigateToMain()
                         UserPreferences.saveEmail(this@LoginActivity, email)
                         navigateToMain(email)
                     }
@@ -97,13 +101,14 @@ class LoginActivity : ComponentActivity() {
         }
     }
 
+    //todo decompose!!!
     @Preview(
         showBackground = true,
         name = "LoginScreenPreview",
-        uiMode = android.content.res.Configuration.UI_MODE_NIGHT_NO,  //UI_MODE_NIGHT_YES,
+        uiMode = Configuration.UI_MODE_NIGHT_NO,  //UI_MODE_NIGHT_YES,
+        //todo just Pixel
         device = "spec:width=${PreviewConfig.FIGMA_SCREEN_WIDTH}px,height=${PreviewConfig.FIGMA_SCREEN_HEIGHT}px,dpi=${PreviewConfig.FIGMA_SCREEN_DPI}"
     )
-
     @Composable
     fun LoginScreenPreview() {
         MyApplicationTheme(themePref = "system") { // colored or system
@@ -117,6 +122,10 @@ class LoginActivity : ComponentActivity() {
         onValidLogin: (String) -> Unit
     ) {
         val context = LocalContext.current
+
+        //todo hello-text not as in design, inputs not as in design,
+
+        //todo viewmodel. Read about MVVM (and Hilt!) and Unidirectional flow
         var email by rememberSaveable { mutableStateOf("") }
         var password by rememberSaveable { mutableStateOf("") }
         var rememberMe by rememberSaveable { mutableStateOf(false) }
@@ -170,6 +179,7 @@ class LoginActivity : ComponentActivity() {
                     emailError = emailError,
                     passwordError = passwordError,
                     onSubmit = {
+                        //todo move logic in VM
                         val emailValid = Patterns.EMAIL_ADDRESS.matcher(email).matches()
                         val passwordValid =
                             password.length >= context.resources.getInteger(R.integer.password_length)
@@ -183,7 +193,7 @@ class LoginActivity : ComponentActivity() {
                             passwordError = context.getString(R.string.password_error_text)
                             valid = false
                         }
-                        if (valid) onValidLogin(email)
+                        if (valid) onValidLogin(email) //todo {}
                     }
                 )
 
@@ -196,6 +206,7 @@ class LoginActivity : ComponentActivity() {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    //todo decompose
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             modifier = Modifier
@@ -244,6 +255,7 @@ class LoginActivity : ComponentActivity() {
                 OutlinedBorderButton(
                     text = stringResource(R.string.login).uppercase(),
                     onClick = {
+                        //todo VM
                         val emailValid = Patterns.EMAIL_ADDRESS.matcher(email).matches()
                         val passwordValid =
                             password.length >= context.resources.getInteger(R.integer.password_length)
@@ -257,7 +269,7 @@ class LoginActivity : ComponentActivity() {
                             passwordError = context.getString(R.string.password_error_text)
                             valid = false
                         }
-                        if (valid) onValidLogin(email)
+                        if (valid) onValidLogin(email) //todo {}
                     },
                     borderColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onBackground
@@ -283,6 +295,7 @@ class LoginActivity : ComponentActivity() {
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.clickable {
 
+                            //todo or start with argument (as onValidLogin) or start manually both (this and onValidLogin)
                             val options = ActivityOptions.makeCustomAnimation(
                                 context,
                                 R.anim.scale_in,

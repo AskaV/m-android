@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.nav
+package com.spp.android.myapplication.ui.nav
 
 import kotlinx.serialization.Serializable
 

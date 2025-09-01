@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.screens.fragment.contact
+package com.spp.android.myapplication.ui.screens.fragment.contact
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
