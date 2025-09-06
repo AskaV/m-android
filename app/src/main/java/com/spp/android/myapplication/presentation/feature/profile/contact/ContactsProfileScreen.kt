@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.presentation.feature.profile.contactsprofile
+package com.spp.android.myapplication.presentation.feature.profile.contact
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

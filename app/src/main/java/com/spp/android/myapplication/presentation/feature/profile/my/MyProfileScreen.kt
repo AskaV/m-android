@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.presentation.feature.profile.myprofile
+package com.spp.android.myapplication.presentation.feature.profile.my
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

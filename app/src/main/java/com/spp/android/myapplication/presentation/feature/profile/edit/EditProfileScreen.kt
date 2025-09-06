@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.presentation.feature.profile.editprofile
+package com.spp.android.myapplication.presentation.feature.profile.edit
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

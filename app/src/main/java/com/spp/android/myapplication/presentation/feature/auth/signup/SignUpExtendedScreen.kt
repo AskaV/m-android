@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.presentation.feature.auth.signupextended
+package com.spp.android.myapplication.presentation.feature.auth.signup
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

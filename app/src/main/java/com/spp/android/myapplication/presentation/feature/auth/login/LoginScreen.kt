@@ -25,7 +25,7 @@ import com.spp.android.myapplication.presentation.designsystem.components.inputs
 import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedBorderButton
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedButtonStyle
-import com.spp.android.myapplication.presentation.ui.screens.authorization.login.LoginUiState
+import com.spp.android.myapplication.uiold.screens.authorization.login.LoginUiState
 
 @Composable
 fun LoginScreenContent(
