@@ -1,0 +1,53 @@
+package com.spp.android.myapplication.presentation.ui.screens.commoncomponents.buttons
+
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
+import com.spp.android.myapplication.R
+import com.spp.android.myapplication.presentation.ui.preview.PreviewColumn
+import com.spp.android.myapplication.presentation.ui.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.ui.theme.AccentLight
+import com.spp.android.myapplication.presentation.ui.theme.TextPrimaryLight
+
+@Composable
+fun FilledButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    containerColor: Color = AccentLight,
+    contentColor: Color = TextPrimaryLight
+) {
+    val height = dimensionResource(id = R.dimen.button_height)
+    val desiredRadius = dimensionResource(id = R.dimen.button_corner_radius)
+    val safeRadius = if (desiredRadius > height / 2) height / 2 else desiredRadius
+
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(height),
+        shape = RoundedCornerShape(safeRadius),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = containerColor,
+            contentColor = contentColor
+        ),
+        elevation = ButtonDefaults.buttonElevation(
+            defaultElevation = dimensionResource(id = R.dimen.button_elevation)
+        )
+    ) {
+        Text(text = text.uppercase(), style = MaterialTheme.typography.titleMedium)
+    }
+}
+
+@PreviewPhones
+@Composable
+fun FilledButtonPreview() =
+    PreviewColumn { FilledButton(text = "Filled Button Text", onClick = {}) }

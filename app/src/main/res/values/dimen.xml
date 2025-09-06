@@ -44,9 +44,7 @@
     <dimen name="default_spacing">16dp</dimen>
     <dimen name="small_spacing">8dp</dimen>
 
-    <!-- Avatar -->
-    <dimen name="avatar_size">113dp</dimen>
-    <dimen name="profile_avatar_size">113dp</dimen>
+
 
     <!-- Screen ratio of view of my profile page -->
     <string name="profile_background_ratio" translatable="false">1:1.8</string>
@@ -112,13 +110,25 @@
     <dimen name="spacer_large">24dp</dimen>
     <dimen name="padding_screen">16dp</dimen>
 
+    <dimen name="spacer_additional">12dp</dimen>
+    <dimen name="form_supporting_text_min_height">20dp</dimen>
+
+    <dimen name="corner_radius">3dp</dimen>
+
     <!-- Checkbox spacing -->
     <dimen name="checkbox_frame_size">20dp</dimen>
     <dimen name="checkbox_inner_size">16dp</dimen>
     <dimen name="checkbox_corner_radius">4dp</dimen>
     <dimen name="checkbox_border_width">1dp</dimen>
 
+    <dimen name="auth_top_spacer">150dp</dimen>
+    <dimen name="auth_top_small">70dp</dimen>
+
     <!-- =============== CONTACTS PAGE DIMENSIONS =============== -->
     <dimen name="contacts_avatar_size">50dp</dimen>
+
+    <!-- Avatar -->
+    <dimen name="avatar_size">110dp</dimen>
+    <dimen name="badge_size">55dp</dimen>
 
 </resources>

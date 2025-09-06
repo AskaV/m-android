@@ -4,17 +4,22 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <application
-        android:name=".screens.util.extensions.MyApplication"
+        android:name=".presentation.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
-        tools:targetApi="31">
-        <activity android:name=".screens.LoginActivity" android:exported="true"/>
-        <activity android:name=".screens.SignUpActivity" android:exported="true"/>
-        <activity android:name=".screens.fragment.FragmentHostActivity" android:exported="false" />
+        tools:targetApi="31"
+        tools:ignore="MissingClass">
+
+        <activity android:name=".uiold.activity.LoginActivity_old" android:exported="true"/>
+
+        <!--todo delete-->
+        <activity android:name=".uiold.activity.SignUpActivity_old" android:exported="true"/>
+        <!--todo delete-->
+        <activity android:name=".uiold.screens.fragment.FragmentHostActivity" android:exported="false" />
 
         <activity
             android:name=".StartSelection"

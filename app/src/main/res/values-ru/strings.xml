@@ -16,6 +16,7 @@
     <!-- contact's profile -->
     <string name="profile_text">Профіль</string>
     <string name="message_text">Повідомлення</string>
+    <string name="back">Назад</string>
 
     <!-- сторінка реєстрації -->
     <string name="signup_title">Познайомимось ближче</string>

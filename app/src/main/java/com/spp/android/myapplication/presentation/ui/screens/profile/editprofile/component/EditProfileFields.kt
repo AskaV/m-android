@@ -1,0 +1,120 @@
+package com.spp.android.myapplication.presentation.ui.screens.profile.editprofile.component
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
+import com.spp.android.myapplication.presentation.ui.preview.PreviewColumn
+import com.spp.android.myapplication.presentation.ui.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.ui.screens.authorization.components.forms.data.FieldKind
+import com.spp.android.myapplication.presentation.ui.screens.authorization.components.forms.inputs.LabeledTextField
+import com.spp.android.myapplication.presentation.ui.screens.profile.components.ProfilePreviewText.EditProfile
+
+@Composable
+fun EditProfileFields(
+    modifier: Modifier = Modifier,
+    username: String,
+    onUsernameChange: (String) -> Unit,
+    career: String,
+    onCareerChange: (String) -> Unit,
+    phone: String,
+    onPhoneChange: (String) -> Unit,
+    address: String,
+    onAddressChange: (String) -> Unit,
+    birthdate: String,
+    onBirthdateChange: (String) -> Unit,
+    usernameError: String? = null,
+    careerError: String? = null,
+    phoneError: String? = null,
+    addressError: String? = null,
+    birthdateError: String? = null,
+) {
+    Surface(color = MaterialTheme.colorScheme.surface) {
+
+        Column(modifier.fillMaxWidth()) {
+            LabeledTextField(
+                label = EditProfile.USERNAME_LABEL,
+                value = username,
+                onValueChange = onUsernameChange,
+                kind = FieldKind.Username,
+                placeholder = EditProfile.USERNAME,
+                error = usernameError,
+                textStyle = MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
+            )
+            // Career
+            LabeledTextField(
+                label = EditProfile.CAREER_LABEL,
+                value = career,
+                onValueChange = onCareerChange,
+                kind = FieldKind.Username,
+                placeholder = EditProfile.CAREER,
+                error = careerError,
+                textStyle = MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
+            )
+            LabeledTextField(
+                label = EditProfile.PHONE_LABEL,
+                value = phone,
+                onValueChange = onPhoneChange,
+                kind = FieldKind.Phone,
+                placeholder = EditProfile.PHONE,
+                error = phoneError,
+                textStyle = MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
+            )
+            LabeledTextField(
+                label = EditProfile.ADDRESS_LABEL,
+                value = address,
+                onValueChange = onAddressChange,
+                kind = FieldKind.Username,
+                placeholder = EditProfile.ADDRESS,
+                error = addressError,
+                textStyle = MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
+            )
+            LabeledTextField(
+                label = EditProfile.BIRTHDATE_LABEL,
+                value = birthdate,
+                onValueChange = onBirthdateChange,
+                kind = FieldKind.Username,
+                placeholder = EditProfile.BIRTHDATE,
+                error = birthdateError,
+                imeAction = ImeAction.Done,
+                textStyle = MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
+            )
+        }
+    }
+}
+
+
+@PreviewPhones
+@Composable
+fun EditProfileFieldsPreview() = PreviewColumn {
+    var username by remember { mutableStateOf(EditProfile.USERNAME) }
+    var career by remember { mutableStateOf(EditProfile.CAREER) }
+    var phone by remember { mutableStateOf(EditProfile.PHONE) }
+    var address by remember { mutableStateOf(EditProfile.ADDRESS) }
+    var birth by remember { mutableStateOf(EditProfile.BIRTHDATE) }
+
+    EditProfileFields(
+        username = username, onUsernameChange = { username = it },
+        career = career, onCareerChange = { career = it },
+        phone = phone, onPhoneChange = { phone = it },
+        address = address, onAddressChange = { address = it },
+        birthdate = birth, onBirthdateChange = { birth = it },
+    )
+}
