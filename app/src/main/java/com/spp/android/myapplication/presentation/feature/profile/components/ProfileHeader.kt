@@ -1,0 +1,81 @@
+package com.spp.android.myapplication.presentation.feature.profile.components
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import com.spp.android.myapplication.R
+import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText
+import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
+import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+
+@Composable
+fun ProfileHeader(
+    name: String,
+    linePrimary: String,
+    lineSecondary: String,
+    modifier: Modifier = Modifier,
+    avatarRes: Int = R.drawable.baseline_account_circle_avatar
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = avatarRes),
+            contentDescription = null,
+            modifier = Modifier
+                .size(dimensionResource(id = R.dimen.avatar_size))
+                .clip(CircleShape)
+        )
+
+        Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_large)))
+
+        Text(
+            text = name,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
+        Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_small)))
+
+        Text(
+            text = linePrimary,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_medium)))
+
+        Text(
+            text = lineSecondary,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    }
+}
+
+@PreviewPhones
+@Composable
+private fun ProfileHeaderPreview() {
+    PreviewColumn {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            ProfileHeader(
+                name = ProfilePreviewText.MyProfile.NAME,
+                linePrimary = ProfilePreviewText.MyProfile.CAREER,
+                lineSecondary = ProfilePreviewText.MyProfile.ADDRESS
+            )
+        }
+    }
+}
