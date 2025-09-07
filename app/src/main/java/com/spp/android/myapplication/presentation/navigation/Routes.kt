@@ -1,17 +1,14 @@
 package com.spp.android.myapplication.presentation.navigation
 
-import kotlinx.serialization.Serializable
+object Routes {
+    const val Auth = "auth"
+    const val Login = "auth/login"
+    const val SignUp = "auth/signup"
+    const val SignUpExtended = "auth/signup_extended"
 
-@Serializable
-data object ContactsRoute
+    const val Home = "home"
 
-@Serializable
-data class ContactDetailRoute(
-    val name: String,
-    val position: String,
-    val avatarUrl: String,
-    val transitionName: String = ""
-)
-
-@Serializable
-data object MainRoute
+    const val EditProfile = "profile/edit"
+    const val ContactProfileRoute = "contact/{contactId}"
+    fun ContactProfile(id: String) = "contact/$id"
+}
