@@ -16,6 +16,7 @@ import androidx.compose.ui.res.dimensionResource
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactCardOutlined
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
+import com.spp.android.myapplication.presentation.designsystem.preview.ContactText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 
 @Composable
@@ -49,12 +50,12 @@ private fun ContactsListPreview() {
     Surface(color = MaterialTheme.colorScheme.surface) {
         val data = remember {
             mutableStateListOf(
-                ContactUi("1", "Ava Smith", "Photograph"),
-                ContactUi("2", "Jessie Brown", "Actress"),
-                ContactUi("3", "Jackie Taylor", "Financier"),
-                ContactUi("4", "Jenny Walker", "Make-up artist"),
-                ContactUi("5", "Freddy Harris", "Secretary"),
-                ContactUi("6", "Annie King", "Nurse"),
+                ContactUi("1", ContactText.Preview.NAME1, ContactText.Preview.SUBTITLE1),
+                ContactUi("2", ContactText.Preview.NAME2, ContactText.Preview.SUBTITLE2),
+                ContactUi("3", ContactText.Preview.NAME3, ContactText.Preview.SUBTITLE3),
+                ContactUi("4", ContactText.Preview.NAME4, ContactText.Preview.SUBTITLE4),
+                ContactUi("5", ContactText.Preview.NAME5, ContactText.Preview.SUBTITLE5),
+                ContactUi("6", ContactText.Preview.NAME6, ContactText.Preview.SUBTITLE6),
             )
         }
         ContactsList(

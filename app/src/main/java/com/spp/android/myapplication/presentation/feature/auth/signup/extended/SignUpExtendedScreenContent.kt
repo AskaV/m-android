@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.presentation.feature.auth.signup
+package com.spp.android.myapplication.presentation.feature.auth.signup.extended
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,15 +17,13 @@ import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedBorderButton
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedButtonStyle
-import com.spp.android.myapplication.presentation.designsystem.components.inputs.FieldState
-import com.spp.android.myapplication.presentation.designsystem.components.inputs.FormFields
-import com.spp.android.myapplication.presentation.designsystem.components.inputs.RegistrationSpecs
-import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
-import com.spp.android.myapplication.presentation.designsystem.preview.AutoThemePreview
-import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
-import com.spp.android.myapplication.presentation.designsystem.preview.AuthPreviewText
-import com.spp.android.myapplication.presentation.feature.auth.components.AuthHeader
+import com.spp.android.myapplication.presentation.designsystem.components.inputs.RegistrationFields
 import com.spp.android.myapplication.presentation.designsystem.imageload.AvatarPicker
+import com.spp.android.myapplication.presentation.designsystem.preview.AuthPreviewText
+import com.spp.android.myapplication.presentation.designsystem.preview.AutoThemePreview
+import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
+import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.feature.auth.components.AuthHeader
 
 data class SignUpProfileUiState(
     val username: String = "",
@@ -73,19 +71,13 @@ fun SignUpProfileScreenContent(
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
 
-            val mapState = mapOf(
-                "username" to FieldState(state.username, state.usernameError),
-                "phone" to FieldState(state.phone, state.phoneError)
-            )
-            FormFields(
-                specs = RegistrationSpecs,
-                state = mapState,
-                onValueChange = { key, value ->
-                    when (key) {
-                        "username" -> onUserNameChange(value)
-                        "phone" -> onPhoneChange(value)
-                    }
-                }
+            RegistrationFields(
+                username = state.username,
+                onUsernameChange = onUserNameChange,
+                phone = state.phone,
+                onPhoneChange = onPhoneChange,
+                usernameError = state.usernameError,
+                phoneError = state.phoneError
             )
         }
 

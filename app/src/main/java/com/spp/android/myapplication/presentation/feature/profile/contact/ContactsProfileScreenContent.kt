@@ -25,10 +25,10 @@ import androidx.compose.ui.res.stringResource
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
+import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomArea
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomState
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileHeader
-import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText
 
 data class ContactProfileUiState(
     val name: String,

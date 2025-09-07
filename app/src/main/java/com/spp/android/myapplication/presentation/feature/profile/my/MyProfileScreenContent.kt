@@ -20,13 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.presentation.designsystem.components.buttons.SocialButtonsRow
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
+import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomArea
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomState
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileHeader
-import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText
-import com.spp.android.myapplication.presentation.designsystem.components.buttons.SocialButtonsRow
 
 data class ProfileUiState(
     val name: String,

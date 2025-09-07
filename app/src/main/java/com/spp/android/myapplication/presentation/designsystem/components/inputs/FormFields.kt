@@ -9,14 +9,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
+import com.spp.android.myapplication.presentation.designsystem.components.inputs.parts.LabeledTextField
 import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
 import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
-import com.spp.android.myapplication.presentation.designsystem.components.inputs.parts.LabeledTextField
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 
+enum class FieldId { EMAIL, PASSWORD, USERNAME, PHONE }
+
 data class FieldSpec(
-    val key: String,
+    val id: FieldId,
     val kind: FieldKind
 )
 
@@ -30,22 +32,21 @@ fun FormFields(
     modifier: Modifier = Modifier,
     specs: List<FieldSpec>,
     onDone: () -> Unit = {},
-    state: Map<String, FieldState>,
-    onValueChange: (key: String, newValue: String) -> Unit
+    state: Map<FieldId, FieldState>,
+    onValueChange: (id: FieldId, newValue: String) -> Unit
 ) {
     Column(modifier.fillMaxWidth()) {
         specs.forEachIndexed { index, spec ->
-            val s = state[spec.key] ?: FieldState()
+            val s = state[spec.id] ?: FieldState()
             val isLast = index == specs.lastIndex
 
-            androidx.compose.runtime.key(spec.key) {
+            androidx.compose.runtime.key(spec.id) {
                 LabeledTextField(
                     label = spec.kind.label,
                     value = s.value,
-                    onValueChange = { onValueChange(spec.key, it) },
+                    onValueChange = { onValueChange(spec.id, it) },
                     kind = spec.kind,
                     error = s.error,
-                    placeholder = spec.kind.placeholderPreview,
                     imeAction = if (isLast) ImeAction.Done else spec.kind.imeAction,
                     onImeAction = if (isLast) onDone else null,
                     spacerAfter = !isLast
@@ -56,13 +57,13 @@ fun FormFields(
 }
 
 val AuthSpecs = listOf(
-    FieldSpec("email", FieldKind.Email),
-    FieldSpec("password", FieldKind.Password)
+    FieldSpec(FieldId.EMAIL, FieldKind.Email),
+    FieldSpec(FieldId.PASSWORD, FieldKind.Password)
 )
 
 val RegistrationSpecs = listOf(
-    FieldSpec("username", FieldKind.Username),
-    FieldSpec("phone", FieldKind.Phone)
+    FieldSpec(FieldId.USERNAME, FieldKind.Username),
+    FieldSpec(FieldId.PHONE, FieldKind.Phone)
 )
 
 
@@ -72,8 +73,8 @@ fun FormFieldsAuthPreview() = PreviewColumn {
     FormFieldsPreviewTemplate(
         specs = AuthSpecs,
         initialState = mapOf(
-            "email" to FieldState(FormsPreviewText.EMAIL),
-            "password" to FieldState(FormsPreviewText.PASSWORD)
+            FieldId.EMAIL to FieldState(FormsPreviewText.EMAIL),
+            FieldId.PASSWORD to FieldState(FormsPreviewText.PASSWORD)
         )
     )
 }
@@ -81,14 +82,12 @@ fun FormFieldsAuthPreview() = PreviewColumn {
 @PreviewPhones
 @Composable
 fun FormFieldsAuthErrorPreview() = PreviewColumn {
+
     FormFieldsPreviewTemplate(
         specs = AuthSpecs,
         initialState = mapOf(
-            "email" to FieldState(
-                FormsPreviewText.WRONG_EMAIL,
-                FormsPreviewText.Error.EMAIL
-            ),
-            "password" to FieldState(
+            FieldId.EMAIL to FieldState(FormsPreviewText.WRONG_EMAIL, FormsPreviewText.Error.EMAIL),
+            FieldId.PASSWORD to FieldState(
                 FormsPreviewText.WRONG_PASSWORD,
                 FormsPreviewText.Error.PASSWORD
             )
@@ -102,8 +101,8 @@ fun FormFieldsRegistrationPreview() = PreviewColumn {
     FormFieldsPreviewTemplate(
         specs = RegistrationSpecs,
         initialState = mapOf(
-            "username" to FieldState(FormsPreviewText.USERNAME),
-            "phone" to FieldState(FormsPreviewText.PHONE)
+            FieldId.USERNAME to FieldState(FormsPreviewText.USERNAME),
+            FieldId.PHONE to FieldState(FormsPreviewText.PHONE)
         )
     )
 }
@@ -114,14 +113,11 @@ fun FormFieldsRegistrationErrorPreview() = PreviewColumn {
     FormFieldsPreviewTemplate(
         specs = RegistrationSpecs,
         initialState = mapOf(
-            "username" to FieldState(
+            FieldId.USERNAME to FieldState(
                 FormsPreviewText.WRONG_USERNAME,
                 FormsPreviewText.Error.USERNAME
             ),
-            "phone" to FieldState(
-                FormsPreviewText.WRONG_PHONE,
-                FormsPreviewText.Error.PHONE
-            )
+            FieldId.PHONE to FieldState(FormsPreviewText.WRONG_PHONE, FormsPreviewText.Error.PHONE)
         )
     )
 }
@@ -129,19 +125,17 @@ fun FormFieldsRegistrationErrorPreview() = PreviewColumn {
 @Composable
 private fun FormFieldsPreviewTemplate(
     specs: List<FieldSpec>,
-    initialState: Map<String, FieldState>
+    initialState: Map<FieldId, FieldState>
 ) {
     var map by remember { mutableStateOf(initialState) }
 
     FormFields(
         specs = specs,
         state = map,
-        onValueChange = { k, v ->
+        onValueChange = { id, v ->
             map = map.toMutableMap().apply {
-                this[k] = (this[k] ?: FieldState()).copy(
-                    value = v,
-                    error = null
-                )
+                val current = this[id] ?: FieldState()
+                this[id] = current.copy(value = v, error = null)
             }
         }
     )

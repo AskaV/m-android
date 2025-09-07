@@ -9,7 +9,6 @@ navigationCompose = "2.9.3"
 datastorePreferences = "1.1.7"
 hilt-version = "2.51.1"
 
-
 agp = "8.8.2"
 kotlin = "2.0.0"
 navigation = "2.9.3"
@@ -24,6 +23,7 @@ coilCompose = "2.5.0"
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }

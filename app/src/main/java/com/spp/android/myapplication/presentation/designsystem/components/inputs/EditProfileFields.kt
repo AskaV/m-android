@@ -11,12 +11,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
+import com.spp.android.myapplication.presentation.designsystem.components.inputs.parts.LabeledTextField
+import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
-import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
-import com.spp.android.myapplication.presentation.designsystem.components.inputs.parts.LabeledTextField
 import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText.EditProfile
 
+@JvmOverloads
 @Composable
 fun EditProfileFields(
     modifier: Modifier = Modifier,
@@ -44,19 +45,16 @@ fun EditProfileFields(
                 value = username,
                 onValueChange = onUsernameChange,
                 kind = FieldKind.Username,
-                placeholder = EditProfile.USERNAME,
                 error = usernameError,
                 textStyle = MaterialTheme.typography.titleLarge.copy(
                     color = MaterialTheme.colorScheme.onSecondary
                 )
             )
-            // Career
             LabeledTextField(
                 label = EditProfile.CAREER_LABEL,
                 value = career,
                 onValueChange = onCareerChange,
                 kind = FieldKind.Username,
-                placeholder = EditProfile.CAREER,
                 error = careerError,
                 textStyle = MaterialTheme.typography.titleLarge.copy(
                     color = MaterialTheme.colorScheme.onSecondary
@@ -67,7 +65,6 @@ fun EditProfileFields(
                 value = phone,
                 onValueChange = onPhoneChange,
                 kind = FieldKind.Phone,
-                placeholder = EditProfile.PHONE,
                 error = phoneError,
                 textStyle = MaterialTheme.typography.titleLarge.copy(
                     color = MaterialTheme.colorScheme.onSecondary
@@ -78,7 +75,6 @@ fun EditProfileFields(
                 value = address,
                 onValueChange = onAddressChange,
                 kind = FieldKind.Username,
-                placeholder = EditProfile.ADDRESS,
                 error = addressError,
                 textStyle = MaterialTheme.typography.titleLarge.copy(
                     color = MaterialTheme.colorScheme.onSecondary
@@ -89,7 +85,6 @@ fun EditProfileFields(
                 value = birthdate,
                 onValueChange = onBirthdateChange,
                 kind = FieldKind.Username,
-                placeholder = EditProfile.BIRTHDATE,
                 error = birthdateError,
                 imeAction = ImeAction.Done,
                 textStyle = MaterialTheme.typography.titleLarge.copy(

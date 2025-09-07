@@ -28,13 +28,13 @@ import com.spp.android.myapplication.presentation.feature.auth.components.CheckB
 
 @Composable
 fun LoginScreenContent(
+    modifier: Modifier = Modifier,
     state: LoginContract.State,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onRememberMeChange: (Boolean) -> Unit,
     onLoginClick: () -> Unit,
-    onNavigateToRegister: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onNavigateToRegister: () -> Unit = {}
 ) {
     val hPad = dimensionResource(R.dimen.spacer_medium)
 
@@ -91,7 +91,7 @@ fun LoginScreenContent(
             OutlinedBorderButton(
                 text = AuthPreviewText.Login.BUTTON.uppercase(),
                 onClick = onLoginClick,
-                style = OutlinedButtonStyle.Primary
+                style = OutlinedButtonStyle.Primary,
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_medium)))

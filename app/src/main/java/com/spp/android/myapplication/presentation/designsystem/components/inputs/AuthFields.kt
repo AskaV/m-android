@@ -12,10 +12,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.parts.LabeledTextField
-import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
-import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
 import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
+import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
+import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 
 data class AuthFieldsState(
     val email: String = "",
@@ -39,7 +39,6 @@ fun AuthFields(
             onValueChange = onEmailChange,
             kind = FieldKind.Email,
             error = state.emailError,
-            placeholder = FormsPreviewText.EMAIL,
             imeAction = ImeAction.Next
         )
         LabeledTextField(
@@ -48,7 +47,6 @@ fun AuthFields(
             onValueChange = onPasswordChange,
             kind = FieldKind.Password,
             error = state.passwordError,
-            placeholder = FormsPreviewText.DOTS,
             imeAction = ImeAction.Done,
             onImeAction = onDone,
             spacerAfter = false

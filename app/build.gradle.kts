@@ -61,6 +61,9 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+
+    debugImplementation(libs.androidx.ui.tooling)
+
 //    implementation(libs.glide)
 //    implementation(libs.picasso)
 //    implementation(libs.fresco)

@@ -29,16 +29,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.presentation.designsystem.components.inputs.EditProfileFields
+import com.spp.android.myapplication.presentation.designsystem.imageload.AvatarPicker
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewMoto
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
-import com.spp.android.myapplication.presentation.designsystem.imageload.AvatarPicker
 import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText.EditProfile
-import com.spp.android.myapplication.presentation.designsystem.components.inputs.EditProfileFields
 
 @Composable
-fun EditProfileScreen(
+fun EditProfileScreenContent(
     onBack: () -> Unit,
     onSave: (
         username: String,
@@ -151,7 +151,7 @@ fun EditProfileScreen(
 @PreviewMoto
 @Composable
 private fun EditProfileScreenPreview() = PreviewScreenEdgeToEdge {
-    EditProfileScreen(
+    EditProfileScreenContent(
         onBack = {},
         onSave = { _, _, _, _, _ -> }
     )

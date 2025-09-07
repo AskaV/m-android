@@ -1,27 +1,33 @@
-package com.spp.android.myapplication.presentation.feature.auth.signup
+package com.spp.android.myapplication.presentation.feature.auth.signup.base
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.material3.Text
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.presentation.designsystem.components.buttons.GoogleButton
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedBorderButton
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedButtonStyle
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.AuthFields
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.AuthFieldsState
-import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
-import com.spp.android.myapplication.presentation.designsystem.preview.AutoThemePreview
-import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.AuthPreviewText
+import com.spp.android.myapplication.presentation.designsystem.preview.AutoThemePreview
+import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
+import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthFooter
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthHeader
 import com.spp.android.myapplication.presentation.feature.auth.components.CheckBoxWithAction
-import com.spp.android.myapplication.presentation.designsystem.components.buttons.GoogleButton
 
 data class SignUpUiState(
     val fields: AuthFieldsState = AuthFieldsState(),

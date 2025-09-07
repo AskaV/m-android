@@ -2,6 +2,7 @@ package com.spp.android.myapplication.presentation.designsystem.contactcard.part
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.presentation.designsystem.preview.ContactText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 
@@ -59,6 +61,7 @@ fun ContactCardOutlined(
         Row(
             Modifier
                 .fillMaxWidth()
+                .clickable { onClick(contact) }
                 .padding(horizontal = spaceS)
                 .heightIn(min = 72.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -104,7 +107,7 @@ fun ContactCardOutlined(
             IconButton(onClick = { onDeleteClick(contact) }) {
                 Icon(
                     painter = painterResource(R.drawable.recycle_bin),
-                    contentDescription = "Delete",
+                    contentDescription = ContactText.DELETE,
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -119,10 +122,9 @@ private fun ContactCardOutlinedPreview() {
         ContactCardOutlined(
             contact = ContactUi(
                 id = "1",
-                name = "Jessie Brown",
-                subtitle = "Actress",
-                avatarUrl = null,
-                transitionName = "avatar_1"
+                name = ContactText.Preview.NAME1,
+                subtitle = ContactText.Preview.SUBTITLE1,
+                avatarUrl = null
             ),
             onClick = {},
             onDeleteClick = {}

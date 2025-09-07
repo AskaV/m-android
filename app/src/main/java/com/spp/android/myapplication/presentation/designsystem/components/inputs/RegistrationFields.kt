@@ -8,11 +8,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
-import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.designsystem.components.inputs.parts.LabeledTextField
 import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
 import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
-import com.spp.android.myapplication.presentation.designsystem.components.inputs.parts.LabeledTextField
+import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
+import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 
 @Composable
 fun RegistrationFields(
@@ -30,16 +30,14 @@ fun RegistrationFields(
             value = username,
             onValueChange = onUsernameChange,
             kind = FieldKind.Username,
-            error = usernameError,
-            placeholder = FormsPreviewText.USERNAME
+            error = usernameError
         )
         LabeledTextField(
             label = FormsPreviewText.Label.PHONE,
             value = phone,
             onValueChange = onPhoneChange,
             kind = FieldKind.Phone,
-            error = phoneError,
-            placeholder = FormsPreviewText.PHONE
+            error = phoneError
         )
     }
 }
