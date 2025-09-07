@@ -1,135 +1,55 @@
-# Version Catalog (structured)
-# Groups: AndroidX, Compose, Navigation, Testing, Images, Google, JSON/Serialization, Data
-
-# --- ******** ---
-# --- VERSIONS ---
-# --- ******** ---
 [versions]
-# Android Gradle & Kotlin
+composeBom = "2025.08.01"
+material = "1.13.0"
+activityCompose = "1.10.1"
+lifecycleRuntimeKtx = "2.9.3"
+lifecycleViewmodelCompose = "2.9.3"
+coreKtx = "1.16.0"
+navigationCompose = "2.9.3"
+datastorePreferences = "1.1.7"
+hilt-version = "2.51.1"
+
+
 agp = "8.8.2"
 kotlin = "2.0.0"
-
-# AndroidX core
-appcompat = "1.7.1"
-coreKtx = "1.16.0"
-fragment = "1.8.9"
-recyclerview = "1.4.0"
-constraintlayout = "2.2.1"
-
-# Lifecycle / Activity
-lifecycleRuntimeKtx = "2.9.3"
-lifecycleCommon = "2.9.3"
-lifecycleViewmodelCompose = "2.9.3"
-activityCompose = "1.10.1"
-
-# Compose
-composeBom = "2025.08.01"
-composeCompiler = "1.5.15"
-
-# Navigation
 navigation = "2.9.3"
-navigationFragmentKtx = "2.9.3"
-navigationUiKtx = "2.9.3"
-navigationCompose = "2.9.3"
 
-# Google Material
-material = "1.12.0"
-
-# Data / Storage
-datastorePreferences = "1.1.7"
-
-# JSON / Serialization
-gson = "2.10.1"
-serialization = "1.7.3"
-
-# Testing
-junit = "4.13.2"
-junitVersion = "1.3.0"
-espressoCore = "3.7.0"
-
-# Images
 glide = "4.16.0"
 picasso = "2.8"
 fresco = "3.1.3"
 coil = "2.5.0"
 coilCompose = "2.5.0"
-accompanistDrawablepainter = "0.32.0"
 
-hilt = "2.51.1"
-hiltNavigationCompose = "1.2.0"
-lifecycle = "2.7.0"
-
-# --- ********* ---
-# --- LIBRARIES ---
-# --- ********* ---
 [libraries]
-# --- AndroidX Core & AppCompat ---
-accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanistDrawablepainter" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }
-androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
-androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-
-# --- Lifecycle / Activity ---
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "lifecycleCommon" }
-androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-
-# --- Compose (managed by BOM; no explicit versions on artifacts) ---
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "composeCompiler" }
-
-# --- Navigation ---
-androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
-androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
-
-# --- Google Material ---
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-
-# --- Images ---
-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
-picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
-fresco = { module = "com.facebook.fresco:fresco", version.ref = "fresco" }
-coil = { module = "io.coil-kt:coil", version.ref = "coil" }
-coil_compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
-
-# --- JSON / Serialization ---
-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
-
-# --- Data / Storage ---
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 
-# --- Testing ---
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
-androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-version" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-version" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.2.0" }
 
 
-# --- ******* ---
-# --- PLUGINS ---
-# --- ******* ---
+#glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+#picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
+#fresco = { module = "com.facebook.fresco:fresco", version.ref = "fresco" }
+#coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+#coil_compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-version" }
