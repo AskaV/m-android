@@ -17,6 +17,8 @@ fun @receiver:StringRes Int.t(vararg args: Any): String = stringResource(this, *
 fun Context.t(@StringRes id: Int, vararg args: Any): String = getString(id, *args)
 
 class S(@StringRes val id: Int, vararg val args: Any)
+@Composable
+fun S.text(): String = stringResource(id, *args)
 
 
 object AppText {
@@ -69,7 +71,7 @@ object AppText {
     object GalleryStrings {
         const val OPEN_GALLERY = "Open gallery"
         const val DELETE_PHOTO = "Delete current photo"
-        const val CANCEL = "Cancel"
+        val CANCEL = TextKey(R.string.add_contacts_cancel_text)
     }
 
     object Contacts {
@@ -132,40 +134,40 @@ object AppText {
     }
 
     object Error {
-        const val PASSWORD = "Your password must include a minimum of 8 characters."
-        const val USERNAME = "User name must contain at least 3 letters"
-        const val PHONE = "Phone must be at least 10 digits long"
+        val PASSWORD = S(R.string.password_error_text, Integers.PASSWORD_MIN_LENGTH)
+        val USERNAME = S(R.string.user_name_error,    Integers.USERNAME_MIN_LENGTH)
+        val PHONE    = S(R.string.phone_length_error, Integers.PHONE_MIN_LENGTH)
     }
 
     object ExtendedRegister {
         const val TITLE = "Your profile data"
         const val SUBTITLE = "Fill out the profile and go to the application!"
 
-        const val BUTTON = "Cancel"
+        val BUTTON  = TextKey(R.string.add_contacts_cancel_text)
         const val BUTTON2 = "Forward"
     }
 
     object MyProfile {
-        const val NAME = "Lucile Alvarado"
-        const val CAREER = "Career"
-        const val ADDRESS = "Home address"
+        val NAME              = TextKey(R.string.user_name)
+        val CAREER            = TextKey(R.string.edit_profile_career_label)
+        val ADDRESS           = TextKey(R.string.edit_profile_address_label)
         const val LOGOUT = "Log out"
         const val PROFILE_FILL_HINT = "Go to settings and fill out the profile"
-        const val VIEW_CONTACTS = "View my contacts"
-        const val EDIT_PROFILE = "Edit profile"
-        const val SETTINGS = "Settings"
-        const val PROFILE = "Profile"
+        val VIEW_CONTACTS     = TextKey(R.string.view_contacts)
+        val EDIT_PROFILE      = TextKey(R.string.edit_profile)
+        val SETTINGS          = TextKey(R.string.settings)
+        val PROFILE           = TextKey(R.string.profile_text)
     }
 
     object MyProfileDetailed {
-        const val NAME = "Lucile Alvarado"
-        const val CAREER = "Graphic designer"
-        const val ADDRESS = "5295 Gaylord Walks Apk. 110"
+        val NAME    = TextKey(R.string.user_name)
+        val CAREER  = TextKey(R.string.user_profession)
+        val ADDRESS = TextKey(R.string.user_address)
     }
 
     object ContactProfile {
-        const val MESSAGE_TEXT = "Message"
-        const val ADD_TO_MY_CONTACTS = "Add to my contacts"
+        val MESSAGE_TEXT        = TextKey(R.string.message_text)
+        val ADD_TO_MY_CONTACTS  = TextKey(R.string.add_contacts_text)
     }
 
 }

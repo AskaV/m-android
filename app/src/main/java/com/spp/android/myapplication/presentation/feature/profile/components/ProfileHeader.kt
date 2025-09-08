@@ -19,6 +19,7 @@ import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.texts.text
 
 @Composable
 fun ProfileHeader(
@@ -72,9 +73,9 @@ private fun ProfileHeaderPreview() {
     PreviewColumn {
         Surface(color = MaterialTheme.colorScheme.background) {
             ProfileHeader(
-                name = AppText.MyProfile.NAME,
-                linePrimary = AppText.MyProfile.CAREER,
-                lineSecondary = AppText.MyProfile.ADDRESS
+                name = AppText.MyProfile.NAME.text(),
+                linePrimary = AppText.MyProfile.CAREER.text(),
+                lineSecondary = AppText.MyProfile.ADDRESS.text()
             )
         }
     }

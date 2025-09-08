@@ -23,6 +23,7 @@ import com.spp.android.myapplication.presentation.designsystem.preview.AutoTheme
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthHeader
 import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.texts.text
 
 data class SignUpProfileUiState(
     val username: String = "",
@@ -87,7 +88,7 @@ fun SignUpProfileScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedBorderButton(
-                text = AppText.ExtendedRegister.BUTTON,
+                text = AppText.ExtendedRegister.BUTTON.text(),
                 onClick = onCancel,
                 style = OutlinedButtonStyle.OnBackground,
                 modifier = Modifier
@@ -139,8 +140,8 @@ private fun SignUpProfileScreenPreviewErrors() {
                 state = SignUpProfileUiState(
                     username = "",
                     phone = "",
-                    usernameError = AppText.Error.USERNAME,
-                    phoneError = AppText.Error.PHONE
+                    usernameError = AppText.Error.USERNAME.text(),
+                    phoneError = AppText.Error.PHONE.text()
                 ),
                 onUserNameChange = {},
                 onPhoneChange = {},

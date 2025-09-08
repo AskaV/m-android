@@ -27,6 +27,7 @@ import com.spp.android.myapplication.presentation.feature.auth.components.AuthFo
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthHeader
 import com.spp.android.myapplication.presentation.feature.auth.components.CheckBoxWithAction
 import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.texts.text
 
 data class SignUpUiState(
     val fields: AuthFieldsState = AuthFieldsState(),
@@ -166,7 +167,7 @@ fun SignUpScreenPreviewErrors() {
                         email = AppText.Preview.WRONG_EMAIL,
                         password = AppText.Preview.WRONG_PASSWORD,
                         emailError = AppText.Login.EMAIL_ERROR.text(),
-                        passwordError = AppText.Error.PASSWORD
+                        passwordError = AppText.Error.PASSWORD.text()
                     ),
                     rememberMe = false
                 ),

@@ -66,7 +66,7 @@ fun ProfileScreen(
                         .padding(bottom = dimensionResource(id = R.dimen.spacer_large))
                 ) {
                     Text(
-                        text = AppText.MyProfile.SETTINGS,
+                        text = AppText.MyProfile.SETTINGS.text(),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.align(Alignment.CenterStart)
@@ -140,9 +140,9 @@ private fun ProfileScreenPreviewIncomplete() =
     PreviewScreenEdgeToEdge {
         ProfileScreen(
             state = ProfileUiState(
-                name = AppText.MyProfile.NAME,
-                linePrimary = AppText.MyProfile.CAREER,
-                lineSecondary = AppText.MyProfile.ADDRESS,
+                name = AppText.MyProfile.NAME.text(),
+                linePrimary = AppText.MyProfile.CAREER.text(),
+                lineSecondary = AppText.MyProfile.ADDRESS.text(),
                 isCompleted = false
             ),
             onEditProfile = {}, onViewContacts = {}, onLogout = {}
@@ -155,9 +155,9 @@ private fun ProfileScreenPreviewCompleted() =
     PreviewScreenEdgeToEdge {
         ProfileScreen(
             state = ProfileUiState(
-                name = AppText.MyProfileDetailed.NAME,
-                linePrimary = AppText.MyProfileDetailed.CAREER,
-                lineSecondary = AppText.MyProfileDetailed.ADDRESS,
+                name = AppText.MyProfileDetailed.NAME.text(),
+                linePrimary = AppText.MyProfileDetailed.CAREER.text(),
+                lineSecondary = AppText.MyProfileDetailed.ADDRESS.text(),
                 isCompleted = true
             ),
             onEditProfile = {}, onViewContacts = {}, onLogout = {}

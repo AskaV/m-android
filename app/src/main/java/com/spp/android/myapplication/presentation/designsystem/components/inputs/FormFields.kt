@@ -15,6 +15,7 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewCo
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.texts.AppText
 import com.spp.android.myapplication.presentation.texts.t
+import com.spp.android.myapplication.presentation.texts.text
 
 enum class FieldId { EMAIL, PASSWORD, USERNAME, PHONE }
 
@@ -118,12 +119,12 @@ fun FormFieldsRegistrationErrorPreview() = PreviewColumn {
         specs = RegistrationSpecs,
         initialState = mapOf(
             FieldId.USERNAME to FieldState(
-                AppText.Preview.WRONG_USERNAME,
-                AppText.Error.USERNAME
+                value = AppText.Preview.WRONG_USERNAME,          
+                error = AppText.SignUp.USERNAME_ERROR.text()
             ),
             FieldId.PHONE to FieldState(
-                AppText.Preview.WRONG_PHONE,
-                AppText.Error.PHONE
+                value = AppText.Preview.WRONG_PHONE,             
+                error = AppText.SignUp.PHONE_ERROR.text()
             )
         )
     )

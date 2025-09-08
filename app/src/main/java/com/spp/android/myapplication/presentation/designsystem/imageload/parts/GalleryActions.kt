@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.texts.text
 
 @Composable
 internal fun GalleryActions(
@@ -44,7 +45,7 @@ internal fun GalleryActions(
             else MaterialTheme.colorScheme.onSurface
 
         ActionItem(
-            text = AppText.GalleryStrings.CANCEL,
+            text = AppText.GalleryStrings.CANCEL.text(),
             enabled = true,
             onClick = onCancel,
             colorOverride = cancelColor

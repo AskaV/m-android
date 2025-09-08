@@ -59,12 +59,12 @@ fun ProfileBottomArea(
                 is ProfileBottomState.MyProfileCompleted -> {
                     ProfileSocialRowWithSpacer(spaceM)
                     ProfileActionButton(
-                        text = AppText.MyProfile.EDIT_PROFILE,
+                        text = AppText.MyProfile.EDIT_PROFILE.text(),
                         onClick = { onSecondary?.invoke() }
                     )
                     Spacer(Modifier.height(spaceM))
                     FilledButton(
-                        text = AppText.MyProfile.VIEW_CONTACTS,
+                        text = AppText.MyProfile.VIEW_CONTACTS.text(),
                         onClick = onPrimary
                     )
                 }
@@ -80,12 +80,12 @@ fun ProfileBottomArea(
                     )
                     Spacer(Modifier.height(spaceM))
                     ProfileActionButton(
-                        text = AppText.MyProfile.EDIT_PROFILE,
+                        text = AppText.MyProfile.EDIT_PROFILE.text(),
                         onClick = { onSecondary?.invoke() }
                     )
                     Spacer(Modifier.height(spaceM))
                     FilledButton(
-                        text = AppText.MyProfile.VIEW_CONTACTS,
+                        text = AppText.MyProfile.VIEW_CONTACTS.text(),
                         onClick = onPrimary
                     )
                 }
@@ -93,7 +93,7 @@ fun ProfileBottomArea(
                 ProfileBottomState.ContactMessageOnly -> {
                     ProfileSocialRowWithSpacer(spaceM)
                     FilledButton(
-                        text = AppText.ContactProfile.MESSAGE_TEXT,
+                        text = AppText.ContactProfile.MESSAGE_TEXT.text(),
                         onClick = onPrimary
                     )
                 }
@@ -101,18 +101,18 @@ fun ProfileBottomArea(
                 ProfileBottomState.ContactAddable -> {
                     ProfileSocialRowWithSpacer(spaceM)
                     ProfileActionButton(
-                        text = AppText.ContactProfile.MESSAGE_TEXT,
+                        text = AppText.ContactProfile.MESSAGE_TEXT.text(),
                         onClick = { onSecondary?.invoke() },
                         style = OutlinedButtonStyle.OnBackground
                     )
                     Spacer(Modifier.height(spaceM))
                     ProfileActionButton(
-                        text = AppText.MyProfile.EDIT_PROFILE,
+                        text = AppText.MyProfile.EDIT_PROFILE.text(),
                         onClick = { onSecondary?.invoke() }
                     )
                     Spacer(Modifier.height(spaceM))
                     FilledButton(
-                        text = AppText.ContactProfile.ADD_TO_MY_CONTACTS,
+                        text = AppText.ContactProfile.ADD_TO_MY_CONTACTS.text(),
                         onClick = onPrimary
                     )
                 }

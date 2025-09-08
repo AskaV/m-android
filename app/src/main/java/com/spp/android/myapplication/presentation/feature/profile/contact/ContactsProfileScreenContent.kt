@@ -29,6 +29,7 @@ import com.spp.android.myapplication.presentation.feature.profile.components.Pro
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomState
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileHeader
 import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.texts.text
 
 data class ContactProfileUiState(
     val name: String,
@@ -79,7 +80,7 @@ fun ContactProfileScreen(
                         )
                     }
                     Text(
-                        text = AppText.MyProfile.PROFILE,
+                        text = AppText.MyProfile.PROFILE.text(), 
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.align(Alignment.Center)
@@ -117,9 +118,9 @@ fun ContactProfileScreen(
 private fun ContactProfilePreview() = PreviewScreenEdgeToEdge {
     ContactProfileScreen(
         state = ContactProfileUiState(
-            name = AppText.MyProfileDetailed.NAME,
-            linePrimary = AppText.MyProfileDetailed.CAREER,
-            lineSecondary = AppText.MyProfileDetailed.ADDRESS,
+            name = AppText.MyProfileDetailed.NAME.text(),
+            linePrimary = AppText.MyProfileDetailed.CAREER.text(),
+            lineSecondary = AppText.MyProfileDetailed.ADDRESS.text(),
             hasSocial = true
         ),
         onBack = {},

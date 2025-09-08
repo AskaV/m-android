@@ -13,6 +13,7 @@ import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.texts.text
 
 @Composable
 fun RegistrationFields(
@@ -64,7 +65,7 @@ fun RegistrationFieldsPreviewError() = PreviewColumn {
         onUsernameChange = { name = it },
         phone = phone,
         onPhoneChange = { phone = it },
-        usernameError = AppText.Error.USERNAME,
-        phoneError = AppText.Error.PHONE
+        usernameError = AppText.Error.USERNAME.text(),
+        phoneError = AppText.Error.PHONE.text()
     )
 }
