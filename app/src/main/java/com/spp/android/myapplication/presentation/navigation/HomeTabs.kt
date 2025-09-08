@@ -1,14 +1,23 @@
 package com.spp.android.myapplication.presentation.navigation
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 
-enum class HomeTab(val title: String) { Profile("My Profile"), Contacts("My Contacts") }
+enum class HomeTab(@StringRes val titleRes: Int) {
+    Profile(AppText.HomeTabs.PROFILE.res),
+    Contacts(AppText.HomeTabs.CONTACTS.res)
+}
 
 @Composable
 fun HomeTabs(
@@ -26,7 +35,7 @@ fun HomeTabs(
                 Tab(
                     selected = pagerState.currentPage == index,
                     onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
-                    text = { Text(tab.title) }
+                    text = { Text(stringResource(tab.titleRes)) }
                 )
             }
         }

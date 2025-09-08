@@ -51,6 +51,11 @@ object AppText {
         val PHONE_LABEL = TextKey(R.string.edit_profile_phone_label)
     }
 
+    object HomeTabs {
+        val PROFILE = TextKey(R.string.profile_text)
+        val CONTACTS = TextKey(R.string.contacts_text)
+    }
+
     object MyProfile {
         val NAME = TextKey(R.string.user_name)
         val CAREER = TextKey(R.string.edit_profile_career_label)

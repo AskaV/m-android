@@ -4,7 +4,7 @@
     <!-- сторінка входу -->
     <string name="hello">Привіт!</string>
     <string name="enter_email_password">Введи свій e-mail та пароль нижче</string>
-    <string name="email">E-mail</string>
+    <string name="email">Е-мейл</string>
     <string name="password">Пароль</string>
     <string name="remember_me">Запам\'ятати мене</string>
     <string name="forgot_password">Забули пароль?</string>
