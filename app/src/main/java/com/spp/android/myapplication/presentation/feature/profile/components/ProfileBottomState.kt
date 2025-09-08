@@ -155,7 +155,7 @@ private fun PreviewMyProfileCompleted() = PreviewScreenEdgeToEdge {
 private fun PreviewMyProfileIncomplete() = PreviewScreenEdgeToEdge {
     ProfileBottomArea(
         state = ProfileBottomState.MyProfileIncomplete(
-            hint = AppText.MyProfile.PROFILE_FILL_HINT
+            hint = AppText.MyProfile.PROFILE_FILL_HINT.text()
         ),
         onPrimary = {},
         onSecondary = {},

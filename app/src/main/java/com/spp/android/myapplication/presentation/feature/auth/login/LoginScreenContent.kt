@@ -135,7 +135,7 @@ fun LoginScreenPreviewErrors() {
                     email = AppText.Preview.WRONG_EMAIL,
                     password = AppText.Preview.WRONG_PASSWORD,
                     emailError = AppText.Login.EMAIL_ERROR.text(),
-                    passwordError = AppText.Error.PASSWORD.text(),
+                    passwordError = AppText.Error.PASSWORD_ERROR.text(),
                     rememberMe = false
                 ),
                 onEmailChange = {},

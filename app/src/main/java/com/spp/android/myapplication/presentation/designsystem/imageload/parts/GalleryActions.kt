@@ -25,7 +25,7 @@ internal fun GalleryActions(
 ) {
     Column(modifier) {
         ActionItem(
-            text = AppText.GalleryStrings.OPEN_GALLERY,
+            text = AppText.GalleryStrings.OPEN_GALLERY.text(),
             enabled = true,
             onClick = onOpenGallery,
             colorOverride = MaterialTheme.colorScheme.onBackground
@@ -33,7 +33,7 @@ internal fun GalleryActions(
 
         if (onDeleteCurrent != null) {
             ActionItem(
-                text = AppText.GalleryStrings.DELETE_PHOTO,
+                text = AppText.GalleryStrings.DELETE_PHOTO.text(),
                 enabled = false,
                 onClick = {},
                 dimmed = true

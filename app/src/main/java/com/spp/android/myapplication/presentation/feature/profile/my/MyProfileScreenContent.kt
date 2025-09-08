@@ -82,7 +82,7 @@ fun ProfileScreen(
                             color = MaterialTheme.colorScheme.outline
                         )
                     ) {
-                        Text(text = AppText.MyProfile.LOGOUT)
+                        Text(text = AppText.MyProfile.LOGOUT.text())
                     }
                 }
 
@@ -121,7 +121,7 @@ fun ProfileScreen(
             val bottomState: ProfileBottomState =
                 if (state.isCompleted) ProfileBottomState.MyProfileCompleted
                 else ProfileBottomState.MyProfileIncomplete(
-                    hint = AppText.MyProfile.PROFILE_FILL_HINT
+                    hint = AppText.MyProfile.PROFILE_FILL_HINT.text()
                 )
 
             ProfileBottomArea(

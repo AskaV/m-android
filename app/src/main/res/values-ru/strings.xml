@@ -1,22 +1,16 @@
 <resources>
     <string name="app_name">Мій додаток</string>
 
-    <!-- мій профіль -->
-    <string name="settings">Налаштування</string>
-    <string name="user_name">Люсіль Альварадо</string>
-    <string name="user_avatar">Аватар користувача</string>
-    <string name="user_profession">Графічна дизайнерка</string>
-    <string name="user_address">вул. Гейлорд, 5295, кв. 110</string>
-    <string name="facebook">Фейсбук</string>
-    <string name="instagram">Інстаграм</string>
-    <string name="telegram">Телеграм</string>
-    <string name="edit_profile">Редагувати профіль</string>
-    <string name="view_contacts">Переглянути мої контакти</string>
-
-    <!-- contact's profile -->
-    <string name="profile_text">Профіль</string>
-    <string name="message_text">Повідомлення</string>
-    <string name="back">Назад</string>
+    <!-- сторінка входу -->
+    <string name="hello">Привіт!</string>
+    <string name="enter_email_password">Введи свій e-mail та пароль нижче</string>
+    <string name="email">E-mail</string>
+    <string name="password">Пароль</string>
+    <string name="remember_me">Запам\'ятати мене</string>
+    <string name="forgot_password">Забули пароль?</string>
+    <string name="login">Увійти</string>
+    <string name="dont_have_account">Немає акаунту?</string>
+    <string name="sign_up">Зареєструватися</string>
 
     <!-- сторінка реєстрації -->
     <string name="signup_title">Познайомимось ближче</string>
@@ -28,16 +22,25 @@
     <string name="signup_have_account">Вже маєш акаунт?</string>
     <string name="signup_sign_in">Увійти</string>
 
-    <!-- сторінка входу -->
-    <string name="hello">Привіт!</string>
-    <string name="enter_email_password">Введи свій e-mail та пароль нижче</string>
-    <string name="email">E-mail</string>
-    <string name="password">Пароль</string>
-    <string name="remember_me">Запам\'ятати мене</string>
-    <string name="forgot_password">Забули пароль?</string>
-    <string name="login">Увійти</string>
-    <string name="dont_have_account">Немає акаунту?</string>
-    <string name="sign_up">Зареєструватися</string>
+    <!-- мій профіль -->
+    <string name="settings">Налаштування</string>
+    <string name="user_name">Люсіль Альварадо</string>
+    <string name="user_avatar">Аватар користувача</string>
+    <string name="user_profession">Графічна дизайнерка</string>
+    <string name="user_address">вул. Гейлорд, 5295, кв. 110</string>
+    <string name="facebook">Фейсбук</string>
+    <string name="instagram">Інстаграм</string>
+    <string name="telegram">Телеграм</string>
+    <string name="edit_profile">Редагувати профіль</string>
+    <string name="view_contacts">Переглянути мої контакти</string>
+    <string name="log_out">Вихід</string>
+    <string name="profile_fill_hint">Перейдіть до налаштувань та заповніть профіль</string>
+
+
+    <!-- contact's profile -->
+    <string name="profile_text">Профіль</string>
+    <string name="message_text">Повідомлення</string>
+    <string name="back">Назад</string>
 
     <!-- помилки реєстрації / входу -->
     <string name="email_error_text">Невірна e-mail адреса</string>
@@ -55,10 +58,17 @@
     <string name="add_contacts_position">Позиція</string>
     <string name="add_contacts_save_text">Зберегти</string>
     <string name="add_contacts_cancel_text">Відмінити</string>
+    <string name="title">Дані вашого профілю</string>
+    <string name="subtitle">Заповніть профіль та перейдіть до заявки!</string>
+    <string name="button2">Вперед</string>
 
     <!--   текст вкладок табу  -->
     <string name="tab_profile">Мій профіль</string>
     <string name="tab_contacts">Контакти</string>
+
+    <!--    Gallery     -->
+    <string name="open_gallery">Відкрити галерею</string>
+    <string name="delete_photo">Видалити поточне фото</string>
 
     <!-- Edit Profile -->
     <string name="edit_profile_title">Редагувати профіль</string>

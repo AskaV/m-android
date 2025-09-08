@@ -65,7 +65,7 @@ fun RegistrationFieldsPreviewError() = PreviewColumn {
         onUsernameChange = { name = it },
         phone = phone,
         onPhoneChange = { phone = it },
-        usernameError = AppText.Error.USERNAME.text(),
-        phoneError = AppText.Error.PHONE.text()
+        usernameError = AppText.Error.USERNAME_ERROR.text(),
+        phoneError = AppText.Error.PHONE_ERROR.text()
     )
 }

@@ -65,8 +65,8 @@ fun SignUpProfileScreenContent(
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
 
             AuthHeader(
-                title = AppText.ExtendedRegister.TITLE,
-                subtitle = AppText.ExtendedRegister.SUBTITLE
+                title = AppText.ExtendedRegister.TITLE.text(),
+                subtitle = AppText.ExtendedRegister.SUBTITLE.text()
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
@@ -99,7 +99,7 @@ fun SignUpProfileScreenContent(
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_medium)))
 
             OutlinedBorderButton(
-                text = AppText.ExtendedRegister.BUTTON2,
+                text = AppText.ExtendedRegister.BUTTON2.text(),
                 onClick = onForward,
                 style = OutlinedButtonStyle.Primary,
                 modifier = Modifier.fillMaxWidth()
@@ -140,8 +140,8 @@ private fun SignUpProfileScreenPreviewErrors() {
                 state = SignUpProfileUiState(
                     username = "",
                     phone = "",
-                    usernameError = AppText.Error.USERNAME.text(),
-                    phoneError = AppText.Error.PHONE.text()
+                    usernameError = AppText.Error.USERNAME_ERROR.text(),
+                    phoneError = AppText.Error.PHONE_ERROR.text()
                 ),
                 onUserNameChange = {},
                 onPhoneChange = {},

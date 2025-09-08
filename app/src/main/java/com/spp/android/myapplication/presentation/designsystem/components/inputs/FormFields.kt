@@ -120,11 +120,11 @@ fun FormFieldsRegistrationErrorPreview() = PreviewColumn {
         initialState = mapOf(
             FieldId.USERNAME to FieldState(
                 value = AppText.Preview.WRONG_USERNAME,          
-                error = AppText.SignUp.USERNAME_ERROR.text()
+                error = AppText.Error.USERNAME_ERROR.text()
             ),
             FieldId.PHONE to FieldState(
                 value = AppText.Preview.WRONG_PHONE,             
-                error = AppText.SignUp.PHONE_ERROR.text()
+                error = AppText.Error.PHONE_ERROR.text()
             )
         )
     )
