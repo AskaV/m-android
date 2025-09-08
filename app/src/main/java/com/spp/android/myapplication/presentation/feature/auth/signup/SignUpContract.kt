@@ -38,12 +38,16 @@ object SignUpContract {
 
         data object NavigateToExtendedRequested : Event
 
-        //Extended
         data class UsernameChanged(val value: String) : Event
         data class PhoneChanged(val value: String) : Event
         data object PickAvatar : Event
         data object CancelExtended : Event
         data object ForwardExtended : Event
+
+        data object EmailBlur : Event
+        data object PasswordBlur : Event
+        data object UsernameBlur : Event
+        data object PhoneBlur : Event
     }
 
     sealed interface Effect {

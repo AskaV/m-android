@@ -1,4 +1,76 @@
 package com.spp.android.myapplication.presentation.feature.contacts
 
-class ContactsViewModel {
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
+import com.spp.android.myapplication.presentation.designsystem.preview.ContactText
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class ContactsViewModel @Inject constructor(
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(ContactsContract.State())
+    val state: StateFlow<ContactsContract.State> = _state.asStateFlow()
+
+    private val _effect = Channel<ContactsContract.Effect>(Channel.BUFFERED)
+    val effect = _effect.receiveAsFlow()
+
+    init {
+        onEvent(ContactsContract.Event.Load)
+    }
+
+    fun onEvent(event: ContactsContract.Event) {
+        when (event) {
+            ContactsContract.Event.Load -> load()
+            ContactsContract.Event.BackClicked -> emit(ContactsContract.Effect.NavigateBack)
+            ContactsContract.Event.SearchClicked -> emit(ContactsContract.Effect.OpenSearch)
+            ContactsContract.Event.AddContactsClicked -> emit(ContactsContract.Effect.OpenAddContacts)
+            is ContactsContract.Event.ContactClicked ->
+                emit(ContactsContract.Effect.OpenContactProfile(event.item.id))
+
+            is ContactsContract.Event.DeleteClicked -> delete(event.item)
+            ContactsContract.Event.ErrorShown ->
+                _state.update { it.copy(error = null) }
+        }
+    }
+
+    private fun load() = viewModelScope.launch {
+        _state.update { it.copy(isLoading = true, error = null) }
+        runCatching {
+            // TODO replace with repository call
+            demoContacts()
+        }.onSuccess { list ->
+            _state.update { it.copy(items = list, isLoading = false) }
+        }.onFailure { t ->
+            _state.update { it.copy(isLoading = false, error = t.message ?: "Unknown error") }
+            emit(ContactsContract.Effect.ShowMessage("Failed to load contacts"))
+        }
+    }
+
+    private fun delete(item: ContactUi) = viewModelScope.launch {
+        _state.update { it.copy(items = it.items.filterNot { c -> c.id == item.id }) }
+        emit(ContactsContract.Effect.ShowMessage("Contact removed"))
+    }
+
+    private fun emit(effect: ContactsContract.Effect) = viewModelScope.launch {
+        _effect.send(effect)
+    }
+
+    private fun demoContacts(): List<ContactUi> = listOf(
+        ContactUi("1", ContactText.Preview.NAME1, ContactText.Preview.SUBTITLE1),
+        ContactUi("2", ContactText.Preview.NAME2, ContactText.Preview.SUBTITLE2),
+        ContactUi("3", ContactText.Preview.NAME3, ContactText.Preview.SUBTITLE3),
+        ContactUi("4", ContactText.Preview.NAME4, ContactText.Preview.SUBTITLE4),
+        ContactUi("5", ContactText.Preview.NAME5, ContactText.Preview.SUBTITLE5),
+        ContactUi("6", ContactText.Preview.NAME6, ContactText.Preview.SUBTITLE6),
+    )
 }
