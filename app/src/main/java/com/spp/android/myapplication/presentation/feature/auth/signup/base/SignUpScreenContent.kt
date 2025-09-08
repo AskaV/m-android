@@ -21,13 +21,12 @@ import com.spp.android.myapplication.presentation.designsystem.components.button
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedButtonStyle
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.AuthFields
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.AuthFieldsState
-import com.spp.android.myapplication.presentation.designsystem.preview.AuthPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.AutoThemePreview
-import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthFooter
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthHeader
 import com.spp.android.myapplication.presentation.feature.auth.components.CheckBoxWithAction
+import com.spp.android.myapplication.presentation.texts.AppText
 
 data class SignUpUiState(
     val fields: AuthFieldsState = AuthFieldsState(),
@@ -61,8 +60,8 @@ fun SignUpScreenContent(
             Spacer(Modifier.height(dimensionResource(R.dimen.auth_top_spacer)))
 
             AuthHeader(
-                title = AuthPreviewText.Register.TITLE,
-                subtitle = AuthPreviewText.Register.SUBTITLE
+                title = AppText.SignUp.TITLE.text(),
+                subtitle = AppText.SignUp.SUBTITLE.text()
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
@@ -79,7 +78,7 @@ fun SignUpScreenContent(
             CheckBoxWithAction(
                 checked = state.rememberMe,
                 onCheckedChange = onRememberMeChange,
-                label = AuthPreviewText.Register.REMEMBER_ME
+                label = AppText.Login.REMEMBER_ME.text()
             )
         }
 
@@ -90,14 +89,14 @@ fun SignUpScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             GoogleButton(
-                text = AuthPreviewText.Register.G_BUTTON,
+                text = AppText.SignUp.GOOGLE.text().uppercase(),
                 onClick = onRegisterWithGoogleClick
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_small)))
 
             Text(
-                text = AuthPreviewText.Register.OR_DIVIDER,
+                text = AppText.SignUp.OR.text().uppercase(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center
@@ -106,7 +105,7 @@ fun SignUpScreenContent(
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_small)))
 
             OutlinedBorderButton(
-                text = AuthPreviewText.Register.BUTTON.uppercase(),
+                text = AppText.SignUp.REGISTER.text().uppercase(),
                 onClick = onRegisterClick,
                 style = OutlinedButtonStyle.Primary
             )
@@ -114,7 +113,7 @@ fun SignUpScreenContent(
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_small)))
 
             Text(
-                text = AuthPreviewText.Register.TERMS_TEXT,
+                text = AppText.SignUp.TERMS.text(),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
@@ -125,8 +124,8 @@ fun SignUpScreenContent(
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_medium)))
 
             AuthFooter(
-                question = AuthPreviewText.Register.FOOTER_QUESTION,
-                actionText = AuthPreviewText.Register.FOOTER_ACTION,
+                question = AppText.SignUp.HAVE_ACCOUNT.text(),
+                actionText = AppText.SignUp.SIGN_IN.text(),
                 onActionClick = onNavigateToLogin
             )
         }
@@ -142,8 +141,8 @@ fun SignUpScreenPreview() {
             SignUpScreenContent(
                 state = SignUpUiState(
                     fields = AuthFieldsState(
-                        email = FormsPreviewText.EMAIL,
-                        password = FormsPreviewText.PASSWORD
+                        email = AppText.Preview.EMAIL,
+                        password = AppText.Preview.PASSWORD
                     ),
                     rememberMe = true
                 ),
@@ -164,10 +163,10 @@ fun SignUpScreenPreviewErrors() {
             SignUpScreenContent(
                 state = SignUpUiState(
                     fields = AuthFieldsState(
-                        email = FormsPreviewText.WRONG_EMAIL,
-                        password = FormsPreviewText.WRONG_PASSWORD,
-                        emailError = FormsPreviewText.Error.EMAIL,
-                        passwordError = FormsPreviewText.Error.PASSWORD
+                        email = AppText.Preview.WRONG_EMAIL,
+                        password = AppText.Preview.WRONG_PASSWORD,
+                        emailError = AppText.Login.EMAIL_ERROR.text(),
+                        passwordError = AppText.Error.PASSWORD
                     ),
                     rememberMe = false
                 ),

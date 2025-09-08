@@ -1,7 +1,6 @@
 package com.spp.android.myapplication.presentation.designsystem.preview
 
-object ContactText {
-    const val DELETE = "Delete"
+object ContactPreviewText {
 
     object Preview {
         const val NAME1 = "Ava Smith"

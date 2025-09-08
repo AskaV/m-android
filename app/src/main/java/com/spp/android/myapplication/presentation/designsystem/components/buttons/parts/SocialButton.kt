@@ -50,7 +50,7 @@ fun SocialButton(
 @PreviewPhones
 @Composable
 fun SocialButtonPreview() = PreviewRow {
-    SocialButton(iconRes = R.drawable.social_facebook, contentDescription = "Search")
-    SocialButton(iconRes = R.drawable.social_instagram, contentDescription = "Add")
-    SocialButton(iconRes = R.drawable.social_telegram, contentDescription = "Call")
+    SocialButton(iconRes = R.drawable.social_facebook, contentDescription = "Facebook")
+    SocialButton(iconRes = R.drawable.social_instagram, contentDescription = "Instagram")
+    SocialButton(iconRes = R.drawable.social_telegram, contentDescription = "Telegram")
 }

@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
-import com.spp.android.myapplication.presentation.designsystem.preview.AuthPreviewText
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun AuthFooter(
@@ -52,8 +52,8 @@ fun AuthFooter(
 private fun AuthFooterPreview() {
     PreviewColumn {
         AuthFooter(
-            question = AuthPreviewText.Login.FOOTER_QUESTION,
-            actionText = AuthPreviewText.Login.FOOTER_ACTION
+            question = AppText.Login.DONT_HAVE_ACCOUNT.text(),
+            actionText = AppText.Login.SIGN_UP.text(),
         )
     }
 }

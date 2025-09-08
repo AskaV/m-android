@@ -8,14 +8,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.parts.LabeledTextField
 import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
-import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.texts.t
 
 data class AuthFieldsState(
     val email: String = "",
@@ -34,7 +33,7 @@ fun AuthFields(
 ) {
     Column(modifier.fillMaxWidth()) {
         LabeledTextField(
-            label = stringResource(R.string.email),
+            label = AppText.Login.EMAIL_LABEL.text(),
             value = state.email,
             onValueChange = onEmailChange,
             kind = FieldKind.Email,
@@ -42,7 +41,7 @@ fun AuthFields(
             imeAction = ImeAction.Next
         )
         LabeledTextField(
-            label = stringResource(R.string.password),
+            label = AppText.Login.PASSWORD_LABEL.text(),
             value = state.password,
             onValueChange = onPasswordChange,
             kind = FieldKind.Password,
@@ -57,8 +56,8 @@ fun AuthFields(
 @PreviewPhones
 @Composable
 fun AuthFieldsPreview() = PreviewColumn {
-    var email by remember { mutableStateOf(FormsPreviewText.EMAIL) }
-    var pass by remember { mutableStateOf(FormsPreviewText.PASSWORD) }
+    var email by remember { mutableStateOf(AppText.Preview.EMAIL) }
+    var pass by remember { mutableStateOf(AppText.Preview.DOTS) }
     AuthFields(
         state = AuthFieldsState(email, pass),
         onEmailChange = { email = it },
@@ -69,14 +68,14 @@ fun AuthFieldsPreview() = PreviewColumn {
 @PreviewPhones
 @Composable
 fun AuthFieldsPreviewError() = PreviewColumn {
-    var email by remember { mutableStateOf(FormsPreviewText.WRONG_EMAIL) }
-    var pass by remember { mutableStateOf(FormsPreviewText.WRONG_PASSWORD) }
+    var email by remember { mutableStateOf(AppText.Preview.WRONG_EMAIL) }
+    var pass by remember { mutableStateOf(AppText.Preview.WRONG_PASSWORD) }
     AuthFields(
         state = AuthFieldsState(
             email = email,
             password = pass,
-            emailError = FormsPreviewText.Error.EMAIL,
-            passwordError = FormsPreviewText.Error.PASSWORD
+            emailError = AppText.Login.EMAIL_ERROR.text(),
+            passwordError = AppText.Login.PASSWORD_ERROR_TEMPLATE.t(AppText.Integers.PASSWORD_MIN_LENGTH)
         ),
         onEmailChange = { email = it },
         onPasswordChange = { pass = it },

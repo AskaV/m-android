@@ -23,10 +23,10 @@ import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.SocialButtonsRow
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
-import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomArea
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomState
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileHeader
+import com.spp.android.myapplication.presentation.texts.AppText
 
 data class ProfileUiState(
     val name: String,
@@ -66,7 +66,7 @@ fun ProfileScreen(
                         .padding(bottom = dimensionResource(id = R.dimen.spacer_large))
                 ) {
                     Text(
-                        text = ProfilePreviewText.MyProfile.SETTINGS,
+                        text = AppText.MyProfile.SETTINGS,
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.align(Alignment.CenterStart)
@@ -82,7 +82,7 @@ fun ProfileScreen(
                             color = MaterialTheme.colorScheme.outline
                         )
                     ) {
-                        Text(text = ProfilePreviewText.MyProfile.LOGOUT)
+                        Text(text = AppText.MyProfile.LOGOUT)
                     }
                 }
 
@@ -121,7 +121,7 @@ fun ProfileScreen(
             val bottomState: ProfileBottomState =
                 if (state.isCompleted) ProfileBottomState.MyProfileCompleted
                 else ProfileBottomState.MyProfileIncomplete(
-                    hint = ProfilePreviewText.MyProfile.PROFILE_FILL_HINT
+                    hint = AppText.MyProfile.PROFILE_FILL_HINT
                 )
 
             ProfileBottomArea(
@@ -140,9 +140,9 @@ private fun ProfileScreenPreviewIncomplete() =
     PreviewScreenEdgeToEdge {
         ProfileScreen(
             state = ProfileUiState(
-                name = ProfilePreviewText.MyProfile.NAME,
-                linePrimary = ProfilePreviewText.MyProfile.CAREER,
-                lineSecondary = ProfilePreviewText.MyProfile.ADDRESS,
+                name = AppText.MyProfile.NAME,
+                linePrimary = AppText.MyProfile.CAREER,
+                lineSecondary = AppText.MyProfile.ADDRESS,
                 isCompleted = false
             ),
             onEditProfile = {}, onViewContacts = {}, onLogout = {}
@@ -155,9 +155,9 @@ private fun ProfileScreenPreviewCompleted() =
     PreviewScreenEdgeToEdge {
         ProfileScreen(
             state = ProfileUiState(
-                name = ProfilePreviewText.MyProfileDetailed.NAME,
-                linePrimary = ProfilePreviewText.MyProfileDetailed.CAREER,
-                lineSecondary = ProfilePreviewText.MyProfileDetailed.ADDRESS,
+                name = AppText.MyProfileDetailed.NAME,
+                linePrimary = AppText.MyProfileDetailed.CAREER,
+                lineSecondary = AppText.MyProfileDetailed.ADDRESS,
                 isCompleted = true
             ),
             onEditProfile = {}, onViewContacts = {}, onLogout = {}

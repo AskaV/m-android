@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
-import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
 
 @Composable
 internal fun CameraTile(
@@ -34,7 +33,7 @@ internal fun CameraTile(
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_camera),
-            contentDescription = FormsPreviewText.GalleryStrings.OPEN_GALLERY
+            contentDescription = "Open gallery"
         )
     }
 }

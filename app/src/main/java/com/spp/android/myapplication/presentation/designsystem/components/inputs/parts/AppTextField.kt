@@ -24,10 +24,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
-import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
-import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Suppress("LongParameterList")
 @Composable
@@ -108,12 +108,12 @@ fun AppTextField(
 @PreviewPhones
 @Composable
 fun AppTextFieldEmailPreview() = PreviewColumn {
-    var v by remember { mutableStateOf(FormsPreviewText.EMAIL) }
+    var v by remember { mutableStateOf(AppText.Preview.EMAIL) }
     AppTextField(
         value = v,
         onValueChange = { v = it },
         kind = FieldKind.Email,
-        placeholder = FormsPreviewText.EMAIL,
+        placeholder = AppText.Preview.EMAIL,
         imeAction = ImeAction.Next,
         isError = false,
         textStyle = MaterialTheme.typography.titleLarge.copy(
@@ -125,12 +125,12 @@ fun AppTextFieldEmailPreview() = PreviewColumn {
 @PreviewPhones
 @Composable
 fun AppTextFieldPasswordErrorPreview() = PreviewColumn {
-    var v by remember { mutableStateOf(FormsPreviewText.PASSWORD) }
+    var v by remember { mutableStateOf(AppText.Preview.PASSWORD) }
     AppTextField(
         value = v,
         onValueChange = { v = it },
         kind = FieldKind.Password,
-        placeholder = FormsPreviewText.DOTS,
+        placeholder = AppText.Preview.DOTS,
         imeAction = ImeAction.Done,
         isError = true,
         textStyle = MaterialTheme.typography.titleLarge.copy(

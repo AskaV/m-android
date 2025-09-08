@@ -19,10 +19,11 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
-import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
-import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
+import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.texts.t
 
 @Suppress("LongParameterList")
 @Composable
@@ -89,13 +90,13 @@ fun LabeledTextField(
 @PreviewPhones
 @Composable
 fun LabeledTextFieldEmailPreview() = PreviewColumn {
-    var v by remember { mutableStateOf(FormsPreviewText.EMAIL) }
+    var v by remember { mutableStateOf(AppText.Preview.EMAIL) }
     LabeledTextField(
-        label = FormsPreviewText.Label.EMAIL,
+        label = AppText.Login.EMAIL_LABEL.text(),
         value = v,
         onValueChange = { v = it },
         kind = FieldKind.Email,
-        placeholder = FormsPreviewText.EMAIL,
+        placeholder = AppText.Preview.EMAIL,
         textStyle = MaterialTheme.typography.titleLarge.copy(
             color = MaterialTheme.colorScheme.onBackground
         )
@@ -105,14 +106,14 @@ fun LabeledTextFieldEmailPreview() = PreviewColumn {
 @PreviewPhones
 @Composable
 fun LabeledTextFieldPasswordErrorPreview() = PreviewColumn {
-    var v by remember { mutableStateOf(FormsPreviewText.PASSWORD) }
+    var v by remember { mutableStateOf(AppText.Preview.PASSWORD) }
     LabeledTextField(
-        label = FormsPreviewText.Label.PASSWORD,
+        label = AppText.Login.PASSWORD_LABEL.text(),
         value = v,
         onValueChange = { v = it },
         kind = FieldKind.Password,
-        placeholder = FormsPreviewText.DOTS,
-        error = FormsPreviewText.Error.PASSWORD,
+        placeholder = AppText.Preview.DOTS,
+        error = AppText.Login.PASSWORD_ERROR_TEMPLATE.t(AppText.Integers.PASSWORD_MIN_LENGTH),
         imeAction = ImeAction.Done,
         spacerAfter = false,
         textStyle = MaterialTheme.typography.titleLarge.copy(

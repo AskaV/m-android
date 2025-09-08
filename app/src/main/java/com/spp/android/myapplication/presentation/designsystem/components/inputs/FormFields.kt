@@ -11,9 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.parts.LabeledTextField
 import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
-import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.texts.t
 
 enum class FieldId { EMAIL, PASSWORD, USERNAME, PHONE }
 
@@ -73,8 +74,8 @@ fun FormFieldsAuthPreview() = PreviewColumn {
     FormFieldsPreviewTemplate(
         specs = AuthSpecs,
         initialState = mapOf(
-            FieldId.EMAIL to FieldState(FormsPreviewText.EMAIL),
-            FieldId.PASSWORD to FieldState(FormsPreviewText.PASSWORD)
+            FieldId.EMAIL to FieldState(AppText.Preview.EMAIL),
+            FieldId.PASSWORD to FieldState(AppText.Preview.PASSWORD)
         )
     )
 }
@@ -86,10 +87,13 @@ fun FormFieldsAuthErrorPreview() = PreviewColumn {
     FormFieldsPreviewTemplate(
         specs = AuthSpecs,
         initialState = mapOf(
-            FieldId.EMAIL to FieldState(FormsPreviewText.WRONG_EMAIL, FormsPreviewText.Error.EMAIL),
+            FieldId.EMAIL to FieldState(
+                AppText.Preview.WRONG_EMAIL,
+                AppText.Login.EMAIL_ERROR.text()
+            ),
             FieldId.PASSWORD to FieldState(
-                FormsPreviewText.WRONG_PASSWORD,
-                FormsPreviewText.Error.PASSWORD
+                AppText.Preview.WRONG_PASSWORD,
+                AppText.Login.PASSWORD_ERROR_TEMPLATE.t(AppText.Integers.PASSWORD_MIN_LENGTH)
             )
         )
     )
@@ -101,8 +105,8 @@ fun FormFieldsRegistrationPreview() = PreviewColumn {
     FormFieldsPreviewTemplate(
         specs = RegistrationSpecs,
         initialState = mapOf(
-            FieldId.USERNAME to FieldState(FormsPreviewText.USERNAME),
-            FieldId.PHONE to FieldState(FormsPreviewText.PHONE)
+            FieldId.USERNAME to FieldState(AppText.Preview.USERNAME),
+            FieldId.PHONE to FieldState(AppText.Preview.PHONE)
         )
     )
 }
@@ -114,10 +118,13 @@ fun FormFieldsRegistrationErrorPreview() = PreviewColumn {
         specs = RegistrationSpecs,
         initialState = mapOf(
             FieldId.USERNAME to FieldState(
-                FormsPreviewText.WRONG_USERNAME,
-                FormsPreviewText.Error.USERNAME
+                AppText.Preview.WRONG_USERNAME,
+                AppText.Error.USERNAME
             ),
-            FieldId.PHONE to FieldState(FormsPreviewText.WRONG_PHONE, FormsPreviewText.Error.PHONE)
+            FieldId.PHONE to FieldState(
+                AppText.Preview.WRONG_PHONE,
+                AppText.Error.PHONE
+            )
         )
     )
 }

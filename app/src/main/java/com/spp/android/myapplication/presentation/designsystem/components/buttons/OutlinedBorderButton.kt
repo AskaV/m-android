@@ -15,6 +15,7 @@ import androidx.compose.ui.res.dimensionResource
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.texts.AppText
 
 enum class OutlinedButtonStyle { Primary, Secondary, OnBackground }
 
@@ -75,7 +76,7 @@ fun OutlinedBorderButton(
 fun OutlinedBorderButtonPrimaryPreview() =
     PreviewColumn {
         OutlinedBorderButton(
-            text = "Outlined Button Text",
+            text = AppText.Preview.OUTLINED_BTN_TEXT.text(),
             onClick = {},
             style = OutlinedButtonStyle.Primary
         )
@@ -86,7 +87,7 @@ fun OutlinedBorderButtonPrimaryPreview() =
 fun OutlinedBorderButtonSecondaryPreview() =
     PreviewColumn(background = { MaterialTheme.colorScheme.surface }) {
         OutlinedBorderButton(
-            text = "Outlined Button Text",
+            text = AppText.Preview.OUTLINED_BTN_TEXT.text(),
             onClick = {},
             style = OutlinedButtonStyle.Secondary
         )

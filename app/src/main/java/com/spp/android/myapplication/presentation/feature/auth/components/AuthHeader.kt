@@ -14,9 +14,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.presentation.designsystem.preview.AuthPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun AuthHeader(
@@ -51,8 +51,8 @@ fun AuthHeader(
 private fun AuthHeaderPreview() {
     PreviewColumn {
         AuthHeader(
-            title = AuthPreviewText.Login.TITLE,
-            subtitle = AuthPreviewText.Login.SUBTITLE
+            title = AppText.Login.TITLE.text(),
+            subtitle = AppText.Login.SUBTITLE.text()
         )
     }
 }

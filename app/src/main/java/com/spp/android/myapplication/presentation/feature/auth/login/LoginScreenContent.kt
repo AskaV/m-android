@@ -18,13 +18,12 @@ import com.spp.android.myapplication.presentation.designsystem.components.button
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedButtonStyle
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.AuthFields
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.AuthFieldsState
-import com.spp.android.myapplication.presentation.designsystem.preview.AuthPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.AutoThemePreview
-import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthFooter
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthHeader
 import com.spp.android.myapplication.presentation.feature.auth.components.CheckBoxWithAction
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun LoginScreenContent(
@@ -52,8 +51,8 @@ fun LoginScreenContent(
             Spacer(Modifier.height(dimensionResource(R.dimen.auth_top_spacer)))
 
             AuthHeader(
-                title = AuthPreviewText.Login.TITLE,
-                subtitle = AuthPreviewText.Login.SUBTITLE
+                title = AppText.Login.TITLE.text(),
+                subtitle = AppText.Login.SUBTITLE.text()
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
@@ -77,8 +76,8 @@ fun LoginScreenContent(
             CheckBoxWithAction(
                 checked = state.rememberMe,
                 onCheckedChange = onRememberMeChange,
-                label = AuthPreviewText.Login.REMEMBER_ME,
-                actionText = AuthPreviewText.Login.FORGOT_PASSWORD
+                label = AppText.Login.REMEMBER_ME.text(),
+                actionText = AppText.Login.FORGOT_PASSWORD.text(),
             )
         }
 
@@ -89,7 +88,7 @@ fun LoginScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedBorderButton(
-                text = AuthPreviewText.Login.BUTTON.uppercase(),
+                text = AppText.Login.LOGIN.text().uppercase(),
                 onClick = onLoginClick,
                 style = OutlinedButtonStyle.Primary,
             )
@@ -97,8 +96,8 @@ fun LoginScreenContent(
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_medium)))
 
             AuthFooter(
-                question = AuthPreviewText.Login.FOOTER_QUESTION,
-                actionText = AuthPreviewText.Login.FOOTER_ACTION,
+                question = AppText.Login.DONT_HAVE_ACCOUNT.text(),
+                actionText = AppText.Login.SIGN_UP.text(),
                 onActionClick = onNavigateToRegister
             )
         }
@@ -112,8 +111,8 @@ fun LoginScreenPreview() {
         Surface(color = MaterialTheme.colorScheme.background) {
             LoginScreenContent(
                 state = LoginContract.State(
-                    email = FormsPreviewText.EMAIL,
-                    password = FormsPreviewText.PASSWORD,
+                    email = AppText.Preview.EMAIL,
+                    password = AppText.Preview.PASSWORD,
                     rememberMe = true
                 ),
                 onEmailChange = {},
@@ -132,10 +131,10 @@ fun LoginScreenPreviewErrors() {
         Surface(color = MaterialTheme.colorScheme.background) {
             LoginScreenContent(
                 state = LoginContract.State(
-                    email = FormsPreviewText.WRONG_EMAIL,
-                    password = FormsPreviewText.WRONG_PASSWORD,
-                    emailError = FormsPreviewText.Error.EMAIL,
-                    passwordError = FormsPreviewText.Error.PASSWORD,
+                    email = AppText.Preview.WRONG_EMAIL,
+                    password = AppText.Preview.WRONG_PASSWORD,
+                    emailError = AppText.Login.EMAIL_ERROR.text(),
+                    passwordError = AppText.Error.PASSWORD,
                     rememberMe = false
                 ),
                 onEmailChange = {},

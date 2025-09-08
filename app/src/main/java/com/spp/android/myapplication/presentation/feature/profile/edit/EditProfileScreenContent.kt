@@ -34,8 +34,7 @@ import com.spp.android.myapplication.presentation.designsystem.imageload.AvatarP
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewMoto
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
-import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText
-import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText.EditProfile
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun EditProfileScreenContent(
@@ -53,11 +52,17 @@ fun EditProfileScreenContent(
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
 
-    var username by remember { mutableStateOf(EditProfile.USERNAME) }
-    var career by remember { mutableStateOf(EditProfile.CAREER) }
-    var phone by remember { mutableStateOf(EditProfile.PHONE) }
-    var address by remember { mutableStateOf(EditProfile.ADDRESS) }
-    var birthdate by remember { mutableStateOf(EditProfile.BIRTHDATE) }
+    val usernamePlaceholder = AppText.EditProfile.USERNAME.text()
+    val careerPlaceholder = AppText.EditProfile.CAREER.text()
+    val phonePlaceholder = AppText.EditProfile.PHONE.text()
+    val addressPlaceholder = AppText.EditProfile.ADDRESS.text()
+    val birthdatePlaceholder = AppText.EditProfile.BIRTHDATE.text()
+
+    var username by remember { mutableStateOf(usernamePlaceholder) }
+    var career by remember { mutableStateOf(careerPlaceholder) }
+    var phone by remember { mutableStateOf(phonePlaceholder) }
+    var address by remember { mutableStateOf(addressPlaceholder) }
+    var birthdate by remember { mutableStateOf(birthdatePlaceholder) }
 
     Column(
         modifier = modifier
@@ -83,7 +88,7 @@ fun EditProfileScreenContent(
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                     Text(
-                        text = ProfilePreviewText.EditProfile.EDIT_PROFILE,
+                        text = AppText.EditProfile.TITLE.text(),
                         style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -137,7 +142,7 @@ fun EditProfileScreenContent(
                     ),
                     shape = MaterialTheme.shapes.large
                 ) {
-                    Text(text = ProfilePreviewText.EditProfile.SAVE.uppercase())
+                    Text(text = AppText.EditProfile.SAVE.text().uppercase())
                 }
 
                 Spacer(Modifier.height(spaceL))

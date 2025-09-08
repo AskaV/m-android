@@ -17,13 +17,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
-import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.FilledButton
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedBorderButton
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedButtonStyle
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.ProfileSocialRowWithSpacer
-import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText
+import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
+import com.spp.android.myapplication.presentation.texts.AppText
 
 sealed interface ProfileBottomState {
     data class MyProfileIncomplete(val hint: String) : ProfileBottomState
@@ -59,12 +59,12 @@ fun ProfileBottomArea(
                 is ProfileBottomState.MyProfileCompleted -> {
                     ProfileSocialRowWithSpacer(spaceM)
                     ProfileActionButton(
-                        text = ProfilePreviewText.MyProfile.EDIT_PROFILE,
+                        text = AppText.MyProfile.EDIT_PROFILE,
                         onClick = { onSecondary?.invoke() }
                     )
                     Spacer(Modifier.height(spaceM))
                     FilledButton(
-                        text = ProfilePreviewText.MyProfile.VIEW_CONTACTS,
+                        text = AppText.MyProfile.VIEW_CONTACTS,
                         onClick = onPrimary
                     )
                 }
@@ -80,12 +80,12 @@ fun ProfileBottomArea(
                     )
                     Spacer(Modifier.height(spaceM))
                     ProfileActionButton(
-                        text = ProfilePreviewText.MyProfile.EDIT_PROFILE,
+                        text = AppText.MyProfile.EDIT_PROFILE,
                         onClick = { onSecondary?.invoke() }
                     )
                     Spacer(Modifier.height(spaceM))
                     FilledButton(
-                        text = ProfilePreviewText.MyProfile.VIEW_CONTACTS,
+                        text = AppText.MyProfile.VIEW_CONTACTS,
                         onClick = onPrimary
                     )
                 }
@@ -93,7 +93,7 @@ fun ProfileBottomArea(
                 ProfileBottomState.ContactMessageOnly -> {
                     ProfileSocialRowWithSpacer(spaceM)
                     FilledButton(
-                        text = ProfilePreviewText.ContactProfile.MESSAGE_TEXT,
+                        text = AppText.ContactProfile.MESSAGE_TEXT,
                         onClick = onPrimary
                     )
                 }
@@ -101,18 +101,18 @@ fun ProfileBottomArea(
                 ProfileBottomState.ContactAddable -> {
                     ProfileSocialRowWithSpacer(spaceM)
                     ProfileActionButton(
-                        text = ProfilePreviewText.ContactProfile.MESSAGE_TEXT,
+                        text = AppText.ContactProfile.MESSAGE_TEXT,
                         onClick = { onSecondary?.invoke() },
                         style = OutlinedButtonStyle.OnBackground
                     )
                     Spacer(Modifier.height(spaceM))
                     ProfileActionButton(
-                        text = ProfilePreviewText.MyProfile.EDIT_PROFILE,
+                        text = AppText.MyProfile.EDIT_PROFILE,
                         onClick = { onSecondary?.invoke() }
                     )
                     Spacer(Modifier.height(spaceM))
                     FilledButton(
-                        text = ProfilePreviewText.ContactProfile.ADD_TO_MY_CONTACTS,
+                        text = AppText.ContactProfile.ADD_TO_MY_CONTACTS,
                         onClick = onPrimary
                     )
                 }
@@ -155,7 +155,7 @@ private fun PreviewMyProfileCompleted() = PreviewScreenEdgeToEdge {
 private fun PreviewMyProfileIncomplete() = PreviewScreenEdgeToEdge {
     ProfileBottomArea(
         state = ProfileBottomState.MyProfileIncomplete(
-            hint = ProfilePreviewText.MyProfile.PROFILE_FILL_HINT
+            hint = AppText.MyProfile.PROFILE_FILL_HINT
         ),
         onPrimary = {},
         onSecondary = {},

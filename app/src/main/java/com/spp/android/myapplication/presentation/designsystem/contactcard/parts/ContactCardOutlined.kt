@@ -28,7 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.presentation.designsystem.preview.ContactText
+import com.spp.android.myapplication.presentation.designsystem.preview.ContactPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 
@@ -107,7 +107,7 @@ fun ContactCardOutlined(
             IconButton(onClick = { onDeleteClick(contact) }) {
                 Icon(
                     painter = painterResource(R.drawable.recycle_bin),
-                    contentDescription = ContactText.DELETE,
+                    contentDescription = "Delete",
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -122,8 +122,8 @@ private fun ContactCardOutlinedPreview() {
         ContactCardOutlined(
             contact = ContactUi(
                 id = "1",
-                name = ContactText.Preview.NAME1,
-                subtitle = ContactText.Preview.SUBTITLE1,
+                name = ContactPreviewText.Preview.NAME1,
+                subtitle = ContactPreviewText.Preview.SUBTITLE1,
                 avatarUrl = null
             ),
             onClick = {},

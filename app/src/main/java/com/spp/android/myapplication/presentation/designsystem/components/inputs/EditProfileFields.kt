@@ -15,7 +15,8 @@ import com.spp.android.myapplication.presentation.designsystem.components.inputs
 import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
-import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText.EditProfile
+import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.texts.TextKey
 
 @JvmOverloads
 @Composable
@@ -41,7 +42,7 @@ fun EditProfileFields(
 
         Column(modifier.fillMaxWidth()) {
             LabeledTextField(
-                label = EditProfile.USERNAME_LABEL,
+                label = AppText.EditProfile.USERNAME_LABEL.text(),
                 value = username,
                 onValueChange = onUsernameChange,
                 kind = FieldKind.Username,
@@ -51,7 +52,7 @@ fun EditProfileFields(
                 )
             )
             LabeledTextField(
-                label = EditProfile.CAREER_LABEL,
+                label = AppText.EditProfile.CAREER_LABEL.text(),
                 value = career,
                 onValueChange = onCareerChange,
                 kind = FieldKind.Username,
@@ -61,7 +62,7 @@ fun EditProfileFields(
                 )
             )
             LabeledTextField(
-                label = EditProfile.PHONE_LABEL,
+                label = AppText.EditProfile.PHONE_LABEL.text(),
                 value = phone,
                 onValueChange = onPhoneChange,
                 kind = FieldKind.Phone,
@@ -71,7 +72,7 @@ fun EditProfileFields(
                 )
             )
             LabeledTextField(
-                label = EditProfile.ADDRESS_LABEL,
+                label = AppText.EditProfile.ADDRESS_LABEL.text(),
                 value = address,
                 onValueChange = onAddressChange,
                 kind = FieldKind.Username,
@@ -81,7 +82,7 @@ fun EditProfileFields(
                 )
             )
             LabeledTextField(
-                label = EditProfile.BIRTHDATE_LABEL,
+                label = AppText.EditProfile.BIRTHDATE_LABEL.text(),
                 value = birthdate,
                 onValueChange = onBirthdateChange,
                 kind = FieldKind.Username,
@@ -99,11 +100,11 @@ fun EditProfileFields(
 @PreviewPhones
 @Composable
 fun EditProfileFieldsPreview() = PreviewColumn {
-    var username by remember { mutableStateOf(EditProfile.USERNAME) }
-    var career by remember { mutableStateOf(EditProfile.CAREER) }
-    var phone by remember { mutableStateOf(EditProfile.PHONE) }
-    var address by remember { mutableStateOf(EditProfile.ADDRESS) }
-    var birth by remember { mutableStateOf(EditProfile.BIRTHDATE) }
+    var username by rememberText(AppText.EditProfile.USERNAME)
+    var career by rememberText(AppText.EditProfile.CAREER)
+    var phone by rememberText(AppText.EditProfile.PHONE)
+    var address by rememberText(AppText.EditProfile.ADDRESS)
+    var birth by rememberText(AppText.EditProfile.BIRTHDATE)
 
     EditProfileFields(
         username = username, onUsernameChange = { username = it },
@@ -112,4 +113,10 @@ fun EditProfileFieldsPreview() = PreviewColumn {
         address = address, onAddressChange = { address = it },
         birthdate = birth, onBirthdateChange = { birth = it },
     )
+}
+
+@Composable
+private fun rememberText(key: TextKey) = run {
+    val initial = key.text()
+    remember(initial) { mutableStateOf(initial) }
 }

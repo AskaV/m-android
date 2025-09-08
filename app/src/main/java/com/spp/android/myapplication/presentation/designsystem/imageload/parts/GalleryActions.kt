@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 internal fun GalleryActions(
@@ -24,7 +24,7 @@ internal fun GalleryActions(
 ) {
     Column(modifier) {
         ActionItem(
-            text = FormsPreviewText.GalleryStrings.OPEN_GALLERY,
+            text = AppText.GalleryStrings.OPEN_GALLERY,
             enabled = true,
             onClick = onOpenGallery,
             colorOverride = MaterialTheme.colorScheme.onBackground
@@ -32,7 +32,7 @@ internal fun GalleryActions(
 
         if (onDeleteCurrent != null) {
             ActionItem(
-                text = FormsPreviewText.GalleryStrings.DELETE_PHOTO,
+                text = AppText.GalleryStrings.DELETE_PHOTO,
                 enabled = false,
                 onClick = {},
                 dimmed = true
@@ -44,7 +44,7 @@ internal fun GalleryActions(
             else MaterialTheme.colorScheme.onSurface
 
         ActionItem(
-            text = FormsPreviewText.GalleryStrings.CANCEL,
+            text = AppText.GalleryStrings.CANCEL,
             enabled = true,
             onClick = onCancel,
             colorOverride = cancelColor

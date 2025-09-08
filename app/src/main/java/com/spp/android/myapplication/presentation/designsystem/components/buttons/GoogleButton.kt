@@ -26,12 +26,12 @@ import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
-import com.spp.android.myapplication.presentation.designsystem.preview.AuthPreviewText
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun GoogleButton(
     modifier: Modifier = Modifier,
-    text: String = AuthPreviewText.Register.G_BUTTON,
+    text: String = AppText.SignUp.GOOGLE.text().uppercase(),
     onClick: () -> Unit,
     enabled: Boolean = true,
     borderWidth: Dp = 1.dp
@@ -71,5 +71,5 @@ fun GoogleButton(
 @PreviewPhones
 @Composable
 private fun GoogleButtonPreview() = PreviewColumn {
-    GoogleButton(text = AuthPreviewText.Register.G_BUTTON, onClick = {})
+    GoogleButton(text = AppText.SignUp.GOOGLE.text(), onClick = {})
 }

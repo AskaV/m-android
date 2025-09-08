@@ -43,12 +43,11 @@
 
     <!--   login registration error text   -->
     <string name="email_error_text">Incorrect E-Mail address</string>
-    <string name="password_error_text">Your password must include a minimum of 8 characters.</string> <!-- %d %s -->
-    <string name="user_name_error">User name must contain at least 3 letters</string>
-    <string name="phone_length_error">Phone must be at least 10 digits long</string>
+    <string name="password_error_text">Your password must include a minimum of %1$d characters.</string> <!-- %d %s -->
+    <string name="user_name_error">User name must contain at least %1$d letters</string>
+    <string name="phone_length_error">Phone must be at least  %1$d digits long</string>
 
     <!--   my contacts recycler view  -->
-
     <string name="contacts_text">Contacts</string>
     <string name="add_contacts_text">Add contacts</string>
     <string name="wastebasket_description">Wastebasket</string>
@@ -62,4 +61,28 @@
     <!--    tab text     -->
     <string name="tab_profile">My Profile</string>
     <string name="tab_contacts">Contacts</string>
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Edit profile</string>
+    <string name="edit_profile_save">Save</string>
+
+    <string name="edit_profile_username_label">Username</string>
+    <string name="edit_profile_username_placeholder">Lucile Alvarado</string>
+
+    <string name="edit_profile_career_label">Career</string>
+    <string name="edit_profile_career_placeholder">Graphic designer</string>
+
+    <string name="edit_profile_phone_label">Phone</string>
+    <string name="edit_profile_phone_placeholder">(264)-654-3452</string>
+
+    <string name="edit_profile_birthdate_label">Date of birth</string>
+    <string name="edit_profile_birthdate_placeholder">12/05/1994</string>
+
+    <string name="edit_profile_address_label">Address</string>
+    <string name="edit_profile_address_placeholder">5295 Gaylord Walks Apk. 110</string>
+
+
+    <!--    Preview     -->
+    <string name="filled_button_text">Filled Button Text</string>
+    <string name="outlined_button_text">Outlined Button Text</string>
 </resources>

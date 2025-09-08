@@ -41,9 +41,9 @@
 
     <!-- помилки реєстрації / входу -->
     <string name="email_error_text">Невірна e-mail адреса</string>
-    <string name="password_error_text">Пароль має містити щонайменше 8 символів</string>
-    <string name="user_name_error">Ім’я користувача повинно містити щонайменше 3 літери</string>
-    <string name="phone_length_error">Номер телефону має містити щонайменше 10 цифр</string>
+    <string name="password_error_text">Пароль має містити щонайменше %1$d символів</string>
+    <string name="user_name_error">Ім’я користувача повинно містити щонайменше %1$d літери</string>
+    <string name="phone_length_error">Номер телефону має містити щонайменше %1$d цифр</string>
 
     <!--   сторінка списку контактів  -->
     <string name="contacts_text">Контакти</string>
@@ -59,4 +59,28 @@
     <!--   текст вкладок табу  -->
     <string name="tab_profile">Мій профіль</string>
     <string name="tab_contacts">Контакти</string>
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Редагувати профіль</string>
+    <string name="edit_profile_save">Зберегти</string>
+
+    <string name="edit_profile_username_label">Ім’я користувача</string>
+    <string name="edit_profile_username_placeholder">Lucile Alvarado</string>
+
+    <string name="edit_profile_career_label">Професія</string>
+    <string name="edit_profile_career_placeholder">Графічний дизайнер</string>
+
+    <string name="edit_profile_phone_label">Телефон</string>
+    <string name="edit_profile_phone_placeholder">(264)-654-3452</string>
+
+    <string name="edit_profile_birthdate_label">Дата народження</string>
+    <string name="edit_profile_birthdate_placeholder">12/05/1994</string>
+
+    <string name="edit_profile_address_label">Адреса</string>
+    <string name="edit_profile_address_placeholder">5295 Gaylord Walks Apk. 110</string>
+
+    <!--    Превью     -->
+    <string name="filled_button_text">Заповнений текст кнопки</string>
+    <string name="outlined_button_text">Окреслений текст кнопки</string>
+
 </resources>

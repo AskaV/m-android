@@ -16,9 +16,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun ProfileHeader(
@@ -72,9 +72,9 @@ private fun ProfileHeaderPreview() {
     PreviewColumn {
         Surface(color = MaterialTheme.colorScheme.background) {
             ProfileHeader(
-                name = ProfilePreviewText.MyProfile.NAME,
-                linePrimary = ProfilePreviewText.MyProfile.CAREER,
-                lineSecondary = ProfilePreviewText.MyProfile.ADDRESS
+                name = AppText.MyProfile.NAME,
+                linePrimary = AppText.MyProfile.CAREER,
+                lineSecondary = AppText.MyProfile.ADDRESS
             )
         }
     }

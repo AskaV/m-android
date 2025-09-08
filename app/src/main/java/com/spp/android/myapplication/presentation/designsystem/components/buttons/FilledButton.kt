@@ -16,6 +16,7 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewCo
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.theme.AccentLight
 import com.spp.android.myapplication.presentation.designsystem.theme.TextPrimaryLight
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun FilledButton(
@@ -50,4 +51,4 @@ fun FilledButton(
 @PreviewPhones
 @Composable
 fun FilledButtonPreview() =
-    PreviewColumn { FilledButton(text = "Filled Button Text", onClick = {}) }
+    PreviewColumn { FilledButton(text = AppText.Preview.FILLED_BTN_TEXT.text(), onClick = {}) }

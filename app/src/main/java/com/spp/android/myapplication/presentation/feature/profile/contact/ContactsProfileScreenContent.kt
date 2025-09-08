@@ -25,10 +25,10 @@ import androidx.compose.ui.res.stringResource
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
-import com.spp.android.myapplication.presentation.designsystem.preview.ProfilePreviewText
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomArea
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomState
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileHeader
+import com.spp.android.myapplication.presentation.texts.AppText
 
 data class ContactProfileUiState(
     val name: String,
@@ -79,7 +79,7 @@ fun ContactProfileScreen(
                         )
                     }
                     Text(
-                        text = ProfilePreviewText.MyProfile.PROFILE,
+                        text = AppText.MyProfile.PROFILE,
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.align(Alignment.Center)
@@ -117,9 +117,9 @@ fun ContactProfileScreen(
 private fun ContactProfilePreview() = PreviewScreenEdgeToEdge {
     ContactProfileScreen(
         state = ContactProfileUiState(
-            name = ProfilePreviewText.MyProfileDetailed.NAME,
-            linePrimary = ProfilePreviewText.MyProfileDetailed.CAREER,
-            lineSecondary = ProfilePreviewText.MyProfileDetailed.ADDRESS,
+            name = AppText.MyProfileDetailed.NAME,
+            linePrimary = AppText.MyProfileDetailed.CAREER,
+            lineSecondary = AppText.MyProfileDetailed.ADDRESS,
             hasSocial = true
         ),
         onBack = {},

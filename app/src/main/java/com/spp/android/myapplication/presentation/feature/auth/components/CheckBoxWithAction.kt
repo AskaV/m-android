@@ -27,9 +27,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.presentation.designsystem.preview.AuthPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun CheckBoxWithAction(
@@ -104,13 +104,13 @@ private fun CheckBoxWithActionPreviewFigma() {
         CheckBoxWithAction(
             checked = checked,
             onCheckedChange = { checked = it },
-            label = AuthPreviewText.Login.REMEMBER_ME,
-            actionText = AuthPreviewText.Login.FORGOT_PASSWORD
+            label = AppText.Login.REMEMBER_ME.text(),
+            actionText = AppText.Login.FORGOT_PASSWORD.text()
         )
         CheckBoxWithAction(
             checked = checked,
             onCheckedChange = { checked = it },
-            label = AuthPreviewText.Register.REMEMBER_ME
+            label = AppText.Login.REMEMBER_ME.text()
         )
     }
 }

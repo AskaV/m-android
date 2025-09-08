@@ -10,9 +10,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.parts.LabeledTextField
 import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
-import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun RegistrationFields(
@@ -26,14 +26,14 @@ fun RegistrationFields(
 ) {
     Column(modifier.fillMaxWidth()) {
         LabeledTextField(
-            label = FormsPreviewText.Label.USERNAME,
+            label = AppText.SignUp.USERNAME_LABEL.text(),
             value = username,
             onValueChange = onUsernameChange,
             kind = FieldKind.Username,
             error = usernameError
         )
         LabeledTextField(
-            label = FormsPreviewText.Label.PHONE,
+            label = AppText.SignUp.PHONE_LABEL.text(),
             value = phone,
             onValueChange = onPhoneChange,
             kind = FieldKind.Phone,
@@ -45,8 +45,8 @@ fun RegistrationFields(
 @PreviewPhones
 @Composable
 fun RegistrationFieldsPreview() = PreviewColumn {
-    var name by remember { mutableStateOf(FormsPreviewText.USERNAME) }
-    var phone by remember { mutableStateOf(FormsPreviewText.PHONE) }
+    var name by remember { mutableStateOf(AppText.Preview.USERNAME) }
+    var phone by remember { mutableStateOf(AppText.Preview.PHONE) }
     RegistrationFields(
         username = name,
         onUsernameChange = { name = it },
@@ -57,14 +57,14 @@ fun RegistrationFieldsPreview() = PreviewColumn {
 @PreviewPhones
 @Composable
 fun RegistrationFieldsPreviewError() = PreviewColumn {
-    var name by remember { mutableStateOf(FormsPreviewText.WRONG_USERNAME) }
-    var phone by remember { mutableStateOf(FormsPreviewText.WRONG_PHONE) }
+    var name by remember { mutableStateOf(AppText.Preview.WRONG_USERNAME) }
+    var phone by remember { mutableStateOf(AppText.Preview.WRONG_PHONE) }
     RegistrationFields(
         username = name,
         onUsernameChange = { name = it },
         phone = phone,
         onPhoneChange = { phone = it },
-        usernameError = FormsPreviewText.Error.USERNAME,
-        phoneError = FormsPreviewText.Error.PHONE
+        usernameError = AppText.Error.USERNAME,
+        phoneError = AppText.Error.PHONE
     )
 }

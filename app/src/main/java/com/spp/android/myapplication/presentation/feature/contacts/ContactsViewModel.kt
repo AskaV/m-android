@@ -3,7 +3,7 @@ package com.spp.android.myapplication.presentation.feature.contacts
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
-import com.spp.android.myapplication.presentation.designsystem.preview.ContactText
+import com.spp.android.myapplication.presentation.designsystem.preview.ContactPreviewText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -66,11 +66,11 @@ class ContactsViewModel @Inject constructor(
     }
 
     private fun demoContacts(): List<ContactUi> = listOf(
-        ContactUi("1", ContactText.Preview.NAME1, ContactText.Preview.SUBTITLE1),
-        ContactUi("2", ContactText.Preview.NAME2, ContactText.Preview.SUBTITLE2),
-        ContactUi("3", ContactText.Preview.NAME3, ContactText.Preview.SUBTITLE3),
-        ContactUi("4", ContactText.Preview.NAME4, ContactText.Preview.SUBTITLE4),
-        ContactUi("5", ContactText.Preview.NAME5, ContactText.Preview.SUBTITLE5),
-        ContactUi("6", ContactText.Preview.NAME6, ContactText.Preview.SUBTITLE6),
+        ContactUi("1", ContactPreviewText.Preview.NAME1, ContactPreviewText.Preview.SUBTITLE1),
+        ContactUi("2", ContactPreviewText.Preview.NAME2, ContactPreviewText.Preview.SUBTITLE2),
+        ContactUi("3", ContactPreviewText.Preview.NAME3, ContactPreviewText.Preview.SUBTITLE3),
+        ContactUi("4", ContactPreviewText.Preview.NAME4, ContactPreviewText.Preview.SUBTITLE4),
+        ContactUi("5", ContactPreviewText.Preview.NAME5, ContactPreviewText.Preview.SUBTITLE5),
+        ContactUi("6", ContactPreviewText.Preview.NAME6, ContactPreviewText.Preview.SUBTITLE6),
     )
 }

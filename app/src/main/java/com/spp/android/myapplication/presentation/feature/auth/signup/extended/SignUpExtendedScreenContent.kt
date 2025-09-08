@@ -19,11 +19,10 @@ import com.spp.android.myapplication.presentation.designsystem.components.button
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedButtonStyle
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.RegistrationFields
 import com.spp.android.myapplication.presentation.designsystem.imageload.AvatarPicker
-import com.spp.android.myapplication.presentation.designsystem.preview.AuthPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.AutoThemePreview
-import com.spp.android.myapplication.presentation.designsystem.preview.FormsPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthHeader
+import com.spp.android.myapplication.presentation.texts.AppText
 
 data class SignUpProfileUiState(
     val username: String = "",
@@ -65,8 +64,8 @@ fun SignUpProfileScreenContent(
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
 
             AuthHeader(
-                title = AuthPreviewText.ExtendedRegister.TITLE,
-                subtitle = AuthPreviewText.ExtendedRegister.SUBTITLE
+                title = AppText.ExtendedRegister.TITLE,
+                subtitle = AppText.ExtendedRegister.SUBTITLE
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
@@ -88,7 +87,7 @@ fun SignUpProfileScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedBorderButton(
-                text = AuthPreviewText.ExtendedRegister.BUTTON,
+                text = AppText.ExtendedRegister.BUTTON,
                 onClick = onCancel,
                 style = OutlinedButtonStyle.OnBackground,
                 modifier = Modifier
@@ -99,7 +98,7 @@ fun SignUpProfileScreenContent(
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_medium)))
 
             OutlinedBorderButton(
-                text = AuthPreviewText.ExtendedRegister.BUTTON2,
+                text = AppText.ExtendedRegister.BUTTON2,
                 onClick = onForward,
                 style = OutlinedButtonStyle.Primary,
                 modifier = Modifier.fillMaxWidth()
@@ -118,8 +117,8 @@ private fun SignUpProfileScreenPreview() {
         Surface(color = MaterialTheme.colorScheme.background) {
             SignUpProfileScreenContent(
                 state = SignUpProfileUiState(
-                    username = FormsPreviewText.USERNAME,
-                    phone = FormsPreviewText.PHONE
+                    username = AppText.Preview.USERNAME,
+                    phone = AppText.Preview.PHONE
                 ),
                 onUserNameChange = {},
                 onPhoneChange = {},
@@ -140,8 +139,8 @@ private fun SignUpProfileScreenPreviewErrors() {
                 state = SignUpProfileUiState(
                     username = "",
                     phone = "",
-                    usernameError = FormsPreviewText.Error.USERNAME,
-                    phoneError = FormsPreviewText.Error.PHONE
+                    usernameError = AppText.Error.USERNAME,
+                    phoneError = AppText.Error.PHONE
                 ),
                 onUserNameChange = {},
                 onPhoneChange = {},
