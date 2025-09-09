@@ -62,6 +62,7 @@ class SignUpViewModel @Inject constructor(
             SignUpContract.Event.ForwardExtended -> submitExtended()
             SignUpContract.Event.EmailBlur -> { _state.update { s -> s.copy(fields = s.fields.copy(emailError = validateEmail(appContext, s.fields.email))) } }
             SignUpContract.Event.PasswordBlur -> { _state.update { s -> s.copy(fields = s.fields.copy(passwordError = validatePassword(appContext, s.fields.password))) } }
+            is SignUpContract.Event.AvatarPicked -> { _profile.update { it.copy(avatar = event.uri) } }
         }
     }
 

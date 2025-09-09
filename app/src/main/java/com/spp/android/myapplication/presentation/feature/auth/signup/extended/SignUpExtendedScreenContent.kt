@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.presentation.feature.auth.signup.extended
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,7 +30,8 @@ data class SignUpProfileUiState(
     val username: String = "",
     val phone: String = "",
     val usernameError: String? = null,
-    val phoneError: String? = null
+    val phoneError: String? = null,
+    val avatar: Uri? = null
 )
 
 @Composable

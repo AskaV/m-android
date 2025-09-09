@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.presentation.feature.auth.signup
 
+import android.net.Uri
 import androidx.compose.runtime.Immutable
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.AuthFieldsState
 
@@ -24,6 +25,8 @@ object SignUpContract {
         val usernameTouched: Boolean = false,
         val phoneTouched: Boolean = false,
 
+        val avatar: Uri? = null,
+
         val isLoading: Boolean = false,
         val error: String? = null
     )
@@ -40,6 +43,7 @@ object SignUpContract {
 
         data class UsernameChanged(val value: String) : Event
         data class PhoneChanged(val value: String) : Event
+        data class AvatarPicked(val uri: Uri) : Event
         data object PickAvatar : Event
         data object CancelExtended : Event
         data object ForwardExtended : Event
