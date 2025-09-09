@@ -146,7 +146,7 @@ private fun PreviewMyProfileCompleted() = PreviewScreenEdgeToEdge {
         state = ProfileBottomState.MyProfileCompleted,
         onPrimary = {},
         onSecondary = {},
-        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.padding_screen))
+        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.spacer_medium))
     )
 }
 
@@ -159,7 +159,7 @@ private fun PreviewMyProfileIncomplete() = PreviewScreenEdgeToEdge {
         ),
         onPrimary = {},
         onSecondary = {},
-        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.padding_screen))
+        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.spacer_medium))
     )
 }
 
@@ -169,7 +169,7 @@ private fun PreviewContactMessageOnly() = PreviewScreenEdgeToEdge {
     ProfileBottomArea(
         state = ProfileBottomState.ContactMessageOnly,
         onPrimary = {},
-        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.padding_screen))
+        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.spacer_medium))
     )
 }
 
@@ -180,6 +180,6 @@ private fun PreviewContactAddable() = PreviewScreenEdgeToEdge {
         state = ProfileBottomState.ContactAddable,
         onPrimary = {},
         onSecondary = {},
-        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.padding_screen))
+        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.spacer_medium))
     )
 }

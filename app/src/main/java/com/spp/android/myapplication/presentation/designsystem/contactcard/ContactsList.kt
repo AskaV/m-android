@@ -25,7 +25,7 @@ fun ContactsList(
     onItemClick: (ContactUi) -> Unit,
     onDeleteClick: (ContactUi) -> Unit,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(dimensionResource(id = R.dimen.padding_screen))
+    contentPadding: PaddingValues = PaddingValues(dimensionResource(id = R.dimen.spacer_medium))
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),

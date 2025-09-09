@@ -82,7 +82,7 @@ fun LabeledTextField(
         }
 
         if (spacerAfter) {
-            Spacer(Modifier.height(dimensionResource(id = R.dimen.login_margin_top_small)))
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.button_corner_radius)))
         }
     }
 }

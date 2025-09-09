@@ -30,7 +30,7 @@ fun GalleryPickerSheet(
 ) {
     val corner = dimensionResource(id = R.dimen.spacer_small)
     val spacing = dimensionResource(id = R.dimen.spacer_small)
-    val actionsSidePadding = dimensionResource(id = R.dimen.padding_screen)
+    val actionsSidePadding = dimensionResource(id = R.dimen.spacer_medium)
 
     Surface(
         modifier = modifier,

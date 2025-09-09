@@ -29,7 +29,6 @@ import com.spp.android.myapplication.presentation.feature.profile.components.Pro
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomState
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileHeader
 import com.spp.android.myapplication.presentation.texts.AppText
-import com.spp.android.myapplication.presentation.texts.text
 
 data class ContactProfileUiState(
     val name: String,
@@ -45,7 +44,7 @@ fun ContactProfileScreen(
     onMessage: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val pad = dimensionResource(id = R.dimen.padding_screen)
+    val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
 
     Column(

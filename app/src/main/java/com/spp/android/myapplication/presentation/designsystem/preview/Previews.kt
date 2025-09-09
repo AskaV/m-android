@@ -59,7 +59,7 @@ fun PreviewColumn(
 ) = AutoThemePreview {
     Surface(color = background()) {
         Column(
-            Modifier.padding(dimensionResource(id = R.dimen.padding_screen)),
+            Modifier.padding(dimensionResource(id = R.dimen.spacer_medium)),
             verticalArrangement = Arrangement.spacedBy(spacing)
         ) {
             content()
@@ -75,7 +75,7 @@ fun PreviewRow(
 ) = AutoThemePreview {
     Surface(color = background()) {
         Row(
-            Modifier.padding(dimensionResource(id = R.dimen.padding_screen)),
+            Modifier.padding(dimensionResource(id = R.dimen.spacer_medium)),
             horizontalArrangement = Arrangement.spacedBy(spacing)
         ) {
             content()

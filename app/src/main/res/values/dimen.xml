@@ -1,134 +1,23 @@
 <resources>
-
-    <!-- =============== TEXT SIZES =============== -->
-    <dimen name="heading_large_text_size">24sp</dimen>
-    <dimen name="heading_medium_text_size">18sp</dimen>
-    <dimen name="subheading_large_text_size">16sp</dimen>
-    <dimen name="subheading_medium_text_size">14sp</dimen>
-    <dimen name="body_text_size">12sp</dimen>
-
-    <!-- =============== MY PROFILE PAGE DIMENSIONS =============== -->
-    <!-- Margins -->
-    <dimen name="margin_start_text">17dp</dimen>
-    <dimen name="margin_top_settings">48dp</dimen>
-    <dimen name="margin_top_avatar">103dp</dimen>
-    <dimen name="margin_top_user_name">240dp</dimen>
-    <dimen name="margin_top_text">8dp</dimen>
-
-    <!-- Social Buttons Margins -->
-    <dimen name="margin_start_social">64dp</dimen>
-    <dimen name="margin_between_social">36dp</dimen>
-    <dimen name="margin_top_social">64dp</dimen>
-    <dimen name="margin_end_social">56dp</dimen>
-    <dimen name="social_button_padding">15dp</dimen>
-
-    <!-- Buttons -->
-    <dimen name="button_width">328dp</dimen>
-    <dimen name="button_height">50dp</dimen>
-    <dimen name="button_height_large">55dp</dimen>
-    <dimen name="button_corner_radius">6dp</dimen>
-    <dimen name="button_border_width">2dp</dimen>
-    <dimen name="button_elevation">4dp</dimen>
-
-    <!-- Button Margins -->
-    <dimen name="button_margin_horizontal">16dp</dimen>
-    <dimen name="button_margin_bottom">16dp</dimen>
-
-    <!-- Social Buttons -->
-    <dimen name="social_button_size">60dp</dimen>
-    <dimen name="social_icon_size">28dp</dimen>
-    <dimen name="social_button_spacing">24dp</dimen>
-
-    <!-- Default Padding and Spacing -->
-    <dimen name="default_padding">16dp</dimen>
-    <dimen name="default_spacing">16dp</dimen>
-    <dimen name="small_spacing">8dp</dimen>
-
-
-
-    <!-- Screen ratio of view of my profile page -->
-    <string name="profile_background_ratio" translatable="false">1:1.8</string>
-
-
-    <!-- =============== SIGN UP PAGE DIMENSIONS =============== -->
-    <!-- Margins for title and subtitle -->
-    <dimen name="margin_top_large">178dp</dimen>
-    <dimen name="margin_top_medium">16dp</dimen>
-    <dimen name="margin_top_small">8dp</dimen>
-
-    <!-- Distance between elements -->
-    <dimen name="margin_between_texts">17dp</dimen>
-    <dimen name="margin_between_buttons">41dp</dimen>
-
-    <!-- Margins for buttons -->
-    <dimen name="margin_button_start">14dp</dimen>
-    <dimen name="margin_button_end">18dp</dimen>
-    <dimen name="margin_button_bottom">90dp</dimen>
-
-    <!-- Margin for "or" text -->
-    <dimen name="margin_bottom_or_text">8dp</dimen>
-
-    <!-- Distance from the top for the include block -->
-    <dimen name="layout_margin_top_include">257dp</dimen>
-
-    <!-- Margin for account-related text -->
-    <dimen name="margin_account_text_start">71dp</dimen>
-    <dimen name="margin_account_text_end">12dp</dimen>
-    <dimen name="margin_account_text_bottom">16dp</dimen>
-    <dimen name="margin_signup_text_start">6dp</dimen>
-    <dimen name="margin_signup_text_bottom">16dp</dimen>
-
-    <!-- "Don't have account" text width in sign up page -->
-    <dimen name="signup_text_width">265dp</dimen>
-
-
-    <!-- =============== LOGIN PAGE DIMENSIONS =============== -->
-    <!-- Margins -->
-    <dimen name="login_margin_top_large">178dp</dimen>
-    <dimen name="login_margin_top_small">6dp</dimen>
-    <dimen name="login_margin_end_forgot_password">16dp</dimen>
-    <dimen name="login_button_width">328dp</dimen>
-    <dimen name="login_button_height">55dp</dimen>
-    <dimen name="login_margin_start_account_text">81dp</dimen>
-    <dimen name="login_margin_end_signup_text">80dp</dimen>
-    <dimen name="login_margin_bottom_text">16dp</dimen>
-    <dimen name="login_layout_margin_top_include">257dp</dimen>
-    <dimen name="login_button_margin_bottom">60dp</dimen>
-    <dimen name="login_checkbox_margin_top">230dp</dimen>
-    <dimen name="login_checkbox_text_height">32dp</dimen>
-
-    <!-- =============== COMMON LOGIN FIELDS DIMENSIONS =============== -->
-    <dimen name="common_login_padding_start">16dp</dimen>
-    <dimen name="common_login_padding_end">16dp</dimen>
-    <dimen name="common_login_margin_bottom_small">4dp</dimen>
-    <dimen name="common_login_margin_top_medium">16dp</dimen>
-
-    <!-- General spacing -->
     <dimen name="spacer_extra_small">4dp</dimen>
     <dimen name="spacer_small">8dp</dimen>
+    <dimen name="spacer_additional">12dp</dimen>
     <dimen name="spacer_medium">16dp</dimen>
     <dimen name="spacer_large">24dp</dimen>
-    <dimen name="padding_screen">16dp</dimen>
-
-    <dimen name="spacer_additional">12dp</dimen>
     <dimen name="form_supporting_text_min_height">20dp</dimen>
 
     <dimen name="corner_radius">3dp</dimen>
+    <dimen name="button_corner_radius">6dp</dimen>
 
-    <!-- Checkbox spacing -->
-    <dimen name="checkbox_frame_size">20dp</dimen>
-    <dimen name="checkbox_inner_size">16dp</dimen>
-    <dimen name="checkbox_corner_radius">4dp</dimen>
-    <dimen name="checkbox_border_width">1dp</dimen>
-
-    <dimen name="auth_top_spacer">150dp</dimen>
-    <dimen name="auth_top_small">70dp</dimen>
-
-    <!-- =============== CONTACTS PAGE DIMENSIONS =============== -->
-    <dimen name="contacts_avatar_size">50dp</dimen>
-
-    <!-- Avatar -->
-    <dimen name="avatar_size">110dp</dimen>
+    <dimen name="button_border_width">2dp</dimen>
+    <dimen name="button_height">50dp</dimen>
     <dimen name="badge_size">55dp</dimen>
+    <dimen name="avatar_size">110dp</dimen>
 
+    <dimen name="social_button_spacing">24dp</dimen>
+    <dimen name="social_icon_size">28dp</dimen>
+    <dimen name="social_button_size">60dp</dimen>
+
+    <dimen name="auth_top_small">70dp</dimen>
+    <dimen name="auth_top_spacer">150dp</dimen>
 </resources>

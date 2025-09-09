@@ -41,7 +41,7 @@ fun FilledButton(
             contentColor = contentColor
         ),
         elevation = ButtonDefaults.buttonElevation(
-            defaultElevation = dimensionResource(id = R.dimen.button_elevation)
+            defaultElevation = dimensionResource(id = R.dimen.spacer_extra_small)
         )
     ) {
         Text(text = text.uppercase(), style = MaterialTheme.typography.titleMedium)

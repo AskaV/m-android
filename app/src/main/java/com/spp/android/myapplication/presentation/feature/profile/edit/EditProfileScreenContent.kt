@@ -48,7 +48,7 @@ fun EditProfileScreenContent(
     ) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val pad = dimensionResource(id = R.dimen.padding_screen)
+    val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
 

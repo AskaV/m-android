@@ -62,7 +62,7 @@ fun ProfileScreen(
                 Box(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = dimensionResource(id = R.dimen.padding_screen))
+                        .padding(horizontal = dimensionResource(id = R.dimen.spacer_medium))
                         .padding(bottom = dimensionResource(id = R.dimen.spacer_large))
                 ) {
                     Text(
@@ -96,7 +96,7 @@ fun ProfileScreen(
             }
         }
 
-        val pad = dimensionResource(id = R.dimen.padding_screen)
+        val pad = dimensionResource(id = R.dimen.spacer_medium)
 
         Column(
             modifier = Modifier

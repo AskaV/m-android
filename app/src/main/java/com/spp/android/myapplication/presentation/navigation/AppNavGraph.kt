@@ -46,7 +46,6 @@ fun AppNavGraph(navController: NavHostController) {
             composable(Routes.SignUpExtended) {
                 SignUpExtendedScreen(
                     onBack = { navController.popBackStack() },
-                    onOpenAvatarPicker = { /* TODO */ },
                     onNavigateHome = {
                         navController.navigate(Routes.Home) {
                             popUpTo(Routes.Auth) { inclusive = true }
