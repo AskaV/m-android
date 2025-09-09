@@ -44,7 +44,8 @@
 
     <!--   login registration error text   -->
     <string name="email_error_text">Incorrect E-Mail address</string>
-    <string name="password_error_text">Your password must include a minimum of %1$d characters.</string> <!-- %d %s -->
+    <string name="blank_email_error_text">Email cannot be empty</string>
+    <string name="password_error_text">Your password must include a minimum of %1$d characters.</string>
     <string name="user_name_error">User name must contain at least %1$d letters</string>
     <string name="phone_length_error">Phone must be at least  %1$d digits long</string>
 
@@ -58,10 +59,12 @@
     <string name="add_contacts_position">Position</string>
     <string name="add_contacts_save_text">Save</string>
     <string name="add_contacts_cancel_text">Cancel</string>
-
     <string name="title">Your profile data</string>
     <string name="subtitle">Fill out the profile and go to the application!</string>
     <string name="button2">Forward</string>
+
+    <string name="no_results_found_title">No results found</string>
+    <string name="no_results_found_subtitle">You can see more contacts in the recommendation</string>
 
     <!--    tab text     -->
     <string name="tab_profile">My Profile</string>
@@ -90,8 +93,12 @@
     <string name="edit_profile_address_label">Address</string>
     <string name="edit_profile_address_placeholder">5295 Gaylord Walks Apk. 110</string>
 
-
     <!--    Preview     -->
     <string name="filled_button_text">Filled Button Text</string>
     <string name="outlined_button_text">Outlined Button Text</string>
+
+    <!--    Other     -->
+    <string name="unknown_error">Unknown error</string>
+    <string name="login_failed">Login failed</string>
+
 </resources>

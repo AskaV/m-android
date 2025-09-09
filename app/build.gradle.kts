@@ -9,6 +9,9 @@ plugins {
 }
 kapt {
     correctErrorTypes = true
+    arguments {
+        arg("dagger.fastInit", "enabled")
+    }
 }
 android {
     namespace = "com.spp.android.myapplication"
@@ -40,6 +43,11 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+    androidComponents {
+        beforeVariants(selector().all()) { v ->
+            v.enableAndroidTest = false
+        }
     }
 }
 

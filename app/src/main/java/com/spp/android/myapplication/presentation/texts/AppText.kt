@@ -20,6 +20,7 @@ class S(@StringRes val id: Int, vararg val args: Any)
 
 @Composable
 fun S.text(): String = stringResource(id, *args)
+fun S.text(ctx: Context): String = ctx.getString(id, *args)
 
 
 object AppText {
@@ -30,6 +31,8 @@ object AppText {
         val TITLE = TextKey(R.string.hello)
         val SUBTITLE = TextKey(R.string.enter_email_password)
         val EMAIL_ERROR = TextKey(R.string.email_error_text)
+        val BLANK_EMAIL_ERROR = TextKey(R.string.blank_email_error_text)
+
         val PASSWORD_ERROR_TEMPLATE = R.string.password_error_text
         val REMEMBER_ME = TextKey(R.string.remember_me)
         val FORGOT_PASSWORD = TextKey(R.string.forgot_password)
@@ -139,11 +142,17 @@ object AppText {
         val SUBTITLE = TextKey(R.string.subtitle)
         val BUTTON = TextKey(R.string.add_contacts_cancel_text)
         val BUTTON2 = TextKey(R.string.button2)
+        val NO_RESULTS_TITLE = TextKey(R.string.no_results_found_title)
+        val NO_RESULTS_SUBTITLE = TextKey(R.string.no_results_found_subtitle)
     }
 
     object MyProfileDetailed {
         val NAME = TextKey(R.string.user_name)
         val CAREER = TextKey(R.string.user_profession)
         val ADDRESS = TextKey(R.string.user_address)
+    }
+    object OtherInfo {
+        val UNKNOWN_ERROR = TextKey(R.string.unknown_error)
+        val LOGIN_FAILED = TextKey(R.string.login_failed)
     }
 }

@@ -44,6 +44,7 @@
 
     <!-- помилки реєстрації / входу -->
     <string name="email_error_text">Невірна e-mail адреса</string>
+    <string name="blank_email_error_text">Електронна адреса не може бути порожньою</string>
     <string name="password_error_text">Пароль має містити щонайменше %1$d символів</string>
     <string name="user_name_error">Ім’я користувача повинно містити щонайменше %1$d літери</string>
     <string name="phone_length_error">Номер телефону має містити щонайменше %1$d цифр</string>
@@ -61,6 +62,8 @@
     <string name="title">Дані вашого профілю</string>
     <string name="subtitle">Заповніть профіль та перейдіть до заявки!</string>
     <string name="button2">Вперед</string>
+    <string name="no_results_found_title">Результатів не знайдено</string>
+    <string name="no_results_found_subtitle">Ви можете побачити більше контактів у рекомендації</string>
 
     <!--   текст вкладок табу  -->
     <string name="tab_profile">Мій профіль</string>
@@ -93,4 +96,7 @@
     <string name="filled_button_text">Заповнений текст кнопки</string>
     <string name="outlined_button_text">Окреслений текст кнопки</string>
 
+    <!--    Other     -->
+    <string name="unknown_error">Невідома помилка</string>
+    <string name="login_failed">Помилка входу</string>
 </resources>

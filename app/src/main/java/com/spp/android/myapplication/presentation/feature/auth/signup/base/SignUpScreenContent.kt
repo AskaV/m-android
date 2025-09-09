@@ -97,7 +97,7 @@ fun SignUpScreenContent(
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_small)))
 
             Text(
-                text = AppText.SignUp.OR.text().uppercase(),
+                text = AppText.SignUp.OR.text(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center

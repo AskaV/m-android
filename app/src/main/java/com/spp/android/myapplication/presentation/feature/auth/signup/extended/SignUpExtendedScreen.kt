@@ -40,7 +40,9 @@ fun SignUpExtendedScreen(
         SignUpProfileScreenContent(
             state = SignUpProfileUiState(
                 username = profile.username,
-                phone = profile.phone
+                phone = profile.phone,
+                usernameError = profile.usernameError,
+                phoneError = profile.phoneError
             ),
             onUserNameChange = { vm.onEvent(SignUpContract.Event.UsernameChanged(it)) },
             onPhoneChange = { vm.onEvent(SignUpContract.Event.PhoneChanged(it)) },

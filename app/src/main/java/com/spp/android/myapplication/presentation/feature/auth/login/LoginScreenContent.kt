@@ -34,7 +34,8 @@ fun LoginScreenContent(
     onPasswordChange: (String) -> Unit,
     onRememberMeChange: (Boolean) -> Unit,
     onLoginClick: () -> Unit,
-    onNavigateToRegister: () -> Unit = {}
+    onNavigateToRegister: () -> Unit = {},
+    onForgotPasswordClick: () -> Unit
 ) {
     val hPad = dimensionResource(R.dimen.spacer_medium)
 
@@ -79,6 +80,7 @@ fun LoginScreenContent(
                 onCheckedChange = onRememberMeChange,
                 label = AppText.Login.REMEMBER_ME.text(),
                 actionText = AppText.Login.FORGOT_PASSWORD.text(),
+                onActionClick = onForgotPasswordClick
             )
         }
 
@@ -119,7 +121,8 @@ fun LoginScreenPreview() {
                 onEmailChange = {},
                 onPasswordChange = {},
                 onRememberMeChange = {},
-                onLoginClick = {}
+                onLoginClick = {},
+                onForgotPasswordClick = {}
             )
         }
     }
@@ -141,7 +144,8 @@ fun LoginScreenPreviewErrors() {
                 onEmailChange = {},
                 onPasswordChange = {},
                 onRememberMeChange = {},
-                onLoginClick = {}
+                onLoginClick = {},
+                onForgotPasswordClick = {}
             )
         }
     }
