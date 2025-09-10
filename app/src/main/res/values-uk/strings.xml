@@ -99,4 +99,11 @@
     <!--    Other     -->
     <string name="unknown_error">Невідома помилка</string>
     <string name="login_failed">Помилка входу</string>
+    <string name="logout_failed">Помилка виходу</string>
+    <string name="contact_removed">Контакт видалено</string>
+    <string name="failed_to_load_contacts">Не вдалося завантажити контакти</string>
+    <string name="failed_to_add_contact">"Не вдалося додати контакт"</string>
+    <string name="contact_added">Контакт додано</string>
+    <string name="failed_to_save_profile">Не вдалося зберегти профіль</string>
+    <string name="failed_to_load_profile">"Не вдалося завантажити профіль"</string>
 </resources>

@@ -151,8 +151,16 @@ object AppText {
         val CAREER = TextKey(R.string.user_profession)
         val ADDRESS = TextKey(R.string.user_address)
     }
+
     object OtherInfo {
         val UNKNOWN_ERROR = TextKey(R.string.unknown_error)
         val LOGIN_FAILED = TextKey(R.string.login_failed)
+        val LOGOUT_FAILED = TextKey(R.string.logout_failed) //
+        val CONTACTS_REMOVED = TextKey(R.string.contact_removed)
+        val CONTACTS_LOAD_FAILED = TextKey(R.string.failed_to_load_contacts)
+        val FAILED_TO_ADD_CONTACT = TextKey(R.string.failed_to_add_contact)
+        val CONTACT_ADDED = TextKey(R.string.contact_added)
+        val FAILED_PROFILE_SAVE = TextKey(R.string.failed_to_save_profile)
+        val FAILED_TO_LOAD_PROFILE = TextKey(R.string.failed_to_load_profile)
     }
 }

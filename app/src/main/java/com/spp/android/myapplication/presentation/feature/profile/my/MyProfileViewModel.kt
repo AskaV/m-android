@@ -1,8 +1,11 @@
 package com.spp.android.myapplication.presentation.feature.profile.my
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyProfileViewModel @Inject constructor(
+    @ApplicationContext private val appContext: Context
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MyProfileContract.State())
@@ -88,10 +92,9 @@ class MyProfileViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     isLoading = false,
-                    error = throwable.message ?: "Unknown error"
-                )
+                    error = throwable.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext))
             }
-            emitEffect(MyProfileContract.Effect.ShowMessage("Failed to load profile"))
+            emitEffect(MyProfileContract.Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_LOAD_PROFILE.text(appContext)))
         }
     }
 
@@ -107,10 +110,10 @@ class MyProfileViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     isLoading = false,
-                    error = throwable.message ?: "Unknown error"
-                )
+                    error = throwable.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext))
+
             }
-            emitEffect(MyProfileContract.Effect.ShowMessage("Logout failed"))
+            emitEffect(MyProfileContract.Effect.ShowMessage(AppText.OtherInfo.LOGOUT_FAILED.text(appContext)))
         }
     }
 

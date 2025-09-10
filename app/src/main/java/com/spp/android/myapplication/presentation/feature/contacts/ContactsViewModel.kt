@@ -1,10 +1,13 @@
 package com.spp.android.myapplication.presentation.feature.contacts
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
 import com.spp.android.myapplication.presentation.designsystem.preview.ContactPreviewText
+import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
+    @ApplicationContext private val appContext: Context
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ContactsContract.State())
@@ -51,14 +55,14 @@ class ContactsViewModel @Inject constructor(
         }.onSuccess { list ->
             _state.update { it.copy(items = list, isLoading = false) }
         }.onFailure { t ->
-            _state.update { it.copy(isLoading = false, error = t.message ?: "Unknown error") }
-            emit(ContactsContract.Effect.ShowMessage("Failed to load contacts"))
+            _state.update { it.copy(isLoading = false, error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)) }
+            emit(ContactsContract.Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED.text(appContext)))
         }
     }
 
     private fun delete(item: ContactUi) = viewModelScope.launch {
         _state.update { it.copy(items = it.items.filterNot { c -> c.id == item.id }) }
-        emit(ContactsContract.Effect.ShowMessage("Contact removed"))
+        emit(ContactsContract.Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED.text(appContext)))
     }
 
     private fun emit(effect: ContactsContract.Effect) = viewModelScope.launch {

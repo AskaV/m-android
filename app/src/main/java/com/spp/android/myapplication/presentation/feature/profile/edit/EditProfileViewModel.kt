@@ -78,20 +78,12 @@ class EditProfileViewModel @Inject constructor(
                 )
             }
         }.onFailure { t ->
-            _state.update { it.copy(isLoading = false, error = t.message ?: "Unknown error") }
-            emit(EditProfileContract.Effect.ShowMessage("Failed to load profile"))
+            _state.update { it.copy(isLoading = false, error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)) }
+            emit(EditProfileContract.Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_LOAD_PROFILE.text(appContext)))
         }
     }
 
     private fun save() = viewModelScope.launch {
-        val s = _state.value
-        val nameErr = if (s.username.isBlank()) "Name is required" else null
-        val phoneErr = if (s.phone.isBlank()) "Phone is required" else null
-        if (nameErr != null || phoneErr != null) {
-            _state.update { it.copy(usernameError = nameErr, phoneError = phoneErr) }
-            return@launch
-        }
-
         _state.update { it.copy(isSaving = true, error = null) }
         runCatching {
             true
@@ -105,7 +97,7 @@ class EditProfileViewModel @Inject constructor(
                     error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
                 )
             }
-            emit(EditProfileContract.Effect.ShowMessage("Failed to save profile"))
+            emit(EditProfileContract.Effect.ShowMessage(AppText.OtherInfo.FAILED_PROFILE_SAVE.text(appContext)))
         }
     }
 

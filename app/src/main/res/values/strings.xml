@@ -100,5 +100,12 @@
     <!--    Other     -->
     <string name="unknown_error">Unknown error</string>
     <string name="login_failed">Login failed</string>
+    <string name="logout_failed">Logout failed</string>
+    <string name="contact_removed">Contact removed</string>
+    <string name="failed_to_load_contacts">Failed to load contacts</string>
+    <string name="failed_to_add_contact">"Failed to add contact"</string>
+    <string name="contact_added">Contact added</string>
+    <string name="failed_to_save_profile">Failed to save profile</string>
+    <string name="failed_to_load_profile">"Failed to load profile"</string>
 
 </resources>

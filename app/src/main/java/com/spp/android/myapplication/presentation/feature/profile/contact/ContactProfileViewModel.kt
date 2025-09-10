@@ -1,8 +1,11 @@
 package com.spp.android.myapplication.presentation.feature.profile.contact
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ContactProfileViewModel @Inject constructor(
+    @ApplicationContext private val appContext: Context
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ContactProfileContract.State())
@@ -61,8 +65,8 @@ class ContactProfileViewModel @Inject constructor(
                 )
             }
         }.onFailure { t ->
-            _state.update { it.copy(isLoading = false, error = t.message ?: "Unknown error") }
-            emit(ContactProfileContract.Effect.ShowMessage("Failed to load contact"))
+            _state.update { it.copy(isLoading = false, error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)) }
+            emit(ContactProfileContract.Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED.text(appContext)))
         }
     }
 
@@ -73,10 +77,10 @@ class ContactProfileViewModel @Inject constructor(
             true
         }.onSuccess {
             _state.update { it.copy(isLoading = false, hasSocial = true) }
-            emit(ContactProfileContract.Effect.ShowMessage("Contact added"))
+            emit(ContactProfileContract.Effect.ShowMessage(AppText.OtherInfo.CONTACT_ADDED.text(appContext)))
         }.onFailure { t ->
-            _state.update { it.copy(isLoading = false, error = t.message ?: "Unknown error") }
-            emit(ContactProfileContract.Effect.ShowMessage("Failed to add contact"))
+            _state.update { it.copy(isLoading = false, error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)) }
+            emit(ContactProfileContract.Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_ADD_CONTACT.text(appContext)))
         }
     }
 
