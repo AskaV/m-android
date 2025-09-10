@@ -28,7 +28,6 @@ fun ContactsScreen(
         }
     }
 
-    // Use your existing UI
     ContactsScreenContent(
         items = state.items,
         onBack = { vm.onEvent(ContactsContract.Event.BackClicked) },
