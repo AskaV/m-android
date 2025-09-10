@@ -1,6 +1,9 @@
 package com.spp.android.myapplication.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,9 +14,11 @@ import com.spp.android.myapplication.presentation.feature.auth.login.LoginScreen
 import com.spp.android.myapplication.presentation.feature.auth.signup.base.SignUpScreen
 import com.spp.android.myapplication.presentation.feature.auth.signup.extended.SignUpExtendedScreen
 import com.spp.android.myapplication.presentation.feature.contacts.ContactsScreen
-import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileRoute
-import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileScreen
+import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileScreen
+import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileScreenContent
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileScreen
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileViewModel
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
@@ -47,7 +52,7 @@ fun AppNavGraph(navController: NavHostController) {
                 SignUpExtendedScreen(
                     onBack = { navController.popBackStack() },
                     onNavigateHome = {
-                        navController.navigate(Routes.Home) {
+                        navController.navigate(Routes.home(fromSignup = true)) {
                             popUpTo(Routes.Auth) { inclusive = true }
                         }
                     }
@@ -55,24 +60,37 @@ fun AppNavGraph(navController: NavHostController) {
             }
         }
 
-        composable(Routes.Home) {
+        composable(
+            route = Routes.HomeRoute,
+            arguments = listOf(navArgument("fromSignup") { defaultValue = "false" })
+        ) { backStackEntry ->
+            val vm: MyProfileViewModel = hiltViewModel()
+
+            val fromSignup = backStackEntry.arguments?.getString("fromSignup") == "true"
+            val completed = backStackEntry.arguments?.getString("completed") == "true"
+
+            LaunchedEffect(fromSignup, completed) {
+                if (fromSignup) vm.onEvent(MyProfileContract.Event.SignUpFinished)
+                if (completed) vm.onEvent(MyProfileContract.Event.MarkCompleted)
+            }
+            val tabsController = remember { HomeTabsController() }
+
             HomeTabs(
+                controller = tabsController,
                 profile = {
                     MyProfileScreen(
-                        onNavigateContacts = { },
+                        onNavigateContacts = { tabsController.goTo(HomeTab.Contacts) },
                         onNavigateEdit = { navController.navigate(Routes.EditProfile) },
                         onNavigateAuth = {
-                            navController.navigate(Routes.Auth) {
-                                popUpTo(0)
-                            }
+                            navController.navigate(Routes.Auth) { popUpTo(0) }
                         }
                     )
                 },
                 contacts = {
                     ContactsScreen(
-                        onBack = {},
-                        onOpenSearch = { /* TODO open search screen */ },
-                        onOpenAddContacts = { /* TODO open "add contacts" flow */ },
+                        onBack = { },
+                        onOpenSearch = { /* ... */ },
+                        onOpenAddContacts = { /* ... */ },
                         onOpenContactProfile = { id ->
                             navController.navigate(Routes.ContactProfile(id))
                         }
@@ -81,21 +99,35 @@ fun AppNavGraph(navController: NavHostController) {
             )
         }
         composable(Routes.EditProfile) {
-            EditProfileScreen(
-                onBack = { navController.popBackStack() },
-                onDone = { navController.popBackStack() }
+            val vm: MyProfileViewModel = hiltViewModel()
+
+            EditProfileScreenContent(
+                onBack = { navController.navigateUp() },
+                onSave = { username, career, phone, address, birthdate ->
+                    vm.onEvent(
+                        MyProfileContract.Event.ProfileSaved(
+                            username, career, phone, address, birthdate
+                        )
+                    )
+                    navController.navigate(Routes.home(fromSignup = false, completed = true)) {
+                        popUpTo(Routes.Home) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
             )
         }
         composable(
             route = Routes.ContactProfileRoute,
             arguments = listOf(navArgument("contactId") { type = NavType.StringType })
         ) { backStackEntry ->
-            val contactId = requireNotNull(backStackEntry.arguments?.getString("contactId"))
-            ContactProfileRoute(
+            val contactId = backStackEntry.arguments?.getString("contactId") ?: return@composable
+
+            ContactProfileScreen(
                 contactId = contactId,
                 onBack = { navController.popBackStack() },
-                onOpenChat = { /* TODO: navigate to chat */ }
+                onOpenChat = { }
             )
         }
+
     }
 }

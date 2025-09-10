@@ -1,8 +1,11 @@
 package com.spp.android.myapplication.presentation.feature.profile.edit
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
+    @ApplicationContext private val appContext: Context
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(EditProfileContract.State())
@@ -95,7 +99,12 @@ class EditProfileViewModel @Inject constructor(
             _state.update { it.copy(isSaving = false) }
             emit(EditProfileContract.Effect.Saved)
         }.onFailure { t ->
-            _state.update { it.copy(isSaving = false, error = t.message ?: "Unknown error") }
+            _state.update {
+                it.copy(
+                    isSaving = false,
+                    error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
+                )
+            }
             emit(EditProfileContract.Effect.ShowMessage("Failed to save profile"))
         }
     }

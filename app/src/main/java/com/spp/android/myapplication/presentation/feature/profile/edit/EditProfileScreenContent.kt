@@ -12,8 +12,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,8 +25,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.presentation.designsystem.components.buttons.FilledButton
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.EditProfileFields
 import com.spp.android.myapplication.presentation.designsystem.imageload.AvatarPicker
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewMoto
@@ -51,6 +49,7 @@ fun EditProfileScreenContent(
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
+    val buttonHeight = dimensionResource(id = R.dimen.button_height)
 
     val usernamePlaceholder = AppText.EditProfile.USERNAME.text()
     val careerPlaceholder = AppText.EditProfile.CAREER.text()
@@ -75,8 +74,7 @@ fun EditProfileScreenContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
@@ -84,7 +82,10 @@ fun EditProfileScreenContent(
                         .fillMaxWidth()
                         .padding(horizontal = pad, vertical = spaceM)
                 ) {
-                    IconButton(onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)) {
+                    IconButton(
+                        onClick = onBack,
+                        modifier = Modifier.align(Alignment.CenterStart)
+                    ) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                     Text(
@@ -95,8 +96,7 @@ fun EditProfileScreenContent(
                 }
 
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
                     AvatarPicker(onClick = { /* open picker */ }, showBadge = true)
@@ -109,48 +109,45 @@ fun EditProfileScreenContent(
         Surface(
             color = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = pad)
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(Modifier.height(spaceL))
-
-                EditProfileFields(
-                    username = username, onUsernameChange = { username = it },
-                    career = career, onCareerChange = { career = it },
-                    phone = phone, onPhoneChange = { phone = it },
-                    address = address, onAddressChange = { address = it },
-                    birthdate = birthdate, onBirthdateChange = { birthdate = it },
-                )
-
-                Spacer(Modifier.height(spaceL))
-
-                Button(
-                    onClick = { onSave(username, career, phone, address, birthdate) },
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(52.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    shape = MaterialTheme.shapes.large
+                        .align(Alignment.TopCenter)
+                        .verticalScroll(rememberScrollState())
+                        .padding(bottom = buttonHeight + pad),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = AppText.EditProfile.SAVE.text().uppercase())
+                    Spacer(Modifier.height(spaceL))
+
+                    EditProfileFields(
+                        username = username, onUsernameChange = { username = it },
+                        career = career, onCareerChange = { career = it },
+                        phone = phone, onPhoneChange = { phone = it },
+                        address = address, onAddressChange = { address = it },
+                        birthdate = birthdate, onBirthdateChange = { birthdate = it },
+                    )
+
+                    Spacer(Modifier.height(spaceL))
                 }
 
-                Spacer(Modifier.height(spaceL))
+                FilledButton(
+                    text = AppText.EditProfile.SAVE.text(),
+                    onClick = { onSave(username, career, phone, address, birthdate) },
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = pad)
+                )
             }
         }
     }
 }
-
 
 @PreviewPhones
 @PreviewMoto

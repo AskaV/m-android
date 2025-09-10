@@ -21,7 +21,19 @@ object MyProfileContract {
         data object ViewContactsClicked : Event
         data object LogoutClicked : Event
         data object ErrorShown : Event
+        data object MarkCompleted : Event
+
+        data object SignUpFinished : Event
+        data class ProfileSaved(
+            val username: String,
+            val career: String,
+            val phone: String,
+            val address: String,
+            val birthdate: String
+        ) : Event
     }
+
+
 
     sealed interface Effect {
         data class ShowMessage(val message: String) : Effect

@@ -42,6 +42,25 @@ class MyProfileViewModel @Inject constructor(
 
             MyProfileContract.Event.ErrorShown ->
                 _state.update { it.copy(error = null) }
+
+            is MyProfileContract.Event.ProfileSaved -> {
+                _state.update {
+                    it.copy(
+                        name = event.username,
+                        linePrimary = event.career,
+                        lineSecondary = event.address,
+                        isCompleted = true
+                    )
+                }
+            }
+
+            MyProfileContract.Event.SignUpFinished -> {
+                _state.update { it.copy(isCompleted = false) }
+            }
+
+            MyProfileContract.Event.MarkCompleted -> {
+                _state.update { it.copy(isCompleted = true) }
+            }
         }
     }
 
@@ -53,7 +72,7 @@ class MyProfileViewModel @Inject constructor(
                 name = "Lucile Alvarado",
                 linePrimary = "Product Designer",
                 lineSecondary = "New York, USA",
-                isCompleted = true
+                isCompleted = false
             )
         }.onSuccess { p ->
             _state.update {
