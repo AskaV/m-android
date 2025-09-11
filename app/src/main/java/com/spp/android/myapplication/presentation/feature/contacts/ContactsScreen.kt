@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.presentation.feature.contacts
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,12 +31,27 @@ fun ContactsScreen(
 
     ContactsScreenContent(
         items = state.items,
-        onBack = { vm.onEvent(ContactsContract.Event.BackClicked) },
+        onBack = {
+            if (state.isSelectionMode) {
+                vm.onEvent(ContactsContract.Event.ExitSelectionMode)
+            } else {
+                vm.onEvent(ContactsContract.Event.BackClicked)
+            }
+
+        },
         onSearchClick = { vm.onEvent(ContactsContract.Event.SearchClicked) },
         onAddContactsClick = { vm.onEvent(ContactsContract.Event.AddContactsClicked) },
-        onContactClick = { vm.onEvent(ContactsContract.Event.ContactClicked(it)) },
+        onContactClick = {
+            if (state.isSelectionMode)
+                vm.onEvent(ContactsContract.Event.ContactSelectionToggled(it))
+            else
+                vm.onEvent(ContactsContract.Event.ContactClicked(it))
+        },
         onDeleteClick = { vm.onEvent(ContactsContract.Event.DeleteClicked(it)) },
-        showRecycleBin = false,
-        onBulkDeleteClick = { /*  */ }
+        onContactLongClick = { vm.onEvent(ContactsContract.Event.ContactLongClicked(it)) },
+        showRecycleBin = state.isSelectionMode,
+        onBulkDeleteClick = { vm.onEvent(ContactsContract.Event.BulkDeleteClicked) },
+        isSelectionMode = state.isSelectionMode,
+        selectedIds = state.selected,
         )
 }

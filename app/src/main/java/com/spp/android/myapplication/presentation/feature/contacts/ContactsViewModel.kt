@@ -44,6 +44,47 @@ class ContactsViewModel @Inject constructor(
             is ContactsContract.Event.DeleteClicked -> delete(event.item)
             ContactsContract.Event.ErrorShown ->
                 _state.update { it.copy(error = null) }
+
+            is ContactsContract.Event.ContactLongClicked -> {
+                _state.update { st ->
+                    st.copy(
+                        selected = setOf(event.item.id),
+                        isSelectionMode = true
+                    )
+                }
+            }
+
+            is ContactsContract.Event.ContactSelectionToggled -> {
+                _state.update { st ->
+                    val newSelected = st.selected.toMutableSet().apply {
+                        if (contains(event.item.id)) remove(event.item.id) else add(event.item.id)
+                    }
+                    st.copy(
+                        selected = newSelected,
+                        isSelectionMode = newSelected.isNotEmpty()
+                    )
+                }
+            }
+
+            ContactsContract.Event.BulkDeleteClicked -> {
+                val ids = _state.value.selected
+                _state.update { st ->
+                    st.copy(
+                        items = st.items.filterNot { ids.contains(it.id) },
+                        selected = emptySet(),
+                        isSelectionMode = false
+                    )
+                }
+                emit(
+                    ContactsContract.Effect.ShowMessage(
+                        AppText.OtherInfo.CONTACTS_REMOVED.text(appContext)
+                    )
+                )
+            }
+
+            is ContactsContract.Event.ExitSelectionMode -> {
+                _state.update { it.copy(selected = emptySet(), isSelectionMode = false) }
+            }
         }
     }
 
@@ -55,8 +96,19 @@ class ContactsViewModel @Inject constructor(
         }.onSuccess { list ->
             _state.update { it.copy(items = list, isLoading = false) }
         }.onFailure { t ->
-            _state.update { it.copy(isLoading = false, error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)) }
-            emit(ContactsContract.Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED.text(appContext)))
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
+                )
+            }
+            emit(
+                ContactsContract.Effect.ShowMessage(
+                    AppText.OtherInfo.CONTACTS_LOAD_FAILED.text(
+                        appContext
+                    )
+                )
+            )
         }
     }
 

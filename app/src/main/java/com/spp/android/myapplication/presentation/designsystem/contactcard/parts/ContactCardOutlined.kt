@@ -1,9 +1,8 @@
 package com.spp.android.myapplication.presentation.designsystem.contactcard.parts
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -31,6 +31,7 @@ import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.ContactPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.feature.components.SelectionCheck
 
 data class ContactUi(
     val id: String,
@@ -43,43 +44,53 @@ data class ContactUi(
 @Composable
 fun ContactCardOutlined(
     contact: ContactUi,
-    onClick: (ContactUi) -> Unit,
-    onDeleteClick: (ContactUi) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: ((ContactUi) -> Unit)? = null,
+    onLongClick: ((ContactUi) -> Unit)? = null,
+    showSelectionControl: Boolean = false,
+    showDeleteIcon: Boolean = true,
+    selected: Boolean = false,
+    onDeleteClick: ((ContactUi) -> Unit)? = null
 ) {
     val corner = dimensionResource(id = R.dimen.button_corner_radius)
     val borderW = dimensionResource(id = R.dimen.button_border_width)
     val spaceS = dimensionResource(id = R.dimen.spacer_small)
 
+    val clickableMod = modifier.combinedClickable(
+        onClick = { onClick?.invoke(contact) },
+        onLongClick = { onLongClick?.invoke(contact) }
+    )
+
     Surface(
-        modifier = modifier,
+        modifier = clickableMod,
         shape = RoundedCornerShape(corner),
-        color = MaterialTheme.colorScheme.surface,
+        color = if (selected) MaterialTheme.colorScheme.surfaceVariant
+        else MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface,
-        border = BorderStroke(borderW, MaterialTheme.colorScheme.onSurface)
+        border = BorderStroke(borderW, MaterialTheme.colorScheme.onSurface),
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .clickable { onClick(contact) }
                 .padding(horizontal = spaceS)
                 .heightIn(min = 72.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .size(56.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_account_circle_avatar),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(24.dp)
+            if (showSelectionControl) {
+                SelectionCheck(
+                    selected = selected,
+                    modifier = Modifier.padding(end = spaceS)
                 )
             }
+
+            Image(
+                painter = painterResource(R.drawable.baseline_account_circle_avatar),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
 
             Spacer(Modifier.width(spaceS))
 
@@ -104,12 +115,14 @@ fun ContactCardOutlined(
                 )
             }
 
-            IconButton(onClick = { onDeleteClick(contact) }) {
-                Icon(
-                    painter = painterResource(R.drawable.recycle_bin),
-                    contentDescription = "Delete",
-                    tint = MaterialTheme.colorScheme.primary
-                )
+            if (showDeleteIcon && onDeleteClick != null) {
+                IconButton(onClick = { onDeleteClick(contact) }) {
+                    Icon(
+                        painter = painterResource(R.drawable.recycle_bin),
+                        contentDescription = "Delete",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
         }
     }

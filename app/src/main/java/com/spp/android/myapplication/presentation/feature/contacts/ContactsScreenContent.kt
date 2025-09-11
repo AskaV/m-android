@@ -53,7 +53,9 @@ fun ContactsScreenContent(
     onBulkDeleteClick: () -> Unit = {},
     onScrollTopClick: () -> Unit = {},
     showRecycleBin: Boolean = false,
-
+    onContactLongClick: (ContactUi) -> Unit = {},
+    selectedIds: Set<String> = emptySet(),
+    isSelectionMode: Boolean = showRecycleBin
     ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
@@ -131,9 +133,13 @@ fun ContactsScreenContent(
                     items(items, key = { it.id }) { c ->
                         ContactCardOutlined(
                             contact = c,
-                            onClick = onContactClick,
-                            onDeleteClick = onDeleteClick,
-                            modifier = Modifier.fillMaxWidth()
+                            onClick = { onContactClick(c) },
+                            onLongClick = { onContactLongClick(c) },
+                            selected = selectedIds.contains(c.id),
+                            showSelectionControl = isSelectionMode,
+                            showDeleteIcon = !isSelectionMode,
+                            modifier = Modifier.fillMaxWidth(),
+                            onDeleteClick = { onDeleteClick(c) }
                         )
                         Spacer(Modifier.height(spaceM))
                     }

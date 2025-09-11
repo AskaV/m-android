@@ -9,7 +9,9 @@ object ContactsContract {
     data class State(
         val items: List<ContactUi> = emptyList(),
         val isLoading: Boolean = false,
-        val error: String? = null
+        val error: String? = null,
+        val selected: Set<String> = emptySet(),
+        val isSelectionMode: Boolean = false
     )
 
     sealed interface Event {
@@ -20,6 +22,11 @@ object ContactsContract {
         data class ContactClicked(val item: ContactUi) : Event
         data class DeleteClicked(val item: ContactUi) : Event
         data object ErrorShown : Event
+
+        data class ContactLongClicked(val item: ContactUi) : Event
+        data class ContactSelectionToggled(val item: ContactUi) : Event
+        data object BulkDeleteClicked : Event
+        data object ExitSelectionMode : Event
     }
 
     sealed interface Effect {
