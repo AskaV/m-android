@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.presentation.feature.contacts
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
@@ -21,7 +23,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -33,93 +38,133 @@ import com.spp.android.myapplication.presentation.designsystem.preview.ContactPr
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
 import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.feature.components.ActionFab
+import kotlinx.coroutines.launch
 
 @Composable
 fun ContactsScreenContent(
+    modifier: Modifier = Modifier,
     items: List<ContactUi>,
     onBack: () -> Unit,
     onSearchClick: () -> Unit,
     onAddContactsClick: () -> Unit,
     onContactClick: (ContactUi) -> Unit,
     onDeleteClick: (ContactUi) -> Unit,
-    modifier: Modifier = Modifier
-) {
+    onBulkDeleteClick: () -> Unit = {},
+    onScrollTopClick: () -> Unit = {},
+    showRecycleBin: Boolean = false,
+
+    ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
 
-    Column(
+    val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+    val showScrollTop by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 0 }
+    }
+    Box(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
     ) {
-        Surface(
-            color = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+            Surface(
+                color = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = pad, vertical = spaceM)
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    IconButton(onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                    Text(
-                        text = AppText.Contacts.TITLE.text(),
-                        style = MaterialTheme.typography.titleLarge,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                    IconButton(
-                        onClick = onSearchClick,
-                        modifier = Modifier.align(Alignment.CenterEnd)
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = pad, vertical = spaceM)
                     ) {
-                        Icon(Icons.Filled.Search, contentDescription = "Search")
+                        IconButton(onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                        Text(
+                            text = AppText.Contacts.TITLE.text(),
+                            style = MaterialTheme.typography.titleLarge,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                        IconButton(
+                            onClick = onSearchClick,
+                            modifier = Modifier.align(Alignment.CenterEnd)
+                        ) {
+                            Icon(Icons.Filled.Search, contentDescription = "Search")
+                        }
+                    }
+
+                    Text(
+                        text = AppText.Contacts.ADD.text(),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = spaceM, horizontal = pad)
+                            .clickable(onClick = onAddContactsClick)
+                    )
+                }
+            }
+
+            Surface(
+                color = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    state = listState,
+                    contentPadding = PaddingValues(
+                        start = pad, end = pad, top = spaceM, bottom = spaceL
+                    )
+                ) {
+                    items(items, key = { it.id }) { c ->
+                        ContactCardOutlined(
+                            contact = c,
+                            onClick = onContactClick,
+                            onDeleteClick = onDeleteClick,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Spacer(Modifier.height(spaceM))
                     }
                 }
-
-                Text(
-                    text = AppText.Contacts.ADD.text(),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = spaceM, horizontal = pad)
-                        .clickable(onClick = onAddContactsClick)
-                )
-
             }
         }
 
-        Surface(
-            color = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.fillMaxSize()
+        AnimatedVisibility(
+            visible = showRecycleBin,
+            modifier = Modifier.align(Alignment.BottomEnd)
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(
-                    start = pad, end = pad, top = spaceM, bottom = spaceL
-                )
-            ) {
+            ActionFab(
+                iconRes = R.drawable.recycle_bin,
+                contentDescription = "Delete selected",
+                onClick = onBulkDeleteClick,
+                alignment = Alignment.BottomEnd
+            )
+        }
 
-                items(items, key = { it.id }) { c ->
-                    ContactCardOutlined(
-                        contact = c,
-                        onClick = onContactClick,
-                        onDeleteClick = onDeleteClick,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Spacer(Modifier.height(spaceM))
-                }
-            }
+        AnimatedVisibility(
+            visible = showScrollTop,
+            modifier = Modifier.align(Alignment.BottomEnd)
+        ) {
+            ActionFab(
+                iconRes = R.drawable.ic_arrow_up,
+                contentDescription = "Scroll to top",
+                onClick = {
+                    scope.launch { listState.animateScrollToItem(0) }
+                },
+                alignment = Alignment.BottomStart
+            )
         }
     }
 }

@@ -76,5 +76,13 @@ class ContactsViewModel @Inject constructor(
         ContactUi("4", ContactPreviewText.Preview.NAME4, ContactPreviewText.Preview.SUBTITLE4),
         ContactUi("5", ContactPreviewText.Preview.NAME5, ContactPreviewText.Preview.SUBTITLE5),
         ContactUi("6", ContactPreviewText.Preview.NAME6, ContactPreviewText.Preview.SUBTITLE6),
+
+
+        ContactUi("7", ContactPreviewText.Preview.NAME1, ContactPreviewText.Preview.SUBTITLE1),
+        ContactUi("8", ContactPreviewText.Preview.NAME2, ContactPreviewText.Preview.SUBTITLE2),
+        ContactUi("9", ContactPreviewText.Preview.NAME3, ContactPreviewText.Preview.SUBTITLE3),
+        ContactUi("10", ContactPreviewText.Preview.NAME4, ContactPreviewText.Preview.SUBTITLE4),
+        ContactUi("11", ContactPreviewText.Preview.NAME5, ContactPreviewText.Preview.SUBTITLE5),
+        ContactUi("12", ContactPreviewText.Preview.NAME6, ContactPreviewText.Preview.SUBTITLE6),
     )
 }

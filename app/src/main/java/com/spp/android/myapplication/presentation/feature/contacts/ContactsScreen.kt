@@ -34,6 +34,8 @@ fun ContactsScreen(
         onSearchClick = { vm.onEvent(ContactsContract.Event.SearchClicked) },
         onAddContactsClick = { vm.onEvent(ContactsContract.Event.AddContactsClicked) },
         onContactClick = { vm.onEvent(ContactsContract.Event.ContactClicked(it)) },
-        onDeleteClick = { vm.onEvent(ContactsContract.Event.DeleteClicked(it)) }
-    )
+        onDeleteClick = { vm.onEvent(ContactsContract.Event.DeleteClicked(it)) },
+        showRecycleBin = false,
+        onBulkDeleteClick = { /*  */ }
+        )
 }
