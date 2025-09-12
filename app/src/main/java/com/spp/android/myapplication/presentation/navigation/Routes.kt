@@ -14,5 +14,10 @@ object Routes {
     const val EditProfile = "profile/edit"
     const val ContactProfileRoute = "contact/{contactId}"
 
+    const val AddContacts = "add_contacts"
+
+    const val AddContactProfile = "contact_profile/{id}"
+    fun addContactProfile(id: String) = "contact_profile/$id"
+
     fun ContactProfile(id: String) = "contact/$id"
 }

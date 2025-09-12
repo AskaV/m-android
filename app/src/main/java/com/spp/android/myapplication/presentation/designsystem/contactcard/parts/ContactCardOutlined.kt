@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -48,6 +49,8 @@ fun ContactCardOutlined(
     onClick: ((ContactUi) -> Unit)? = null,
     onLongClick: ((ContactUi) -> Unit)? = null,
     showSelectionControl: Boolean = false,
+    trailing: (@Composable RowScope.() -> Unit)? = null,
+
     showDeleteIcon: Boolean = true,
     selected: Boolean = false,
     onDeleteClick: ((ContactUi) -> Unit)? = null
@@ -115,7 +118,9 @@ fun ContactCardOutlined(
                 )
             }
 
-            if (showDeleteIcon && onDeleteClick != null) {
+            if (trailing != null) {
+                trailing()
+            } else if (showDeleteIcon && onDeleteClick != null) {
                 IconButton(onClick = { onDeleteClick(contact) }) {
                     Icon(
                         painter = painterResource(R.drawable.recycle_bin),

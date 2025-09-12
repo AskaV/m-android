@@ -28,7 +28,6 @@ import com.spp.android.myapplication.presentation.texts.AppText
 sealed interface ProfileBottomState {
     data class MyProfileIncomplete(val hint: String) : ProfileBottomState
     data object MyProfileCompleted : ProfileBottomState
-
     data object ContactMessageOnly : ProfileBottomState
     data object ContactAddable : ProfileBottomState
 }
@@ -41,7 +40,12 @@ fun ProfileBottomArea(
     state: ProfileBottomState,
     onPrimary: () -> Unit,
     onSecondary: (() -> Unit)? = null,
-    contentPadding: PaddingValues = PaddingValues(0.dp)
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+
+    messageText: String = AppText.ContactProfile.MESSAGE_TEXT.text(),
+    addToContactsText: String = AppText.ContactProfile.ADD_TO_MY_CONTACTS.text(),
+    editProfileText: String = AppText.MyProfile.EDIT_PROFILE.text(),
+    viewContactsText: String = AppText.MyProfile.VIEW_CONTACTS.text()
 ) {
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
     Surface(

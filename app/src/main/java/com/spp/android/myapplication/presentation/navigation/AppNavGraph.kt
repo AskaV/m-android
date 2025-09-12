@@ -13,7 +13,9 @@ import androidx.navigation.navigation
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginScreen
 import com.spp.android.myapplication.presentation.feature.auth.signup.base.SignUpScreen
 import com.spp.android.myapplication.presentation.feature.auth.signup.extended.SignUpExtendedScreen
-import com.spp.android.myapplication.presentation.feature.contacts.ContactsScreen
+import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsScreen
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsScreen
+import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileScreen
 import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileScreen
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileScreenContent
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract
@@ -90,7 +92,11 @@ fun AppNavGraph(navController: NavHostController) {
                     ContactsScreen(
                         onBack = { },
                         onOpenSearch = { /* ... */ },
-                        onOpenAddContacts = { /* ... */ },
+                        onOpenAddContacts = {
+                            navController.navigate(Routes.AddContacts) {
+                                launchSingleTop = true
+                            }
+                        },
                         onOpenContactProfile = { id ->
                             navController.navigate(Routes.ContactProfile(id))
                         }
@@ -129,5 +135,21 @@ fun AppNavGraph(navController: NavHostController) {
             )
         }
 
+        composable(Routes.AddContacts) {
+            AddContactsScreen(
+                onBack = { navController.popBackStack() },
+                onOpenSearch = { /* ... */ },
+                onOpenProfile = { id ->
+                    navController.navigate(Routes.addContactProfile(id))
+                }
+            )
+        }
+        composable(Routes.AddContactProfile) { backStack ->
+            val id = backStack.arguments?.getString("id") ?: return@composable
+            AddContactProfileScreen(
+                contactId = id,
+                onBack = { navController.popBackStack() }
+            )
+        }
     }
 }

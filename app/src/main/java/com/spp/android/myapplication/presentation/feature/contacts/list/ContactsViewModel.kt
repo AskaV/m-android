@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.presentation.feature.contacts
+package com.spp.android.myapplication.presentation.feature.contacts.list
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
