@@ -59,7 +59,7 @@ fun AddContactProfileScreenContent(
                         )
                     }
                     Text(
-                        text = "Profile",
+                        text = AppText.HomeTabs.PROFILE.text(),
                         style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier.align(Alignment.Center)
                     )

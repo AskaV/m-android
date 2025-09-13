@@ -97,6 +97,11 @@
     <string name="filled_button_text">Filled Button Text</string>
     <string name="outlined_button_text">Outlined Button Text</string>
 
+    <!--    AddContactsScreenContent     -->
+    <string name="users_title">Users</string>
+    <string name="users_title2">Recommendation</string>
+
+
     <!--    Other     -->
     <string name="unknown_error">Unknown error</string>
     <string name="login_failed">Login failed</string>

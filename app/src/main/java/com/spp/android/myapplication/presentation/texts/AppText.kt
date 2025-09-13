@@ -151,6 +151,10 @@ object AppText {
         val CAREER = TextKey(R.string.user_profession)
         val ADDRESS = TextKey(R.string.user_address)
     }
+    object AddContactDetailed {
+        val TITLE1 = TextKey(R.string.users_title)
+        val TITLE2 = TextKey(R.string.users_title2)
+    }
 
     object OtherInfo {
         val UNKNOWN_ERROR = TextKey(R.string.unknown_error)

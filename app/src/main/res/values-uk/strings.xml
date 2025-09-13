@@ -96,6 +96,10 @@
     <string name="filled_button_text">Заповнений текст кнопки</string>
     <string name="outlined_button_text">Окреслений текст кнопки</string>
 
+    <!--    AddContactsScreenContent     -->
+    <string name="users_title">Користувачі</string>
+    <string name="users_title2">Рекомендації</string>
+
     <!--    Other     -->
     <string name="unknown_error">Невідома помилка</string>
     <string name="login_failed">Помилка входу</string>
