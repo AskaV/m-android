@@ -1,8 +1,11 @@
 package com.spp.android.myapplication.presentation.feature.contacts.list
 
 import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.data.contacts.ContactsRepository
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
 import com.spp.android.myapplication.presentation.designsystem.preview.ContactPreviewText
 import com.spp.android.myapplication.presentation.texts.AppText
@@ -19,7 +22,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
-    @ApplicationContext private val appContext: Context
+    @ApplicationContext private val appContext: Context,
+    private val repository: ContactsRepository
+
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ContactsContract.State())
@@ -91,8 +96,15 @@ class ContactsViewModel @Inject constructor(
     private fun load() = viewModelScope.launch {
         _state.update { it.copy(isLoading = true, error = null) }
         runCatching {
-            // TODO replace with repository call
-            demoContacts()
+            if (ContextCompat.checkSelfPermission(
+                    appContext,
+                    android.Manifest.permission.READ_CONTACTS
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                repository.loadContacts()
+            } else {
+                demoContacts()
+            }
         }.onSuccess { list ->
             _state.update { it.copy(items = list, isLoading = false) }
         }.onFailure { t ->
