@@ -13,9 +13,11 @@ import androidx.compose.ui.res.dimensionResource
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.theme.MyApplicationTheme
+import com.spp.android.myapplication.presentation.feature.profile.components.FilledBtn
+import com.spp.android.myapplication.presentation.feature.profile.components.OutlinedBtn
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomArea
-import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomState
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileHeader
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun AddContactProfileScreenContent(
@@ -68,19 +70,21 @@ fun AddContactProfileScreenContent(
                     linePrimary = state.linePrimary,
                     lineSecondary = state.lineSecondary
                 )
-                Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_large)))
             }
         }
 
-        val bottomState =
-            if (state.isInMyContacts)
-                ProfileBottomState.ContactMessageOnly
-            else
-                ProfileBottomState.ContactAddable
         ProfileBottomArea(
-            state = bottomState,
-            onPrimary = { if (state.isInMyContacts) onMessage() else onAddToContacts() },
-            onSecondary = { if (!state.isInMyContacts) onMessage() },
+            showSocial = true,
+            primaryFilled = if (state.isInMyContacts) {
+                FilledBtn(AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage)
+            } else {
+                FilledBtn(AppText.ContactProfile.ADD_TO_MY_CONTACTS.text(), onClick = onAddToContacts)
+            },
+            secondaryOutlined = if (state.isInMyContacts) {
+                null
+            } else {
+                OutlinedBtn(AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage)
+            },
             modifier = Modifier.fillMaxHeight(),
             contentPadding = PaddingValues(horizontal = pad)
         )
@@ -97,7 +101,7 @@ private fun AddContactProfilePreviewDefault() {
                     id = "u1",
                     name = "Jenny Walker",
                     linePrimary = "Make-up artist",
-                    lineSecondary = "775 Westminster Ave APT D5\nBrooklyn, NY, 11230",
+                    lineSecondary = "775 Westminster Ave APT D5\n Brooklyn, NY, 11230",
                     isInMyContacts = false
                 ),
                 onBack = {},

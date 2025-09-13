@@ -73,7 +73,7 @@ object AppText {
 
     object ContactProfile {
         val MESSAGE_TEXT = TextKey(R.string.message_text)
-        val ADD_TO_MY_CONTACTS = TextKey(R.string.add_contacts_text)
+        val ADD_TO_MY_CONTACTS = TextKey(R.string.add_to_my_contacts_text)
     }
 
     object GalleryStrings {

@@ -107,5 +107,7 @@
     <string name="contact_added">Contact added</string>
     <string name="failed_to_save_profile">Failed to save profile</string>
     <string name="failed_to_load_profile">"Failed to load profile"</string>
+    <string name="add_to_my_contacts_text">Add to my contacts</string>
+
 
 </resources>

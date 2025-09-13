@@ -25,8 +25,8 @@ import androidx.compose.ui.res.stringResource
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
+import com.spp.android.myapplication.presentation.feature.profile.components.FilledBtn
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomArea
-import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomState
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileHeader
 import com.spp.android.myapplication.presentation.texts.AppText
 
@@ -79,7 +79,7 @@ fun ContactProfileScreen(
                         )
                     }
                     Text(
-                        text = AppText.MyProfile.PROFILE.text(), 
+                        text = AppText.MyProfile.PROFILE.text(),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.align(Alignment.Center)
@@ -96,16 +96,13 @@ fun ContactProfileScreen(
             }
         }
 
-        val bottomState: ProfileBottomState =
-            if (state.hasSocial) ProfileBottomState.ContactMessageOnly
-            else ProfileBottomState.ContactAddable
-
         ProfileBottomArea(
-            state = bottomState,
-            onPrimary = onMessage,
-            onSecondary = {
-                onMessage()
-            },
+            showSocial = state.hasSocial,
+            primaryFilled = FilledBtn(
+                AppText.ContactProfile.MESSAGE_TEXT.text(),
+                onClick = onMessage
+            ),
+            secondaryOutlined = null,
             contentPadding = PaddingValues(horizontal = pad),
             modifier = Modifier.fillMaxHeight()
         )

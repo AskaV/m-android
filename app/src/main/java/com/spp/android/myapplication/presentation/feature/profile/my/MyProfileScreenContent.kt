@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,8 +24,9 @@ import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.SocialButtonsRow
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
+import com.spp.android.myapplication.presentation.feature.profile.components.FilledBtn
+import com.spp.android.myapplication.presentation.feature.profile.components.OutlinedBtn
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomArea
-import com.spp.android.myapplication.presentation.feature.profile.components.ProfileBottomState
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileHeader
 import com.spp.android.myapplication.presentation.texts.AppText
 
@@ -118,17 +120,19 @@ fun ProfileScreen(
                 Spacer(Modifier.weight(1f))
             }
 
-            val bottomState: ProfileBottomState =
-                if (state.isCompleted) ProfileBottomState.MyProfileCompleted
-                else ProfileBottomState.MyProfileIncomplete(
-                    hint = AppText.MyProfile.PROFILE_FILL_HINT.text()
-                )
-
             ProfileBottomArea(
-                state = bottomState,
-                onPrimary = onViewContacts,
-                onSecondary = onEditProfile,
-                modifier = Modifier.fillMaxHeight()
+                showSocial = state.isCompleted,
+                primaryFilled = FilledBtn(
+                    text = AppText.MyProfile.VIEW_CONTACTS.text(),
+                    onClick = onViewContacts
+                ),
+                secondaryOutlined = OutlinedBtn(
+                    text = AppText.MyProfile.EDIT_PROFILE.text(),
+                    onClick = onEditProfile
+                ),
+                hint = if (!state.isCompleted) AppText.MyProfile.PROFILE_FILL_HINT.text() else null,
+                modifier = Modifier.fillMaxHeight(),
+                contentPadding = PaddingValues(horizontal = pad)
             )
         }
     }

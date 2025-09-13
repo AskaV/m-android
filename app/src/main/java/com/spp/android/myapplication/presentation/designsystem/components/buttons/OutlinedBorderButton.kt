@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.unit.Dp
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
@@ -24,7 +25,8 @@ fun OutlinedBorderButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    style: OutlinedButtonStyle = OutlinedButtonStyle.Secondary
+    style: OutlinedButtonStyle = OutlinedButtonStyle.Secondary,
+    buttonHeight: Dp = dimensionResource(R.dimen.button_height)
 ) {
     val (borderColor, contentColor, textStyle, transformedText) = when (style) {
         OutlinedButtonStyle.Primary -> arrayOf(
@@ -53,7 +55,7 @@ fun OutlinedBorderButton(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(dimensionResource(id = R.dimen.button_height)),
+            .height(buttonHeight),
         shape = RoundedCornerShape(dimensionResource(id = R.dimen.button_corner_radius)),
         border = BorderStroke(
             dimensionResource(id = R.dimen.button_border_width),

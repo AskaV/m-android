@@ -1,11 +1,15 @@
 package com.spp.android.myapplication.presentation.feature.profile.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,170 +24,153 @@ import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.FilledButton
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedBorderButton
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedButtonStyle
-import com.spp.android.myapplication.presentation.designsystem.components.buttons.ProfileSocialRowWithSpacer
+import com.spp.android.myapplication.presentation.designsystem.components.buttons.SocialButtonsRow
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
-import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
+import com.spp.android.myapplication.presentation.designsystem.theme.MyApplicationTheme
 import com.spp.android.myapplication.presentation.texts.AppText
 
-sealed interface ProfileBottomState {
-    data class MyProfileIncomplete(val hint: String) : ProfileBottomState
-    data object MyProfileCompleted : ProfileBottomState
-    data object ContactMessageOnly : ProfileBottomState
-    data object ContactAddable : ProfileBottomState
-}
+data class FilledBtn(
+    val text: String,
+    val onClick: () -> Unit
+)
 
+data class OutlinedBtn(
+    val text: String,
+    val onClick: () -> Unit,
+    val style: OutlinedButtonStyle = OutlinedButtonStyle.Secondary // по умолчанию контрастный
+)
+
+/** Нижняя половина экрана. Никакой бизнес-логики — только отрисовка того, что передали. */
 @Composable
 fun ProfileBottomArea(
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight(0.5f),
-    state: ProfileBottomState,
-    onPrimary: () -> Unit,
-    onSecondary: (() -> Unit)? = null,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
-
-    messageText: String = AppText.ContactProfile.MESSAGE_TEXT.text(),
-    addToContactsText: String = AppText.ContactProfile.ADD_TO_MY_CONTACTS.text(),
-    editProfileText: String = AppText.MyProfile.EDIT_PROFILE.text(),
-    viewContactsText: String = AppText.MyProfile.VIEW_CONTACTS.text()
+    modifier: Modifier = Modifier,
+    showSocial: Boolean,
+    primaryFilled: FilledBtn?,          // null -> скрыть
+    secondaryOutlined: OutlinedBtn?,    // null -> скрыть
+    hint: String? = null,               // опциональный текст над кнопками
+    contentPadding: PaddingValues = PaddingValues(
+        horizontal = dimensionResource(R.dimen.spacer_medium),
+        vertical = dimensionResource(R.dimen.spacer_medium)
+    )
 ) {
-    val spaceM = dimensionResource(id = R.dimen.spacer_medium)
+    val betweenButtons = dimensionResource(R.dimen.spacer_medium)
+    val topToSocial = dimensionResource(R.dimen.spacer_large)
+
     Surface(
-        color = MaterialTheme.colorScheme.surface,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.5f),
+        color = MaterialTheme.colorScheme.surface
     ) {
         Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.5f)
-                .padding(contentPadding),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(contentPadding)
+                .navigationBarsPadding(),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            when (state) {
-                is ProfileBottomState.MyProfileCompleted -> {
-                    ProfileSocialRowWithSpacer(spaceM)
-                    ProfileActionButton(
-                        text = AppText.MyProfile.EDIT_PROFILE.text(),
-                        onClick = { onSecondary?.invoke() }
-                    )
-                    Spacer(Modifier.height(spaceM))
-                    FilledButton(
-                        text = AppText.MyProfile.VIEW_CONTACTS.text(),
-                        onClick = onPrimary
-                    )
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_additional)))
+            Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                if (showSocial) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = topToSocial),
+                        contentAlignment = Alignment.Center
+                    ) { SocialButtonsRow() }
                 }
 
-                is ProfileBottomState.MyProfileIncomplete -> {
-                    Spacer(Modifier.weight(1f, fill = true))
-                    Text(
-                        text = state.hint,
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSecondary,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Spacer(Modifier.height(spaceM))
-                    ProfileActionButton(
-                        text = AppText.MyProfile.EDIT_PROFILE.text(),
-                        onClick = { onSecondary?.invoke() }
-                    )
-                    Spacer(Modifier.height(spaceM))
-                    FilledButton(
-                        text = AppText.MyProfile.VIEW_CONTACTS.text(),
-                        onClick = onPrimary
-                    )
-                }
+                Spacer(Modifier.weight(1f))
 
-                ProfileBottomState.ContactMessageOnly -> {
-                    ProfileSocialRowWithSpacer(spaceM)
-                    FilledButton(
-                        text = AppText.ContactProfile.MESSAGE_TEXT.text(),
-                        onClick = onPrimary
-                    )
-                }
+                Column(
+                    Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    if (!hint.isNullOrBlank()) {
+                        Text(
+                            text = hint,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = betweenButtons)
+                        )
+                    }
 
-                ProfileBottomState.ContactAddable -> {
-                    ProfileSocialRowWithSpacer(spaceM)
-                    ProfileActionButton(
-                        text = AppText.ContactProfile.MESSAGE_TEXT.text(),
-                        onClick = { onSecondary?.invoke() },
-                        style = OutlinedButtonStyle.OnBackground
-                    )
-                    Spacer(Modifier.height(spaceM))
-                    ProfileActionButton(
-                        text = AppText.MyProfile.EDIT_PROFILE.text(),
-                        onClick = { onSecondary?.invoke() }
-                    )
-                    Spacer(Modifier.height(spaceM))
-                    FilledButton(
-                        text = AppText.ContactProfile.ADD_TO_MY_CONTACTS.text(),
-                        onClick = onPrimary
-                    )
+                    secondaryOutlined?.let { spec ->
+                        OutlinedBorderButton(
+                            text = spec.text,
+                            onClick = spec.onClick,
+                            style = spec.style,
+                            modifier = Modifier.fillMaxWidth(),
+                            buttonHeight = 40.dp
+                        )
+                        if (primaryFilled != null) Spacer(Modifier.height(betweenButtons))
+                    }
+                    primaryFilled?.let { spec ->
+                        FilledButton(
+                            text = spec.text,
+                            onClick = spec.onClick,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 }
             }
-            Spacer(Modifier.height(spaceM))
         }
     }
 }
 
-@Composable
-private fun ProfileActionButton(
-    text: String,
-    onClick: () -> Unit,
-    style: OutlinedButtonStyle = OutlinedButtonStyle.Secondary
-) {
-    OutlinedBorderButton(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(40.dp),
-        text = text,
-        onClick = onClick,
-        style = style
-    )
-}
-
-
 @PreviewPhones
 @Composable
-private fun PreviewMyProfileCompleted() = PreviewScreenEdgeToEdge {
-    ProfileBottomArea(
-        state = ProfileBottomState.MyProfileCompleted,
-        onPrimary = {},
-        onSecondary = {},
-        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.spacer_medium))
-    )
+private fun PreviewProfileBottomMessageOnly() {
+    MyApplicationTheme {
+        ProfileBottomArea(
+            showSocial = true,
+            primaryFilled = FilledBtn(text = AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = {}),
+            secondaryOutlined = null,
+            modifier = Modifier.fillMaxHeight()
+        )
+    }
 }
 
 @PreviewPhones
 @Composable
-private fun PreviewMyProfileIncomplete() = PreviewScreenEdgeToEdge {
-    ProfileBottomArea(
-        state = ProfileBottomState.MyProfileIncomplete(
-            hint = AppText.MyProfile.PROFILE_FILL_HINT.text()
-        ),
-        onPrimary = {},
-        onSecondary = {},
-        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.spacer_medium))
-    )
+private fun PreviewProfileBottomAddAndMessage() {
+    MyApplicationTheme {
+        ProfileBottomArea(
+            showSocial = true,
+            primaryFilled = FilledBtn(text = AppText.Contacts.ADD.text(), onClick = {}),
+            secondaryOutlined = OutlinedBtn(text = AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = {}),
+            modifier = Modifier.fillMaxHeight()
+        )
+    }
 }
 
 @PreviewPhones
 @Composable
-private fun PreviewContactMessageOnly() = PreviewScreenEdgeToEdge {
-    ProfileBottomArea(
-        state = ProfileBottomState.ContactMessageOnly,
-        onPrimary = {},
-        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.spacer_medium))
-    )
+private fun PreviewProfileBottomMyProfileCompleted() {
+    MyApplicationTheme {
+        ProfileBottomArea(
+            showSocial = false,
+            primaryFilled = FilledBtn(text = AppText.MyProfile.VIEW_CONTACTS.text(), onClick = {}),
+            secondaryOutlined = OutlinedBtn(text = AppText.EditProfile.TITLE.text(), onClick = {}),
+            modifier = Modifier.fillMaxHeight()
+        )
+    }
 }
 
 @PreviewPhones
 @Composable
-private fun PreviewContactAddable() = PreviewScreenEdgeToEdge {
-    ProfileBottomArea(
-        state = ProfileBottomState.ContactAddable,
-        onPrimary = {},
-        onSecondary = {},
-        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.spacer_medium))
-    )
+private fun PreviewProfileBottomMyProfileIncomplete() {
+    MyApplicationTheme {
+        ProfileBottomArea(
+            showSocial = false,
+            primaryFilled = null,
+            secondaryOutlined = OutlinedBtn(text = AppText.EditProfile.TITLE.text(), onClick = {}),
+            hint = AppText.MyProfile.PROFILE_FILL_HINT.text(),
+            modifier = Modifier.fillMaxHeight(),
+        )
+    }
 }
