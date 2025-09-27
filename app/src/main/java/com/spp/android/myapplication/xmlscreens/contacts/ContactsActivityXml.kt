@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.ContactsContract
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -14,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.spp.android.myapplication.R
-import androidx.activity.viewModels
 import com.spp.android.myapplication.databinding.DialogAddContactBinding
 import com.spp.android.myapplication.databinding.MyContactsPageBinding
 
@@ -45,7 +45,7 @@ class ContactsActivityXml : AppCompatActivity() {
             ) {
                 loadContactsFromPhone()
             } else {
-                requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), 100)
+                requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE_CONTACTS_PERMISSION)
             }
         }
 
@@ -54,12 +54,17 @@ class ContactsActivityXml : AppCompatActivity() {
 
             adapter = ContactAdapter(
                 mutableList,
-                onDeleteContact = { contactToDelete, position ->
-                    adapter.removeContactAt(position)
-                    snackbarQueue.addLast(contactToDelete to position)
-                    if (currentSnackbar == null || !currentSnackbar!!.isShown) showNextSnackbar()
-                },
-                onItemClick = TODO(),
+                object : ContactAdapterListener {
+                    override fun onDeleteContact(contactToDelete: Contact, position: Int) {
+                        adapter.removeContactAt(position)
+                        snackbarQueue.addLast(contactToDelete to position)
+                        if (currentSnackbar == null || !currentSnackbar!!.isShown) showNextSnackbar()
+                    }
+
+                    override fun onItemClick(contact: Contact, view: View) {
+                        Toast.makeText(this@ContactsActivityXml, "Clicked: ${contact.name}", Toast.LENGTH_SHORT).show()
+                    }
+                }
             )
 
             binding.recyclerView.adapter = adapter

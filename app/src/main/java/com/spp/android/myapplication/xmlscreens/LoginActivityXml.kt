@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.databinding.LoginPageBinding
@@ -13,6 +15,7 @@ import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
 import kotlinx.coroutines.launch
 
 class LoginActivityXml : BaseActivity() {
+
     private lateinit var binding: LoginPageBinding
     private val viewModel: LoginViewModel by viewModels()
 
@@ -21,18 +24,20 @@ class LoginActivityXml : BaseActivity() {
         binding = LoginPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        restoreInputs(savedInstanceState)
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.email.collect { text ->
-                val et = binding.commonLoginFields.editTextTextEmailAddress
-                if (et.text.toString() != text) et.setText(text)
-            }
-        }
-        lifecycleScope.launchWhenStarted {
-            viewModel.password.collect { text ->
-                val et = binding.commonLoginFields.editTextTextPassword
-                if (et.text.toString() != text) et.setText(text)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.email.collect { text ->
+                        val et = binding.commonLoginFields.editTextTextEmailAddress
+                        if (et.text.toString() != text) et.setText(text)
+                    }
+                }
+                launch {
+                    viewModel.password.collect { text ->
+                        val et = binding.commonLoginFields.editTextTextPassword
+                        if (et.text.toString() != text) et.setText(text)
+                    }
+                }
             }
         }
 
@@ -42,6 +47,7 @@ class LoginActivityXml : BaseActivity() {
                 navigateToMain(savedEmail)
             }
         }
+
         setupViews()
     }
 
@@ -56,7 +62,6 @@ class LoginActivityXml : BaseActivity() {
         }
 
         loginButton.setOnClickListener {
-
             val allValid = ValidationUtils.validateEmailAndPassword(
                 context = this@LoginActivityXml,
                 emailField = fields.editTextTextEmailAddress,
@@ -73,43 +78,18 @@ class LoginActivityXml : BaseActivity() {
             }
         }
 
-        binding.signUpText.setOnClickListener {
-
+        signUpText.setOnClickListener {
             startActivity(Intent(this@LoginActivityXml, SignUpActivityXml::class.java))
             overridePendingTransition(R.anim.scale_in, R.anim.scale_out)
         }
     }
 
-    private fun restoreInputs(savedInstanceState: Bundle?) {
-        savedInstanceState?.let { state ->
-            binding.commonLoginFields.editTextTextEmailAddress
-                .setText(state.getString("email_text", ""))
-            binding.commonLoginFields.editTextTextPassword
-                .setText(state.getString("password_text", ""))
-
-        }
-    }
-
     private fun navigateToMain(email: String) {
         startActivity(
-            Intent(
-                this,
-                MainActivityXml::class.java
-            ).putExtra(getString(R.string.extra_email), email)
+            Intent(this, MainActivityXml::class.java)
+                .putExtra(getString(R.string.extra_email), email)
         )
         overridePendingTransition(R.anim.scale_in, R.anim.scale_out)
         finish()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(
-            getString(R.string.key_email),
-            binding.commonLoginFields.editTextTextEmailAddress.text.toString()
-        )
-        outState.putString(
-            getString(R.string.key_password),
-            binding.commonLoginFields.editTextTextPassword.text.toString()
-        )
     }
 }
