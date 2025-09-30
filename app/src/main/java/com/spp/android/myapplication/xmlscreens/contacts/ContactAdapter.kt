@@ -1,18 +1,35 @@
 package com.spp.android.myapplication.xmlscreens.contacts
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.spp.android.myapplication.databinding.ItemContactRecyclerVievBinding
 import com.spp.android.myapplication.xmlscreens.util.extensions.ImageViewExtensions.loadAvatar
 
+interface ContactAdapterListener {
+    fun onDeleteContact(contact: Contact, position: Int)
+    fun onItemClick(contact: Contact, view: View)
+}
+
 class ContactAdapter(
     private val contacts: MutableList<Contact>,
-    private val onDeleteContact: (contact: Contact, position: Int) -> Unit
+    private val listener: ContactAdapterListener
+
 ) : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
 
     inner class ContactViewHolder(val binding: ItemContactRecyclerVievBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                val pos = bindingAdapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(contacts[pos], binding.avatarImageView)
+                }
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         val binding = ItemContactRecyclerVievBinding.inflate(
@@ -31,8 +48,7 @@ class ContactAdapter(
             deleteButton.setOnClickListener {
                 val currentPosition = holder.bindingAdapterPosition
                 if (currentPosition != RecyclerView.NO_POSITION) {
-                    val contactToDelete = contacts[currentPosition]
-                    onDeleteContact(contactToDelete, currentPosition)
+                    listener.onDeleteContact(contacts[currentPosition], currentPosition)
                 }
             }
         }
@@ -52,5 +68,10 @@ class ContactAdapter(
 
     fun getContactAt(position: Int): Contact {
         return contacts[position]
+    }
+    fun replaceAll(newItems: List<Contact>) {
+        contacts.clear()
+        contacts.addAll(newItems)
+        notifyDataSetChanged()
     }
 }

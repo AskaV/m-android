@@ -13,6 +13,11 @@
     <string name="edit_profile">Edit profile</string>
     <string name="view_contacts">View my contacts</string>
 
+    <!-- contact's profile -->
+    <string name="profile_text">Profile</string>
+    <string name="message_text">Message</string>
+
+
     <!--  sign-up page  -->
     <string name="signup_title">Let\'s get acquainted</string>
     <string name="signup_subtitle">Fill out the profile and go to the application!</string>
@@ -45,7 +50,7 @@
     <string name="contacts_text">Contacts</string>
     <string name="add_contacts_text">Add contacts</string>
     <string name="wastebasket_description">Wastebasket</string>
-    <string name="deleted_contact_toast_text">contact has been removed</string>
+    <string name="deleted_contact_toast_text">contact has been removed (%1$d)</string>
     <string name="return_contact_toast_text">undo</string>
     <string name="add_contacts_name">Name</string>
     <string name="add_contacts_position">Position</string>

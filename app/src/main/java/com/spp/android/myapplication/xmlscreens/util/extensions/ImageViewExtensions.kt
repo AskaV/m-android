@@ -10,7 +10,6 @@ import com.squareup.picasso.Picasso
 
 object ImageViewExtensions {
 
-
     var currentImageLoader: ImageLoaderType = ImageLoaderType.COIL
 
     fun ImageView.loadAvatar(url: String?) {
