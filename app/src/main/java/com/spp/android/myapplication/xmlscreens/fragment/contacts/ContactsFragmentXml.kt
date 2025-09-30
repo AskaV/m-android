@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -31,7 +31,7 @@ class ContactsFragmentXml : Fragment() {
     private var _binding: MyContactsPageBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: ContactsViewModel
+    private val viewModel: ContactsViewModel by activityViewModels()
     private lateinit var adapter: ContactAdapter
 
     private val snackbarQueue = ArrayDeque<Pair<Contact, Int>>()
@@ -58,8 +58,6 @@ class ContactsFragmentXml : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        viewModel = ViewModelProvider(requireActivity())[ContactsViewModel::class.java]
-
         binding.addContactsText.setOnClickListener { showAddContactDialog() }
 
         binding.backArrow.setOnClickListener {
@@ -99,39 +97,40 @@ class ContactsFragmentXml : Fragment() {
 
             adapter = ContactAdapter(
                 contacts = mutableList,
-
-                onDeleteClick = { contactToDelete, position ->
-                    adapter.removeContactAt(position)
-                    snackbarQueue.addLast(contactToDelete to position)
-                    if (currentSnackbar == null || !currentSnackbar!!.isShown) showNextSnackbar()
-                },
-
-                onItemClick = { contact, sharedView ->
-                    val tn = ViewCompat.getTransitionName(sharedView)
-                        ?: "avatar_${contact.name}_${System.nanoTime()}"
-                    val extras = FragmentNavigatorExtras(sharedView to tn)
-                    val addr = FakeAddressProvider.forName(contact.name)
-                    val action = ContactsFragmentXmlDirections
-                        .actionContactsFragmentXmlToContactDetailFragment(
-                            transitionName = tn,
-                            contactName = contact.name,
-                            position = contact.position,
-                            avatarUrl = contact.avatarUrl,
-                            address = addr
-                        )
-                    findNavController().navigate(action, extras)
-                },
-
-                onItemLongClick = { _ ->
-                    adapter.setSelectionMode(true)
-                    updateFab()
-                },
-
-                onItemSelectToggle = {
-                    if (!adapter.isAnySelected()) {
-                        adapter.setSelectionMode(false)
+                listener = object : ContactAdapterListener {
+                    override fun onDeleteContact(contact: Contact, position: Int) {
+                        adapter.removeContactAt(position)
+                        snackbarQueue.addLast(contact to position)
+                        if (currentSnackbar == null || !currentSnackbar!!.isShown) showNextSnackbar()
                     }
-                    updateFab()
+
+                    override fun onItemClick(contact: Contact, sharedView: View) {
+                        val transitionName = ViewCompat.getTransitionName(sharedView)
+                            ?: "avatar_${contact.name}_${System.nanoTime()}"
+                        val extras = FragmentNavigatorExtras(sharedView to transitionName)
+                        val address = FakeAddressProvider.forName(contact.name)
+                        val action = ContactsFragmentXmlDirections
+                            .actionContactsFragmentXmlToContactDetailFragment(
+                                transitionName = transitionName,
+                                contactName = contact.name,
+                                position = contact.position,
+                                avatarUrl = contact.avatarUrl,
+                                address = address
+                            )
+                        findNavController().navigate(action, extras)
+                    }
+
+                    override fun onItemLongClick(position: Int) {
+                        adapter.setSelectionMode(true)
+                        updateFab()
+                    }
+
+                    override fun onItemSelectToggle(position: Int) {
+                        if (!adapter.isAnySelected()) {
+                            adapter.setSelectionMode(false)
+                        }
+                        updateFab()
+                    }
                 }
             )
 
@@ -139,6 +138,7 @@ class ContactsFragmentXml : Fragment() {
             enableSwipeToDelete(adapter)
         }
     }
+
 
     private fun updateFab() {
         val visible = adapter.isAnySelected() && adapter.isSelectionMode()
@@ -210,7 +210,7 @@ class ContactsFragmentXml : Fragment() {
         var secondsLeft = durationSec
         val snackbar = Snackbar.make(
             anchor,
-            getString(R.string.deleted_contact_toast_text) + " ($secondsLeft)",
+            getString(R.string.deleted_contact_toast_text_with_seconds, secondsLeft),
             Snackbar.LENGTH_INDEFINITE
         )
         snackbar.setAction(R.string.return_contact_toast_text) {
@@ -231,10 +231,11 @@ class ContactsFragmentXml : Fragment() {
             override fun onTick(millisUntilFinished: Long) {
                 secondsLeft--
                 if (currentSnackbar === snackbar) {
-                    snackbar.setText(getString(R.string.deleted_contact_toast_text) + " ($secondsLeft)")
+                    snackbar.setText(
+                        getString(R.string.deleted_contact_toast_text_with_seconds, secondsLeft)
+                    )
                 }
             }
-
             override fun onFinish() {
                 if (currentSnackbar === snackbar) snackbar.dismiss()
             }

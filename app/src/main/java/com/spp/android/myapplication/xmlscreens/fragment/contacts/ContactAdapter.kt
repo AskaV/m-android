@@ -11,10 +11,7 @@ import com.spp.android.myapplication.xmlscreens.util.extensions.ImageViewExtensi
 
 class ContactAdapter(
     private val contacts: MutableList<Contact>,
-    private val onDeleteClick: (Contact, Int) -> Unit,
-    private val onItemClick: (Contact, View) -> Unit,
-    private val onItemLongClick: (Int) -> Unit,
-    private val onItemSelectToggle: (Int) -> Unit
+    private val listener: ContactAdapterListener
 ) : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
 
     private val selectedPositions = mutableSetOf<Int>()
@@ -29,9 +26,10 @@ class ContactAdapter(
                 if (pos != RecyclerView.NO_POSITION) {
                     if (selectionMode) {
                         toggleSelection(pos)
-                        onItemSelectToggle(pos)
+                        listener.onItemSelectToggle(pos)
+
                     } else {
-                        onItemClick(contacts[pos], binding.avatarImageView)
+                        listener.onItemClick(contacts[pos], binding.avatarImageView)
                     }
                 }
             }
@@ -40,7 +38,7 @@ class ContactAdapter(
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     toggleSelection(pos)
-                    onItemSelectToggle(pos)
+                    listener.onItemSelectToggle(pos)
                 }
             }
 
@@ -49,7 +47,7 @@ class ContactAdapter(
                 if (pos != RecyclerView.NO_POSITION) {
                     if (!selectionMode) setSelectionMode(true)
                     toggleSelection(pos)
-                    onItemLongClick(pos)
+                    listener.onItemLongClick(pos)
                 }
                 true
             }
@@ -84,7 +82,7 @@ class ContactAdapter(
         b.deleteButton.setOnClickListener {
             val pos = holder.bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION && !selectionMode) {
-                onDeleteClick(contacts[pos], pos)
+                listener.onDeleteContact(contacts[pos], pos)
             }
         }
     }
