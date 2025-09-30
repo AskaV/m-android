@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.screens.contacts
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -46,6 +47,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.ui.preview.PreviewConfig
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
@@ -71,7 +73,7 @@ class ContactsActivity : ComponentActivity() {
 @Preview(
     showBackground = true,
     name = "ContactsScreenPreview",
-    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_NO,
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
     device = "spec:width=${PreviewConfig.FIGMA_SCREEN_WIDTH}px,height=${PreviewConfig.FIGMA_SCREEN_HEIGHT}px,dpi=${PreviewConfig.FIGMA_SCREEN_DPI}"
 )
 
@@ -86,7 +88,7 @@ fun ContactsScreenPreview() {
 fun ContactsScreen(
     modifier: Modifier = Modifier,
     onValidLogin: (String) -> Unit,
-    viewModel: ContactsViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: ContactsViewModel = viewModel()
 ) {
     val contacts by viewModel.contacts.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -183,19 +185,25 @@ fun ContactsScreen(
                                 }
                             }
                         ) {
-                            ContactItem(contact = contact) {
-                                viewModel.deleteContact(contact)
-                                scope.launch {
-                                    val result = snackbarHostState.showSnackbar(
-                                        message = message,
-                                        actionLabel = actionLabel,
-                                        duration = SnackbarDuration.Short
-                                    )
-                                    if (result == SnackbarResult.ActionPerformed) {
-                                        viewModel.undoDelete()
+                            ContactItem(
+                                contact = contact,
+                                avatarTransitionName = "preview_avatar_$index",
+                                onAvatarViewReady = { /* no-op in preview */ },
+                                onClick = { /* no-op in preview */ },
+                                onDeleteClick = {
+                                    viewModel.deleteContact(contact)
+                                    scope.launch {
+                                        val result = snackbarHostState.showSnackbar(
+                                            message = message,
+                                            actionLabel = actionLabel,
+                                            duration = SnackbarDuration.Short
+                                        )
+                                        if (result == SnackbarResult.ActionPerformed) {
+                                            viewModel.undoDelete()
+                                        }
                                     }
                                 }
-                            }
+                            )
                         }
                     }
                 }

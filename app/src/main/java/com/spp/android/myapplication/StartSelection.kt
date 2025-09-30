@@ -9,8 +9,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.screens.contacts.ContactsScreen
+import com.spp.android.myapplication.screens.fragment.FragmentHostActivity
 import com.spp.android.myapplication.ui.theme.MyApplicationTheme
 //import com.spp.android.myapplication.xmlscreens.contacts.ContactsActivityXml
+//import com.spp.android.myapplication.xmlscreens.fragment.ContactsFragmentActivityXml
 import kotlinx.coroutines.launch
 
 class StartSelection : ComponentActivity() {
@@ -53,12 +55,14 @@ class StartSelection : ComponentActivity() {
             setContent {
                 MyApplicationTheme(themePref = themePref) {
                     //LoginScreen(onValidLogin = {})
-                    ContactsScreen(onValidLogin = {})
+                    //ContactsScreen(onValidLogin = {})
+                    startActivity(Intent(this, FragmentHostActivity::class.java))
                 }
             }
         } else {
             //startActivity(Intent(this, LoginActivityXml::class.java))
-//            startActivity(Intent(this, ContactsActivityXml::class.java))
+            //startActivity(Intent(this, ContactsActivityXml::class.java))
+//            startActivity(Intent(this, ContactsFragmentActivityXml::class.java))
             finish()
         }
     }
