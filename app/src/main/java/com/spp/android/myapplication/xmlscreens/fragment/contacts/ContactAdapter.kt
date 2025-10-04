@@ -5,9 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ListAdapter
-
+import androidx.recyclerview.widget.RecyclerView
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.ItemContactRecyclerVievBinding
 import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
@@ -22,6 +21,10 @@ class ContactAdapter(
     private val selectedKeys = mutableSetOf<String>()
     private var selectionMode = false
 
+    init {
+        setHasStableIds(true)
+    }
+
     inner class ContactViewHolder(val binding: ItemContactRecyclerVievBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -30,28 +33,23 @@ class ContactAdapter(
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     if (selectionMode) {
-                        toggleSelection(pos)
-                        onItemSelectToggle(pos)
+                        toggleSelection(pos); onItemSelectToggle(pos)
                     } else {
                         onItemClick(getItem(pos), binding.avatarImageView)
                     }
                 }
             }
-
             binding.selectCheck.setOnClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    toggleSelection(pos)
-                    onItemSelectToggle(pos)
+                    toggleSelection(pos); onItemSelectToggle(pos)
                 }
             }
-
             binding.root.setOnLongClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     if (!selectionMode) setSelectionMode(true)
-                    toggleSelection(pos)
-                    onItemLongClick(pos)
+                    toggleSelection(pos); onItemLongClick(pos)
                 }
                 true
             }
@@ -59,8 +57,9 @@ class ContactAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemContactRecyclerVievBinding.inflate(inflater, parent, false)
+        val binding = ItemContactRecyclerVievBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
         return ContactViewHolder(binding)
     }
 
@@ -99,41 +98,25 @@ class ContactAdapter(
     fun setSelectionMode(enabled: Boolean) {
         if (selectionMode == enabled) return
         selectionMode = enabled
-        if (!enabled) {
-            selectedKeys.clear()
-        }
+        if (!enabled) selectedKeys.clear()
         notifyDataSetChanged()
     }
 
     fun isSelectionMode(): Boolean = selectionMode
+    fun isAnySelected() = selectedKeys.isNotEmpty()
 
     fun toggleSelection(position: Int) {
         val key = stableKey(getItem(position))
-        if (selectedKeys.contains(key)) selectedKeys.remove(key) else selectedKeys.add(key)
+        if (!selectedKeys.add(key)) selectedKeys.remove(key)
         notifyItemChanged(position)
     }
 
-    fun isAnySelected() = selectedKeys.isNotEmpty()
-
     fun getSelectedPositions(): List<Int> =
-        currentList.mapIndexedNotNull { index, c -> if (selectedKeys.contains(stableKey(c))) index else null }
+        currentList.mapIndexedNotNull { index, c ->
+            if (selectedKeys.contains(stableKey(c))) index else null
+        }
 
-    fun removeAt(position: Int) {
-        if (position !in 0 until itemCount) return
-        val mutable = currentList.toMutableList()
-        val removed = mutable.removeAt(position)
-        selectedKeys.remove(stableKey(removed))
-        submitList(mutable)
-    }
-
-    fun restoreContact(contact: Contact, position: Int) {
-        val mutable = currentList.toMutableList()
-        val safePos = position.coerceIn(0, mutable.size)
-        mutable.add(safePos, contact)
-        submitList(mutable)
-    }
-
-    fun getContactAt(position: Int): Contact = getItem(position)
+    fun itemAt(position: Int): Contact? = currentList.getOrNull(position)
 
     private fun stableKey(c: Contact): String =
         "${c.name}|${c.position}|${c.avatarUrl}"
@@ -141,7 +124,10 @@ class ContactAdapter(
     private companion object {
         val DIFF = object : DiffUtil.ItemCallback<Contact>() {
             override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean =
-                (oldItem.name == newItem.name && oldItem.avatarUrl == newItem.avatarUrl)
+                oldItem.name == newItem.name &&
+                        oldItem.avatarUrl == newItem.avatarUrl &&
+                        oldItem.position == newItem.position
+
             override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean =
                 oldItem == newItem
         }
