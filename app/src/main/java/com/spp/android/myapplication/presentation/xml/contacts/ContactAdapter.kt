@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens.fragment.contacts
+package com.spp.android.myapplication.presentation.xml.contacts
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.ItemContactRecyclerVievBinding
-import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
+import com.spp.android.myapplication.presentation.util.extensions.loadAvatar
 
 class ContactAdapter(
     private val onDeleteClick: (Contact, Int) -> Unit,

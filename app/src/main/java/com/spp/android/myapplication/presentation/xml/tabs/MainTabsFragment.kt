@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens.fragment
+package com.spp.android.myapplication.presentation.xml.tabs
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.FragmentMainTabsBinding
-import com.spp.android.myapplication.xmlscreens.fragment.contacts.ContactsFragmentXml
+import com.spp.android.myapplication.presentation.xml.contacts.ContactsFragmentXml
+import com.spp.android.myapplication.presentation.xml.profile.MyProfileFragmentXml
 
 class MainTabsFragment : Fragment() {
 

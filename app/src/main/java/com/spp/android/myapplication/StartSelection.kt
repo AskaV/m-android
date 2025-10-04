@@ -4,20 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.data.UserPreferences
-import com.spp.android.myapplication.xmlscreens.LoginActivityXml
-import com.spp.android.myapplication.xmlscreens.MainActivityXml
-import com.spp.android.myapplication.xmlscreens.SignUpExtendedActivityXml
+import com.spp.android.myapplication.presentation.xml.activity.LoginActivityXml
+import com.spp.android.myapplication.presentation.xml.activity.MainActivityXml
+import com.spp.android.myapplication.presentation.xml.activity.SignUpExtendedActivityXml
 import kotlinx.coroutines.launch
 
 class StartSelection : ComponentActivity() {
 
     companion object {
-        /** If true – use Compose version, if false – XML version. */
-        const val USE_COMPOSE = false
         const val TEST_MODE = true
 
         enum class StartTarget { AUTH, CONTACTS, SIGNUP_EXTENDED }
@@ -30,9 +27,7 @@ class StartSelection : ComponentActivity() {
         val themePref = prefs.getString("theme_pref", "system") ?: "system"
         prefs.edit().putString("theme_pref", "system").apply()
 
-        if (!USE_COMPOSE) {
-            applyTheme(themePref)
-        }
+        applyTheme(themePref)
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,10 +42,7 @@ class StartSelection : ComponentActivity() {
         }
     }
 
-    private fun launchApp(themePref: String) = if (USE_COMPOSE) {
-        setContent {
-        }
-    } else {
+    private fun launchApp(themePref: String) {
         when (START_TARGET) {
             StartTarget.AUTH -> {
                 startActivity(Intent(this, LoginActivityXml::class.java))

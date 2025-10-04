@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens.fragment.contacts
+package com.spp.android.myapplication.presentation.xml.contacts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

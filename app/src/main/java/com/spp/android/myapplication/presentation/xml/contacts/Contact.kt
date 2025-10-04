@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens.fragment.contacts
+package com.spp.android.myapplication.presentation.xml.contacts
 
 data class Contact(
     val name: String,

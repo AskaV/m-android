@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens.util.extensions
+package com.spp.android.myapplication.presentation.util.extensions
 
 import android.content.Context
 import android.graphics.Canvas

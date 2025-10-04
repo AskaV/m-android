@@ -6,12 +6,12 @@
 
     <fragment
         android:id="@+id/mainTabsFragment"
-        android:name="com.spp.android.myapplication.xmlscreens.fragment.MainTabsFragment"
+        android:name="com.spp.android.myapplication.presentation.xml.tabs.MainTabsFragment"
         android:label="MainTabs" />
 
     <fragment
         android:id="@+id/contactsFragmentXml"
-        android:name="com.spp.android.myapplication.xmlscreens.fragment.contacts.ContactsFragmentXml"
+        android:name="com.spp.android.myapplication.presentation.xml.contacts.ContactsFragmentXml"
         android:label="Contacts">
 
     </fragment>
@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/contactDetailFragment"
-        android:name="com.spp.android.myapplication.xmlscreens.fragment.contacts.ContactDetailFragment"
+        android:name="com.spp.android.myapplication.presentation.xml.contacts.ContactDetailFragment"
         android:label="Details">
         <argument
             android:name="transitionName"

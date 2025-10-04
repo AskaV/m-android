@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens.fragment.contacts
+package com.spp.android.myapplication.presentation.xml.contacts
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -24,8 +24,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.DialogAddContactBinding
 import com.spp.android.myapplication.databinding.MyContactsPageBinding
-import com.spp.android.myapplication.xmlscreens.fragment.MainTabsFragment
-import com.spp.android.myapplication.xmlscreens.util.extensions.FakeAddressProvider
+import com.spp.android.myapplication.presentation.xml.tabs.MainTabsFragment
+import com.spp.android.myapplication.presentation.util.extensions.FakeAddressProvider
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

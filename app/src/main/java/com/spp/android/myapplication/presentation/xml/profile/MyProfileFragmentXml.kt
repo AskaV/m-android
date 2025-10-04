@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens.fragment
+package com.spp.android.myapplication.presentation.xml.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.MyProfilePageBinding
-import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils.parseNameFromEmail
+import com.spp.android.myapplication.presentation.xml.tabs.MainTabsFragment
+import com.spp.android.myapplication.presentation.util.extensions.ValidationUtils.parseNameFromEmail
 
 
 class MyProfileFragmentXml : Fragment() {

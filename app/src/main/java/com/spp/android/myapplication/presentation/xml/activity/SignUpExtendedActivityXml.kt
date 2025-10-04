@@ -1,13 +1,13 @@
-package com.spp.android.myapplication.xmlscreens
+package com.spp.android.myapplication.presentation.xml.activity
 
 import android.net.Uri
 import android.os.Bundle
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.SignUpExtendedPageBinding
-import com.spp.android.myapplication.xmlscreens.util.extensions.PhotoChooser
-import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
-import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
-import com.spp.android.myapplication.xmlscreens.util.extensions.randomAvatarUrl
+import com.spp.android.myapplication.presentation.util.extensions.PhotoChooser
+import com.spp.android.myapplication.presentation.util.extensions.ValidationUtils
+import com.spp.android.myapplication.presentation.util.extensions.loadAvatar
+import com.spp.android.myapplication.presentation.util.extensions.randomAvatarUrl
 
 class SignUpExtendedActivityXml : BaseActivity() {
 

@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens.util.extensions
+package com.spp.android.myapplication.presentation.util.extensions
 
 object FakeAddressProvider {
     private val pool = listOf(

@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens
+package com.spp.android.myapplication.presentation.xml.activity
 
 import android.content.SharedPreferences
 import android.os.Bundle

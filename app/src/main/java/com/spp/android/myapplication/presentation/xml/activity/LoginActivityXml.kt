@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.xmlscreens
+package com.spp.android.myapplication.presentation.xml.activity
 
 import android.app.ActivityOptions
 import android.content.Intent
@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.databinding.LoginPageBinding
-import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils
+import com.spp.android.myapplication.presentation.util.extensions.ValidationUtils
 import kotlinx.coroutines.launch
 
 class LoginActivityXml : BaseActivity() {
