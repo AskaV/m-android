@@ -67,17 +67,17 @@ class ContactsFragmentXml : Fragment() {
         adapter = ContactAdapter(
             onDeleteClick = { _, position -> viewModel.removeAt(position) },
             onItemClick = { contact, sharedView ->
-                val tn = ViewCompat.getTransitionName(sharedView)
+                val transitionName = ViewCompat.getTransitionName(sharedView)
                     ?: "avatar_${contact.name}_${System.nanoTime()}"
-                val extras = FragmentNavigatorExtras(sharedView to tn)
-                val addr = FakeAddressProvider.forName(contact.name)
+                val extras = FragmentNavigatorExtras(sharedView to transitionName)
+                val address = FakeAddressProvider.forName(contact.name)
                 val action = ContactsFragmentXmlDirections
                     .actionContactsFragmentXmlToContactDetailFragment(
-                        transitionName = tn,
+                        transitionName = transitionName,
                         contactName = contact.name,
                         position = contact.position,
                         avatarUrl = contact.avatarUrl,
-                        address = addr
+                        address = address
                     )
                 findNavController().navigate(action, extras)
             },

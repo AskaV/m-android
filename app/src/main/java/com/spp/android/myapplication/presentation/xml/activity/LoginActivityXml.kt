@@ -3,7 +3,11 @@ package com.spp.android.myapplication.presentation.xml.activity
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.databinding.LoginPageBinding
@@ -13,6 +17,7 @@ import kotlinx.coroutines.launch
 class LoginActivityXml : BaseActivity() {
 
     private lateinit var binding: LoginPageBinding
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +25,24 @@ class LoginActivityXml : BaseActivity() {
         binding = LoginPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        restoreInputs(savedInstanceState)
+        binding.commonLoginFields.editTextTextEmailAddress.doAfterTextChanged {
+            viewModel.setEmail(it?.toString().orEmpty())
+        }
+        binding.commonLoginFields.editTextTextPassword.doAfterTextChanged {
+            viewModel.setPassword(it?.toString().orEmpty())
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { s ->
+                    val emailEt = binding.commonLoginFields.editTextTextEmailAddress
+                    if (emailEt.text?.toString() != s.email) emailEt.setText(s.email)
+
+                    val passEt = binding.commonLoginFields.editTextTextPassword
+                    if (passEt.text?.toString() != s.password) passEt.setText(s.password)
+                }
+            }
+        }
 
         lifecycleScope.launch {
             val savedEmail = UserPreferences.getEmail(this@LoginActivityXml)
@@ -44,7 +66,7 @@ class LoginActivityXml : BaseActivity() {
             )
 
             if (allValid) {
-                val email = emailField.text.toString()
+                val email = viewModel.state.value.email
                 lifecycleScope.launch {
                     UserPreferences.saveEmail(this@LoginActivityXml, email)
                     navigateToMain(email)
@@ -63,32 +85,11 @@ class LoginActivityXml : BaseActivity() {
         }
     }
 
-    private fun restoreInputs(savedInstanceState: Bundle?) {
-        savedInstanceState?.let { state ->
-            binding.commonLoginFields.editTextTextEmailAddress.text.toString()
-
-            binding.commonLoginFields.editTextTextPassword.text.toString()
-
-        }
-    }
-
     private fun navigateToMain(email: String) {
         val intent = Intent(this, MainActivityXml::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             putExtra(getString(R.string.extra_email), email)
         }
         startActivity(intent)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(
-            getString(R.string.key_email),
-            binding.commonLoginFields.editTextTextEmailAddress.text.toString()
-        )
-        outState.putString(
-            getString(R.string.key_password),
-            binding.commonLoginFields.editTextTextPassword.text.toString()
-        )
     }
 }

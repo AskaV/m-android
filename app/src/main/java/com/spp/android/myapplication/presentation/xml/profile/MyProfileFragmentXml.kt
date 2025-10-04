@@ -11,7 +11,6 @@ import com.spp.android.myapplication.databinding.MyProfilePageBinding
 import com.spp.android.myapplication.presentation.xml.tabs.MainTabsFragment
 import com.spp.android.myapplication.presentation.util.extensions.ValidationUtils.parseNameFromEmail
 
-
 class MyProfileFragmentXml : Fragment() {
 
     private var _binding: MyProfilePageBinding? = null
