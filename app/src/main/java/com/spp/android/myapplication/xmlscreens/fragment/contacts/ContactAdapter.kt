@@ -4,20 +4,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
+
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.ItemContactRecyclerVievBinding
 import com.spp.android.myapplication.xmlscreens.util.extensions.loadAvatar
 
 class ContactAdapter(
-    private val contacts: MutableList<Contact>,
     private val onDeleteClick: (Contact, Int) -> Unit,
     private val onItemClick: (Contact, View) -> Unit,
     private val onItemLongClick: (Int) -> Unit,
     private val onItemSelectToggle: (Int) -> Unit
-) : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
+) : ListAdapter<Contact, ContactAdapter.ContactViewHolder>(DIFF) {
 
-    private val selectedPositions = mutableSetOf<Int>()
+    private val selectedKeys = mutableSetOf<String>()
     private var selectionMode = false
 
     inner class ContactViewHolder(val binding: ItemContactRecyclerVievBinding) :
@@ -31,7 +33,7 @@ class ContactAdapter(
                         toggleSelection(pos)
                         onItemSelectToggle(pos)
                     } else {
-                        onItemClick(contacts[pos], binding.avatarImageView)
+                        onItemClick(getItem(pos), binding.avatarImageView)
                     }
                 }
             }
@@ -63,9 +65,11 @@ class ContactAdapter(
     }
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
-        val contact = contacts[position]
+        val contact = getItem(position)
         val b = holder.binding
-        val selected = selectedPositions.contains(position)
+
+        val key = stableKey(contact)
+        val selected = selectedKeys.contains(key)
 
         b.selectCheck.visibility = if (selectionMode) View.VISIBLE else View.GONE
         b.selectCheck.isChecked = selected
@@ -84,20 +88,19 @@ class ContactAdapter(
         b.deleteButton.setOnClickListener {
             val pos = holder.bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION && !selectionMode) {
-                onDeleteClick(contacts[pos], pos)
+                onDeleteClick(getItem(pos), pos)
             }
         }
     }
 
-    override fun getItemCount(): Int = contacts.size
+    override fun getItemId(position: Int): Long =
+        stableKey(getItem(position)).hashCode().toLong()
 
     fun setSelectionMode(enabled: Boolean) {
         if (selectionMode == enabled) return
         selectionMode = enabled
         if (!enabled) {
-            val prev = selectedPositions.toList()
-            selectedPositions.clear()
-            prev.forEach { notifyItemChanged(it) }
+            selectedKeys.clear()
         }
         notifyDataSetChanged()
     }
@@ -105,36 +108,42 @@ class ContactAdapter(
     fun isSelectionMode(): Boolean = selectionMode
 
     fun toggleSelection(position: Int) {
-        if (selectedPositions.contains(position)) selectedPositions.remove(position)
-        else selectedPositions.add(position)
+        val key = stableKey(getItem(position))
+        if (selectedKeys.contains(key)) selectedKeys.remove(key) else selectedKeys.add(key)
         notifyItemChanged(position)
     }
 
-    fun isAnySelected() = selectedPositions.isNotEmpty()
+    fun isAnySelected() = selectedKeys.isNotEmpty()
 
-    fun getSelectedPositions(): List<Int> = selectedPositions.sorted()
+    fun getSelectedPositions(): List<Int> =
+        currentList.mapIndexedNotNull { index, c -> if (selectedKeys.contains(stableKey(c))) index else null }
 
-    fun removeContactAt(position: Int) {
-        contacts.removeAt(position)
-        notifyItemRemoved(position)
-        val updated = selectedPositions.mapNotNull { old ->
-            when {
-                old == position -> null
-                old > position -> old - 1
-                else -> old
-            }
-        }.toMutableSet()
-        selectedPositions.clear(); selectedPositions.addAll(updated)
+    fun removeAt(position: Int) {
+        if (position !in 0 until itemCount) return
+        val mutable = currentList.toMutableList()
+        val removed = mutable.removeAt(position)
+        selectedKeys.remove(stableKey(removed))
+        submitList(mutable)
     }
 
     fun restoreContact(contact: Contact, position: Int) {
-        val safePos = position.coerceIn(0, contacts.size)
-        contacts.add(safePos, contact)
-        notifyItemInserted(safePos)
-
-        val updated = selectedPositions.map { if (it >= safePos) it + 1 else it }.toMutableSet()
-        selectedPositions.clear(); selectedPositions.addAll(updated)
+        val mutable = currentList.toMutableList()
+        val safePos = position.coerceIn(0, mutable.size)
+        mutable.add(safePos, contact)
+        submitList(mutable)
     }
 
-    fun getContactAt(position: Int): Contact = contacts[position]
+    fun getContactAt(position: Int): Contact = getItem(position)
+
+    private fun stableKey(c: Contact): String =
+        "${c.name}|${c.position}|${c.avatarUrl}"
+
+    private companion object {
+        val DIFF = object : DiffUtil.ItemCallback<Contact>() {
+            override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean =
+                (oldItem.name == newItem.name && oldItem.avatarUrl == newItem.avatarUrl)
+            override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean =
+                oldItem == newItem
+        }
+    }
 }

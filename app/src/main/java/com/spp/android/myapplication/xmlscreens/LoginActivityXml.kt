@@ -65,17 +65,17 @@ class LoginActivityXml : BaseActivity() {
 
     private fun restoreInputs(savedInstanceState: Bundle?) {
         savedInstanceState?.let { state ->
-            binding.commonLoginFields.editTextTextEmailAddress
-                .setText(state.getString("email_text", ""))
-            binding.commonLoginFields.editTextTextPassword
-                .setText(state.getString("password_text", ""))
+            binding.commonLoginFields.editTextTextEmailAddress.text.toString()
+
+            binding.commonLoginFields.editTextTextPassword.text.toString()
+
         }
     }
 
     private fun navigateToMain(email: String) {
         val intent = Intent(this, MainActivityXml::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            putExtra("email", email)
+            putExtra(getString(R.string.extra_email), email)
         }
         startActivity(intent)
     }
@@ -83,11 +83,11 @@ class LoginActivityXml : BaseActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(
-            "email_text",
+            getString(R.string.key_email),
             binding.commonLoginFields.editTextTextEmailAddress.text.toString()
         )
         outState.putString(
-            "password_text",
+            getString(R.string.key_password),
             binding.commonLoginFields.editTextTextPassword.text.toString()
         )
     }

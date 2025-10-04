@@ -102,4 +102,12 @@
     <string name="cd_take_photo">Take a photo</string>
     <string name="cd_gallery_photo">Gallery photo</string>
 
+    <!--   keys for Bundle/Intent extras   -->
+    <string name="key_email">email_text</string>
+    <string name="key_password">password_text</string>
+    <string name="extra_email">email</string>
+
+    <!--   toast messages   -->
+    <string name="toast_edit_profile">Edit Profile clicked</string>
+    <string name="toast_view_contacts">View Contacts clicked</string>
 </resources>

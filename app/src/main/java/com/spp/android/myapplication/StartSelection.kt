@@ -22,7 +22,7 @@ class StartSelection : ComponentActivity() {
 
         enum class StartTarget { AUTH, CONTACTS, SIGNUP_EXTENDED }
 
-        val START_TARGET = StartTarget.SIGNUP_EXTENDED
+        val START_TARGET = StartTarget.AUTH
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

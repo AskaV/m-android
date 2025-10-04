@@ -9,9 +9,11 @@ import kotlinx.coroutines.flow.map
 
 private val Context.dataStore by preferencesDataStore(name = "user_prefs")
 
+private const val EMAIL = "email"
+
 object UserPreferences {
 
-    private val EMAIL_KEY = stringPreferencesKey("email")
+    private val EMAIL_KEY = stringPreferencesKey(EMAIL)
 
     suspend fun saveEmail(context: Context, email: String) {
         context.dataStore.edit { prefs ->

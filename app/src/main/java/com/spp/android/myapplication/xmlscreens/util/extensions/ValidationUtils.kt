@@ -85,4 +85,11 @@ object ValidationUtils {
     }
 
     fun normalizePhone(phone: String): String = phone.filter { it.isDigit() }
+
+    fun parseNameFromEmail(email: String): String {
+        return email.substringBefore("@")
+            .split(".", "_", "-")
+            .filter { it.isNotBlank() }
+            .joinToString(" ") { it.replaceFirstChar(Char::uppercase) }
+    }
 }

@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.MyProfilePageBinding
+import com.spp.android.myapplication.xmlscreens.util.extensions.ValidationUtils.parseNameFromEmail
+
 
 class MyProfileFragmentXml : Fragment() {
 
@@ -36,13 +38,6 @@ class MyProfileFragmentXml : Fragment() {
         binding.viewMyContactsBtn.setOnClickListener {
             (parentFragment as? MainTabsFragment)?.switchToContacts()
         }
-    }
-
-    private fun parseNameFromEmail(email: String): String {
-        return email.substringBefore("@")
-            .split(".", "_", "-")
-            .filter { it.isNotBlank() }
-            .joinToString(" ") { it.replaceFirstChar(Char::uppercase) }
     }
 
     override fun onDestroyView() {
