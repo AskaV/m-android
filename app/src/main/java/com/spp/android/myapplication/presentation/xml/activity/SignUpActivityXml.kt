@@ -4,7 +4,6 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.SignUpPageBinding
@@ -20,12 +19,7 @@ class SignUpActivityXml : BaseActivity() {
 
         binding.signInText.setOnClickListener {
             val intent = Intent(this, LoginActivityXml::class.java)
-            val options = ActivityOptions.makeCustomAnimation(
-                this,
-                R.anim.scale_in,
-                R.anim.scale_out
-            )
-            startActivity(intent, options.toBundle())
+            startActivity(intent, animOptions().toBundle())
             finish()
         }
         binding.registerButton.setOnClickListener {
@@ -61,12 +55,7 @@ class SignUpActivityXml : BaseActivity() {
                     putExtra("email", emailText)
                     putExtra("password", passwordText)
                 }
-                val options = ActivityOptions.makeCustomAnimation(
-                    this@SignUpActivityXml,
-                    R.anim.scale_in,
-                    R.anim.scale_out
-                )
-                startActivity(intent, options.toBundle())
+                startActivity(intent, animOptions().toBundle())
             }
         }
     }
@@ -75,4 +64,8 @@ class SignUpActivityXml : BaseActivity() {
         // TODO: PoST?
         return true
     }
+
+    private fun animOptions() = ActivityOptions.makeCustomAnimation(
+        this, R.anim.scale_in, R.anim.scale_out
+    )
 }

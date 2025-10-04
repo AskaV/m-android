@@ -83,8 +83,8 @@ class ContactAdapter(
         b.avatarImageView.loadAvatar(contact.avatarUrl)
         b.nameTextView.text = contact.name
 
-        val tn = "avatar_${contact.name}_$position"
-        ViewCompat.setTransitionName(b.avatarImageView, tn)
+        val transitionName = "avatar_${contact.name.hashCode()}_$position"
+        ViewCompat.setTransitionName(b.avatarImageView, transitionName)
 
         b.root.setBackgroundResource(
             if (selected) R.drawable.contact_selected_background else R.drawable.contact_outlined

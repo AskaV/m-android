@@ -110,4 +110,7 @@
     <!--   toast messages   -->
     <string name="toast_edit_profile">Edit Profile clicked</string>
     <string name="toast_view_contacts">View Contacts clicked</string>
+
+    <string name="contacts_permission_denied">Permission denied. Contacts not loaded.</string>
+
 </resources>

@@ -110,4 +110,7 @@
     <!--   Повідомлення Toast   -->
     <string name="toast_edit_profile">Натиснута кнопка редагування профіля</string>
     <string name="toast_view_contacts">Натиснута кнопка перегляду контактів</string>
+
+    <string name="contacts_permission_denied">Доступ заборонено. Контакти не завантажені.</string>
+
 </resources>

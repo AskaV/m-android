@@ -8,6 +8,7 @@ import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -24,8 +25,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.DialogAddContactBinding
 import com.spp.android.myapplication.databinding.MyContactsPageBinding
-import com.spp.android.myapplication.presentation.xml.tabs.MainTabsFragment
 import com.spp.android.myapplication.presentation.util.extensions.FakeAddressProvider
+import com.spp.android.myapplication.presentation.xml.tabs.MainTabsFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -47,6 +48,13 @@ class ContactsFragmentXml : Fragment() {
     private val requestContactsPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) loadContactsFromPhone()
+            if (!granted) {
+                Toast.makeText(
+                    requireContext(),
+                    R.string.contacts_permission_denied,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
     override fun onCreateView(
