@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -34,7 +34,7 @@ class ContactsFragmentXml : Fragment() {
     private var _binding: MyContactsPageBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: ContactsViewModel
+    private val viewModel: ContactsViewModel by viewModels()
     private lateinit var adapter: ContactAdapter
 
     private val snackbarQueue = ArrayDeque<Pair<Contact, Int>>()
@@ -62,14 +62,16 @@ class ContactsFragmentXml : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        viewModel = ViewModelProvider(requireActivity())[ContactsViewModel::class.java]
 
-        adapter = ContactAdapter(
-            onDeleteClick = { _, position -> viewModel.removeAt(position) },
-            onItemClick = { contact, sharedView ->
-                val transitionName = ViewCompat.getTransitionName(sharedView)
+        adapter = ContactAdapter(object : ContactAdapterListener {
+            override fun onDeleteContact(contact: Contact, position: Int) {
+                viewModel.removeAt(position)
+            }
+
+            override fun onItemClick(contact: Contact, sharedElementView: View) {
+                val transitionName = ViewCompat.getTransitionName(sharedElementView)
                     ?: "avatar_${contact.name}_${System.nanoTime()}"
-                val extras = FragmentNavigatorExtras(sharedView to transitionName)
+                val extras = FragmentNavigatorExtras(sharedElementView to transitionName)
                 val address = FakeAddressProvider.forName(contact.name)
                 val action = ContactsFragmentXmlDirections
                     .actionContactsFragmentXmlToContactDetailFragment(
@@ -80,16 +82,18 @@ class ContactsFragmentXml : Fragment() {
                         address = address
                     )
                 findNavController().navigate(action, extras)
-            },
-            onItemLongClick = {
+            }
+
+            override fun onItemLongClick(position: Int) {
                 adapter.setSelectionMode(true)
                 updateFab()
-            },
-            onItemSelectToggle = {
+            }
+
+            override fun onItemSelectToggle(position: Int) {
                 if (!adapter.isAnySelected()) adapter.setSelectionMode(false)
                 updateFab()
             }
-        )
+        })
         binding.recyclerView.adapter = adapter
         enableSwipeToDelete(adapter)
 
@@ -169,12 +173,14 @@ class ContactsFragmentXml : Fragment() {
             ) = false
 
             override fun onSwiped(vh: RecyclerView.ViewHolder, direction: Int) {
-                if (adapter.isSelectionMode()) {
-                    adapter.notifyItemChanged(vh.bindingAdapterPosition)
-                    return
-                }
                 val pos = vh.bindingAdapterPosition
                 if (pos !in 0 until adapter.itemCount) return
+
+                if (adapter.isSelectionMode()) {
+                    binding.recyclerView.adapter?.notifyItemChanged(pos)
+                    return
+                }
+
                 viewModel.removeAt(pos)
             }
         })
@@ -191,7 +197,7 @@ class ContactsFragmentXml : Fragment() {
         val anchor = binding.root
 
         var secondsLeft = durationSec
-        val text = { getString(R.string.deleted_contact_toast_text) + " ($secondsLeft)" }
+        val text = { getString(R.string.deleted_contact_toast_text, secondsLeft) }
 
         val snackbar = Snackbar.make(anchor, text(), Snackbar.LENGTH_INDEFINITE)
         snackbar.setAction(R.string.return_contact_toast_text) {

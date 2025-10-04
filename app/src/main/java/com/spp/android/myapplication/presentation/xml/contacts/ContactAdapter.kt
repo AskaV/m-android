@@ -11,11 +11,15 @@ import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.ItemContactRecyclerVievBinding
 import com.spp.android.myapplication.presentation.util.extensions.loadAvatar
 
+interface ContactAdapterListener {
+    fun onDeleteContact(contact: Contact, position: Int)
+    fun onItemClick(contact: Contact, sharedElementView: View)
+    fun onItemLongClick(position: Int)
+    fun onItemSelectToggle(position: Int)
+}
+
 class ContactAdapter(
-    private val onDeleteClick: (Contact, Int) -> Unit,
-    private val onItemClick: (Contact, View) -> Unit,
-    private val onItemLongClick: (Int) -> Unit,
-    private val onItemSelectToggle: (Int) -> Unit
+    private val listener: ContactAdapterListener
 ) : ListAdapter<Contact, ContactAdapter.ContactViewHolder>(DIFF) {
 
     private val selectedKeys = mutableSetOf<String>()
@@ -33,23 +37,26 @@ class ContactAdapter(
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     if (selectionMode) {
-                        toggleSelection(pos); onItemSelectToggle(pos)
+                        toggleSelection(pos)
+                        listener.onItemSelectToggle(pos)
                     } else {
-                        onItemClick(getItem(pos), binding.avatarImageView)
+                        listener.onItemClick(getItem(pos), binding.avatarImageView)
                     }
                 }
             }
             binding.selectCheck.setOnClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    toggleSelection(pos); onItemSelectToggle(pos)
+                    toggleSelection(pos)
+                    listener.onItemSelectToggle(pos)
                 }
             }
             binding.root.setOnLongClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     if (!selectionMode) setSelectionMode(true)
-                    toggleSelection(pos); onItemLongClick(pos)
+                    toggleSelection(pos)
+                    listener.onItemLongClick(pos)
                 }
                 true
             }
@@ -87,7 +94,7 @@ class ContactAdapter(
         b.deleteButton.setOnClickListener {
             val pos = holder.bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION && !selectionMode) {
-                onDeleteClick(getItem(pos), pos)
+                listener.onDeleteContact(getItem(pos), pos)
             }
         }
     }

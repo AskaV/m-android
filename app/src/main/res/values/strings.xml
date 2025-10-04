@@ -64,7 +64,7 @@
     <string name="contacts_text">Contacts</string>
     <string name="add_contacts_text">Add contacts</string>
     <string name="wastebasket_description">Wastebasket</string>
-    <string name="deleted_contact_toast_text">contact has been removed</string>
+    <string name="deleted_contact_toast_text">contact has been removed (%1$d)</string>
     <string name="return_contact_toast_text">undo</string>
     <string name="add_contacts_name">Name</string>
     <string name="add_contacts_position">Position</string>

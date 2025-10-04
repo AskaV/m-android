@@ -20,7 +20,7 @@ class StartSelection : ComponentActivity() {
         const val TEST_MODE = true
 
         enum class StartTarget { AUTH, CONTACTS, SIGNUP_EXTENDED }
-        val START_THEME = "colored" // "light" | "dark" | "colored" | "system"
+        val START_THEME = "system" // "light" | "dark" | "colored" | "system"
 
         val START_TARGET = StartTarget.AUTH
     }

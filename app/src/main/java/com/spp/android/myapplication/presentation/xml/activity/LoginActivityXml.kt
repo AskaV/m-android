@@ -53,16 +53,16 @@ class LoginActivityXml : BaseActivity() {
         setupViews()
     }
 
-    private fun setupViews() {
-        binding.loginButton.setOnClickListener {
-            val emailField = binding.commonLoginFields.editTextTextEmailAddress
+    private fun setupViews() = with(binding) {
+        loginButton.setOnClickListener {
+            val emailField = commonLoginFields.editTextTextEmailAddress
 
             val allValid = ValidationUtils.validateEmailAndPassword(
-                context = this,
+                context = this@LoginActivityXml,
                 emailField = emailField,
-                passwordField = binding.commonLoginFields.editTextTextPassword,
-                emailErrorView = binding.commonLoginFields.emailErrorText,
-                passwordErrorView = binding.commonLoginFields.passwordErrorText
+                passwordField = commonLoginFields.editTextTextPassword,
+                emailErrorView = commonLoginFields.emailErrorText,
+                passwordErrorView = commonLoginFields.passwordErrorText
             )
 
             if (allValid) {
@@ -74,10 +74,10 @@ class LoginActivityXml : BaseActivity() {
             }
         }
 
-        binding.signUpText.setOnClickListener {
-            val intent = Intent(this, SignUpActivityXml::class.java)
+        signUpText.setOnClickListener {
+            val intent = Intent(this@LoginActivityXml, SignUpActivityXml::class.java)
             val options = ActivityOptions.makeCustomAnimation(
-                this,
+                this@LoginActivityXml,
                 R.anim.scale_in,
                 R.anim.scale_out
             )
