@@ -1,11 +1,14 @@
 package com.spp.android.myapplication.presentation.feature.auth.login
 
 import android.widget.Toast
-import androidx.compose.runtime.*
-import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.flow.collectLatest
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
@@ -19,11 +22,14 @@ fun LoginScreen(
     LaunchedEffect(Unit) {
         vm.effect.collectLatest { eff ->
             when (eff) {
-                LoginContract.Effect.NavigateToHome -> onNavigateHome()
-                is LoginContract.Effect.ShowMessage -> { /* TODO: show snackbar */ }
-                LoginContract.Effect.ForgotPassword -> {
+                is LoginContract.Effect.NavigateToHome -> onNavigateHome()
+                is LoginContract.Effect.ShowMessage -> { /* TODO: show snackbar */
+                }
+
+                is LoginContract.Effect.ForgotPassword -> {
                     Toast.makeText(context, "Forgot password clicked", Toast.LENGTH_SHORT).show()
-                }            }
+                }
+            }
         }
     }
 

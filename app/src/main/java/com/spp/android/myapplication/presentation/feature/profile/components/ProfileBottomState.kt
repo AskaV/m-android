@@ -32,22 +32,27 @@ import com.spp.android.myapplication.presentation.texts.AppText
 data class FilledBtn(
     val text: String,
     val onClick: () -> Unit
-)
+) {
+    companion object {
+        val Empty = FilledBtn(
+            "-1",
+            {});
+    }
+}
 
 data class OutlinedBtn(
     val text: String,
     val onClick: () -> Unit,
-    val style: OutlinedButtonStyle = OutlinedButtonStyle.Secondary // по умолчанию контрастный
+    val style: OutlinedButtonStyle = OutlinedButtonStyle.Secondary
 )
 
-/** Нижняя половина экрана. Никакой бизнес-логики — только отрисовка того, что передали. */
 @Composable
 fun ProfileBottomArea(
     modifier: Modifier = Modifier,
     showSocial: Boolean,
-    primaryFilled: FilledBtn?,          // null -> скрыть
-    secondaryOutlined: OutlinedBtn?,    // null -> скрыть
-    hint: String? = null,               // опциональный текст над кнопками
+    primaryFilled: FilledBtn?,
+    secondaryOutlined: OutlinedBtn?,
+    hint: String? = null,
     contentPadding: PaddingValues = PaddingValues(
         horizontal = dimensionResource(R.dimen.spacer_medium),
         vertical = dimensionResource(R.dimen.spacer_medium)
@@ -70,7 +75,10 @@ fun ProfileBottomArea(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_additional)))
-            Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 if (showSocial) {
                     Box(
                         modifier = Modifier
@@ -128,7 +136,9 @@ private fun PreviewProfileBottomMessageOnly() {
     MyApplicationTheme {
         ProfileBottomArea(
             showSocial = true,
-            primaryFilled = FilledBtn(text = AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = {}),
+            primaryFilled = FilledBtn(
+                text = AppText.ContactProfile.MESSAGE_TEXT.text(),
+                onClick = {}),
             secondaryOutlined = null,
             modifier = Modifier.fillMaxHeight()
         )
@@ -141,8 +151,12 @@ private fun PreviewProfileBottomAddAndMessage() {
     MyApplicationTheme {
         ProfileBottomArea(
             showSocial = true,
-            primaryFilled = FilledBtn(text = AppText.Contacts.ADD.text(), onClick = {}),
-            secondaryOutlined = OutlinedBtn(text = AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = {}),
+            primaryFilled = FilledBtn(
+                text = AppText.Contacts.ADD.text(),
+                onClick = {}),
+            secondaryOutlined = OutlinedBtn(
+                text = AppText.ContactProfile.MESSAGE_TEXT.text(),
+                onClick = {}),
             modifier = Modifier.fillMaxHeight()
         )
     }
@@ -154,8 +168,12 @@ private fun PreviewProfileBottomMyProfileCompleted() {
     MyApplicationTheme {
         ProfileBottomArea(
             showSocial = false,
-            primaryFilled = FilledBtn(text = AppText.MyProfile.VIEW_CONTACTS.text(), onClick = {}),
-            secondaryOutlined = OutlinedBtn(text = AppText.EditProfile.TITLE.text(), onClick = {}),
+            primaryFilled = FilledBtn(
+                text = AppText.MyProfile.VIEW_CONTACTS.text(),
+                onClick = {}),
+            secondaryOutlined = OutlinedBtn(
+                text = AppText.EditProfile.TITLE.text(),
+                onClick = {}),
             modifier = Modifier.fillMaxHeight()
         )
     }
@@ -168,7 +186,9 @@ private fun PreviewProfileBottomMyProfileIncomplete() {
         ProfileBottomArea(
             showSocial = false,
             primaryFilled = null,
-            secondaryOutlined = OutlinedBtn(text = AppText.EditProfile.TITLE.text(), onClick = {}),
+            secondaryOutlined = OutlinedBtn(
+                text = AppText.EditProfile.TITLE.text(),
+                onClick = {}),
             hint = AppText.MyProfile.PROFILE_FILL_HINT.text(),
             modifier = Modifier.fillMaxHeight(),
         )

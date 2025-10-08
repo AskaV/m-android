@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 
-
 @Composable
-fun SelectionCheck(selected: Boolean, modifier: Modifier = Modifier) {
+fun SelectionCheck(
+    selected: Boolean,
+    modifier: Modifier = Modifier
+) {
     val size = 20.dp
     val borderW = 2.dp
     val borderColor = MaterialTheme.colorScheme.onSurfaceVariant

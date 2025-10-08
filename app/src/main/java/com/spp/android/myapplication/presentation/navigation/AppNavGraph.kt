@@ -24,11 +24,14 @@ import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileVi
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
+
     NavHost(
         navController = navController,
         startDestination = Routes.Auth
     ) {
+
         navigation(startDestination = Routes.Login, route = Routes.Auth) {
+
             composable(Routes.Login) {
                 LoginScreen(
                     onNavigateHome = {
@@ -39,6 +42,7 @@ fun AppNavGraph(navController: NavHostController) {
                     onNavigateToRegister = { navController.navigate(Routes.SignUp) }
                 )
             }
+
             composable(Routes.SignUp) {
                 SignUpScreen(
                     onOpenGoogle = {/* TODO: add Google Sign-In logic */ },
@@ -50,6 +54,7 @@ fun AppNavGraph(navController: NavHostController) {
                     }
                 )
             }
+
             composable(Routes.SignUpExtended) {
                 SignUpExtendedScreen(
                     onBack = { navController.popBackStack() },
