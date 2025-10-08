@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginScreen
@@ -23,7 +23,8 @@ import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileSc
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileViewModel
 
 @Composable
-fun AppNavGraph(navController: NavHostController) {
+fun AppNavGraph() {
+    val navController = rememberNavController()
 
     NavHost(
         navController = navController,
