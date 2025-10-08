@@ -15,25 +15,16 @@ kapt {
 }
 android {
     namespace = "com.spp.android.myapplication"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.spp.android.myapplication"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -43,11 +34,6 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    androidComponents {
-        beforeVariants(selector().all()) { v ->
-            v.enableAndroidTest = false
-        }
     }
 }
 
@@ -71,11 +57,6 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
     debugImplementation(libs.androidx.ui.tooling)
-
-//    implementation(libs.glide)
-//    implementation(libs.picasso)
-//    implementation(libs.fresco)
-//    implementation(libs.coil)
-//    implementation(libs.coil.compose)
+    implementation(libs.androidx.material.icons.core)
 
 }

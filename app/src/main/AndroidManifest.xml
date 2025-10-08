@@ -8,8 +8,7 @@
         android:name=".App"
         android:icon="@mipmap/ic_launcher"
         android:localeConfig="@xml/locales_config"
-        android:theme="@style/Theme.MyApplication"
-        tools:targetApi="tiramisu">
+        android:theme="@style/Theme.MyApplication">
 
         <activity
             android:name=".MainActivity"
