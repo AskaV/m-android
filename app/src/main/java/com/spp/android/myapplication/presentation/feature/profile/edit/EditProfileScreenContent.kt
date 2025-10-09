@@ -37,13 +37,7 @@ import com.spp.android.myapplication.presentation.texts.AppText
 @Composable
 fun EditProfileScreenContent(
     onBack: () -> Unit,
-    onSave: (
-        username: String,
-        career: String,
-        phone: String,
-        address: String,
-        birthdate: String
-    ) -> Unit,
+    onSave: (String, String, String, String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)

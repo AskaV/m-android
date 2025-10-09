@@ -16,10 +16,11 @@ fun EditProfileScreen(
             when (eff) {
                 EditProfileContract.Effect.NavigateBack -> onBack()
                 EditProfileContract.Effect.Saved -> onDone()
-                is EditProfileContract.Effect.ShowMessage -> { /* TODO snackbar */
+                is EditProfileContract.Effect.ShowMessage -> {
+                    /* TODO snackbar */
                 }
-
-                EditProfileContract.Effect.OpenAvatarPicker -> { /* TODO open picker */
+                EditProfileContract.Effect.OpenAvatarPicker -> {
+                    /* TODO open picker */
                 }
             }
         }

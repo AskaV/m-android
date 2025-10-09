@@ -24,7 +24,6 @@ object LoginContract {
         data object EmailBlur : Event
         data object PasswordBlur : Event
         data object ForgotPasswordClicked : Event
-
         data object Submit : Event
         data object ErrorShown : Event
         data object Clear : Event
@@ -32,7 +31,6 @@ object LoginContract {
 
     sealed interface Effect {
         data object NavigateToHome : Effect
-        data class ShowMessage(val message: String) : Effect
         data object ForgotPassword : Effect
     }
 }

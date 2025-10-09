@@ -30,12 +30,12 @@ import com.spp.android.myapplication.presentation.texts.text
 fun LoginScreenContent(
     modifier: Modifier = Modifier,
     state: LoginContract.State,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onRememberMeChange: (Boolean) -> Unit,
-    onLoginClick: () -> Unit,
+    onEmailChange: (String) -> Unit = {},
+    onPasswordChange: (String) -> Unit = {},
+    onRememberMeChange: (Boolean) -> Unit = {},
+    onLoginClick: () -> Unit = {},
     onNavigateToRegister: () -> Unit = {},
-    onForgotPasswordClick: () -> Unit
+    onForgotPasswordClick: () -> Unit = {}
 ) {
     val hPad = dimensionResource(R.dimen.spacer_medium)
 
@@ -59,15 +59,13 @@ fun LoginScreenContent(
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
 
-            val fields = AuthFieldsState(
-                email = state.email,
-                password = state.password,
-                emailError = state.emailError,
-                passwordError = state.passwordError
-            )
-
             AuthFields(
-                state = fields,
+                state = AuthFieldsState(
+                    email = state.email,
+                    password = state.password,
+                    emailError = state.emailError,
+                    passwordError = state.passwordError
+                ),
                 onEmailChange = onEmailChange,
                 onPasswordChange = onPasswordChange,
                 onDone = onLoginClick
@@ -117,12 +115,7 @@ fun LoginScreenPreview() {
                     email = AppText.Preview.EMAIL,
                     password = AppText.Preview.PASSWORD,
                     rememberMe = true
-                ),
-                onEmailChange = {},
-                onPasswordChange = {},
-                onRememberMeChange = {},
-                onLoginClick = {},
-                onForgotPasswordClick = {}
+                )
             )
         }
     }
@@ -140,12 +133,7 @@ fun LoginScreenPreviewErrors() {
                     emailError = AppText.Login.EMAIL_ERROR.text(),
                     passwordError = AppText.Error.PASSWORD_ERROR.text(),
                     rememberMe = false
-                ),
-                onEmailChange = {},
-                onPasswordChange = {},
-                onRememberMeChange = {},
-                onLoginClick = {},
-                onForgotPasswordClick = {}
+                )
             )
         }
     }

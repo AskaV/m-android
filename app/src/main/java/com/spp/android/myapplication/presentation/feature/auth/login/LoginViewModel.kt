@@ -59,7 +59,6 @@ class LoginViewModel @Inject constructor(
             _effect.send(LoginContract.Effect.NavigateToHome)
         }.onFailure { t ->
             _state.update { it.copy(error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)) }
-            _effect.send(LoginContract.Effect.ShowMessage(AppText.OtherInfo.LOGIN_FAILED.text(appContext)))
         }
 
         _state.update { it.copy(isLoading = false) }
