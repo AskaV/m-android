@@ -166,5 +166,6 @@ object AppText {
         val CONTACT_ADDED = TextKey(R.string.contact_added)
         val FAILED_PROFILE_SAVE = TextKey(R.string.failed_to_save_profile)
         val FAILED_TO_LOAD_PROFILE = TextKey(R.string.failed_to_load_profile)
+        val TOAST_CLICKED = TextKey(R.string.toast_clicked)
     }
 }

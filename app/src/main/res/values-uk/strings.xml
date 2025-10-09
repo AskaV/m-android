@@ -111,5 +111,6 @@
     <string name="failed_to_save_profile">Не вдалося зберегти профіль</string>
     <string name="failed_to_load_profile">"Не вдалося завантажити профіль"</string>
     <string name="add_to_my_contacts_text">Додати до моїх контактів</string>
+    <string name="toast_clicked">Кнопка натиснута</string>
 
 </resources>

@@ -2,7 +2,7 @@ package com.spp.android.myapplication.presentation.feature.profile.edit
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 @Composable
 fun EditProfileScreen(
