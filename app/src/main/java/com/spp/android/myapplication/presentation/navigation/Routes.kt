@@ -1,23 +1,21 @@
 package com.spp.android.myapplication.presentation.navigation
 
-object Routes {
-    const val Auth = "auth"
-    const val Login = "login"
-    const val SignUp = "signup"
-    const val SignUpExtended = "signup_extended"
+sealed class Routes(val route: String) {
+    data object Auth : Routes("auth")
+    data object Login : Routes("login")
+    data object SignUp : Routes("signup")
+    data object SignUpExtended : Routes("signup_extended")
+    data object Home : Routes("home")
+    data object EditProfile : Routes("profile/edit")
+    data object AddContacts : Routes("add_contacts")
 
-    const val Home = "home"
-    const val HomeRoute = "$Home?fromSignup={fromSignup}&completed={completed}"
-    fun home(fromSignup: Boolean = false, completed: Boolean = false) =
-        "$Home?fromSignup=$fromSignup&completed=$completed"
+    data object ContactProfile : Routes("contact/{contactId}") {
+        const val ARG = "contactId"
+        fun create(id: String) = "contact/$id"
+    }
 
-    const val EditProfile = "profile/edit"
-    const val ContactProfileRoute = "contact/{contactId}"
-
-    const val AddContacts = "add_contacts"
-
-    const val AddContactProfile = "contact_profile/{id}"
-    fun addContactProfile(id: String) = "contact_profile/$id"
-
-    fun ContactProfile(id: String) = "contact/$id"
+    data object AddContactProfile : Routes("contact_profile/{id}") {
+        const val ARG = "id"
+        fun create(id: String) = "contact_profile/$id"
+    }
 }
