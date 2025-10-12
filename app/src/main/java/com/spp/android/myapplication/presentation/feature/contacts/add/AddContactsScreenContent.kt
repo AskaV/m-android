@@ -40,13 +40,13 @@ import kotlinx.coroutines.launch
 fun AddContactsScreenContent(
     items: List<ContactUi>,
     selectedIds: Set<String>,
-    onBack: () -> Unit,
-    onSearchClick: () -> Unit,
-    onToggleSelect: (ContactUi) -> Unit,
-    onMassAddClick: () -> Unit,
-    onAddClick: (ContactUi) -> Unit,
+    onBack: () -> Unit = {},
+    onSearchClick: () -> Unit = {},
+    onToggleSelect: (ContactUi) -> Unit = {},
+    onMassAddClick: () -> Unit = {},
+    onAddClick: (ContactUi) -> Unit = {},
     reserveAddRowSpace: Boolean = true,
-    onRowClick: (ContactUi) -> Unit
+    onRowClick: (ContactUi) -> Unit = {},
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
@@ -57,9 +57,7 @@ fun AddContactsScreenContent(
     val showScrollTop by remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
     ) {
         Column(Modifier.fillMaxSize()) {
             ContactsHeader(
@@ -87,9 +85,8 @@ fun AddContactsScreenContent(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
-                    }
-                ),
-                onItemClick = onRowClick,     // ← сюда
+                    }),
+                onItemClick = onRowClick,
                 onItemLongClick = { /* not used */ },
                 onDeleteClick = {},
                 state = listState,
@@ -101,8 +98,7 @@ fun AddContactsScreenContent(
         }
 
         AnimatedVisibility(
-            visible = selectedIds.isNotEmpty(),
-            modifier = Modifier.align(Alignment.BottomEnd)
+            visible = selectedIds.isNotEmpty(), modifier = Modifier.align(Alignment.BottomEnd)
         ) {
             ActionFab(
                 iconRes = R.drawable.ic_add,
@@ -113,8 +109,7 @@ fun AddContactsScreenContent(
         }
 
         AnimatedVisibility(
-            visible = showScrollTop,
-            modifier = Modifier.align(Alignment.BottomEnd)
+            visible = showScrollTop, modifier = Modifier.align(Alignment.BottomEnd)
         ) {
             ActionFab(
                 iconRes = R.drawable.ic_arrow_up,
@@ -132,15 +127,7 @@ private fun AddContactsContentPreviewDefault() {
     MyApplicationTheme {
         Surface(color = MaterialTheme.colorScheme.surface) {
             AddContactsScreenContent(
-                items = demoUsers(),
-                selectedIds = emptySet(),
-                onBack = {},
-                onSearchClick = {},
-                onToggleSelect = {},
-                onMassAddClick = {},
-                onAddClick = {},
-                onRowClick = {}
-
+                items = demoUsers(), selectedIds = emptySet()
             )
         }
     }
@@ -153,14 +140,7 @@ private fun AddContactsContentPreviewSelected() {
     MyApplicationTheme {
         Surface(color = MaterialTheme.colorScheme.surface) {
             AddContactsScreenContent(
-                items = users,
-                selectedIds = setOf(users[1].id, users[3].id),
-                onBack = {},
-                onSearchClick = {},
-                onToggleSelect = {},
-                onMassAddClick = {},
-                onAddClick = {},
-                onRowClick = {}
+                items = users, selectedIds = setOf(users[1].id, users[3].id)
             )
         }
     }

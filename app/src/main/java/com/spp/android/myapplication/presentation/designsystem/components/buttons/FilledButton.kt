@@ -20,9 +20,9 @@ import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun FilledButton(
-    text: String,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    text: String,
+    onClick: () -> Unit = {},
     containerColor: Color = AccentLight,
     contentColor: Color = TextPrimaryLight
 ) {
@@ -32,13 +32,10 @@ fun FilledButton(
 
     Button(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(height),
+        modifier = modifier.fillMaxWidth().height(height),
         shape = RoundedCornerShape(safeRadius),
         colors = ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-            contentColor = contentColor
+            containerColor = containerColor, contentColor = contentColor
         ),
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = dimensionResource(id = R.dimen.spacer_extra_small)
@@ -51,4 +48,4 @@ fun FilledButton(
 @PreviewPhones
 @Composable
 fun FilledButtonPreview() =
-    PreviewColumn { FilledButton(text = AppText.Preview.FILLED_BTN_TEXT.text(), onClick = {}) }
+    PreviewColumn { FilledButton(text = AppText.Preview.FILLED_BTN_TEXT.text()) }

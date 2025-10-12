@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun SignUpExtendedScreen(
     onBack: () -> Unit,
-    onNavigateHome: () -> Unit,
+    onNavigateHome: () -> Unit = {},
     vm: SignUpViewModel = hiltViewModel(),
 ) {
     val profile by vm.profile.collectAsStateWithLifecycle()
@@ -45,8 +45,8 @@ fun SignUpExtendedScreen(
             state = SignUpProfileUiState(
                 username = profile.username,
                 phone = profile.phone,
-                usernameError = profile.usernameError,
-                phoneError = profile.phoneError,
+                usernameError = profile.usernameError.orEmpty(),
+                phoneError = profile.phoneError.orEmpty(),
                 avatar = profile.avatar
             ),
             onPickAvatar = { vm.onEvent(SignUpContract.Event.PickAvatar) },

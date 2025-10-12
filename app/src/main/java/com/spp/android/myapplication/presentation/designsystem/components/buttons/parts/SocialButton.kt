@@ -20,9 +20,9 @@ import com.spp.android.myapplication.presentation.designsystem.theme.socialIcon
 
 @Composable
 fun SocialButton(
+    modifier: Modifier = Modifier,
     iconRes: Int,
-    contentDescription: String,
-    modifier: Modifier = Modifier
+    contentDescription: String
 ) {
     Box(
         modifier = modifier

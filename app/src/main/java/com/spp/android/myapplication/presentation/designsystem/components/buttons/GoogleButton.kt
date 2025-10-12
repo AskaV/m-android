@@ -31,22 +31,19 @@ import com.spp.android.myapplication.presentation.texts.AppText
 @Composable
 fun GoogleButton(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
     text: String = AppText.SignUp.GOOGLE.text().uppercase(),
-    onClick: () -> Unit,
     enabled: Boolean = true,
     borderWidth: Dp = 1.dp
 ) {
     Button(
         onClick = onClick,
         enabled = enabled,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(dimensionResource(R.dimen.button_height)),
+        modifier = modifier.fillMaxWidth().height(dimensionResource(R.dimen.button_height)),
         shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
         border = BorderStroke(borderWidth, Color(0xFFE0E0E0)),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White,
-            contentColor = MaterialTheme.colorScheme.onSecondary
+            containerColor = Color.White, contentColor = MaterialTheme.colorScheme.onSecondary
         ),
         elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp),
         contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.spacer_medium))
@@ -71,5 +68,5 @@ fun GoogleButton(
 @PreviewPhones
 @Composable
 private fun GoogleButtonPreview() = PreviewColumn {
-    GoogleButton(text = AppText.SignUp.GOOGLE.text(), onClick = {})
+    GoogleButton(text = AppText.SignUp.GOOGLE.text())
 }

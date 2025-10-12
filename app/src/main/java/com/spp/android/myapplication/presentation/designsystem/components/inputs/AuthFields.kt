@@ -19,8 +19,8 @@ import com.spp.android.myapplication.presentation.texts.t
 data class AuthFieldsState(
     val email: String = "",
     val password: String = "",
-    val emailError: String? = null,
-    val passwordError: String? = null
+    val emailError: String? = "",
+    val passwordError: String? = ""
 )
 
 @Composable
@@ -28,8 +28,8 @@ fun AuthFields(
     modifier: Modifier = Modifier,
     onDone: () -> Unit = {},
     state: AuthFieldsState,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit
+    onEmailChange: (String) -> Unit = {},
+    onPasswordChange: (String) -> Unit = {}
 ) {
     Column(modifier.fillMaxWidth()) {
         LabeledTextField(
@@ -37,7 +37,7 @@ fun AuthFields(
             value = state.email,
             onValueChange = onEmailChange,
             kind = FieldKind.Email,
-            error = state.emailError,
+            error = state.emailError.orEmpty(),
             imeAction = ImeAction.Next
         )
         LabeledTextField(
@@ -45,7 +45,7 @@ fun AuthFields(
             value = state.password,
             onValueChange = onPasswordChange,
             kind = FieldKind.Password,
-            error = state.passwordError,
+            error = state.passwordError.orEmpty(),
             imeAction = ImeAction.Done,
             onImeAction = onDone,
             spacerAfter = false
@@ -61,8 +61,7 @@ fun AuthFieldsPreview() = PreviewColumn {
     AuthFields(
         state = AuthFieldsState(email, pass),
         onEmailChange = { email = it },
-        onPasswordChange = { pass = it }
-    )
+        onPasswordChange = { pass = it })
 }
 
 @PreviewPhones
@@ -72,13 +71,9 @@ fun AuthFieldsPreviewError() = PreviewColumn {
     var pass by remember { mutableStateOf(AppText.Preview.WRONG_PASSWORD) }
     AuthFields(
         state = AuthFieldsState(
-            email = email,
-            password = pass,
-            emailError = AppText.Login.EMAIL_ERROR.text(),
-            passwordError = AppText.Login.PASSWORD_ERROR_TEMPLATE.t(AppText.Integers.PASSWORD_MIN_LENGTH)
-        ),
-        onEmailChange = { email = it },
-        onPasswordChange = { pass = it },
-        onDone = {}
-    )
+        email = email,
+        password = pass,
+        emailError = AppText.Login.EMAIL_ERROR.text(),
+        passwordError = AppText.Login.PASSWORD_ERROR_TEMPLATE.t(AppText.Integers.PASSWORD_MIN_LENGTH)
+    ), onEmailChange = { email = it }, onPasswordChange = { pass = it }, onDone = {})
 }

@@ -31,18 +31,18 @@ import com.spp.android.myapplication.presentation.texts.AppText
 
 data class FilledBtn(
     val text: String,
-    val onClick: () -> Unit
+    val onClick: () -> Unit = {},
 ) {
     companion object {
         val Empty = FilledBtn(
-            "-1",
-            {});
+            "-1"
+        );
     }
 }
 
 data class OutlinedBtn(
     val text: String,
-    val onClick: () -> Unit,
+    val onClick: () -> Unit = {},
     val style: OutlinedButtonStyle = OutlinedButtonStyle.Secondary
 )
 
@@ -52,7 +52,7 @@ fun ProfileBottomArea(
     showSocial: Boolean,
     primaryFilled: FilledBtn?,
     secondaryOutlined: OutlinedBtn?,
-    hint: String? = null,
+    hint: String? = "",
     contentPadding: PaddingValues = PaddingValues(
         horizontal = dimensionResource(R.dimen.spacer_medium),
         vertical = dimensionResource(R.dimen.spacer_medium)
@@ -62,28 +62,20 @@ fun ProfileBottomArea(
     val topToSocial = dimensionResource(R.dimen.spacer_large)
 
     Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.5f),
+        modifier = modifier.fillMaxWidth().fillMaxHeight(0.5f),
         color = MaterialTheme.colorScheme.surface
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(contentPadding)
-                .navigationBarsPadding(),
+            modifier = Modifier.fillMaxSize().padding(contentPadding).navigationBarsPadding(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_additional)))
             Column(
-                Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (showSocial) {
                     Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = topToSocial),
+                        modifier = Modifier.fillMaxWidth().padding(top = topToSocial),
                         contentAlignment = Alignment.Center
                     ) { SocialButtonsRow() }
                 }
@@ -101,9 +93,7 @@ fun ProfileBottomArea(
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = betweenButtons)
+                            modifier = Modifier.fillMaxWidth().padding(bottom = betweenButtons)
                         )
                     }
 
@@ -137,8 +127,7 @@ private fun PreviewProfileBottomMessageOnly() {
         ProfileBottomArea(
             showSocial = true,
             primaryFilled = FilledBtn(
-                text = AppText.ContactProfile.MESSAGE_TEXT.text(),
-                onClick = {}),
+                text = AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = {}),
             secondaryOutlined = null,
             modifier = Modifier.fillMaxHeight()
         )
@@ -152,11 +141,9 @@ private fun PreviewProfileBottomAddAndMessage() {
         ProfileBottomArea(
             showSocial = true,
             primaryFilled = FilledBtn(
-                text = AppText.Contacts.ADD.text(),
-                onClick = {}),
+                text = AppText.Contacts.ADD.text(), onClick = {}),
             secondaryOutlined = OutlinedBtn(
-                text = AppText.ContactProfile.MESSAGE_TEXT.text(),
-                onClick = {}),
+                text = AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = {}),
             modifier = Modifier.fillMaxHeight()
         )
     }
@@ -167,14 +154,11 @@ private fun PreviewProfileBottomAddAndMessage() {
 private fun PreviewProfileBottomMyProfileCompleted() {
     MyApplicationTheme {
         ProfileBottomArea(
-            showSocial = false,
-            primaryFilled = FilledBtn(
-                text = AppText.MyProfile.VIEW_CONTACTS.text(),
-                onClick = {}),
-            secondaryOutlined = OutlinedBtn(
-                text = AppText.EditProfile.TITLE.text(),
-                onClick = {}),
-            modifier = Modifier.fillMaxHeight()
+            showSocial = false, primaryFilled = FilledBtn(
+                text = AppText.MyProfile.VIEW_CONTACTS.text()
+            ), secondaryOutlined = OutlinedBtn(
+                text = AppText.EditProfile.TITLE.text()
+            ), modifier = Modifier.fillMaxHeight()
         )
     }
 }
@@ -187,8 +171,8 @@ private fun PreviewProfileBottomMyProfileIncomplete() {
             showSocial = false,
             primaryFilled = null,
             secondaryOutlined = OutlinedBtn(
-                text = AppText.EditProfile.TITLE.text(),
-                onClick = {}),
+                text = AppText.EditProfile.TITLE.text()
+            ),
             hint = AppText.MyProfile.PROFILE_FILL_HINT.text(),
             modifier = Modifier.fillMaxHeight(),
         )

@@ -12,7 +12,7 @@ object SignUpContract {
         val fields: AuthFieldsState = AuthFieldsState(),
         val rememberMe: Boolean = false,
         val isLoading: Boolean = false,
-        val error: String? = null
+        val error: String = ""
     )
 
     // Extended profile
@@ -20,15 +20,13 @@ object SignUpContract {
     data class ProfileState(
         val username: String = "",
         val phone: String = "",
-        val usernameError: String? = null,
-        val phoneError: String? = null,
+        val usernameError: String = "",
+        val phoneError: String = "",
         val usernameTouched: Boolean = false,
         val phoneTouched: Boolean = false,
-
         val avatar: Uri? = null,
-
         val isLoading: Boolean = false,
-        val error: String? = null
+        val error: String = ""
     )
 
     sealed interface Event {

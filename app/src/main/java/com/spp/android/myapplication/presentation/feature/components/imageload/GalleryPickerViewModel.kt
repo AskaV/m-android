@@ -25,7 +25,7 @@ class GalleryPickerViewModel @Inject constructor() : ViewModel() {
     fun onEvent(event: GalleryPickerContract.Event) {
         when (event) {
             GalleryPickerContract.Event.Show ->
-                _state.update { it.copy(isVisible = true, error = null) }
+                _state.update { it.copy(isVisible = true) }
 
             GalleryPickerContract.Event.Dismiss ->
                 _state.update { it.copy(isVisible = false) }
@@ -49,7 +49,7 @@ class GalleryPickerViewModel @Inject constructor() : ViewModel() {
                 }
 
             GalleryPickerContract.Event.ErrorShown ->
-                _state.update { it.copy(error = null) }
+                _state.update { it.copy() }
 
             GalleryPickerContract.Event.Clear ->
                 _state.value = GalleryPickerContract.State()

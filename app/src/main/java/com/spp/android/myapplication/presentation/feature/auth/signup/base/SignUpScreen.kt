@@ -39,9 +39,8 @@ fun SignUpScreen(
     Scaffold(snackbarHost = { SnackbarHost(snackbar) }) { paddings ->
         SignUpScreenContent(
             state = SignUpUiState(
-                fields = state.fields,
-                rememberMe = state.rememberMe
-            ),
+            fields = state.fields, rememberMe = state.rememberMe
+        ),
             onEmailChange = { vm.onEvent(SignUpContract.Event.EmailChanged(it)) },
             onPasswordChange = { vm.onEvent(SignUpContract.Event.PasswordChanged(it)) },
             onRememberMeChange = { vm.onEvent(SignUpContract.Event.RememberChanged(it)) },

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun GalleryPickerScreen(
     modifier: Modifier = Modifier,
-    onResult: (Uri?) -> Unit,
+    onResult: (Uri?) -> Unit = {},
     startVisible: Boolean = false,
     vm: GalleryPickerViewModel = hiltViewModel(),
 ) {
@@ -28,12 +28,13 @@ fun GalleryPickerScreen(
         if (startVisible) vm.onEvent(GalleryPickerContract.Event.Show)
         vm.effect.collectLatest { eff ->
             when (eff) {
-                GalleryPickerContract.Effect.LaunchGalleryPicker ->
-                    galleryLauncher.launch("image/*")
+                GalleryPickerContract.Effect.LaunchGalleryPicker -> galleryLauncher.launch("image/*")
 
-                GalleryPickerContract.Effect.LaunchCamera -> { /* TODO: */ }
+                GalleryPickerContract.Effect.LaunchCamera -> { /* TODO: */
+                }
 
-                is GalleryPickerContract.Effect.ShowMessage -> {/* TODO: */ }
+                is GalleryPickerContract.Effect.ShowMessage -> {/* TODO: */
+                }
 
                 is GalleryPickerContract.Effect.ReturnResult -> onResult(eff.uri)
             }

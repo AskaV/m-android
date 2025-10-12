@@ -8,10 +8,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun ContactsScreen(
-    onBack: () -> Unit,
-    onOpenSearch: () -> Unit,
-    onOpenAddContacts: () -> Unit,
-    onOpenContactProfile: (String) -> Unit,
+    onBack: () -> Unit = {},
+    onOpenSearch: () -> Unit = {},
+    onOpenAddContacts: () -> Unit = {},
+    onOpenContactProfile: (String) -> Unit = {},
     vm: ContactsViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
@@ -42,10 +42,8 @@ fun ContactsScreen(
         onSearchClick = { vm.onEvent(ContactsContract.Event.SearchClicked) },
         onAddContactsClick = { vm.onEvent(ContactsContract.Event.AddContactsClicked) },
         onContactClick = {
-            if (state.isSelectionMode)
-                vm.onEvent(ContactsContract.Event.ContactSelectionToggled(it))
-            else
-                vm.onEvent(ContactsContract.Event.ContactClicked(it))
+            if (state.isSelectionMode) vm.onEvent(ContactsContract.Event.ContactSelectionToggled(it))
+            else vm.onEvent(ContactsContract.Event.ContactClicked(it))
         },
         onDeleteClick = { vm.onEvent(ContactsContract.Event.DeleteClicked(it)) },
         onContactLongClick = { vm.onEvent(ContactsContract.Event.ContactLongClicked(it)) },

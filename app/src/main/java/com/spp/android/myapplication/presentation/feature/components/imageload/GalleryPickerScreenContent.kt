@@ -18,10 +18,10 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPh
 fun GalleryPickerScreenContent(
     modifier: Modifier = Modifier,
     state: GalleryPickerContract.State,
-    onDismiss: () -> Unit,
-    onOpenGallery: () -> Unit,
-    onOpenCamera: () -> Unit,
-    onDeleteCurrent: () -> Unit
+    onDismiss: () -> Unit = {},
+    onOpenGallery: () -> Unit= {},
+    onOpenCamera: () -> Unit= {},
+    onDeleteCurrent: () -> Unit= {},
 ) {
     if (!state.isVisible) return
 

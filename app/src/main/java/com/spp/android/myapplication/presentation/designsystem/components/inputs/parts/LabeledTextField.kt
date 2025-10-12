@@ -33,12 +33,12 @@ fun LabeledTextField(
     value: String,
     onValueChange: (String) -> Unit,
     kind: FieldKind,
-    placeholder: String? = null,
-    error: String? = null,
+    placeholder: String = "",
+    error: String = "",
     imeAction: ImeAction = ImeAction.Next,
-    onImeAction: (() -> Unit)? = null,
+    onImeAction: () -> Unit = {},
     spacerAfter: Boolean = true,
-    trailingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: @Composable () -> Unit = {},
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(
         color = MaterialTheme.colorScheme.onBackground
     )
@@ -56,7 +56,7 @@ fun LabeledTextField(
             onValueChange = onValueChange,
             kind = kind,
             placeholder = placeholder,
-            isError = error != null,
+            isError = error.isNotEmpty(),
             imeAction = imeAction,
             onImeAction = onImeAction,
             trailingIcon = trailingIcon,
@@ -64,15 +64,13 @@ fun LabeledTextField(
         )
 
         Box(
-            modifier = Modifier
-                .padding(
-                    start = dimensionResource(R.dimen.spacer_small),
-                    top = dimensionResource(R.dimen.spacer_small)
-                )
-                .heightIn(min = dimensionResource(R.dimen.form_supporting_text_min_height))
+            modifier = Modifier.padding(
+                start = dimensionResource(R.dimen.spacer_small),
+                top = dimensionResource(R.dimen.spacer_small)
+            ).heightIn(min = dimensionResource(R.dimen.form_supporting_text_min_height))
                 .fillMaxWidth()
         ) {
-            if (error != null) {
+            if (error.isNotEmpty()) {
                 Text(
                     text = error,
                     style = MaterialTheme.typography.titleSmall,

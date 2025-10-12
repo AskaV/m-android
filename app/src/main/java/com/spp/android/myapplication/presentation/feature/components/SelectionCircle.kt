@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SelectionCircle(selected: Boolean, modifier: Modifier = Modifier) {
+fun SelectionCircle(modifier: Modifier = Modifier, selected: Boolean) {
     val size = 20.dp
     val borderW = 2.dp
     val borderColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -24,10 +24,7 @@ fun SelectionCircle(selected: Boolean, modifier: Modifier = Modifier) {
     val checkTint = MaterialTheme.colorScheme.onPrimary
 
     Box(
-        modifier = modifier
-            .size(size)
-            .clip(CircleShape)
-            .border(borderW, borderColor, CircleShape)
+        modifier = modifier.size(size).clip(CircleShape).border(borderW, borderColor, CircleShape)
             .background(if (selected) fill else MaterialTheme.colorScheme.surface),
         contentAlignment = Alignment.Center
     ) {

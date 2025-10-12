@@ -44,9 +44,7 @@ fun SocialButtonsRow(
 @Composable
 fun ColumnScope.ProfileSocialRowWithSpacer(space: Dp) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f, fill = true),
+        modifier = Modifier.fillMaxWidth().weight(1f, fill = true),
         contentAlignment = Alignment.Center
     ) {
         SocialButtonsRow()

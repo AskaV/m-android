@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
@@ -37,8 +36,8 @@ fun CheckBoxWithAction(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     label: String,
-    actionText: String? = null,
-    onActionClick: (() -> Unit)? = null
+    actionText: String = "",
+    onActionClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -47,14 +46,11 @@ fun CheckBoxWithAction(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
-                modifier = Modifier
-                    .size(18.dp)
-                    .border(
-                        width = 2.dp,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        shape = RoundedCornerShape(2.dp)
-                    ),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.size(dimensionResource(R.dimen.spacer_medium)).border(
+                    width = dimensionResource(R.dimen.button_border_width),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_border_width))
+                ), contentAlignment = Alignment.Center
             ) {
                 Checkbox(
                     checked = checked,
@@ -66,9 +62,7 @@ fun CheckBoxWithAction(
                         disabledCheckedColor = Color.Transparent,
                         disabledUncheckedColor = Color.Transparent
                     ),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .scale(0.75f)
+                    modifier = Modifier.fillMaxSize().scale(0.75f)
                 )
             }
 
@@ -81,17 +75,14 @@ fun CheckBoxWithAction(
             )
         }
 
-        if (!actionText.isNullOrEmpty()) {
+        if (actionText.isNotEmpty()) {
             Text(
                 text = actionText,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
                 softWrap = false,
-                modifier = if (onActionClick != null)
-                    Modifier.clickable { onActionClick() }
-                else Modifier
-            )
+                modifier = Modifier.clickable { onActionClick() })
         }
     }
 }
@@ -107,6 +98,14 @@ private fun CheckBoxWithActionPreviewFigma() {
             label = AppText.Login.REMEMBER_ME.text(),
             actionText = AppText.Login.FORGOT_PASSWORD.text()
         )
+    }
+}
+
+@PreviewPhones
+@Composable
+private fun CheckBoxWithActionPreview2Figma() {
+    var checked by remember { mutableStateOf(true) }
+    PreviewColumn {
         CheckBoxWithAction(
             checked = checked,
             onCheckedChange = { checked = it },

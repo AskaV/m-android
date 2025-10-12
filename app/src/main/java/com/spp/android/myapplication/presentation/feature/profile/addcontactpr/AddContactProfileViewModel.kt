@@ -20,21 +20,25 @@ class AddContactProfileViewModel : ViewModel() {
     fun onEvent(e: AddContactProfileContract.Event) {
         when (e) {
             is AddContactProfileContract.Event.Load -> load(e.id)
-            AddContactProfileContract.Event.BackClicked ->
-                emit(AddContactProfileContract.Effect.NavigateBack)
-            AddContactProfileContract.Event.MessageClicked ->
-                emit(AddContactProfileContract.Effect.ShowMessage("Open chat"))
+            AddContactProfileContract.Event.BackClicked -> emit(AddContactProfileContract.Effect.NavigateBack)
+
+            AddContactProfileContract.Event.MessageClicked -> emit(
+                AddContactProfileContract.Effect.ShowMessage(
+                    "Open chat"
+                )
+            )
+
             AddContactProfileContract.Event.AddToContactsClicked -> {
                 emit(AddContactProfileContract.Effect.ShowMessage("Added to contacts"))
                 _state.update { it.copy(isInMyContacts = true) }
             }
-            AddContactProfileContract.Event.ErrorShown ->
-                _state.update { it.copy(error = null) }
+
+            AddContactProfileContract.Event.ErrorShown -> _state.update { it.copy() }
         }
     }
 
     private fun load(id: String) {
-        _state.update { it.copy(isLoading = true, error = null) }
+        _state.update { it.copy(isLoading = true) }
         _state.update {
             it.copy(
                 id = id,
@@ -47,5 +51,6 @@ class AddContactProfileViewModel : ViewModel() {
         }
     }
 
-    private fun emit(e: AddContactProfileContract.Effect) = viewModelScope.launch { _effect.send(e) }
+    private fun emit(e: AddContactProfileContract.Effect) =
+        viewModelScope.launch { _effect.send(e) }
 }

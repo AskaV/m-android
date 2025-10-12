@@ -32,11 +32,11 @@ fun EditProfileFields(
     onAddressChange: (String) -> Unit,
     birthdate: String,
     onBirthdateChange: (String) -> Unit,
-    usernameError: String? = null,
-    careerError: String? = null,
-    phoneError: String? = null,
-    addressError: String? = null,
-    birthdateError: String? = null,
+    usernameError: String = "",
+    careerError: String = "",
+    phoneError: String = "",
+    addressError: String = "",
+    birthdateError: String = "",
 ) {
     Surface(color = MaterialTheme.colorScheme.surface) {
 

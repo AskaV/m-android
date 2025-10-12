@@ -1,7 +1,13 @@
 package com.spp.android.myapplication.presentation.feature.profile.addcontactpr
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -22,15 +28,13 @@ import com.spp.android.myapplication.presentation.texts.AppText
 @Composable
 fun AddContactProfileScreenContent(
     state: AddContactProfileContract.State,
-    onBack: () -> Unit,
-    onMessage: () -> Unit,
-    onAddToContacts: () -> Unit
+    onBack: () -> Unit = {},
+    onMessage: () -> Unit = {},
+    onAddToContacts: () -> Unit = {}
 ) {
     val pad = dimensionResource(R.dimen.spacer_medium)
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
     ) {
         Surface(
             color = MaterialTheme.colorScheme.background,
@@ -38,20 +42,16 @@ fun AddContactProfileScreenContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
                     .padding(vertical = dimensionResource(id = R.dimen.spacer_large)),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = pad)
+                    Modifier.fillMaxWidth().padding(horizontal = pad)
                         .padding(bottom = dimensionResource(id = R.dimen.spacer_large))
                 ) {
                     androidx.compose.material3.IconButton(
-                        onClick = onBack,
-                        modifier = Modifier.align(Alignment.CenterStart)
+                        onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)
                     ) {
                         androidx.compose.material3.Icon(
                             imageVector = androidx.compose.material.icons.Icons.AutoMirrored.Filled.ArrowBack,
@@ -74,19 +74,17 @@ fun AddContactProfileScreenContent(
         }
 
         ProfileBottomArea(
-            showSocial = true,
-            primaryFilled = if (state.isInMyContacts) {
+            showSocial = true, primaryFilled = if (state.isInMyContacts) {
                 FilledBtn(AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage)
             } else {
-                FilledBtn(AppText.ContactProfile.ADD_TO_MY_CONTACTS.text(), onClick = onAddToContacts)
-            },
-            secondaryOutlined = if (state.isInMyContacts) {
+                FilledBtn(
+                    AppText.ContactProfile.ADD_TO_MY_CONTACTS.text(), onClick = onAddToContacts
+                )
+            }, secondaryOutlined = if (state.isInMyContacts) {
                 null
             } else {
                 OutlinedBtn(AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage)
-            },
-            modifier = Modifier.fillMaxHeight(),
-            contentPadding = PaddingValues(horizontal = pad)
+            }, modifier = Modifier.fillMaxHeight(), contentPadding = PaddingValues(horizontal = pad)
         )
     }
 }
@@ -104,9 +102,6 @@ private fun AddContactProfilePreviewDefault() {
                     lineSecondary = "775 Westminster Ave APT D5\n Brooklyn, NY, 11230",
                     isInMyContacts = false
                 ),
-                onBack = {},
-                onMessage = {},
-                onAddToContacts = {}
             )
         }
     }
@@ -125,9 +120,6 @@ private fun AddContactProfilePreviewInMyContacts() {
                     lineSecondary = "5295 Gaylord Walks Apk. 110",
                     isInMyContacts = true
                 ),
-                onBack = {},
-                onMessage = {},
-                onAddToContacts = {}
             )
         }
     }

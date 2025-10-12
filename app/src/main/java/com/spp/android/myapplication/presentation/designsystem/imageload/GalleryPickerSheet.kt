@@ -25,7 +25,7 @@ fun GalleryPickerSheet(
     showCamera: Boolean = true,
     onCameraClick: () -> Unit = {},
     onOpenGallery: () -> Unit = {},
-    onDeleteCurrent: (() -> Unit)? = null,
+    onDeleteCurrent: () -> Unit = {},
     onCancel: () -> Unit = {}
 ) {
     val corner = dimensionResource(id = R.dimen.spacer_small)
@@ -38,12 +38,10 @@ fun GalleryPickerSheet(
         color = MaterialTheme.colorScheme.tertiary
     ) {
         Column(
-            Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             GalleryTilesRow(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
                     .padding(start = spacing, top = spacing, end = spacing),
                 showCamera = showCamera,
                 onCameraClick = onCameraClick,
@@ -57,7 +55,6 @@ fun GalleryPickerSheet(
             GalleryActions(
                 modifier = Modifier.padding(horizontal = actionsSidePadding),
                 onOpenGallery = onOpenGallery,
-                onDeleteCurrent = onDeleteCurrent,
                 onCancel = onCancel
             )
 

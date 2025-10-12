@@ -33,11 +33,11 @@ import kotlinx.coroutines.launch
 fun ContactsScreenContent(
     modifier: Modifier = Modifier,
     items: List<ContactUi>,
-    onBack: () -> Unit,
-    onSearchClick: () -> Unit,
-    onAddContactsClick: () -> Unit,
-    onContactClick: (ContactUi) -> Unit,
-    onDeleteClick: (ContactUi) -> Unit,
+    onBack: () -> Unit = {},
+    onSearchClick: () -> Unit = {},
+    onAddContactsClick: () -> Unit = {},
+    onContactClick: (ContactUi) -> Unit = {},
+    onDeleteClick: (ContactUi) -> Unit = {},
     onBulkDeleteClick: () -> Unit = {},
     onScrollTopClick: () -> Unit = {},
     showRecycleBin: Boolean = false,
@@ -55,9 +55,7 @@ fun ContactsScreenContent(
         derivedStateOf { listState.firstVisibleItemIndex > 0 }
     }
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -79,8 +77,7 @@ fun ContactsScreenContent(
                     items = items,
                     selectedIds = selectedIds,
                     behavior = ContactListBehavior(
-                        selectionEnabled = isSelectionMode,
-                        showDeleteIcon = !isSelectionMode
+                        selectionEnabled = isSelectionMode, showDeleteIcon = !isSelectionMode
                     ),
                     onItemClick = onContactClick,
                     onItemLongClick = onContactLongClick,
@@ -95,8 +92,7 @@ fun ContactsScreenContent(
         }
 
         AnimatedVisibility(
-            visible = showRecycleBin,
-            modifier = Modifier.align(Alignment.BottomEnd)
+            visible = showRecycleBin, modifier = Modifier.align(Alignment.BottomEnd)
         ) {
             ActionFab(
                 iconRes = R.drawable.recycle_bin,
@@ -107,16 +103,12 @@ fun ContactsScreenContent(
         }
 
         AnimatedVisibility(
-            visible = showScrollTop,
-            modifier = Modifier.align(Alignment.BottomEnd)
+            visible = showScrollTop, modifier = Modifier.align(Alignment.BottomEnd)
         ) {
             ActionFab(
-                iconRes = R.drawable.ic_arrow_up,
-                contentDescription = "Scroll to top",
-                onClick = {
+                iconRes = R.drawable.ic_arrow_up, contentDescription = "Scroll to top", onClick = {
                     scope.launch { listState.animateScrollToItem(0) }
-                },
-                alignment = Alignment.BottomStart
+                }, alignment = Alignment.BottomStart
             )
         }
     }
@@ -126,13 +118,7 @@ fun ContactsScreenContent(
 @PreviewPhones
 @Composable
 private fun ContactsScreenContentPreview() = PreviewScreenEdgeToEdge {
-    val demo = demoUsers()
     ContactsScreenContent(
-        items = demo,
-        onBack = {},
-        onSearchClick = {},
-        onAddContactsClick = {},
-        onContactClick = {},
-        onDeleteClick = {}
+        items = demoUsers()
     )
 }

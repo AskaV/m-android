@@ -16,8 +16,7 @@ import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 
 enum class HomeTab(@StringRes val titleRes: Int) {
-    Profile(AppText.HomeTabs.PROFILE.res),
-    Contacts(AppText.HomeTabs.CONTACTS.res)
+    Profile(AppText.HomeTabs.PROFILE.res), Contacts(AppText.HomeTabs.CONTACTS.res)
 }
 
 class HomeTabsController {
@@ -30,8 +29,8 @@ class HomeTabsController {
 @Composable
 fun HomeTabs(
     modifier: Modifier = Modifier,
-    profile: @Composable () -> Unit,
-    contacts: @Composable () -> Unit,
+    profile: @Composable () -> Unit = {},
+    contacts: @Composable () -> Unit = {},
     controller: HomeTabsController? = null
 ) {
     val tabs = HomeTab.entries
@@ -50,8 +49,7 @@ fun HomeTabs(
                 Tab(
                     selected = pagerState.currentPage == index,
                     onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
-                    text = { Text(stringResource(tab.titleRes)) }
-                )
+                    text = { Text(stringResource(tab.titleRes)) })
             }
         }
         HorizontalPager(state = pagerState) { page ->

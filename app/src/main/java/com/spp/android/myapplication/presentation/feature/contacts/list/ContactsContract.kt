@@ -9,7 +9,7 @@ object ContactsContract {
     data class State(
         val items: List<ContactUi> = emptyList(),
         val isLoading: Boolean = false,
-        val error: String? = null,
+        val error: String? = "",
         val selected: Set<String> = emptySet(),
         val isSelectionMode: Boolean = false
     )

@@ -29,16 +29,16 @@ import com.spp.android.myapplication.presentation.texts.AppText
 @Composable
 fun ContactsHeader(
     title: String = AppText.Contacts.TITLE.text(),
-    onBack: () -> Unit,
-    onSearchClick: () -> Unit,
+    onBack: () -> Unit = {},
+    onSearchClick: () -> Unit = {},
     showAddHeaderRow: Boolean,
-    onAddContactsClick: () -> Unit,
+    onAddContactsClick: () -> Unit = {},
     reserveAddRowSpace: Boolean = false
 
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
-    val addRowMinHeight =  dimensionResource(id = R.dimen.button_height)
+    val addRowMinHeight = dimensionResource(id = R.dimen.button_height)
 
     Surface(
         color = MaterialTheme.colorScheme.background,
@@ -46,13 +46,10 @@ fun ContactsHeader(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = pad, vertical = spaceM)
+                Modifier.fillMaxWidth().padding(horizontal = pad, vertical = spaceM)
             ) {
                 IconButton(onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -65,8 +62,7 @@ fun ContactsHeader(
                     modifier = Modifier.align(Alignment.Center)
                 )
                 IconButton(
-                    onClick = onSearchClick,
-                    modifier = Modifier.align(Alignment.CenterEnd)
+                    onClick = onSearchClick, modifier = Modifier.align(Alignment.CenterEnd)
                 ) {
                     Icon(Icons.Filled.Search, contentDescription = "Search")
                 }
@@ -77,17 +73,13 @@ fun ContactsHeader(
                     text = AppText.Contacts.ADD.text(),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = addRowMinHeight)
+                    modifier = Modifier.fillMaxWidth().heightIn(min = addRowMinHeight)
                         .padding(vertical = spaceM, horizontal = pad)
                         .clickable(onClick = onAddContactsClick)
                 )
             } else if (reserveAddRowSpace) {
                 Spacer(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(addRowMinHeight)
+                    Modifier.fillMaxWidth().height(addRowMinHeight)
                         .padding(vertical = spaceM, horizontal = pad)
                 )
             }
@@ -99,13 +91,8 @@ fun ContactsHeader(
 @Composable
 private fun ContactsHeaderPreviewDefault() {
     MyApplicationTheme {
-
         ContactsHeader(
-            title = "Contacts",
-            onBack = {},
-            onSearchClick = {},
-            showAddHeaderRow = true,
-            onAddContactsClick = {}
+            title = "Contacts", showAddHeaderRow = true
         )
     }
 }
@@ -114,13 +101,8 @@ private fun ContactsHeaderPreviewDefault() {
 @Composable
 private fun ContactsHeaderPreviewUsers() {
     MyApplicationTheme {
-
         ContactsHeader(
-            title = "Users",
-            onBack = {},
-            onSearchClick = {},
-            showAddHeaderRow = false,
-            onAddContactsClick = {}
+            title = "Users", showAddHeaderRow = false
         )
     }
 }

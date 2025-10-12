@@ -10,7 +10,7 @@ object GalleryPickerContract {
         val isVisible: Boolean = false,
         val allowDeleteCurrent: Boolean = false,
         val isLoading: Boolean = false,
-        val error: String? = null,
+        val error: String = "",
     )
 
     sealed interface Event {

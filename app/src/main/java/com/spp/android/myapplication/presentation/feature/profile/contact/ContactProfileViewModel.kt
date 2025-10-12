@@ -29,17 +29,15 @@ class ContactProfileViewModel @Inject constructor(
     fun onEvent(event: ContactProfileContract.Event) {
         when (event) {
             is ContactProfileContract.Event.Load -> load(event.contactId)
-            ContactProfileContract.Event.BackClicked ->
-                emit(ContactProfileContract.Effect.NavigateBack)
+            ContactProfileContract.Event.BackClicked -> emit(ContactProfileContract.Effect.NavigateBack)
 
-            ContactProfileContract.Event.MessageClicked ->
-                _state.value.contactId.takeIf { it.isNotBlank() }?.let {
+            ContactProfileContract.Event.MessageClicked -> _state.value.contactId.takeIf { it.isNotBlank() }
+                ?.let {
                     emit(ContactProfileContract.Effect.OpenChat(it))
                 }
 
             ContactProfileContract.Event.AddClicked -> addContact()
-            ContactProfileContract.Event.ErrorShown ->
-                _state.update { it.copy(error = null) }
+            ContactProfileContract.Event.ErrorShown -> _state.update { it.copy(error = null) }
         }
     }
 
@@ -65,8 +63,19 @@ class ContactProfileViewModel @Inject constructor(
                 )
             }
         }.onFailure { t ->
-            _state.update { it.copy(isLoading = false, error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)) }
-            emit(ContactProfileContract.Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED.text(appContext)))
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
+                )
+            }
+            emit(
+                ContactProfileContract.Effect.ShowMessage(
+                    AppText.OtherInfo.CONTACTS_LOAD_FAILED.text(
+                        appContext
+                    )
+                )
+            )
         }
     }
 
@@ -77,10 +86,27 @@ class ContactProfileViewModel @Inject constructor(
             true
         }.onSuccess {
             _state.update { it.copy(isLoading = false, hasSocial = true) }
-            emit(ContactProfileContract.Effect.ShowMessage(AppText.OtherInfo.CONTACT_ADDED.text(appContext)))
+            emit(
+                ContactProfileContract.Effect.ShowMessage(
+                    AppText.OtherInfo.CONTACT_ADDED.text(
+                        appContext
+                    )
+                )
+            )
         }.onFailure { t ->
-            _state.update { it.copy(isLoading = false, error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)) }
-            emit(ContactProfileContract.Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_ADD_CONTACT.text(appContext)))
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
+                )
+            }
+            emit(
+                ContactProfileContract.Effect.ShowMessage(
+                    AppText.OtherInfo.FAILED_TO_ADD_CONTACT.text(
+                        appContext
+                    )
+                )
+            )
         }
     }
 

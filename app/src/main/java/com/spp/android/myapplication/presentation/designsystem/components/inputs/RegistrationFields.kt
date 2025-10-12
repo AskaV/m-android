@@ -22,8 +22,8 @@ fun RegistrationFields(
     onUsernameChange: (String) -> Unit,
     phone: String,
     onPhoneChange: (String) -> Unit,
-    usernameError: String? = null,
-    phoneError: String? = null
+    usernameError: String = "",
+    phoneError: String = "",
 ) {
     Column(modifier.fillMaxWidth()) {
         LabeledTextField(

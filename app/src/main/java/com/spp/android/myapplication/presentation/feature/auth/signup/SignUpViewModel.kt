@@ -36,8 +36,8 @@ class SignUpViewModel @Inject constructor(
 
     fun onEvent(event: SignUpContract.Event) {
         when (event) {
-            is SignUpContract.Event.EmailChanged -> {  _state.update { it.copy(fields = it.fields.copy(email = event.value, emailError = null), error = null) } }
-            is SignUpContract.Event.PasswordChanged -> { _state.update { it.copy(fields = it.fields.copy(password = event.value, passwordError = null), error = null) } }
+            is SignUpContract.Event.EmailChanged -> {  _state.update { it.copy(fields = it.fields.copy(email = event.value, emailError = null)) } }
+            is SignUpContract.Event.PasswordChanged -> { _state.update { it.copy(fields = it.fields.copy(password = event.value, passwordError = null)) } }
             is SignUpContract.Event.RememberChanged -> { _state.update { it.copy(rememberMe = event.value) } }
 
             SignUpContract.Event.SubmitRegister -> submitRegister()
@@ -45,14 +45,14 @@ class SignUpViewModel @Inject constructor(
 
             SignUpContract.Event.NavigateToExtendedRequested -> submitRegister()
 
-            SignUpContract.Event.ErrorShown -> _state.update { it.copy(error = null) }
+            SignUpContract.Event.ErrorShown -> _state.update { it.copy() }
 
 
-            is SignUpContract.Event.UsernameChanged -> { _profile.update { it.copy(username = event.value, usernameError = null) } }
-            is SignUpContract.Event.PhoneChanged    -> { _profile.update { it.copy(phone = event.value, phoneError = null) } }
+            is SignUpContract.Event.UsernameChanged -> { _profile.update { it.copy(username = event.value) } }
+            is SignUpContract.Event.PhoneChanged    -> { _profile.update { it.copy(phone = event.value) } }
 
-            SignUpContract.Event.UsernameBlur -> { _profile.update { p -> p.copy(usernameError = validateUsername(appContext, p.username)) } }
-            SignUpContract.Event.PhoneBlur    -> { _profile.update { p -> p.copy(phoneError = validatePhone(appContext, p.phone)) } }
+            SignUpContract.Event.UsernameBlur -> { _profile.update { p -> p.copy(usernameError = validateUsername(appContext, p.username).orEmpty()) } }
+            SignUpContract.Event.PhoneBlur -> { _profile.update { p -> p.copy(phoneError = validatePhone(appContext, p.phone).orEmpty()) } }
 
 
             SignUpContract.Event.PickAvatar -> viewModelScope.launch { _effect.send(SignUpContract.Effect.OpenAvatarPicker) }
@@ -84,7 +84,7 @@ class SignUpViewModel @Inject constructor(
             return@launch
         }
 
-        _state.update { it.copy(isLoading = true, error = null) }
+        _state.update { it.copy(isLoading = true) }
 
         runCatching {
             // TODO:
@@ -110,8 +110,6 @@ class SignUpViewModel @Inject constructor(
         if (usernameErr != null || phoneErr != null) {
             _profile.update {
                 it.copy(
-                    usernameError = usernameErr,
-                    phoneError = phoneErr
                 )
             }
             return@launch
@@ -119,10 +117,7 @@ class SignUpViewModel @Inject constructor(
 
         _profile.update {
             it.copy(
-                isLoading = true,
-                error = null,
-                usernameError = null,
-                phoneError = null
+                isLoading = true
             )
         }
 

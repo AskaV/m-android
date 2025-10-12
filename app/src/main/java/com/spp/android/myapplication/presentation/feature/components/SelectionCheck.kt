@@ -17,8 +17,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SelectionCheck(
-    selected: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier, selected: Boolean
 ) {
     val size = 20.dp
     val borderW = 2.dp
@@ -26,12 +25,8 @@ fun SelectionCheck(
     val checkTint = MaterialTheme.colorScheme.primary
 
     Box(
-        modifier = modifier
-            .size(size)
-            .clip(CircleShape)
-            .border(borderW, borderColor, CircleShape)
-            .background(MaterialTheme.colorScheme.surface),
-        contentAlignment = Alignment.Center
+        modifier = modifier.size(size).clip(CircleShape).border(borderW, borderColor, CircleShape)
+            .background(MaterialTheme.colorScheme.surface), contentAlignment = Alignment.Center
     ) {
         if (selected) {
             Icon(

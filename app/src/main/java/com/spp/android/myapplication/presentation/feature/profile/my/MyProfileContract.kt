@@ -11,7 +11,7 @@ object MyProfileContract {
         val lineSecondary: String = "",
         val isCompleted: Boolean = false,
         val isLoading: Boolean = false,
-        val error: String? = null
+        val error: String? = ""
     )
 
     sealed interface Event {
@@ -32,8 +32,6 @@ object MyProfileContract {
             val birthdate: String
         ) : Event
     }
-
-
 
     sealed interface Effect {
         data class ShowMessage(val message: String) : Effect

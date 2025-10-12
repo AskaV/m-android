@@ -20,14 +20,10 @@ import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun AuthHeader(
-    modifier: Modifier = Modifier,
-    title: String,
-    subtitle: String
+    modifier: Modifier = Modifier, title: String, subtitle: String
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
+        modifier = modifier.fillMaxWidth().wrapContentHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -51,8 +47,7 @@ fun AuthHeader(
 private fun AuthHeaderPreview() {
     PreviewColumn {
         AuthHeader(
-            title = AppText.Login.TITLE.text(),
-            subtitle = AppText.Login.SUBTITLE.text()
+            title = AppText.Login.TITLE.text(), subtitle = AppText.Login.SUBTITLE.text()
         )
     }
 }

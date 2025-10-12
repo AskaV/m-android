@@ -30,39 +30,33 @@ import com.spp.android.myapplication.presentation.texts.AppText
 import com.spp.android.myapplication.presentation.texts.text
 
 data class SignUpUiState(
-    val fields: AuthFieldsState = AuthFieldsState(),
-    val rememberMe: Boolean = false
+    val fields: AuthFieldsState = AuthFieldsState(), val rememberMe: Boolean = false
 )
 
 @Composable
 fun SignUpScreenContent(
     modifier: Modifier = Modifier,
     state: SignUpUiState,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onRememberMeChange: (Boolean) -> Unit,
-    onRegisterClick: () -> Unit,
+    onEmailChange: (String) -> Unit = {},
+    onPasswordChange: (String) -> Unit = {},
+    onRememberMeChange: (Boolean) -> Unit = {},
+    onRegisterClick: () -> Unit = {},
     onRegisterWithGoogleClick: () -> Unit = {},
     onNavigateToLogin: () -> Unit = {}
 ) {
     val hPad = dimensionResource(R.dimen.spacer_medium)
 
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(start = hPad, end = hPad, bottom = hPad)
+        modifier = modifier.fillMaxSize().padding(start = hPad, end = hPad, bottom = hPad)
     ) {
         Column(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .fillMaxWidth(),
+            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(dimensionResource(R.dimen.auth_top_spacer)))
 
             AuthHeader(
-                title = AppText.SignUp.TITLE.text(),
-                subtitle = AppText.SignUp.SUBTITLE.text()
+                title = AppText.SignUp.TITLE.text(), subtitle = AppText.SignUp.SUBTITLE.text()
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
@@ -84,14 +78,11 @@ fun SignUpScreenContent(
         }
 
         Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth(),
+            modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             GoogleButton(
-                text = AppText.SignUp.GOOGLE.text().uppercase(),
-                onClick = onRegisterWithGoogleClick
+                text = AppText.SignUp.GOOGLE.text().uppercase(), onClick = onRegisterWithGoogleClick
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_small)))
@@ -118,8 +109,7 @@ fun SignUpScreenContent(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(horizontal = dimensionResource(R.dimen.spacer_small))
+                modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.spacer_small))
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_medium)))
@@ -142,15 +132,9 @@ fun SignUpScreenPreview() {
             SignUpScreenContent(
                 state = SignUpUiState(
                     fields = AuthFieldsState(
-                        email = AppText.Preview.EMAIL,
-                        password = AppText.Preview.PASSWORD
-                    ),
-                    rememberMe = true
+                        email = AppText.Preview.EMAIL, password = AppText.Preview.PASSWORD
+                    ), rememberMe = true
                 ),
-                onEmailChange = {},
-                onPasswordChange = {},
-                onRememberMeChange = {},
-                onRegisterClick = {}
             )
         }
     }
@@ -168,13 +152,8 @@ fun SignUpScreenPreviewErrors() {
                         password = AppText.Preview.WRONG_PASSWORD,
                         emailError = AppText.Login.EMAIL_ERROR.text(),
                         passwordError = AppText.Error.PASSWORD_ERROR.text()
-                    ),
-                    rememberMe = false
+                    ), rememberMe = false
                 ),
-                onEmailChange = {},
-                onPasswordChange = {},
-                onRememberMeChange = {},
-                onRegisterClick = {}
             )
         }
     }

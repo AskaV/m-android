@@ -22,8 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
-    @ApplicationContext private val appContext: Context,
-    private val repository: ContactsRepository
+    @ApplicationContext private val appContext: Context, private val repository: ContactsRepository
 
 ) : ViewModel() {
 
@@ -43,18 +42,19 @@ class ContactsViewModel @Inject constructor(
             ContactsContract.Event.BackClicked -> emit(ContactsContract.Effect.NavigateBack)
             ContactsContract.Event.SearchClicked -> emit(ContactsContract.Effect.OpenSearch)
             ContactsContract.Event.AddContactsClicked -> emit(ContactsContract.Effect.OpenAddContacts)
-            is ContactsContract.Event.ContactClicked ->
-                emit(ContactsContract.Effect.OpenContactProfile(event.item.id))
+            is ContactsContract.Event.ContactClicked -> emit(
+                ContactsContract.Effect.OpenContactProfile(
+                    event.item.id
+                )
+            )
 
             is ContactsContract.Event.DeleteClicked -> delete(event.item)
-            ContactsContract.Event.ErrorShown ->
-                _state.update { it.copy(error = null) }
+            ContactsContract.Event.ErrorShown -> _state.update { it.copy(error = null) }
 
             is ContactsContract.Event.ContactLongClicked -> {
                 _state.update { st ->
                     st.copy(
-                        selected = setOf(event.item.id),
-                        isSelectionMode = true
+                        selected = setOf(event.item.id), isSelectionMode = true
                     )
                 }
             }
@@ -65,8 +65,7 @@ class ContactsViewModel @Inject constructor(
                         if (contains(event.item.id)) remove(event.item.id) else add(event.item.id)
                     }
                     st.copy(
-                        selected = newSelected,
-                        isSelectionMode = newSelected.isNotEmpty()
+                        selected = newSelected, isSelectionMode = newSelected.isNotEmpty()
                     )
                 }
             }
@@ -97,8 +96,7 @@ class ContactsViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true, error = null) }
         runCatching {
             if (ContextCompat.checkSelfPermission(
-                    appContext,
-                    android.Manifest.permission.READ_CONTACTS
+                    appContext, android.Manifest.permission.READ_CONTACTS
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 repository.loadContacts()

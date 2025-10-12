@@ -9,12 +9,12 @@ object LoginContract {
         val email: String = "",
         val password: String = "",
         val rememberMe: Boolean = false,
-        val emailError: String? = null,
-        val passwordError: String? = null,
+        val emailError: String? = "",
+        val passwordError: String? = "",
         val emailTouched: Boolean = false,
         val passwordTouched: Boolean = false,
         val isLoading: Boolean = false,
-        val error: String? = null
+        val error: String? = "",
     )
 
     sealed interface Event {

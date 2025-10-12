@@ -21,11 +21,10 @@ fun AuthFooter(
     modifier: Modifier = Modifier,
     question: String,
     actionText: String,
-    onActionClick: (() -> Unit)? = null
+    onActionClick: () -> Unit = {}
 ) {
     Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        modifier = modifier, verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(Modifier.weight(1f))
         Text(
@@ -40,7 +39,7 @@ fun AuthFooter(
             text = actionText,
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = if (onActionClick != null) Modifier.clickable { onActionClick() } else Modifier,
+            modifier = Modifier.clickable { onActionClick() },
             textAlign = TextAlign.Center
         )
         Spacer(Modifier.weight(1f))

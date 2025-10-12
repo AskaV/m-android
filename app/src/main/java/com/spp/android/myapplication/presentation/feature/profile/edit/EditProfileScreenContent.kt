@@ -36,9 +36,9 @@ import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun EditProfileScreenContent(
-    onBack: () -> Unit,
-    onSave: (String, String, String, String, String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBack: () -> Unit = {},
+    onSave: (String, String, String, String, String) -> Unit = { _, _, _, _, _ -> }
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
@@ -58,9 +58,7 @@ fun EditProfileScreenContent(
     var birthdate by remember { mutableStateOf(birthdatePlaceholder) }
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
     ) {
         Surface(
             color = MaterialTheme.colorScheme.background,
@@ -72,13 +70,10 @@ fun EditProfileScreenContent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = pad, vertical = spaceM)
+                    Modifier.fillMaxWidth().padding(horizontal = pad, vertical = spaceM)
                 ) {
                     IconButton(
-                        onClick = onBack,
-                        modifier = Modifier.align(Alignment.CenterStart)
+                        onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)
                     ) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
@@ -90,8 +85,7 @@ fun EditProfileScreenContent(
                 }
 
                 Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                    modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
                 ) {
                     AvatarPicker(onClick = { /* open picker */ }, showBadge = true)
                 }
@@ -106,16 +100,11 @@ fun EditProfileScreenContent(
             modifier = Modifier.fillMaxSize()
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = pad)
+                modifier = Modifier.fillMaxSize().padding(horizontal = pad)
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.TopCenter)
-                        .verticalScroll(rememberScrollState())
-                        .padding(bottom = buttonHeight + pad),
+                    modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter)
+                        .verticalScroll(rememberScrollState()).padding(bottom = buttonHeight + pad),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(Modifier.height(spaceL))
@@ -134,9 +123,7 @@ fun EditProfileScreenContent(
                 FilledButton(
                     text = AppText.EditProfile.SAVE.text(),
                     onClick = { onSave(username, career, phone, address, birthdate) },
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = pad)
+                    modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = pad)
                 )
             }
         }
@@ -146,9 +133,4 @@ fun EditProfileScreenContent(
 @PreviewPhones
 @PreviewMoto
 @Composable
-private fun EditProfileScreenPreview() = PreviewScreenEdgeToEdge {
-    EditProfileScreenContent(
-        onBack = {},
-        onSave = { _, _, _, _, _ -> }
-    )
-}
+private fun EditProfileScreenPreview() = PreviewScreenEdgeToEdge { EditProfileScreenContent() }

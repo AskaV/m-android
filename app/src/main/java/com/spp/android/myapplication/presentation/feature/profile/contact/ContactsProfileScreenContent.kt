@@ -39,18 +39,16 @@ data class ContactProfileUiState(
 
 @Composable
 fun ContactProfileScreen(
+    modifier: Modifier = Modifier,
     state: ContactProfileUiState,
-    onBack: () -> Unit,
-    onMessage: () -> Unit,
-    modifier: Modifier = Modifier
+    onBack: () -> Unit = {},
+    onMessage: () -> Unit = {}
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
     ) {
         Surface(
             color = MaterialTheme.colorScheme.background,
@@ -58,20 +56,14 @@ fun ContactProfileScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = spaceL),
+                modifier = Modifier.fillMaxWidth().padding(vertical = spaceL),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = pad)
-                        .padding(bottom = spaceL / 2)
+                    Modifier.fillMaxWidth().padding(horizontal = pad).padding(bottom = spaceL / 2)
                 ) {
                     IconButton(
-                        onClick = onBack,
-                        modifier = Modifier.align(Alignment.CenterStart)
+                        onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -99,8 +91,7 @@ fun ContactProfileScreen(
         ProfileBottomArea(
             showSocial = state.hasSocial,
             primaryFilled = FilledBtn(
-                AppText.ContactProfile.MESSAGE_TEXT.text(),
-                onClick = onMessage
+                AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage
             ),
             secondaryOutlined = null,
             contentPadding = PaddingValues(horizontal = pad),
@@ -119,7 +110,5 @@ private fun ContactProfilePreview() = PreviewScreenEdgeToEdge {
             lineSecondary = AppText.MyProfileDetailed.ADDRESS.text(),
             hasSocial = true
         ),
-        onBack = {},
-        onMessage = {}
     )
 }

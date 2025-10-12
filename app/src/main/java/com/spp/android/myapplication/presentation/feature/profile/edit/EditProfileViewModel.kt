@@ -78,8 +78,19 @@ class EditProfileViewModel @Inject constructor(
                 )
             }
         }.onFailure { t ->
-            _state.update { it.copy(isLoading = false, error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)) }
-            emit(EditProfileContract.Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_LOAD_PROFILE.text(appContext)))
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
+                )
+            }
+            emit(
+                EditProfileContract.Effect.ShowMessage(
+                    AppText.OtherInfo.FAILED_TO_LOAD_PROFILE.text(
+                        appContext
+                    )
+                )
+            )
         }
     }
 
@@ -97,7 +108,13 @@ class EditProfileViewModel @Inject constructor(
                     error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
                 )
             }
-            emit(EditProfileContract.Effect.ShowMessage(AppText.OtherInfo.FAILED_PROFILE_SAVE.text(appContext)))
+            emit(
+                EditProfileContract.Effect.ShowMessage(
+                    AppText.OtherInfo.FAILED_PROFILE_SAVE.text(
+                        appContext
+                    )
+                )
+            )
         }
     }
 

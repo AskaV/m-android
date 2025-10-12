@@ -22,9 +22,9 @@ enum class OutlinedButtonStyle { Primary, Secondary, OnBackground }
 
 @Composable
 fun OutlinedBorderButton(
-    text: String,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    text: String,
     style: OutlinedButtonStyle = OutlinedButtonStyle.Secondary,
     buttonHeight: Dp = dimensionResource(R.dimen.button_height)
 ) {
@@ -53,17 +53,13 @@ fun OutlinedBorderButton(
 
     OutlinedButton(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(buttonHeight),
+        modifier = modifier.fillMaxWidth().height(buttonHeight),
         shape = RoundedCornerShape(dimensionResource(id = R.dimen.button_corner_radius)),
         border = BorderStroke(
-            dimensionResource(id = R.dimen.button_border_width),
-            borderColor as Color
+            dimensionResource(id = R.dimen.button_border_width), borderColor as Color
         ),
         colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = Color.Transparent,
-            contentColor = contentColor as Color
+            containerColor = Color.Transparent, contentColor = contentColor as Color
         )
     ) {
         Text(
@@ -75,22 +71,17 @@ fun OutlinedBorderButton(
 
 @PreviewPhones
 @Composable
-fun OutlinedBorderButtonPrimaryPreview() =
-    PreviewColumn {
-        OutlinedBorderButton(
-            text = AppText.Preview.OUTLINED_BTN_TEXT.text(),
-            onClick = {},
-            style = OutlinedButtonStyle.Primary
-        )
-    }
+fun OutlinedBorderButtonPrimaryPreview() = PreviewColumn {
+    OutlinedBorderButton(
+        text = AppText.Preview.OUTLINED_BTN_TEXT.text(), style = OutlinedButtonStyle.Primary
+    )
+}
 
 @PreviewPhones
 @Composable
 fun OutlinedBorderButtonSecondaryPreview() =
     PreviewColumn(background = { MaterialTheme.colorScheme.surface }) {
         OutlinedBorderButton(
-            text = AppText.Preview.OUTLINED_BTN_TEXT.text(),
-            onClick = {},
-            style = OutlinedButtonStyle.Secondary
+            text = AppText.Preview.OUTLINED_BTN_TEXT.text(), style = OutlinedButtonStyle.Secondary
         )
     }

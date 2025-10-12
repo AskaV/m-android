@@ -39,16 +39,15 @@ data class ProfileUiState(
 
 @Composable
 fun ProfileScreen(
+    modifier: Modifier = Modifier,
     state: ProfileUiState,
-    onEditProfile: () -> Unit,
-    onViewContacts: () -> Unit,
-    onLogout: () -> Unit,
-    modifier: Modifier = Modifier
+    onEditProfile: () -> Unit = {},
+    onViewContacts: () -> Unit = {},
+    onLogout: () -> Unit = {}
+
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
     ) {
         Surface(
             color = MaterialTheme.colorScheme.background,
@@ -56,14 +55,12 @@ fun ProfileScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
                     .padding(vertical = dimensionResource(id = R.dimen.spacer_large)),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
-                    Modifier
-                        .fillMaxWidth()
+                    Modifier.fillMaxWidth()
                         .padding(horizontal = dimensionResource(id = R.dimen.spacer_medium))
                         .padding(bottom = dimensionResource(id = R.dimen.spacer_large))
                 ) {
@@ -101,17 +98,12 @@ fun ProfileScreen(
         val pad = dimensionResource(id = R.dimen.spacer_medium)
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = pad)
-                .fillMaxHeight(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = pad).fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (state.isCompleted) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
+                    modifier = Modifier.fillMaxWidth().weight(1f),
                     contentAlignment = Alignment.Center
                 ) {
                     SocialButtonsRow()
@@ -123,12 +115,10 @@ fun ProfileScreen(
             ProfileBottomArea(
                 showSocial = state.isCompleted,
                 primaryFilled = FilledBtn(
-                    text = AppText.MyProfile.VIEW_CONTACTS.text(),
-                    onClick = onViewContacts
+                    text = AppText.MyProfile.VIEW_CONTACTS.text(), onClick = onViewContacts
                 ),
                 secondaryOutlined = OutlinedBtn(
-                    text = AppText.MyProfile.EDIT_PROFILE.text(),
-                    onClick = onEditProfile
+                    text = AppText.MyProfile.EDIT_PROFILE.text(), onClick = onEditProfile
                 ),
                 hint = if (!state.isCompleted) AppText.MyProfile.PROFILE_FILL_HINT.text() else null,
                 modifier = Modifier.fillMaxHeight(),
@@ -140,30 +130,26 @@ fun ProfileScreen(
 
 @PreviewPhones
 @Composable
-private fun ProfileScreenPreviewIncomplete() =
-    PreviewScreenEdgeToEdge {
-        ProfileScreen(
-            state = ProfileUiState(
-                name = AppText.MyProfile.NAME.text(),
-                linePrimary = AppText.MyProfile.CAREER.text(),
-                lineSecondary = AppText.MyProfile.ADDRESS.text(),
-                isCompleted = false
-            ),
-            onEditProfile = {}, onViewContacts = {}, onLogout = {}
+private fun ProfileScreenPreviewIncomplete() = PreviewScreenEdgeToEdge {
+    ProfileScreen(
+        state = ProfileUiState(
+            name = AppText.MyProfile.NAME.text(),
+            linePrimary = AppText.MyProfile.CAREER.text(),
+            lineSecondary = AppText.MyProfile.ADDRESS.text(),
+            isCompleted = false
         )
-    }
+    )
+}
 
 @PreviewPhones
 @Composable
-private fun ProfileScreenPreviewCompleted() =
-    PreviewScreenEdgeToEdge {
-        ProfileScreen(
-            state = ProfileUiState(
-                name = AppText.MyProfileDetailed.NAME.text(),
-                linePrimary = AppText.MyProfileDetailed.CAREER.text(),
-                lineSecondary = AppText.MyProfileDetailed.ADDRESS.text(),
-                isCompleted = true
-            ),
-            onEditProfile = {}, onViewContacts = {}, onLogout = {}
+private fun ProfileScreenPreviewCompleted() = PreviewScreenEdgeToEdge {
+    ProfileScreen(
+        state = ProfileUiState(
+            name = AppText.MyProfileDetailed.NAME.text(),
+            linePrimary = AppText.MyProfileDetailed.CAREER.text(),
+            lineSecondary = AppText.MyProfileDetailed.ADDRESS.text(),
+            isCompleted = true
         )
-    }
+    )
+}

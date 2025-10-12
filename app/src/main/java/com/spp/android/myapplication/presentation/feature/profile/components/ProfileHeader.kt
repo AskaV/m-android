@@ -22,22 +22,19 @@ import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun ProfileHeader(
+    modifier: Modifier = Modifier,
     name: String,
     linePrimary: String,
     lineSecondary: String,
-    modifier: Modifier = Modifier,
     avatarRes: Int = R.drawable.baseline_account_circle_avatar
 ) {
     Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(id = avatarRes),
             contentDescription = null,
-            modifier = Modifier
-                .size(dimensionResource(id = R.dimen.avatar_size))
-                .clip(CircleShape)
+            modifier = Modifier.size(dimensionResource(id = R.dimen.avatar_size)).clip(CircleShape)
         )
 
         Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_large)))

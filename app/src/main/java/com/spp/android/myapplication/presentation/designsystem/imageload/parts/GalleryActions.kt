@@ -19,7 +19,7 @@ import com.spp.android.myapplication.presentation.texts.AppText
 internal fun GalleryActions(
     modifier: Modifier = Modifier,
     onOpenGallery: () -> Unit,
-    onDeleteCurrent: (() -> Unit)?,
+    onDeleteCurrent: () -> Unit = {},
     onCancel: () -> Unit
 ) {
     Column(modifier) {
@@ -30,18 +30,15 @@ internal fun GalleryActions(
             colorOverride = MaterialTheme.colorScheme.onBackground
         )
 
-        if (onDeleteCurrent != null) {
-            ActionItem(
-                text = AppText.GalleryStrings.DELETE_PHOTO.text(),
-                enabled = false,
-                onClick = {},
-                dimmed = true
-            )
-        }
+        ActionItem(
+            text = AppText.GalleryStrings.DELETE_PHOTO.text(),
+            enabled = false,
+            onClick = {},
+            dimmed = true
+        )
 
         val cancelColor =
-            if (onDeleteCurrent != null) MaterialTheme.colorScheme.onBackground
-            else MaterialTheme.colorScheme.onSurface
+            MaterialTheme.colorScheme.onBackground
 
         ActionItem(
             text = AppText.GalleryStrings.CANCEL.text(),
@@ -98,7 +95,6 @@ private fun GalleryActionsNoDeletePreview() {
     MaterialTheme {
         GalleryActions(
             onOpenGallery = {},
-            onDeleteCurrent = null,
             onCancel = {}
         )
     }

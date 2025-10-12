@@ -38,31 +38,29 @@ data class ContactUi(
     val id: String,
     val name: String,
     val subtitle: String,
-    val avatarUrl: String? = null,
-    val transitionName: String? = null
+    val avatarUrl: String? = "",
+    val transitionName: String? = ""
 )
 
 @Composable
 fun ContactCardOutlined(
-    contact: ContactUi,
     modifier: Modifier = Modifier,
-    onClick: ((ContactUi) -> Unit)? = null,
-    onLongClick: ((ContactUi) -> Unit)? = null,
+    contact: ContactUi,
+    onClick: (ContactUi) -> Unit = {},
+    onLongClick: (ContactUi) -> Unit = {},
     showSelectionControl: Boolean = false,
     trailing: (@Composable RowScope.() -> Unit)? = null,
-
-    showDeleteIcon: Boolean = true,
+    showDeleteIcon: Boolean = false,
     selected: Boolean = false,
-    onDeleteClick: ((ContactUi) -> Unit)? = null
+    onDeleteClick: (ContactUi) -> Unit = {}
 ) {
     val corner = dimensionResource(id = R.dimen.button_corner_radius)
     val borderW = dimensionResource(id = R.dimen.button_border_width)
     val spaceS = dimensionResource(id = R.dimen.spacer_small)
 
     val clickableMod = modifier.combinedClickable(
-        onClick = { onClick?.invoke(contact) },
-        onLongClick = { onLongClick?.invoke(contact) }
-    )
+        onClick = { onClick(contact) },
+        onLongClick = { onLongClick(contact) })
 
     Surface(
         modifier = clickableMod,
@@ -73,34 +71,26 @@ fun ContactCardOutlined(
         border = BorderStroke(borderW, MaterialTheme.colorScheme.onSurface),
     ) {
         Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = spaceS)
-                .heightIn(min = 72.dp),
+            Modifier.fillMaxWidth().padding(horizontal = spaceS).heightIn(min = 72.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (showSelectionControl) {
                 SelectionCheck(
-                    selected = selected,
-                    modifier = Modifier.padding(end = spaceS)
+                    selected = selected, modifier = Modifier.padding(end = spaceS)
                 )
             }
 
             Image(
                 painter = painterResource(R.drawable.baseline_account_circle_avatar),
                 contentDescription = null,
-                modifier = Modifier
-                    .size(56.dp)
-                    .clip(CircleShape),
+                modifier = Modifier.size(56.dp).clip(CircleShape),
                 contentScale = ContentScale.Crop
             )
 
             Spacer(Modifier.width(spaceS))
 
             Column(
-                Modifier
-                    .weight(1f)
-                    .padding(end = spaceS)
+                Modifier.weight(1f).padding(end = spaceS)
             ) {
                 Text(
                     text = contact.name,
@@ -120,7 +110,7 @@ fun ContactCardOutlined(
 
             if (trailing != null) {
                 trailing()
-            } else if (showDeleteIcon && onDeleteClick != null) {
+            } else if (showDeleteIcon) {
                 IconButton(onClick = { onDeleteClick(contact) }) {
                     Icon(
                         painter = painterResource(R.drawable.recycle_bin),
@@ -139,13 +129,9 @@ private fun ContactCardOutlinedPreview() {
     PreviewColumn {
         ContactCardOutlined(
             contact = ContactUi(
-                id = "1",
-                name = ContactPreviewText.Preview.NAME1,
-                subtitle = ContactPreviewText.Preview.SUBTITLE1,
-                avatarUrl = null
-            ),
-            onClick = {},
-            onDeleteClick = {}
-        )
+            id = "1",
+            name = ContactPreviewText.Preview.NAME1,
+            subtitle = ContactPreviewText.Preview.SUBTITLE1,
+        ), onClick = {}, onDeleteClick = {})
     }
 }

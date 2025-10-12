@@ -36,11 +36,11 @@ fun AppTextField(
     value: String,
     onValueChange: (String) -> Unit,
     kind: FieldKind,
-    placeholder: String? = null,
+    placeholder: String = "",
     isError: Boolean = false,
     imeAction: ImeAction = ImeAction.Next,
-    onImeAction: (() -> Unit)? = null,
-    trailingIcon: (@Composable (() -> Unit))? = null,
+    onImeAction: () -> Unit = {},
+    trailingIcon: @Composable () -> Unit = {},
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(
         color = MaterialTheme.colorScheme.onBackground
     )
@@ -52,19 +52,18 @@ fun AppTextField(
     Column(modifier.fillMaxWidth()) {
 
         Box(Modifier.fillMaxWidth()) {
-            if (placeholder != null && value.isEmpty()) {
+            if (placeholder.isNotEmpty() && value.isEmpty()) {
                 Text(
                     text = placeholder,
                     style = textStyle.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                    modifier = Modifier
-                        .padding(start = padding, top = padding, end = padding, bottom = padding)
-                        .fillMaxWidth()
+                    modifier = Modifier.padding(
+                        start = padding, top = padding, end = padding, bottom = padding
+                    ).fillMaxWidth()
                 )
             }
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
             ) {
                 BasicTextField(
                     value = value,
@@ -74,33 +73,22 @@ fun AppTextField(
                     visualTransformation = visual,
                     keyboardOptions = kind.keyboardOptions.copy(imeAction = imeAction),
                     keyboardActions = KeyboardActions(
-                        onDone = { onImeAction?.invoke() },
-                        onNext = { onImeAction?.invoke() }
-                    ),
+                        onDone = { onImeAction.invoke() },
+                        onNext = { onImeAction.invoke() }),
                     cursorBrush = SolidColor(textStyle.color),
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(
-                            start = padding,
-                            top = padding,
-                            bottom = padding,
-                            end = if (trailingIcon != null) 0.dp else padding
-                        )
+                    modifier = Modifier.weight(1f).padding(
+                        start = padding, top = padding, bottom = padding, end = 0.dp
+                    )
                 )
 
-                if (trailingIcon != null) {
-                    Box(Modifier.padding(end = padding, top = padding, bottom = padding)) {
-                        trailingIcon.invoke()
-                    }
+                Box(Modifier.padding(end = padding, top = padding, bottom = padding)) {
+                    trailingIcon.invoke()
                 }
             }
         }
 
         Box(
-            Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(MaterialTheme.colorScheme.onSurface)
+            Modifier.fillMaxWidth().height(1.dp).background(MaterialTheme.colorScheme.onSurface)
         )
     }
 }

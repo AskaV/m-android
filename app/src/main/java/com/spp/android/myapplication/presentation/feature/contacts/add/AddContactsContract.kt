@@ -9,7 +9,7 @@ object AddContactsContract {
         val items: List<ContactUi> = emptyList(),
         val selected: Set<String> = emptySet(),
         val isLoading: Boolean = false,
-        val error: String? = null
+        val error: String = ""
     )
 
     sealed interface Event {

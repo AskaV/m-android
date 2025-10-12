@@ -40,21 +40,16 @@ fun LoginScreenContent(
     val hPad = dimensionResource(R.dimen.spacer_medium)
 
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(start = hPad, end = hPad, bottom = hPad)
+        modifier = modifier.fillMaxSize().padding(start = hPad, end = hPad, bottom = hPad)
     ) {
         Column(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .fillMaxWidth(),
+            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(dimensionResource(R.dimen.auth_top_spacer)))
 
             AuthHeader(
-                title = AppText.Login.TITLE.text(),
-                subtitle = AppText.Login.SUBTITLE.text()
+                title = AppText.Login.TITLE.text(), subtitle = AppText.Login.SUBTITLE.text()
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
@@ -83,9 +78,7 @@ fun LoginScreenContent(
         }
 
         Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth(),
+            modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedBorderButton(

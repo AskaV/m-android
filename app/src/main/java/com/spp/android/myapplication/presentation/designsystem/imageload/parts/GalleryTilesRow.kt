@@ -15,7 +15,7 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPh
 internal fun GalleryTilesRow(
     modifier: Modifier = Modifier,
     showCamera: Boolean,
-    onCameraClick: () -> Unit,
+    onCameraClick: () -> Unit = {},
     maxColumns: Int,
     minTile: Dp,
     spacing: Dp
@@ -43,7 +43,6 @@ internal fun GalleryTilesRow(
 private fun GalleryTilesRowWithCameraPreview() = PreviewColumn {
     GalleryTilesRow(
         showCamera = true,
-        onCameraClick = {},
         maxColumns = 4,
         minTile = 64.dp,
         spacing = 8.dp

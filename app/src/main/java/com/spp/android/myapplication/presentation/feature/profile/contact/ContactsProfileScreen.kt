@@ -8,8 +8,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun ContactProfileScreen(
     contactId: String,
-    onBack: () -> Unit,
-    onOpenChat: (String) -> Unit,
+    onBack: () -> Unit = {},
+    onOpenChat: (String) -> Unit = {},
     vm: ContactProfileViewModel = androidx.hilt.navigation.compose.hiltViewModel()
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
@@ -30,12 +30,11 @@ fun ContactProfileScreen(
 
     ContactProfileScreen(
         state = ContactProfileUiState(
-            name = state.name,
-            linePrimary = state.linePrimary,
-            lineSecondary = state.lineSecondary,
-            hasSocial = state.hasSocial
-        ),
+        name = state.name,
+        linePrimary = state.linePrimary,
+        lineSecondary = state.lineSecondary,
+        hasSocial = state.hasSocial
+    ),
         onBack = { vm.onEvent(ContactProfileContract.Event.BackClicked) },
-        onMessage = { vm.onEvent(ContactProfileContract.Event.MessageClicked) }
-    )
+        onMessage = { vm.onEvent(ContactProfileContract.Event.MessageClicked) })
 }

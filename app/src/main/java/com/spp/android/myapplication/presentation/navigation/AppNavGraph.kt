@@ -31,92 +31,80 @@ fun AppNavGraph() {
     val toastMessage = AppText.OtherInfo.TOAST_CLICKED.text(context)
 
     NavHost(
-        navController = navController,
-        startDestination = Routes.Login.route
+        navController = navController, startDestination = Routes.Login.route
     ) {
         composable(Routes.Login.route) {
-            LoginScreen(
-                onForgotPassword = {
-                    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
-                },
-                onNavigateHome = {
-                    navController.navigate(Routes.Home.route) {
-                        popUpTo(0)
-                    }
-                }, onNavigateToRegister = {
-                    navController.navigate(Routes.SignUp.route)
-                })
+            LoginScreen(onForgotPassword = {
+                Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+            }, onNavigateHome = {
+                navController.navigate(Routes.Home.route) {
+                    popUpTo(0)
+                }
+            }, onNavigateToRegister = {
+                navController.navigate(Routes.SignUp.route)
+            })
         }
 
         composable(Routes.SignUp.route) {
-            SignUpScreen(
-                onOpenGoogle = {
-                    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
-                },
-                onNavigateToLogin = {
-                    navController.navigate(Routes.Login.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onNavigateToExtended = {
-                    navController.navigate(Routes.SignUpExtended.route)
-                })
+            SignUpScreen(onOpenGoogle = {
+                Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+            }, onNavigateToLogin = {
+                navController.navigate(Routes.Login.route) {
+                    launchSingleTop = true
+                }
+            }, onNavigateToExtended = {
+                navController.navigate(Routes.SignUpExtended.route)
+            })
         }
 
         composable(Routes.SignUpExtended.route) {
-            SignUpExtendedScreen(
-                onBack = {
-                    navController.popBackStack()
-                },
-                onNavigateHome = {
-                    navController.navigate(Routes.Home.route) {
-                        popUpTo(0)
-                    }
-                })
+            SignUpExtendedScreen(onBack = {
+                navController.popBackStack()
+            }, onNavigateHome = {
+                navController.navigate(Routes.Home.route) {
+                    popUpTo(0)
+                }
+            })
         }
 
         composable(Routes.Home.route) {
 
-            navController.currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(NavKeys.PROFILE_UPDATED, true)
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                    NavKeys.PROFILE_UPDATED,
+                    true
+                )
             val tabsController = remember { HomeTabsController() }
 
-            HomeTabs(
-                controller = tabsController,
-                profile = {
-                    MyProfileScreen(
-                        onNavigateContacts = { tabsController.goTo(HomeTab.Contacts) },
-                        onNavigateEdit = { navController.navigate(Routes.EditProfile.route) },
-                        onNavigateAuth = {
-                            navController.navigate(Routes.Login.route) { popUpTo(0) }
-                        })
-                },
-                contacts = {
-                    ContactsScreen(
-                        onBack = { /* no-op */ },
-                        onOpenSearch = { /* no-op */ },
-                        onOpenAddContacts = {
-                            navController.navigate(Routes.AddContacts.route) {
-                                launchSingleTop = true
-                            }
-                        },
-                        onOpenContactProfile = { id ->
-                            navController.navigate(Routes.ContactProfile.create(id))
-                        })
-                })
+            HomeTabs(controller = tabsController, profile = {
+                MyProfileScreen(
+                    onNavigateContacts = { tabsController.goTo(HomeTab.Contacts) },
+                    onNavigateEdit = { navController.navigate(Routes.EditProfile.route) },
+                    onNavigateAuth = {
+                        navController.navigate(Routes.Login.route) { popUpTo(0) }
+                    })
+            }, contacts = {
+                ContactsScreen(
+                    onBack = { /* no-op */ },
+                    onOpenSearch = { /* no-op */ },
+                    onOpenAddContacts = {
+                        navController.navigate(Routes.AddContacts.route) {
+                            launchSingleTop = true
+                        }
+                    },
+                    onOpenContactProfile = { id ->
+                        navController.navigate(Routes.ContactProfile.create(id))
+                    })
+            })
         }
 
         composable(Routes.EditProfile.route) {
-            EditProfileScreen(
-                onBack = { navController.popBackStack() },
-                onDone = {
-                    navController.previousBackStackEntry
-                        ?.savedStateHandle
-                        ?.set(NavKeys.PROFILE_UPDATED, true)
-                    navController.popBackStack()
-                }
-            )
+            EditProfileScreen(onBack = { navController.popBackStack() }, onDone = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                        NavKeys.PROFILE_UPDATED,
+                        true
+                    )
+                navController.popBackStack()
+            })
         }
 
         composable(

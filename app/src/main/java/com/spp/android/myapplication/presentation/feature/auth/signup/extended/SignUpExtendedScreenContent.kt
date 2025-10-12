@@ -29,8 +29,8 @@ import com.spp.android.myapplication.presentation.texts.text
 data class SignUpProfileUiState(
     val username: String = "",
     val phone: String = "",
-    val usernameError: String? = null,
-    val phoneError: String? = null,
+    val usernameError: String = "",
+    val phoneError: String = "",
     val avatar: Uri? = null
 )
 

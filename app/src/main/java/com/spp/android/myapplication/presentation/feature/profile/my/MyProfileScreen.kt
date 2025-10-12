@@ -9,7 +9,7 @@ import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileCo
 
 @Composable
 fun MyProfileScreen(
-    onNavigateContacts: () -> Unit,
+    onNavigateContacts: () -> Unit = {},
     onNavigateEdit: () -> Unit,
     onNavigateAuth: () -> Unit,
     vm: MyProfileViewModel = hiltViewModel()
@@ -31,13 +31,12 @@ fun MyProfileScreen(
 
     ProfileScreen(
         state = ProfileUiState(
-            name = state.name,
-            linePrimary = state.linePrimary,
-            lineSecondary = state.lineSecondary,
-            isCompleted = state.isCompleted
-        ),
+        name = state.name,
+        linePrimary = state.linePrimary,
+        lineSecondary = state.lineSecondary,
+        isCompleted = state.isCompleted
+    ),
         onEditProfile = { vm.onEvent(C.Event.EditProfileClicked) },
         onViewContacts = { vm.onEvent(C.Event.ViewContactsClicked) },
-        onLogout = { vm.onEvent(C.Event.LogoutClicked) }
-    )
+        onLogout = { vm.onEvent(C.Event.LogoutClicked) })
 }

@@ -29,7 +29,7 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPh
 @Composable
 fun AvatarPicker(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+    onClick: () -> Unit = {},
     avatarSize: Dp = dimensionResource(id = R.dimen.avatar_size),
     badgeSize: Dp = dimensionResource(id = R.dimen.badge_size),
     space: Dp = dimensionResource(R.dimen.spacer_medium),
@@ -38,8 +38,7 @@ fun AvatarPicker(
     showBadge: Boolean = false
 ) {
     Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        modifier = modifier, verticalAlignment = Alignment.CenterVertically
     ) {
         androidx.compose.material3.Icon(
             painter = painterResource(R.drawable.baseline_account_circle_avatar),
@@ -52,12 +51,8 @@ fun AvatarPicker(
             Spacer(modifier = Modifier.width(space))
 
             Box(
-                modifier = Modifier
-                    .size(badgeSize)
-                    .clip(CircleShape)
-                    .background(badgeBg)
-                    .clickable(onClick = onClick),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.size(badgeSize).clip(CircleShape).background(badgeBg)
+                    .clickable(onClick = onClick), contentAlignment = Alignment.Center
             ) {
                 androidx.compose.material3.Icon(
                     painter = painterResource(R.drawable.ic_camera),
@@ -70,9 +65,7 @@ fun AvatarPicker(
                     color = badgeIconTint,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .offset(x = (-4).dp, y = (-1).dp)
+                    modifier = Modifier.align(Alignment.TopEnd).offset(x = (-4).dp, y = (-1).dp)
                 )
             }
         }
@@ -81,18 +74,20 @@ fun AvatarPicker(
 
 @PreviewPhones
 @Composable
+private fun AvatarPickerBadgePreview() {
+    PreviewColumn {
+        AvatarPicker(
+            showBadge = true
+        )
+    }
+}
+
+@PreviewPhones
+@Composable
 private fun AvatarPickerPreview() {
     PreviewColumn {
         AvatarPicker(
-            onClick = {},
             showBadge = false
-        )
-
-        Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.spacer_medium)))
-
-        AvatarPicker(
-            onClick = {},
-            showBadge = true
         )
     }
 }

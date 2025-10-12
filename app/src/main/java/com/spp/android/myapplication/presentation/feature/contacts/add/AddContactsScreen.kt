@@ -9,9 +9,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun AddContactsScreen(
-    onBack: () -> Unit,
-    onOpenSearch: () -> Unit,
-    onOpenProfile: (String) -> Unit,
+    onBack: () -> Unit = {},
+    onOpenSearch: () -> Unit = {},
+    onOpenProfile: (String) -> Unit = {},
     vm: AddContactsViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
@@ -38,6 +38,5 @@ fun AddContactsScreen(
         onToggleSelect = { vm.onEvent(AddContactsContract.Event.ToggleSelect(it)) },
         onMassAddClick = { vm.onEvent(AddContactsContract.Event.MassAddClicked) },
         onAddClick = { vm.onEvent(AddContactsContract.Event.AddClicked(it)) },
-        onRowClick = { contact -> onOpenProfile(contact.id) }
-    )
+        onRowClick = { contact -> onOpenProfile(contact.id) })
 }

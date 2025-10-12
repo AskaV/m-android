@@ -13,9 +13,9 @@ object EditProfileContract {
         val birthdate: String = "",
         val isLoading: Boolean = false,
         val isSaving: Boolean = false,
-        val error: String? = null,
-        val usernameError: String? = null,
-        val phoneError: String? = null
+        val error: String? = "",
+        val usernameError: String? = "",
+        val phoneError: String? = ""
     )
 
     sealed interface Event {

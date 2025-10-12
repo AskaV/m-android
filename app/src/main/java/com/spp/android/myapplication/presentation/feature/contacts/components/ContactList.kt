@@ -33,7 +33,7 @@ fun ContactList(
     items: List<ContactUi>,
     selectedIds: Set<String> = emptySet(),
     behavior: ContactListBehavior,
-    onItemClick: (ContactUi) -> Unit,
+    onItemClick: (ContactUi) -> Unit = {},
     onItemLongClick: (ContactUi) -> Unit = {},
     onDeleteClick: (ContactUi) -> Unit = {},
     state: LazyListState = rememberLazyListState(),
@@ -43,9 +43,7 @@ fun ContactList(
 
     Box(modifier = modifier) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = state,
-            contentPadding = contentPadding
+            modifier = Modifier.fillMaxSize(), state = state, contentPadding = contentPadding
         ) {
             items(items, key = { it.id }) { c ->
                 ContactCardOutlined(
@@ -69,21 +67,11 @@ fun ContactList(
 @Composable
 private fun ContactListPreviewNormal() {
     MyApplicationTheme {
-
         val items = remember { demoUsers() }
         ContactList(
-            items = items,
-            selectedIds = emptySet(),
-            behavior = ContactListBehavior(
-                selectionEnabled = false,
-                showDeleteIcon = true,
-                trailingForRow = null
-            ),
-            onItemClick = {},
-            onItemLongClick = {},
-            onDeleteClick = {},
-            contentPadding = PaddingValues(),
-            modifier = Modifier.fillMaxSize()
+            items = items, selectedIds = emptySet(), behavior = ContactListBehavior(
+                selectionEnabled = false, showDeleteIcon = true, trailingForRow = null
+            ), contentPadding = PaddingValues(), modifier = Modifier.fillMaxSize()
         )
     }
 }
@@ -92,22 +80,12 @@ private fun ContactListPreviewNormal() {
 @Composable
 private fun ContactListPreviewSelection() {
     MyApplicationTheme {
-
         val items = remember { demoUsers() }
         val selected = remember { setOf("2", "4") }
         ContactList(
-            items = items,
-            selectedIds = selected,
-            behavior = ContactListBehavior(
-                selectionEnabled = true,
-                showDeleteIcon = false,
-                trailingForRow = null
-            ),
-            onItemClick = {},
-            onItemLongClick = {},
-            onDeleteClick = {},
-            contentPadding = PaddingValues(),
-            modifier = Modifier.fillMaxSize()
+            items = items, selectedIds = selected, behavior = ContactListBehavior(
+                selectionEnabled = true, showDeleteIcon = false, trailingForRow = null
+            ), contentPadding = PaddingValues(), modifier = Modifier.fillMaxSize()
         )
     }
 }
