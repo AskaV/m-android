@@ -31,10 +31,10 @@ class AddContactsViewModel @Inject constructor(
 
     fun onEvent(e: AddContactsContract.Event) {
         when (e) {
-            AddContactsContract.Event.Load -> load()
-            AddContactsContract.Event.BackClicked -> emit(AddContactsContract.Effect.NavigateBack)
+            is AddContactsContract.Event.Load -> load()
+            is AddContactsContract.Event.BackClicked -> emit(AddContactsContract.Effect.NavigateBack)
 
-            AddContactsContract.Event.SearchClicked -> emit(AddContactsContract.Effect.OpenSearch)
+            is AddContactsContract.Event.SearchClicked -> emit(AddContactsContract.Effect.OpenSearch)
 
             is AddContactsContract.Event.ToggleSelect -> {
                 _state.update { st ->
@@ -45,7 +45,7 @@ class AddContactsViewModel @Inject constructor(
                 }
             }
 
-            AddContactsContract.Event.MassAddClicked -> {
+            is AddContactsContract.Event.MassAddClicked -> {
                 val count = _state.value.selected.size
                 if (count > 0) {
                     emit(
@@ -57,7 +57,7 @@ class AddContactsViewModel @Inject constructor(
                 }
             }
 
-            AddContactsContract.Event.ErrorShown -> _state.update { it.copy() }
+            is AddContactsContract.Event.ErrorShown -> _state.update { it.copy() }
 
             is AddContactsContract.Event.AddClicked -> {
                 _state.update { st ->

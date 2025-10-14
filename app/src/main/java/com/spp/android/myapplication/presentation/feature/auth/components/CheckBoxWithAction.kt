@@ -34,7 +34,7 @@ import com.spp.android.myapplication.presentation.texts.AppText
 fun CheckBoxWithAction(
     modifier: Modifier = Modifier,
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
+    onCheckedChange: (Boolean) -> Unit= {},
     label: String,
     actionText: String = "",
     onActionClick: () -> Unit = {}

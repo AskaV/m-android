@@ -48,10 +48,10 @@ class EditProfileViewModel @Inject constructor(
             is EditProfileContract.Event.BirthdateChanged ->
                 _state.update { it.copy(birthdate = event.value) }
 
-            EditProfileContract.Event.SaveClicked -> save()
-            EditProfileContract.Event.BackClicked -> emit(EditProfileContract.Effect.NavigateBack)
-            EditProfileContract.Event.AvatarClicked -> emit(EditProfileContract.Effect.OpenAvatarPicker)
-            EditProfileContract.Event.ErrorShown ->
+            is EditProfileContract.Event.SaveClicked -> save()
+            is EditProfileContract.Event.BackClicked -> emit(EditProfileContract.Effect.NavigateBack)
+            is EditProfileContract.Event.AvatarClicked -> emit(EditProfileContract.Effect.OpenAvatarPicker)
+            is EditProfileContract.Event.ErrorShown ->
                 _state.update { it.copy(error = null) }
         }
     }

@@ -26,25 +26,46 @@ class LoginViewModel @Inject constructor(
 
     fun onEvent(event: LoginContract.Event) {
         when (event) {
-            is LoginContract.Event.EmailChanged -> { _state.update { it.copy(email = event.value, emailError = null, error = null) } }
-            is LoginContract.Event.PasswordChanged -> { _state.update { it.copy(password = event.value, passwordError = null, error = null) } }
-            is LoginContract.Event.RememberChanged -> { _state.update { it.copy(rememberMe = event.value) } }
+            is LoginContract.Event.EmailChanged -> {
+                _state.update { it.copy(email = event.value, emailError = null, error = null) }
+            }
 
-            LoginContract.Event.EmailBlur -> { _state.update { s ->  s.copy(emailError = validateEmail(appContext, s.email)) } }
-            LoginContract.Event.PasswordBlur -> { _state.update { s ->  s.copy(passwordError  = validateEmail(appContext, s.password)) } }
+            is LoginContract.Event.PasswordChanged -> {
+                _state.update {
+                    it.copy(
+                        password = event.value, passwordError = null, error = null
+                    )
+                }
+            }
 
-            LoginContract.Event.ForgotPasswordClicked -> { viewModelScope.launch { _effect.send(LoginContract.Effect.ForgotPassword) } }
+            is LoginContract.Event.RememberChanged -> {
+                _state.update { it.copy(rememberMe = event.value) }
+            }
 
-            LoginContract.Event.Submit -> submit()
-            LoginContract.Event.ErrorShown -> _state.update { it.copy(error = null) }
-            LoginContract.Event.Clear -> _state.value = LoginContract.State()
+            is LoginContract.Event.EmailBlur -> {
+                _state.update { s -> s.copy(emailError = validateEmail(appContext, s.email)) }
+            }
+
+            is LoginContract.Event.PasswordBlur -> {
+                _state.update { s -> s.copy(passwordError = validateEmail(appContext, s.password)) }
+            }
+
+            is LoginContract.Event.ForgotPasswordClicked -> {
+                viewModelScope.launch {
+                    _effect.send(LoginContract.Effect.ForgotPassword)
+                }
+            }
+
+            is LoginContract.Event.Submit -> submit()
+            is LoginContract.Event.ErrorShown -> _state.update { it.copy(error = null) }
+            is LoginContract.Event.Clear -> _state.value = LoginContract.State()
         }
     }
 
     private fun submit() = viewModelScope.launch {
-        val s = state.value
-        val emailErr = validateEmail(appContext, s.email)
-        val passErr = validatePassword(appContext,s.password)
+        val state = this@LoginViewModel.state.value
+        val emailErr = validateEmail(appContext, state.email)
+        val passErr = validatePassword(appContext, state.password)
 
         if (emailErr != null || passErr != null) {
             _state.update { it.copy(emailError = emailErr, passwordError = passErr) }
@@ -58,7 +79,13 @@ class LoginViewModel @Inject constructor(
         }.onSuccess {
             _effect.send(LoginContract.Effect.NavigateToHome)
         }.onFailure { t ->
-            _state.update { it.copy(error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)) }
+            _state.update {
+                it.copy(
+                    error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(
+                        appContext
+                    )
+                )
+            }
         }
 
         _state.update { it.copy(isLoading = false) }

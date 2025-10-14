@@ -29,15 +29,15 @@ class ContactProfileViewModel @Inject constructor(
     fun onEvent(event: ContactProfileContract.Event) {
         when (event) {
             is ContactProfileContract.Event.Load -> load(event.contactId)
-            ContactProfileContract.Event.BackClicked -> emit(ContactProfileContract.Effect.NavigateBack)
+            is ContactProfileContract.Event.BackClicked -> emit(ContactProfileContract.Effect.NavigateBack)
 
-            ContactProfileContract.Event.MessageClicked -> _state.value.contactId.takeIf { it.isNotBlank() }
+            is ContactProfileContract.Event.MessageClicked -> _state.value.contactId.takeIf { it.isNotBlank() }
                 ?.let {
                     emit(ContactProfileContract.Effect.OpenChat(it))
                 }
 
-            ContactProfileContract.Event.AddClicked -> addContact()
-            ContactProfileContract.Event.ErrorShown -> _state.update { it.copy(error = null) }
+            is ContactProfileContract.Event.AddClicked -> addContact()
+            is ContactProfileContract.Event.ErrorShown -> _state.update { it.copy(error = null) }
         }
     }
 

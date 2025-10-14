@@ -38,10 +38,10 @@ class ContactsViewModel @Inject constructor(
 
     fun onEvent(event: ContactsContract.Event) {
         when (event) {
-            ContactsContract.Event.Load -> load()
-            ContactsContract.Event.BackClicked -> emit(ContactsContract.Effect.NavigateBack)
-            ContactsContract.Event.SearchClicked -> emit(ContactsContract.Effect.OpenSearch)
-            ContactsContract.Event.AddContactsClicked -> emit(ContactsContract.Effect.OpenAddContacts)
+            is ContactsContract.Event.Load -> load()
+            is ContactsContract.Event.BackClicked -> emit(ContactsContract.Effect.NavigateBack)
+            is ContactsContract.Event.SearchClicked -> emit(ContactsContract.Effect.OpenSearch)
+            is ContactsContract.Event.AddContactsClicked -> emit(ContactsContract.Effect.OpenAddContacts)
             is ContactsContract.Event.ContactClicked -> emit(
                 ContactsContract.Effect.OpenContactProfile(
                     event.item.id
@@ -49,7 +49,7 @@ class ContactsViewModel @Inject constructor(
             )
 
             is ContactsContract.Event.DeleteClicked -> delete(event.item)
-            ContactsContract.Event.ErrorShown -> _state.update { it.copy(error = null) }
+            is ContactsContract.Event.ErrorShown -> _state.update { it.copy(error = null) }
 
             is ContactsContract.Event.ContactLongClicked -> {
                 _state.update { st ->
@@ -70,7 +70,7 @@ class ContactsViewModel @Inject constructor(
                 }
             }
 
-            ContactsContract.Event.BulkDeleteClicked -> {
+            is ContactsContract.Event.BulkDeleteClicked -> {
                 val ids = _state.value.selected
                 _state.update { st ->
                     st.copy(
