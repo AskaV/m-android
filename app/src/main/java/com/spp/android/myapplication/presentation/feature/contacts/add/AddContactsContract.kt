@@ -7,7 +7,7 @@ object AddContactsContract {
     @Immutable
     data class State(
         val items: List<ContactUi> = emptyList(),
-        val selected: Set<String> = emptySet(),
+        val selected: Set<Int> = emptySet(),
         val isLoading: Boolean = false,
         val error: String = ""
     )

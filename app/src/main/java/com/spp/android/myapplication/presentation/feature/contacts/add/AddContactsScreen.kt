@@ -11,7 +11,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun AddContactsScreen(
     onBack: () -> Unit = {},
     onOpenSearch: () -> Unit = {},
-    onOpenProfile: (String) -> Unit = {},
+    onOpenProfile: (Int) -> Unit = {},
     vm: AddContactsViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsStateWithLifecycle()

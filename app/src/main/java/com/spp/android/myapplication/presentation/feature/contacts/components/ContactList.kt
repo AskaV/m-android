@@ -31,7 +31,7 @@ data class ContactListBehavior(
 fun ContactList(
     modifier: Modifier = Modifier,
     items: List<ContactUi>,
-    selectedIds: Set<String> = emptySet(),
+    selectedIds: Set<Int> = emptySet(),
     behavior: ContactListBehavior,
     onItemClick: (ContactUi) -> Unit = {},
     onItemLongClick: (ContactUi) -> Unit = {},
@@ -81,7 +81,7 @@ private fun ContactListPreviewNormal() {
 private fun ContactListPreviewSelection() {
     MyApplicationTheme {
         val items = remember { demoUsers() }
-        val selected = remember { setOf("2", "4") }
+        val selected = remember { setOf(2, 4) }
         ContactList(
             items = items, selectedIds = selected, behavior = ContactListBehavior(
                 selectionEnabled = true, showDeleteIcon = false, trailingForRow = null

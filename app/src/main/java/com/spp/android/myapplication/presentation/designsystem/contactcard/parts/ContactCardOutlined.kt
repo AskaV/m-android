@@ -35,7 +35,7 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPh
 import com.spp.android.myapplication.presentation.feature.components.SelectionCheck
 
 data class ContactUi(
-    val id: String,
+    val id: Int,
     val name: String,
     val subtitle: String,
     val avatarUrl: String? = "",
@@ -129,9 +129,9 @@ private fun ContactCardOutlinedPreview() {
     PreviewColumn {
         ContactCardOutlined(
             contact = ContactUi(
-            id = "1",
+            id = 1,
             name = ContactPreviewText.Preview.NAME1,
             subtitle = ContactPreviewText.Preview.SUBTITLE1,
-        ), onClick = {}, onDeleteClick = {})
+        ))
     }
 }

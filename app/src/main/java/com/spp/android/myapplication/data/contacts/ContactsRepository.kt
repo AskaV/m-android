@@ -27,14 +27,18 @@ class ContactsRepository @Inject constructor(
         )
 
         val result = mutableListOf<ContactUi>()
-        val seen = HashSet<String>()
+        val seen = HashSet<Int>()
 
         cursor?.use { c ->
             val idIdx = c.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)
             val nameIdx = c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY)
             val numIdx = c.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)
             while (c.moveToNext()) {
-                val id = c.getString(idIdx)
+                val id = try {
+                    c.getInt(idIdx)
+                } catch (e: Exception) {
+                    c.getString(idIdx)?.toIntOrNull() ?: continue
+                }
                 if (!seen.add(id)) continue
                 val name = c.getString(nameIdx) ?: "No name"
                 val phone = c.getString(numIdx).orEmpty()

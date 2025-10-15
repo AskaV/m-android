@@ -42,7 +42,7 @@ fun ContactsScreenContent(
     onScrollTopClick: () -> Unit = {},
     showRecycleBin: Boolean = false,
     onContactLongClick: (ContactUi) -> Unit = {},
-    selectedIds: Set<String> = emptySet(),
+    selectedIds: Set<Int> = emptySet(),
     isSelectionMode: Boolean = showRecycleBin
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)

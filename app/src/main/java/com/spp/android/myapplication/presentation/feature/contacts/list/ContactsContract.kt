@@ -10,7 +10,7 @@ object ContactsContract {
         val items: List<ContactUi> = emptyList(),
         val isLoading: Boolean = false,
         val error: String? = "",
-        val selected: Set<String> = emptySet(),
+        val selected: Set<Int> = emptySet(),
         val isSelectionMode: Boolean = false
     )
 
@@ -33,7 +33,7 @@ object ContactsContract {
         data object NavigateBack : Effect
         data object OpenSearch : Effect
         data object OpenAddContacts : Effect
-        data class OpenContactProfile(val contactId: String) : Effect
+        data class OpenContactProfile(val contactId: Int) : Effect
         data class ShowMessage(val message: String) : Effect
     }
 }

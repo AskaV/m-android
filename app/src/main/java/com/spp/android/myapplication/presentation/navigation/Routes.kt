@@ -11,11 +11,11 @@ sealed class Routes(val route: String) {
 
     data object ContactProfile : Routes("contact/{contactId}") {
         const val ARG = "contactId"
-        fun create(id: String) = "contact/$id"
+        fun create(id: Int) = "contact/$id"
     }
 
     data object AddContactProfile : Routes("contact_profile/{id}") {
         const val ARG = "id"
-        fun create(id: String) = "contact_profile/$id"
+        fun create(id: Int) = "contact_profile/$id"
     }
 }

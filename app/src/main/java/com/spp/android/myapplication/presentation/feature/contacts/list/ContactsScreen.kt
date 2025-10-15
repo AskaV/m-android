@@ -11,7 +11,7 @@ fun ContactsScreen(
     onBack: () -> Unit = {},
     onOpenSearch: () -> Unit = {},
     onOpenAddContacts: () -> Unit = {},
-    onOpenContactProfile: (String) -> Unit = {},
+    onOpenContactProfile: (Int) -> Unit = {},
     vm: ContactsViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsStateWithLifecycle()

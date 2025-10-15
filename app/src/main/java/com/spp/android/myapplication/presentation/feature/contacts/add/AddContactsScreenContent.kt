@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddContactsScreenContent(
     items: List<ContactUi>,
-    selectedIds: Set<String>,
+    selectedIds: Set<Int> = emptySet(),
     onBack: () -> Unit = {},
     onSearchClick: () -> Unit = {},
     onToggleSelect: (ContactUi) -> Unit = {},
