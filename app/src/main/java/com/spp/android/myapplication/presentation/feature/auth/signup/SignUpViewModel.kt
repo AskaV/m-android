@@ -7,6 +7,7 @@ import com.spp.android.myapplication.domain.validation.validateEmail
 import com.spp.android.myapplication.domain.validation.validatePassword
 import com.spp.android.myapplication.domain.validation.validatePhone
 import com.spp.android.myapplication.domain.validation.validateUsername
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.*
 import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -34,127 +35,110 @@ class SignUpViewModel @Inject constructor(
     private val _effect = Channel<SignUpContract.Effect>(Channel.BUFFERED)
     val effect: Flow<SignUpContract.Effect> = _effect.receiveAsFlow()
 
+    // --- единые мутаторы состояния ---
+    private inline fun updateState(block: SignUpContract.State.() -> SignUpContract.State) {
+        _state.update { it.block() }
+    }
+
+    private inline fun updateProfile(block: SignUpContract.ProfileState.() -> SignUpContract.ProfileState) {
+        _profile.update { it.block() }
+    }
+
+    private enum class Field { EMAIL, PASSWORD, USERNAME, PHONE }
+
+    private fun SignUpContract.State.clear(field: Field): SignUpContract.State = when (field) {
+        Field.EMAIL -> copy(fields = fields.copy(emailError = null))
+        Field.PASSWORD -> copy(fields = fields.copy(passwordError = null))
+        else -> this
+    }
+
+    private fun SignUpContract.ProfileState.clear(field: Field): SignUpContract.ProfileState =
+        when (field) {
+            Field.USERNAME -> copy(usernameError = "")
+            Field.PHONE -> copy(phoneError = "")
+            else -> this
+
+        }
+
+    private fun SignUpContract.State.validate(field: Field): SignUpContract.State = when (field) {
+        Field.EMAIL -> copy(
+            fields = fields.copy(
+                emailError = validateEmail(
+                    appContext, fields.email
+                )
+            )
+        )
+
+        Field.PASSWORD -> copy(
+            fields = fields.copy(
+                passwordError = validatePassword(
+                    appContext, fields.password
+                )
+            )
+        )
+
+        else -> this
+    }
+
+    private fun SignUpContract.ProfileState.validate(field: Field): SignUpContract.ProfileState =
+        when (field) {
+            Field.USERNAME -> copy(usernameError = validateUsername(appContext, username).orEmpty())
+            Field.PHONE -> copy(phoneError = validatePhone(appContext, phone).orEmpty())
+            else -> this
+        }
+
     fun onEvent(event: SignUpContract.Event) {
         when (event) {
-            is SignUpContract.Event.EmailChanged -> {
-                _state.update {
-                    it.copy(
-                        fields = it.fields.copy(
-                            email = event.value, emailError = null
-                        )
-                    )
-                }
+            is EmailChanged -> updateState {
+                copy(fields = fields.copy(email = event.value)).clear(Field.EMAIL)
             }
 
-            is SignUpContract.Event.PasswordChanged -> {
-                _state.update {
-                    it.copy(
-                        fields = it.fields.copy(
-                            password = event.value, passwordError = null
-                        )
-                    )
-                }
+            is PasswordChanged -> updateState {
+                copy(fields = fields.copy(password = event.value)).clear(Field.PASSWORD)
             }
 
-            is SignUpContract.Event.RememberChanged -> {
-                _state.update { it.copy(rememberMe = event.value) }
+            is RememberChanged -> updateState { copy(rememberMe = event.value) }
+            is EmailBlur -> updateState { validate(Field.EMAIL) }
+            is PasswordBlur -> updateState { validate(Field.PASSWORD) }
+
+            is UsernameChanged -> updateProfile { copy(username = event.value).clear(Field.USERNAME) }
+
+            is PhoneChanged -> updateProfile { copy(phone = event.value).clear(Field.PHONE) }
+
+            is UsernameBlur -> updateProfile { validate(Field.USERNAME) }
+            is PhoneBlur -> updateProfile { validate(Field.PHONE) }
+            is AvatarPicked -> updateProfile { copy(avatar = event.uri) }
+
+            is PickAvatar -> viewModelScope.launch {
+                _effect.send(SignUpContract.Effect.OpenAvatarPicker)
             }
 
-            is SignUpContract.Event.SubmitRegister -> submitRegister()
-            is SignUpContract.Event.RegisterWithGoogle -> viewModelScope.launch {
-                _effect.send(
-                    SignUpContract.Effect.OpenGoogleSignIn
-                )
+            is RegisterWithGoogle -> viewModelScope.launch {
+                _effect.send(SignUpContract.Effect.OpenGoogleSignIn)
             }
 
-            is SignUpContract.Event.NavigateToExtendedRequested -> submitRegister()
-
-            is SignUpContract.Event.ErrorShown -> _state.update { it.copy() }
-
-
-            is SignUpContract.Event.UsernameChanged -> {
-                _profile.update { it.copy(username = event.value) }
+            is SubmitRegister -> submitRegister()
+            is ForwardExtended -> submitExtended()
+            is NavigateToExtendedRequested -> submitRegister()
+            is CancelExtended -> viewModelScope.launch {
+                updateProfile { SignUpContract.ProfileState() }
+                updateState { SignUpContract.State() }
+                _effect.send(SignUpContract.Effect.BackFromExtended)
             }
 
-            is SignUpContract.Event.PhoneChanged -> {
-                _profile.update { it.copy(phone = event.value) }
-            }
-
-            is SignUpContract.Event.UsernameBlur -> {
-                _profile.update { p ->
-                    p.copy(
-                        usernameError = validateUsername(
-                            appContext, p.username
-                        ).orEmpty()
-                    )
-                }
-            }
-
-            is SignUpContract.Event.PhoneBlur -> {
-                _profile.update { p ->
-                    p.copy(
-                        phoneError = validatePhone(
-                            appContext, p.phone
-                        ).orEmpty()
-                    )
-                }
-            }
-
-
-            is SignUpContract.Event.PickAvatar -> viewModelScope.launch {
-                _effect.send(
-                    SignUpContract.Effect.OpenAvatarPicker
-                )
-            }
-
-            is SignUpContract.Event.CancelExtended -> viewModelScope.launch {
-                _profile.value = SignUpContract.ProfileState(); _state.value =
-                SignUpContract.State();_effect.send(
-                SignUpContract.Effect.BackFromExtended
-            )
-            }
-
-            is SignUpContract.Event.ForwardExtended -> submitExtended()
-            is SignUpContract.Event.EmailBlur -> {
-                _state.update { s ->
-                    s.copy(
-                        fields = s.fields.copy(
-                            emailError = validateEmail(
-                                appContext, s.fields.email
-                            )
-                        )
-                    )
-                }
-            }
-
-            is SignUpContract.Event.PasswordBlur -> {
-                _state.update { s ->
-                    s.copy(
-                        fields = s.fields.copy(
-                            passwordError = validatePassword(
-                                appContext, s.fields.password
-                            )
-                        )
-                    )
-                }
-            }
-
-            is SignUpContract.Event.AvatarPicked -> {
-                _profile.update { it.copy(avatar = event.uri) }
-            }
+            is ErrorShown -> updateState { copy(error = "") }
         }
     }
 
     private fun submitRegister() = viewModelScope.launch {
-        val s = state.value
-
+        val s = _state.value
         val emailErr = validateEmail(appContext, s.fields.email.trim())
         val passErr = validatePassword(appContext, s.fields.password)
 
         if (emailErr != null || passErr != null) {
-            _state.update {
-                it.copy(
-                    fields = it.fields.copy(
+            updateState {
+                copy(
+                    fields = fields.copy(
                         emailError = emailErr, passwordError = passErr
                     )
                 )
@@ -162,16 +146,15 @@ class SignUpViewModel @Inject constructor(
             return@launch
         }
 
-        _state.update { it.copy(isLoading = true) }
+        updateState { copy(isLoading = true, error = "") }
 
         runCatching {
-            // TODO:
+            Unit
         }.onSuccess {
             _effect.send(SignUpContract.Effect.NavigateToExtended)
         }.onFailure { t ->
-            _state.update {
-                it.copy(error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext))
-            }
+            val message = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
+            updateState { copy(error = message) }
             _effect.send(
                 SignUpContract.Effect.ShowMessage(
                     AppText.OtherInfo.LOGIN_FAILED.text(
@@ -181,42 +164,33 @@ class SignUpViewModel @Inject constructor(
             )
         }
 
-        _state.update { it.copy(isLoading = false) }
+        updateState { copy(isLoading = false) }
     }
 
     private fun submitExtended() = viewModelScope.launch {
-        val p = profile.value
+        val normalizedPhone = _profile.value.phone.replace(Regex("[^+\\d]"), "")
 
-        val normalizedPhone = p.phone.replace(Regex("[^+\\d]"), "")
-
-        val usernameErr = validateUsername(appContext, p.username)
+        val usernameErr = validateUsername(appContext, _profile.value.username)
         val phoneErr = validatePhone(appContext, normalizedPhone)
+
         if (usernameErr != null || phoneErr != null) {
-            _profile.update {
-                it.copy(
+            updateProfile {
+                copy(
+                    usernameError = usernameErr.orEmpty(), phoneError = phoneErr.orEmpty()
                 )
             }
             return@launch
         }
 
-        _profile.update {
-            it.copy(
-                isLoading = true
-            )
-        }
+        updateProfile { copy(isLoading = true) }
 
         runCatching {
-            // TODO:
+            Unit
         }.onSuccess {
             _effect.send(SignUpContract.Effect.NavigateToHome)
         }.onFailure { t ->
-            _state.update {
-                it.copy(
-                    error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(
-                        appContext
-                    )
-                )
-            }
+            val message = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
+            updateState { copy(error = message) }
             _effect.send(
                 SignUpContract.Effect.ShowMessage(
                     AppText.OtherInfo.LOGIN_FAILED.text(
@@ -226,6 +200,6 @@ class SignUpViewModel @Inject constructor(
             )
         }
 
-        _profile.update { it.copy(isLoading = false) }
+        updateProfile { copy(isLoading = false) }
     }
 }

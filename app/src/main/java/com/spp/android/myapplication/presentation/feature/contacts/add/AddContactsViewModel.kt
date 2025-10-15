@@ -3,6 +3,8 @@ package com.spp.android.myapplication.presentation.feature.contacts.add
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Effect
+import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.*
 import com.spp.android.myapplication.presentation.feature.contacts.components.demoUsers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -22,21 +24,21 @@ class AddContactsViewModel @Inject constructor(
     private val _state = MutableStateFlow(AddContactsContract.State())
     val state = _state.asStateFlow()
 
-    private val _effect = Channel<AddContactsContract.Effect>(Channel.BUFFERED)
+    private val _effect = Channel<Effect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
     init {
-        onEvent(AddContactsContract.Event.Load)
+        onEvent(Load)
     }
 
     fun onEvent(e: AddContactsContract.Event) {
         when (e) {
-            is AddContactsContract.Event.Load -> load()
-            is AddContactsContract.Event.BackClicked -> emit(AddContactsContract.Effect.NavigateBack)
+            is Load -> load()
+            is BackClicked -> sendEffect(Effect.NavigateBack)
 
-            is AddContactsContract.Event.SearchClicked -> emit(AddContactsContract.Effect.OpenSearch)
+            is SearchClicked -> sendEffect(Effect.OpenSearch)
 
-            is AddContactsContract.Event.ToggleSelect -> {
+            is ToggleSelect -> {
                 _state.update { st ->
                     val ns = st.selected.toMutableSet().apply {
                         if (contains(e.item.id)) remove(e.item.id) else add(e.item.id)
@@ -45,11 +47,11 @@ class AddContactsViewModel @Inject constructor(
                 }
             }
 
-            is AddContactsContract.Event.MassAddClicked -> {
+            is MassAddClicked -> {
                 val count = _state.value.selected.size
                 if (count > 0) {
-                    emit(
-                        AddContactsContract.Effect.ShowMessage(
+                    sendEffect(
+                        Effect.ShowMessage(
                             "Added $count contact(s)"
                         )
                     )
@@ -57,13 +59,13 @@ class AddContactsViewModel @Inject constructor(
                 }
             }
 
-            is AddContactsContract.Event.ErrorShown -> _state.update { it.copy() }
+            is ErrorShown -> _state.update { it.copy() }
 
-            is AddContactsContract.Event.AddClicked -> {
+            is AddClicked -> {
                 _state.update { st ->
                     st.copy(items = st.items.filterNot { it.id == e.item.id })
                 }
-                emit(AddContactsContract.Effect.ShowMessage("Added ${e.item.name}"))
+                sendEffect(Effect.ShowMessage("Added ${e.item.name}"))
             }
         }
     }
@@ -73,5 +75,5 @@ class AddContactsViewModel @Inject constructor(
         _state.update { it.copy(items = demoUsers(), isLoading = false) }
     }
 
-    private fun emit(e: AddContactsContract.Effect) = viewModelScope.launch { _effect.send(e) }
+    private fun sendEffect(e: Effect) = viewModelScope.launch { _effect.send(e) }
 }

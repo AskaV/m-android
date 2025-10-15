@@ -3,6 +3,9 @@ package com.spp.android.myapplication.presentation.feature.profile.my
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.*
 import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,31 +26,22 @@ class MyProfileViewModel @Inject constructor(
     private val _state = MutableStateFlow(MyProfileContract.State())
     val state: StateFlow<MyProfileContract.State> = _state.asStateFlow()
 
-    private val _effect = Channel<MyProfileContract.Effect>(Channel.BUFFERED)
+    private val _effect = Channel<Effect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
     init {
-        onEvent(MyProfileContract.Event.Load)
+        onEvent(Load)
     }
 
-    fun onEvent(event: MyProfileContract.Event) {
+    fun onEvent(event: Event) {
         when (event) {
-            MyProfileContract.Event.Load,
-            MyProfileContract.Event.Refresh -> loadProfile()
+            Load, Refresh -> loadProfile()
+            EditProfileClicked -> sendEffect(Effect.NavigateToEditProfile)
+            ViewContactsClicked -> sendEffect(Effect.NavigateToContacts)
+            LogoutClicked -> performLogout()
+            ErrorShown -> _state.update { it.copy(error = null) }
 
-            MyProfileContract.Event.EditProfileClicked ->
-                emitEffect(MyProfileContract.Effect.NavigateToEditProfile)
-
-            MyProfileContract.Event.ViewContactsClicked ->
-                emitEffect(MyProfileContract.Effect.NavigateToContacts)
-
-            MyProfileContract.Event.LogoutClicked ->
-                performLogout()
-
-            MyProfileContract.Event.ErrorShown ->
-                _state.update { it.copy(error = null) }
-
-            is MyProfileContract.Event.ProfileSaved -> {
+            is ProfileSaved -> {
                 _state.update {
                     it.copy(
                         name = event.username,
@@ -58,13 +52,8 @@ class MyProfileViewModel @Inject constructor(
                 }
             }
 
-            MyProfileContract.Event.SignUpFinished -> {
-                _state.update { it.copy(isCompleted = false) }
-            }
-
-            MyProfileContract.Event.MarkCompleted -> {
-                _state.update { it.copy(isCompleted = true) }
-            }
+            SignUpFinished -> { _state.update { it.copy(isCompleted = false) } }
+            MarkCompleted -> { _state.update { it.copy(isCompleted = true) } }
         }
     }
 
@@ -92,9 +81,16 @@ class MyProfileViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     isLoading = false,
-                    error = throwable.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext))
+                    error = throwable.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
+                )
             }
-            emitEffect(MyProfileContract.Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_LOAD_PROFILE.text(appContext)))
+            sendEffect(
+                Effect.ShowMessage(
+                    AppText.OtherInfo.FAILED_TO_LOAD_PROFILE.text(
+                        appContext
+                    )
+                )
+            )
         }
     }
 
@@ -105,19 +101,26 @@ class MyProfileViewModel @Inject constructor(
             true
         }.onSuccess {
             _state.update { it.copy(isLoading = false) }
-            emitEffect(MyProfileContract.Effect.NavigateToAuth)
+            sendEffect(Effect.NavigateToAuth)
         }.onFailure { throwable ->
             _state.update {
                 it.copy(
                     isLoading = false,
-                    error = throwable.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext))
+                    error = throwable.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
+                )
 
             }
-            emitEffect(MyProfileContract.Effect.ShowMessage(AppText.OtherInfo.LOGOUT_FAILED.text(appContext)))
+            sendEffect(
+                Effect.ShowMessage(
+                    AppText.OtherInfo.LOGOUT_FAILED.text(
+                        appContext
+                    )
+                )
+            )
         }
     }
 
-    private fun emitEffect(effect: MyProfileContract.Effect) = viewModelScope.launch {
+    private fun sendEffect(effect: Effect) = viewModelScope.launch {
         _effect.send(effect)
     }
 

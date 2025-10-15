@@ -3,6 +3,8 @@ package com.spp.android.myapplication.presentation.feature.profile.contact
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Effect
+import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Event
 import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,21 +25,20 @@ class ContactProfileViewModel @Inject constructor(
     private val _state = MutableStateFlow(ContactProfileContract.State())
     val state: StateFlow<ContactProfileContract.State> = _state.asStateFlow()
 
-    private val _effect = Channel<ContactProfileContract.Effect>(Channel.BUFFERED)
+    private val _effect = Channel<Effect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
-    fun onEvent(event: ContactProfileContract.Event) {
+    fun onEvent(event: Event) {
         when (event) {
-            is ContactProfileContract.Event.Load -> load(event.contactId)
-            is ContactProfileContract.Event.BackClicked -> emit(ContactProfileContract.Effect.NavigateBack)
+            is Event.Load -> load(event.contactId)
+            is Event.BackClicked -> sendEffect(Effect.NavigateBack)
 
-            is ContactProfileContract.Event.MessageClicked -> _state.value.contactId.takeIf { it.isNotBlank() }
-                ?.let {
-                    emit(ContactProfileContract.Effect.OpenChat(it))
-                }
+            is Event.MessageClicked -> _state.value.contactId.takeIf { it.isNotBlank() }?.let {
+                sendEffect(Effect.OpenChat(it))
+            }
 
-            is ContactProfileContract.Event.AddClicked -> addContact()
-            is ContactProfileContract.Event.ErrorShown -> _state.update { it.copy(error = null) }
+            is Event.AddClicked -> addContact()
+            is Event.ErrorShown -> _state.update { it.copy(error = null) }
         }
     }
 
@@ -69,8 +70,8 @@ class ContactProfileViewModel @Inject constructor(
                     error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
                 )
             }
-            emit(
-                ContactProfileContract.Effect.ShowMessage(
+            sendEffect(
+                Effect.ShowMessage(
                     AppText.OtherInfo.CONTACTS_LOAD_FAILED.text(
                         appContext
                     )
@@ -86,8 +87,8 @@ class ContactProfileViewModel @Inject constructor(
             true
         }.onSuccess {
             _state.update { it.copy(isLoading = false, hasSocial = true) }
-            emit(
-                ContactProfileContract.Effect.ShowMessage(
+            sendEffect(
+                Effect.ShowMessage(
                     AppText.OtherInfo.CONTACT_ADDED.text(
                         appContext
                     )
@@ -100,8 +101,8 @@ class ContactProfileViewModel @Inject constructor(
                     error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
                 )
             }
-            emit(
-                ContactProfileContract.Effect.ShowMessage(
+            sendEffect(
+                Effect.ShowMessage(
                     AppText.OtherInfo.FAILED_TO_ADD_CONTACT.text(
                         appContext
                     )
@@ -110,7 +111,7 @@ class ContactProfileViewModel @Inject constructor(
         }
     }
 
-    private fun emit(effect: ContactProfileContract.Effect) = viewModelScope.launch {
+    private fun sendEffect(effect: Effect) = viewModelScope.launch {
         _effect.send(effect)
     }
 

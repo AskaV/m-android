@@ -52,7 +52,7 @@ class GalleryPickerViewModel @Inject constructor() : ViewModel() {
                 _state.update { it.copy() }
 
             GalleryPickerContract.Event.Clear ->
-                _state.value = GalleryPickerContract.State()
+                _state.update{ GalleryPickerContract.State()}
         }
     }
 }

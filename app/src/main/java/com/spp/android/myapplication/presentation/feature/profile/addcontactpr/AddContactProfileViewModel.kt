@@ -2,6 +2,8 @@ package com.spp.android.myapplication.presentation.feature.profile.addcontactpr
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Effect
+import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Event.Load
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,22 +16,22 @@ class AddContactProfileViewModel : ViewModel() {
     private val _state = MutableStateFlow(AddContactProfileContract.State())
     val state = _state.asStateFlow()
 
-    private val _effect = Channel<AddContactProfileContract.Effect>(Channel.BUFFERED)
+    private val _effect = Channel<Effect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
     fun onEvent(e: AddContactProfileContract.Event) {
         when (e) {
-            is AddContactProfileContract.Event.Load -> load(e.id)
-            is AddContactProfileContract.Event.BackClicked -> emit(AddContactProfileContract.Effect.NavigateBack)
+            is Load -> load(e.id)
+            is AddContactProfileContract.Event.BackClicked -> sendEffect(Effect.NavigateBack)
 
-            is AddContactProfileContract.Event.MessageClicked -> emit(
-                AddContactProfileContract.Effect.ShowMessage(
+            is AddContactProfileContract.Event.MessageClicked -> sendEffect(
+                Effect.ShowMessage(
                     "Open chat"
                 )
             )
 
             is AddContactProfileContract.Event.AddToContactsClicked -> {
-                emit(AddContactProfileContract.Effect.ShowMessage("Added to contacts"))
+                sendEffect(Effect.ShowMessage("Added to contacts"))
                 _state.update { it.copy(isInMyContacts = true) }
             }
 
@@ -51,6 +53,5 @@ class AddContactProfileViewModel : ViewModel() {
         }
     }
 
-    private fun emit(e: AddContactProfileContract.Effect) =
-        viewModelScope.launch { _effect.send(e) }
+    private fun sendEffect(e: Effect) = viewModelScope.launch { _effect.send(e) }
 }

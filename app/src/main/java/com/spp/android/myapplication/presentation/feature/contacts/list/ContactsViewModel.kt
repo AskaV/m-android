@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.data.contacts.ContactsRepository
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
-import com.spp.android.myapplication.presentation.designsystem.preview.ContactPreviewText
+import com.spp.android.myapplication.presentation.feature.contacts.components.demoUsers
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.*
 import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -29,29 +31,29 @@ class ContactsViewModel @Inject constructor(
     private val _state = MutableStateFlow(ContactsContract.State())
     val state: StateFlow<ContactsContract.State> = _state.asStateFlow()
 
-    private val _effect = Channel<ContactsContract.Effect>(Channel.BUFFERED)
+    private val _effect = Channel<Effect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
     init {
-        onEvent(ContactsContract.Event.Load)
+        onEvent(Load)
     }
 
     fun onEvent(event: ContactsContract.Event) {
         when (event) {
-            is ContactsContract.Event.Load -> load()
-            is ContactsContract.Event.BackClicked -> emit(ContactsContract.Effect.NavigateBack)
-            is ContactsContract.Event.SearchClicked -> emit(ContactsContract.Effect.OpenSearch)
-            is ContactsContract.Event.AddContactsClicked -> emit(ContactsContract.Effect.OpenAddContacts)
-            is ContactsContract.Event.ContactClicked -> emit(
-                ContactsContract.Effect.OpenContactProfile(
+            is Load -> load()
+            is BackClicked -> sendEffect(Effect.NavigateBack)
+            is SearchClicked -> sendEffect(Effect.OpenSearch)
+            is AddContactsClicked -> sendEffect(Effect.OpenAddContacts)
+            is ContactClicked -> sendEffect(
+                Effect.OpenContactProfile(
                     event.item.id
                 )
             )
 
-            is ContactsContract.Event.DeleteClicked -> delete(event.item)
-            is ContactsContract.Event.ErrorShown -> _state.update { it.copy(error = null) }
+            is DeleteClicked -> delete(event.item)
+            is ErrorShown -> _state.update { it.copy(error = null) }
 
-            is ContactsContract.Event.ContactLongClicked -> {
+            is ContactLongClicked -> {
                 _state.update { st ->
                     st.copy(
                         selected = setOf(event.item.id), isSelectionMode = true
@@ -59,7 +61,7 @@ class ContactsViewModel @Inject constructor(
                 }
             }
 
-            is ContactsContract.Event.ContactSelectionToggled -> {
+            is ContactSelectionToggled -> {
                 _state.update { st ->
                     val newSelected = st.selected.toMutableSet().apply {
                         if (contains(event.item.id)) remove(event.item.id) else add(event.item.id)
@@ -70,7 +72,7 @@ class ContactsViewModel @Inject constructor(
                 }
             }
 
-            is ContactsContract.Event.BulkDeleteClicked -> {
+            is BulkDeleteClicked -> {
                 val ids = _state.value.selected
                 _state.update { st ->
                     st.copy(
@@ -79,14 +81,14 @@ class ContactsViewModel @Inject constructor(
                         isSelectionMode = false
                     )
                 }
-                emit(
-                    ContactsContract.Effect.ShowMessage(
+                sendEffect(
+                    Effect.ShowMessage(
                         AppText.OtherInfo.CONTACTS_REMOVED.text(appContext)
                     )
                 )
             }
 
-            is ContactsContract.Event.ExitSelectionMode -> {
+            is ExitSelectionMode -> {
                 _state.update { it.copy(selected = emptySet(), isSelectionMode = false) }
             }
         }
@@ -101,7 +103,7 @@ class ContactsViewModel @Inject constructor(
             ) {
                 repository.loadContacts()
             } else {
-                demoContacts()
+                demoUsers()
             }
         }.onSuccess { list ->
             _state.update { it.copy(items = list, isLoading = false) }
@@ -112,8 +114,8 @@ class ContactsViewModel @Inject constructor(
                     error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
                 )
             }
-            emit(
-                ContactsContract.Effect.ShowMessage(
+            sendEffect(
+                Effect.ShowMessage(
                     AppText.OtherInfo.CONTACTS_LOAD_FAILED.text(
                         appContext
                     )
@@ -124,27 +126,10 @@ class ContactsViewModel @Inject constructor(
 
     private fun delete(item: ContactUi) = viewModelScope.launch {
         _state.update { it.copy(items = it.items.filterNot { c -> c.id == item.id }) }
-        emit(ContactsContract.Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED.text(appContext)))
+        sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED.text(appContext)))
     }
 
-    private fun emit(effect: ContactsContract.Effect) = viewModelScope.launch {
+    private fun sendEffect(effect: Effect) = viewModelScope.launch {
         _effect.send(effect)
     }
-
-    private fun demoContacts(): List<ContactUi> = listOf(
-        ContactUi("1", ContactPreviewText.Preview.NAME1, ContactPreviewText.Preview.SUBTITLE1),
-        ContactUi("2", ContactPreviewText.Preview.NAME2, ContactPreviewText.Preview.SUBTITLE2),
-        ContactUi("3", ContactPreviewText.Preview.NAME3, ContactPreviewText.Preview.SUBTITLE3),
-        ContactUi("4", ContactPreviewText.Preview.NAME4, ContactPreviewText.Preview.SUBTITLE4),
-        ContactUi("5", ContactPreviewText.Preview.NAME5, ContactPreviewText.Preview.SUBTITLE5),
-        ContactUi("6", ContactPreviewText.Preview.NAME6, ContactPreviewText.Preview.SUBTITLE6),
-
-
-        ContactUi("7", ContactPreviewText.Preview.NAME1, ContactPreviewText.Preview.SUBTITLE1),
-        ContactUi("8", ContactPreviewText.Preview.NAME2, ContactPreviewText.Preview.SUBTITLE2),
-        ContactUi("9", ContactPreviewText.Preview.NAME3, ContactPreviewText.Preview.SUBTITLE3),
-        ContactUi("10", ContactPreviewText.Preview.NAME4, ContactPreviewText.Preview.SUBTITLE4),
-        ContactUi("11", ContactPreviewText.Preview.NAME5, ContactPreviewText.Preview.SUBTITLE5),
-        ContactUi("12", ContactPreviewText.Preview.NAME6, ContactPreviewText.Preview.SUBTITLE6),
-    )
 }

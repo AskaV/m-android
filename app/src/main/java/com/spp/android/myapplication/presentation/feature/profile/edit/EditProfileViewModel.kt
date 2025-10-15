@@ -3,6 +3,8 @@ package com.spp.android.myapplication.presentation.feature.profile.edit
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Effect
+import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event
 import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,36 +25,34 @@ class EditProfileViewModel @Inject constructor(
     private val _state = MutableStateFlow(EditProfileContract.State())
     val state: StateFlow<EditProfileContract.State> = _state.asStateFlow()
 
-    private val _effect = Channel<EditProfileContract.Effect>(Channel.BUFFERED)
+    private val _effect = Channel<Effect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
     init {
-        onEvent(EditProfileContract.Event.Load)
+        onEvent(Event.Load)
     }
 
-    fun onEvent(event: EditProfileContract.Event) {
+    fun onEvent(event: Event) {
         when (event) {
-            EditProfileContract.Event.Load -> load()
-            is EditProfileContract.Event.UsernameChanged ->
-                _state.update { it.copy(username = event.value, usernameError = null) }
+            Event.Load -> load()
+            is Event.UsernameChanged -> _state.update {
+                it.copy(username = event.value, usernameError = null)
+            }
 
-            is EditProfileContract.Event.CareerChanged ->
-                _state.update { it.copy(career = event.value) }
+            is Event.CareerChanged -> _state.update { it.copy(career = event.value) }
 
-            is EditProfileContract.Event.PhoneChanged ->
-                _state.update { it.copy(phone = event.value, phoneError = null) }
+            is Event.PhoneChanged -> _state.update {
+                it.copy(phone = event.value, phoneError = null)
+            }
 
-            is EditProfileContract.Event.AddressChanged ->
-                _state.update { it.copy(address = event.value) }
+            is Event.AddressChanged -> _state.update { it.copy(address = event.value) }
 
-            is EditProfileContract.Event.BirthdateChanged ->
-                _state.update { it.copy(birthdate = event.value) }
+            is Event.BirthdateChanged -> _state.update { it.copy(birthdate = event.value) }
 
-            is EditProfileContract.Event.SaveClicked -> save()
-            is EditProfileContract.Event.BackClicked -> emit(EditProfileContract.Effect.NavigateBack)
-            is EditProfileContract.Event.AvatarClicked -> emit(EditProfileContract.Effect.OpenAvatarPicker)
-            is EditProfileContract.Event.ErrorShown ->
-                _state.update { it.copy(error = null) }
+            is Event.SaveClicked -> save()
+            is Event.BackClicked -> sendEffect(Effect.NavigateBack)
+            is Event.AvatarClicked -> sendEffect(Effect.OpenAvatarPicker)
+            is Event.ErrorShown -> _state.update { it.copy(error = null) }
         }
     }
 
@@ -84,8 +84,8 @@ class EditProfileViewModel @Inject constructor(
                     error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
                 )
             }
-            emit(
-                EditProfileContract.Effect.ShowMessage(
+            sendEffect(
+                Effect.ShowMessage(
                     AppText.OtherInfo.FAILED_TO_LOAD_PROFILE.text(
                         appContext
                     )
@@ -100,7 +100,7 @@ class EditProfileViewModel @Inject constructor(
             true
         }.onSuccess {
             _state.update { it.copy(isSaving = false) }
-            emit(EditProfileContract.Effect.Saved)
+            sendEffect(Effect.Saved)
         }.onFailure { t ->
             _state.update {
                 it.copy(
@@ -108,8 +108,8 @@ class EditProfileViewModel @Inject constructor(
                     error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
                 )
             }
-            emit(
-                EditProfileContract.Effect.ShowMessage(
+            sendEffect(
+                Effect.ShowMessage(
                     AppText.OtherInfo.FAILED_PROFILE_SAVE.text(
                         appContext
                     )
@@ -118,7 +118,7 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
-    private fun emit(effect: EditProfileContract.Effect) = viewModelScope.launch {
+    private fun sendEffect(effect: Effect) = viewModelScope.launch {
         _effect.send(effect)
     }
 
