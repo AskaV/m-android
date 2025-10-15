@@ -29,10 +29,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.presentation.designsystem.preview.ContactPreviewText
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.feature.components.SelectionCheck
+import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 
 data class ContactUi(
     val id: Int,
@@ -128,10 +128,7 @@ fun ContactCardOutlined(
 private fun ContactCardOutlinedPreview() {
     PreviewColumn {
         ContactCardOutlined(
-            contact = ContactUi(
-            id = 1,
-            name = ContactPreviewText.Preview.NAME1,
-            subtitle = ContactPreviewText.Preview.SUBTITLE1,
-        ))
+            contact = demoUsers()[0],
+        )
     }
 }

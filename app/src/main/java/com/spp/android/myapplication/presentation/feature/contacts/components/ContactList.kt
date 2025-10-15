@@ -19,6 +19,7 @@ import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactCardOutlined
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.designsystem.theme.MyApplicationTheme
 
 data class ContactListBehavior(

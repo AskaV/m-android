@@ -26,7 +26,7 @@ data class FieldState(
     val label: String = "",
     val error: String = "",
     val kind: FieldKind,
-    val onValueChange: (newValue: String) -> Unit
+    val onValueChange: (newValue: String) -> Unit = { }
 )
 
 @Composable
@@ -81,14 +81,12 @@ fun FormFieldsAuthPreview() = PreviewColumn {
                 label = "Email",
                 error = "",
                 kind = FieldKind.Email,
-                onValueChange = {}
             ),
             FieldState(
                 value = "asdasdas",
                 label = "password",
                 error = "",
                 kind = FieldKind.Password,
-                onValueChange = {}
             )
         )
     )
@@ -104,14 +102,12 @@ fun FormFieldsRegistrationPreview() = PreviewColumn {
                 label = "username",
                 error = "",
                 kind = FieldKind.Username,
-                onValueChange = {}
             ),
             FieldState(
                 value = "+380646584654",
                 label = "phone",
                 error = "",
                 kind = FieldKind.Phone,
-                onValueChange = {}
             )
         )
     )
@@ -128,35 +124,30 @@ fun FormFieldsEditP() = PreviewColumn {
                 label = "username",
                 error = "",
                 kind = FieldKind.Username,
-                onValueChange = {}
             ),
             FieldState(
                 value = "careed",
                 label = "car",
                 error = "",
                 kind = FieldKind.Username,
-                onValueChange = {}
             ),
             FieldState(
                 value = "+380646584654",
                 label = "phone",
                 error = "",
                 kind = FieldKind.Phone,
-                onValueChange = {}
             ),
             FieldState(
                 value = "adresa",
                 label = "address",
                 error = "",
                 kind = FieldKind.Username,
-                onValueChange = {}
             ),
             FieldState(
                 value = "10/10/10",
                 label = "dateOfBirth",
                 error = "",
                 kind = FieldKind.Username,
-                onValueChange = {}
             )
         )
     )

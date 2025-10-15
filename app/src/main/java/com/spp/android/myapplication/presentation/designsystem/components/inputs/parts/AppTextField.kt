@@ -34,7 +34,7 @@ import com.spp.android.myapplication.presentation.texts.AppText
 fun AppTextField(
     modifier: Modifier = Modifier,
     value: String,
-    onValueChange: (String) -> Unit,
+    onValueChange: (String) -> Unit = {},
     kind: FieldKind,
     placeholder: String = "",
     isError: Boolean = false,

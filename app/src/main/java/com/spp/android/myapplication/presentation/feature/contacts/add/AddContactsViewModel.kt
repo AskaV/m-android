@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Effect
 import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.*
-import com.spp.android.myapplication.presentation.feature.contacts.components.demoUsers
+import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel

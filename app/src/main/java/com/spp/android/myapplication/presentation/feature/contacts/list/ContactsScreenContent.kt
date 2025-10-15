@@ -25,7 +25,7 @@ import com.spp.android.myapplication.presentation.feature.components.ActionFab
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactList
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactListBehavior
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactsHeader
-import com.spp.android.myapplication.presentation.feature.contacts.components.demoUsers
+import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 

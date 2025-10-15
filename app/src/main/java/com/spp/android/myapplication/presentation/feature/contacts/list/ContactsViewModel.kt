@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.data.contacts.ContactsRepository
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
-import com.spp.android.myapplication.presentation.feature.contacts.components.demoUsers
+import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.*
 import com.spp.android.myapplication.presentation.texts.AppText
