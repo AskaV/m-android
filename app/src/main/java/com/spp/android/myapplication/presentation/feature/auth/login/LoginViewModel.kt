@@ -3,10 +3,11 @@ package com.spp.android.myapplication.presentation.feature.auth.login
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spp.android.myapplication.domain.validation.validateEmail
-import com.spp.android.myapplication.domain.validation.validatePassword
+
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.*
 import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.texts.text
+import com.spp.android.myapplication.presentation.utils.Validate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
@@ -37,13 +38,20 @@ class LoginViewModel @Inject constructor(
     private enum class Field { EMAIL, PASSWORD }
 
     private fun LoginContract.State.clear(field: Field): LoginContract.State = when (field) {
-        Field.EMAIL -> copy(emailError = null, error = null)
-        Field.PASSWORD -> copy(passwordError = null, error = null)
+        Field.EMAIL -> copy(email = email, emailError = null, error = null)
+        Field.PASSWORD -> copy(password = password, passwordError = null, error = null)
     }
 
     private fun LoginContract.State.validate(field: Field): LoginContract.State = when (field) {
-        Field.EMAIL -> copy(emailError = validateEmail(appContext, email))
-        Field.PASSWORD -> copy(passwordError = validatePassword(appContext, password))
+        Field.EMAIL -> {
+            val msg = Validate.email(email)?.text(appContext)
+            copy(emailError = msg)
+        }
+
+        Field.PASSWORD -> {
+            val msg = Validate.password(password)?.text(appContext)
+            copy(passwordError = msg)
+        }
     }
 
     fun onEvent(event: LoginContract.Event) {
@@ -67,8 +75,9 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun submit() = viewModelScope.launch {
-        val emailErr = validateEmail(appContext, _state.value.email)
-        val passErr = validatePassword(appContext, _state.value.password)
+        val s = _state.value
+        val emailErr = Validate.email(s.email.trim())?.text(appContext)
+        val passErr = Validate.password(s.password)?.text(appContext)
 
         if (emailErr != null || passErr != null) {
             updateState { copy(emailError = emailErr, passwordError = passErr) }
