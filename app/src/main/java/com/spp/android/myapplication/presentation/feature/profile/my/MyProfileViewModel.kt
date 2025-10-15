@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.spp.android.myapplication.presentation.utils.parseNameFromEmail
 
 @HiltViewModel
 class MyProfileViewModel @Inject constructor(
@@ -52,8 +53,13 @@ class MyProfileViewModel @Inject constructor(
                 }
             }
 
-            SignUpFinished -> { _state.update { it.copy(isCompleted = false) } }
-            MarkCompleted -> { _state.update { it.copy(isCompleted = true) } }
+            SignUpFinished -> {
+                _state.update { it.copy(isCompleted = false) }
+            }
+
+            MarkCompleted -> {
+                _state.update { it.copy(isCompleted = true) }
+            }
         }
     }
 
@@ -62,7 +68,7 @@ class MyProfileViewModel @Inject constructor(
 
         runCatching {
             StubProfile(
-                name = "Lucile Alvarado",
+                name = "",
                 linePrimary = "Product Designer",
                 lineSecondary = "New York, USA",
                 isCompleted = false
@@ -130,4 +136,24 @@ class MyProfileViewModel @Inject constructor(
         val lineSecondary: String,
         val isCompleted: Boolean
     )
+
+    fun onExternalName(name: String) {
+        if (name.isNotBlank()) {
+            _state.update { it.copy(name = name) }
+        }
+    }
+
+    fun onExternalEmail(email: String) {
+        _state.update { it.copy(email = email) }
+        applyDerivedName()
+    }
+
+    private fun applyDerivedName() {
+        val s = _state.value
+        if (s.name.isBlank() && !s.email.isNullOrBlank()) {
+            val (first, last) = parseNameFromEmail(s.email!!)
+            val full = listOf(first, last).filter { it.isNotBlank() }.joinToString(" ")
+            if (full.isNotBlank()) _state.update { it.copy(name = full) }
+        }
+    }
 }

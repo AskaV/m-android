@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun SignUpScreen(
     onOpenGoogle: () -> Unit,
     onNavigateToLogin: () -> Unit,
-    onNavigateToExtended: () -> Unit,
+    onNavigateToExtended: (String) -> Unit,
     vm: SignUpViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
@@ -30,7 +30,14 @@ fun SignUpScreen(
                 is SignUpContract.Effect.ShowMessage -> snackbar.showSnackbar(eff.message)
                 SignUpContract.Effect.OpenGoogleSignIn -> onOpenGoogle()
                 SignUpContract.Effect.NavigateToLogin -> onNavigateToLogin()
-                SignUpContract.Effect.NavigateToExtended -> onNavigateToExtended()
+
+                SignUpContract.Effect.NavigateToExtended -> {
+                    val email = vm.state.value.fields.email
+                    if (!email.isNullOrBlank()) {
+                        onNavigateToExtended(email)
+                    }
+                }
+
                 else -> Unit
             }
         }

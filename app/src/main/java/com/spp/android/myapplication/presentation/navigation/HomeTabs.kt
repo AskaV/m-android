@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.presentation.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.HorizontalPager
@@ -16,7 +17,8 @@ import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 
 enum class HomeTab(@StringRes val titleRes: Int) {
-    Profile(AppText.HomeTabs.PROFILE.res), Contacts(AppText.HomeTabs.CONTACTS.res)
+    Profile(AppText.HomeTabs.PROFILE.res),
+    Contacts(AppText.HomeTabs.CONTACTS.res)
 }
 
 class HomeTabsController {
@@ -41,6 +43,9 @@ fun HomeTabs(
         controller?.jumpTo = { tab ->
             scope.launch { pagerState.animateScrollToPage(tab.ordinal) }
         }
+    }
+    BackHandler(enabled = pagerState.currentPage == HomeTab.Contacts.ordinal) {
+        scope.launch { pagerState.animateScrollToPage(HomeTab.Profile.ordinal) }
     }
 
     Column(modifier) {

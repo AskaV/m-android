@@ -5,39 +5,42 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract
-import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract as C
 
 @Composable
 fun MyProfileScreen(
+    externalEmail: String? = null,
+    externalName: String? = null,
     onNavigateContacts: () -> Unit = {},
     onNavigateEdit: () -> Unit,
     onNavigateAuth: () -> Unit,
-    vm: MyProfileViewModel = hiltViewModel()
+    viewModel: MyProfileViewModel = hiltViewModel()
 ) {
-    val state by vm.state.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
-        vm.effect.collect { eff ->
+        viewModel.effect.collect { eff ->
             when (eff) {
-                is C.Effect.ShowMessage -> { /* TODO: Snackbar */
-                }
-
-                C.Effect.NavigateToContacts -> onNavigateContacts()
-                C.Effect.NavigateToEditProfile -> onNavigateEdit()
-                C.Effect.NavigateToAuth -> onNavigateAuth()
+                is MyProfileContract.Effect.ShowMessage -> { /* TODO: Snackbar */ }
+                MyProfileContract.Effect.NavigateToContacts -> onNavigateContacts()
+                MyProfileContract.Effect.NavigateToEditProfile -> onNavigateEdit()
+                MyProfileContract.Effect.NavigateToAuth -> onNavigateAuth()
             }
         }
     }
-
+    LaunchedEffect(externalName) {
+        if (!externalName.isNullOrBlank()) {
+            viewModel.onExternalName(externalName)
+        }
+    }
+    LaunchedEffect(externalEmail) {
+        if (!externalEmail.isNullOrBlank()) {
+            viewModel.onExternalEmail(externalEmail)
+        }
+    }
+    // Pass through the state as-is (UI is dumb)
     ProfileScreen(
-        state =  MyProfileContract.State(
-        name = state.name,
-        linePrimary = state.linePrimary,
-        lineSecondary = state.lineSecondary,
-        isCompleted = state.isCompleted
-    ),
-        onEditProfile = { vm.onEvent(C.Event.EditProfileClicked) },
-        onViewContacts = { vm.onEvent(C.Event.ViewContactsClicked) },
-        onLogout = { vm.onEvent(C.Event.LogoutClicked) })
+        state = state,
+        onEditProfile = { viewModel.onEvent(MyProfileContract.Event.EditProfileClicked) },
+        onViewContacts = { viewModel.onEvent(MyProfileContract.Event.ViewContactsClicked) },
+        onLogout = { viewModel.onEvent(MyProfileContract.Event.LogoutClicked) })
 }

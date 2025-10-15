@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
-    onNavigateHome: () -> Unit,
+    onNavigateHome: (String) -> Unit,
     onNavigateToRegister: () -> Unit,
     onForgotPassword: () -> Unit,
     vm: LoginViewModel = hiltViewModel(),
@@ -19,7 +19,13 @@ fun LoginScreen(
     LaunchedEffect(Unit) {
         vm.effect.collectLatest { effect ->
             when (effect) {
-                is LoginContract.Effect.NavigateToHome -> onNavigateHome()
+                is LoginContract.Effect.NavigateToHome -> {
+                    val email = vm.state.value.email
+                    if (!email.isNullOrBlank()) {
+                        onNavigateHome(email)
+                    }
+                }
+
                 is LoginContract.Effect.ForgotPassword -> onForgotPassword()
             }
         }

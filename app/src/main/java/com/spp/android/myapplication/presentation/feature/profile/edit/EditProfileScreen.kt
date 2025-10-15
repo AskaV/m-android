@@ -3,21 +3,24 @@ package com.spp.android.myapplication.presentation.feature.profile.edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Effect.*
 
 @Composable
 fun EditProfileScreen(
-    onBack: () -> Unit = {}, onDone: () -> Unit = {}, vm: EditProfileViewModel = hiltViewModel()
+    onBack: () -> Unit = {},
+    onDone: () -> Unit = {},
+    vm: EditProfileViewModel = hiltViewModel()
 ) {
 
     LaunchedEffect(Unit) {
         vm.effect.collect { eff ->
             when (eff) {
-                EditProfileContract.Effect.NavigateBack -> onBack()
-                EditProfileContract.Effect.Saved -> onDone()
-                is EditProfileContract.Effect.ShowMessage -> {/* TODO snackbar */
+                NavigateBack -> onBack()
+                Saved -> onDone()
+                is ShowMessage -> {/* TODO snackbar */
                 }
 
-                EditProfileContract.Effect.OpenAvatarPicker -> {/* TODO open picker */
+                OpenAvatarPicker -> {/* TODO open picker */
                 }
             }
         }

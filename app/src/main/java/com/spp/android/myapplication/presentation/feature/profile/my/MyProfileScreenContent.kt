@@ -37,7 +37,6 @@ fun ProfileScreen(
     onEditProfile: () -> Unit = {},
     onViewContacts: () -> Unit = {},
     onLogout: () -> Unit = {}
-
 ) {
     Column(
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)

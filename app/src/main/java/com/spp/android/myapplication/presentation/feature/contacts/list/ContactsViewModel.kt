@@ -51,13 +51,27 @@ class ContactsViewModel @Inject constructor(
             )
 
             is DeleteClicked -> delete(event.item)
-            is ErrorShown -> _state.update { it.copy(error = null) }
+            is ErrorShown -> {
+                _state.value.error?.let { errorMsg ->
+                    sendEffect(Effect.ShowMessage(errorMsg))
+                }
+                _state.update { it.copy(error = null) }
+            }
 
             is ContactLongClicked -> {
                 _state.update { st ->
-                    st.copy(
-                        selected = setOf(event.item.id), isSelectionMode = true
-                    )
+                    if (st.isSelectionMode) {
+                        val newSelected = st.selected.toMutableSet().apply {
+                            if (contains(event.item.id)) remove(event.item.id) else add(event.item.id)
+                        }
+                        st.copy(
+                            selected = newSelected, isSelectionMode = newSelected.isNotEmpty()
+                        )
+                    } else {
+                        st.copy(
+                            selected = setOf(event.item.id), isSelectionMode = true
+                        )
+                    }
                 }
             }
 

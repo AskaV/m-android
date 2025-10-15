@@ -7,11 +7,12 @@ object MyProfileContract {
     @Immutable
     data class State(
         val name: String = "",
+        val email: String? = null,
         val linePrimary: String = "",
         val lineSecondary: String = "",
         val isCompleted: Boolean = false,
         val isLoading: Boolean = false,
-        val error: String? = ""
+        val error: String? = null
     )
 
     sealed interface Event {

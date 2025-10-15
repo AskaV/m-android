@@ -22,6 +22,7 @@ import com.spp.android.myapplication.presentation.texts.AppText
 
 object NavKeys {
     const val PROFILE_UPDATED = "result_profile_updated"
+    const val USER_EMAIL = "result_user_email"
 }
 
 @Composable
@@ -36,13 +37,14 @@ fun AppNavGraph() {
         composable(Routes.Login.route) {
             LoginScreen(onForgotPassword = {
                 Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
-            }, onNavigateHome = {
+            },   onNavigateHome = { email ->
+                navController.currentBackStackEntry
+                    ?.savedStateHandle
+                    ?.set(NavKeys.USER_EMAIL, email)
                 navController.navigate(Routes.Home.route) {
-                    popUpTo(0)
+                    launchSingleTop = true
                 }
-            }, onNavigateToRegister = {
-                navController.navigate(Routes.SignUp.route)
-            })
+            }, onNavigateToRegister = { navController.navigate(Routes.SignUp.route) })
         }
 
         composable(Routes.SignUp.route) {
@@ -52,57 +54,78 @@ fun AppNavGraph() {
                 navController.navigate(Routes.Login.route) {
                     launchSingleTop = true
                 }
-            }, onNavigateToExtended = {
-                navController.navigate(Routes.SignUpExtended.route)
+            }, onNavigateToExtended = { email ->
+                val encoded = java.net.URLEncoder.encode(email, "utf-8")
+                navController.navigate(Routes.SignUpExtended.route + "?email=$encoded") {
+                    launchSingleTop = true
+                }
             })
         }
 
-        composable(Routes.SignUpExtended.route) {
-            SignUpExtendedScreen(onBack = {
-                navController.popBackStack()
-            }, onNavigateHome = {
-                navController.navigate(Routes.Home.route) {
-                    popUpTo(0)
-                }
-            })
+        composable(
+            route = Routes.SignUpExtended.route + "?email={email}", arguments = listOf(
+                navArgument("email") {
+                    type = NavType.StringType; nullable = true
+                })
+        ) { backStackEntry ->
+            val emailFromSignUp = backStackEntry.arguments?.getString("email")
+
+            SignUpExtendedScreen(
+                onBack = { navController.popBackStack() },
+                onNavigateHome = { email, username ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        NavKeys.USER_EMAIL, email
+                    )
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        "result_user_name", username
+                    )
+                    navController.navigate(Routes.Home.route) {
+                        launchSingleTop = true
+                    }
+                },
+                prefillEmail = emailFromSignUp
+            )
         }
 
         composable(Routes.Home.route) {
 
             navController.currentBackStackEntry?.savedStateHandle?.set(
-                    NavKeys.PROFILE_UPDATED,
-                    true
-                )
+                NavKeys.PROFILE_UPDATED, true
+            )
             val tabsController = remember { HomeTabsController() }
+
+            val emailFromAuth =
+                navController.previousBackStackEntry?.savedStateHandle?.get<String>(NavKeys.USER_EMAIL)
+            val nameFromAuth =
+                navController.previousBackStackEntry?.savedStateHandle?.get<String>("result_user_name")
 
             HomeTabs(controller = tabsController, profile = {
                 MyProfileScreen(
+                    externalEmail = emailFromAuth,
+                    externalName = nameFromAuth,
                     onNavigateContacts = { tabsController.goTo(HomeTab.Contacts) },
                     onNavigateEdit = { navController.navigate(Routes.EditProfile.route) },
                     onNavigateAuth = {
                         navController.navigate(Routes.Login.route) { popUpTo(0) }
                     })
             }, contacts = {
-                ContactsScreen(
-                    onBack = { /* no-op */ },
-                    onOpenSearch = { /* no-op */ },
-                    onOpenAddContacts = {
-                        navController.navigate(Routes.AddContacts.route) {
-                            launchSingleTop = true
-                        }
-                    },
-                    onOpenContactProfile = { id ->
-                        navController.navigate(Routes.ContactProfile.create(id))
-                    })
+                ContactsScreen(onBack = { tabsController.goTo(HomeTab.Profile) }, onOpenSearch = {
+                    Toast.makeText(context, "Search clicked", Toast.LENGTH_SHORT).show()
+                }, onOpenAddContacts = {
+                    navController.navigate(Routes.AddContacts.route) {
+                        launchSingleTop = true
+                    }
+                }, onOpenContactProfile = { id ->
+                    navController.navigate(Routes.ContactProfile.create(id))
+                })
             })
         }
 
         composable(Routes.EditProfile.route) {
             EditProfileScreen(onBack = { navController.popBackStack() }, onDone = {
                 navController.previousBackStackEntry?.savedStateHandle?.set(
-                        NavKeys.PROFILE_UPDATED,
-                        true
-                    )
+                    NavKeys.PROFILE_UPDATED, true
+                )
                 navController.popBackStack()
             })
         }
