@@ -30,17 +30,10 @@ import com.spp.android.myapplication.presentation.feature.profile.components.Pro
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileHeader
 import com.spp.android.myapplication.presentation.texts.AppText
 
-data class ProfileUiState(
-    val name: String,
-    val linePrimary: String,
-    val lineSecondary: String,
-    val isCompleted: Boolean
-)
-
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    state: ProfileUiState,
+    state: MyProfileContract.State,
     onEditProfile: () -> Unit = {},
     onViewContacts: () -> Unit = {},
     onLogout: () -> Unit = {}
@@ -95,10 +88,10 @@ fun ProfileScreen(
             }
         }
 
-        val pad = dimensionResource(id = R.dimen.spacer_medium)
+        val padding = dimensionResource(id = R.dimen.spacer_medium)
 
         Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = pad).fillMaxHeight(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = padding).fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (state.isCompleted) {
@@ -122,7 +115,7 @@ fun ProfileScreen(
                 ),
                 hint = if (!state.isCompleted) AppText.MyProfile.PROFILE_FILL_HINT.text() else null,
                 modifier = Modifier.fillMaxHeight(),
-                contentPadding = PaddingValues(horizontal = pad)
+                contentPadding = PaddingValues(horizontal = padding)
             )
         }
     }
@@ -132,7 +125,7 @@ fun ProfileScreen(
 @Composable
 private fun ProfileScreenPreviewIncomplete() = PreviewScreenEdgeToEdge {
     ProfileScreen(
-        state = ProfileUiState(
+        state = MyProfileContract.State(
             name = AppText.MyProfile.NAME.text(),
             linePrimary = AppText.MyProfile.CAREER.text(),
             lineSecondary = AppText.MyProfile.ADDRESS.text(),
@@ -145,7 +138,7 @@ private fun ProfileScreenPreviewIncomplete() = PreviewScreenEdgeToEdge {
 @Composable
 private fun ProfileScreenPreviewCompleted() = PreviewScreenEdgeToEdge {
     ProfileScreen(
-        state = ProfileUiState(
+        state = MyProfileContract.State(
             name = AppText.MyProfileDetailed.NAME.text(),
             linePrimary = AppText.MyProfileDetailed.CAREER.text(),
             lineSecondary = AppText.MyProfileDetailed.ADDRESS.text(),

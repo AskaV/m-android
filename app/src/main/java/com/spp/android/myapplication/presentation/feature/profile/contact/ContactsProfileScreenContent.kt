@@ -30,17 +30,10 @@ import com.spp.android.myapplication.presentation.feature.profile.components.Pro
 import com.spp.android.myapplication.presentation.feature.profile.components.ProfileHeader
 import com.spp.android.myapplication.presentation.texts.AppText
 
-data class ContactProfileUiState(
-    val name: String,
-    val linePrimary: String,
-    val lineSecondary: String,
-    val hasSocial: Boolean = true
-)
-
 @Composable
 fun ContactProfileScreen(
     modifier: Modifier = Modifier,
-    state: ContactProfileUiState,
+    state: ContactProfileContract.State,
     onBack: () -> Unit = {},
     onMessage: () -> Unit = {}
 ) {
@@ -104,7 +97,7 @@ fun ContactProfileScreen(
 @Composable
 private fun ContactProfilePreview() = PreviewScreenEdgeToEdge {
     ContactProfileScreen(
-        state = ContactProfileUiState(
+        state = ContactProfileContract.State(
             name = AppText.MyProfileDetailed.NAME.text(),
             linePrimary = AppText.MyProfileDetailed.CAREER.text(),
             lineSecondary = AppText.MyProfileDetailed.ADDRESS.text(),

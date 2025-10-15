@@ -26,17 +26,14 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPh
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthFooter
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthHeader
 import com.spp.android.myapplication.presentation.feature.auth.components.CheckBoxWithAction
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract
 import com.spp.android.myapplication.presentation.texts.AppText
 import com.spp.android.myapplication.presentation.texts.text
-
-data class SignUpUiState(
-    val fields: AuthFieldsState = AuthFieldsState(), val rememberMe: Boolean = false
-)
 
 @Composable
 fun SignUpScreenContent(
     modifier: Modifier = Modifier,
-    state: SignUpUiState,
+    state: SignUpContract.State,
     onEmailChange: (String) -> Unit = {},
     onPasswordChange: (String) -> Unit = {},
     onRememberMeChange: (Boolean) -> Unit = {},
@@ -130,7 +127,7 @@ fun SignUpScreenPreview() {
     AutoThemePreview {
         Surface(color = MaterialTheme.colorScheme.background) {
             SignUpScreenContent(
-                state = SignUpUiState(
+                state = SignUpContract.State(
                     fields = AuthFieldsState(
                         email = AppText.Preview.EMAIL, password = AppText.Preview.PASSWORD
                     ), rememberMe = true
@@ -146,7 +143,7 @@ fun SignUpScreenPreviewErrors() {
     AutoThemePreview {
         Surface(color = MaterialTheme.colorScheme.background) {
             SignUpScreenContent(
-                state = SignUpUiState(
+                state = SignUpContract.State(
                     fields = AuthFieldsState(
                         email = AppText.Preview.WRONG_EMAIL,
                         password = AppText.Preview.WRONG_PASSWORD,

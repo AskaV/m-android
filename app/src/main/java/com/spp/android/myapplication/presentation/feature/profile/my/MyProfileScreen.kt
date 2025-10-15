@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract as C
 
 @Composable
@@ -30,7 +31,7 @@ fun MyProfileScreen(
     }
 
     ProfileScreen(
-        state = ProfileUiState(
+        state =  MyProfileContract.State(
         name = state.name,
         linePrimary = state.linePrimary,
         lineSecondary = state.lineSecondary,

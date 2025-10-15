@@ -1,6 +1,5 @@
 package com.spp.android.myapplication.presentation.feature.auth.signup.extended
 
-import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,45 +22,33 @@ import com.spp.android.myapplication.presentation.designsystem.imageload.AvatarP
 import com.spp.android.myapplication.presentation.designsystem.preview.AutoThemePreview
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthHeader
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract
 import com.spp.android.myapplication.presentation.texts.AppText
 import com.spp.android.myapplication.presentation.texts.text
-
-data class SignUpProfileUiState(
-    val username: String = "",
-    val phone: String = "",
-    val usernameError: String = "",
-    val phoneError: String = "",
-    val avatar: Uri? = null
-)
 
 @Composable
 fun SignUpProfileScreenContent(
     modifier: Modifier = Modifier,
-    state: SignUpProfileUiState,
-    onUserNameChange: (String) -> Unit,
-    onPhoneChange: (String) -> Unit,
-    onPickAvatar: () -> Unit,
-    onCancel: () -> Unit,
-    onForward: () -> Unit
+    state: SignUpContract.ProfileState,
+    onUserNameChange: (String) -> Unit = {},
+    onPhoneChange: (String) -> Unit = {},
+    onPickAvatar: () -> Unit = {},
+    onCancel: () -> Unit = {},
+    onForward: () -> Unit = {}
 ) {
     val hPad = dimensionResource(R.dimen.spacer_medium)
 
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(start = hPad, end = hPad, bottom = hPad)
+        modifier = modifier.fillMaxSize().padding(start = hPad, end = hPad, bottom = hPad)
     ) {
         Column(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .fillMaxWidth(),
+            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(dimensionResource(R.dimen.auth_top_small)))
 
             AvatarPicker(
-                onClick = onPickAvatar,
-                showBadge = true
+                onClick = onPickAvatar, showBadge = true
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
@@ -84,18 +71,14 @@ fun SignUpProfileScreenContent(
         }
 
         Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth(),
+            modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedBorderButton(
                 text = AppText.ExtendedRegister.BUTTON.text(),
                 onClick = onCancel,
                 style = OutlinedButtonStyle.OnBackground,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp)
+                modifier = Modifier.fillMaxWidth().height(40.dp)
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_medium)))
@@ -119,15 +102,9 @@ private fun SignUpProfileScreenPreview() {
     AutoThemePreview {
         Surface(color = MaterialTheme.colorScheme.background) {
             SignUpProfileScreenContent(
-                state = SignUpProfileUiState(
-                    username = AppText.Preview.USERNAME,
-                    phone = AppText.Preview.PHONE
-                ),
-                onUserNameChange = {},
-                onPhoneChange = {},
-                onPickAvatar = {},
-                onCancel = {},
-                onForward = {}
+                state = SignUpContract.ProfileState(
+                    username = AppText.Preview.USERNAME, phone = AppText.Preview.PHONE
+                )
             )
         }
     }
@@ -139,17 +116,12 @@ private fun SignUpProfileScreenPreviewErrors() {
     AutoThemePreview {
         Surface(color = MaterialTheme.colorScheme.background) {
             SignUpProfileScreenContent(
-                state = SignUpProfileUiState(
+                state = SignUpContract.ProfileState(
                     username = "",
                     phone = "",
                     usernameError = AppText.Error.USERNAME_ERROR.text(),
                     phoneError = AppText.Error.PHONE_ERROR.text()
-                ),
-                onUserNameChange = {},
-                onPhoneChange = {},
-                onPickAvatar = {},
-                onCancel = {},
-                onForward = {}
+                )
             )
         }
     }

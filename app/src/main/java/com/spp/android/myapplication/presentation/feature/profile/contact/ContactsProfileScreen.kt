@@ -29,7 +29,7 @@ fun ContactProfileScreen(
     }
 
     ContactProfileScreen(
-        state = ContactProfileUiState(
+        state = ContactProfileContract.State(
         name = state.name,
         linePrimary = state.linePrimary,
         lineSecondary = state.lineSecondary,

@@ -42,11 +42,11 @@ fun SignUpExtendedScreen(
 
     Scaffold(snackbarHost = { SnackbarHost(snackbar) }) { paddings ->
         SignUpProfileScreenContent(
-            state = SignUpProfileUiState(
+            state = SignUpContract.ProfileState(
                 username = profile.username,
                 phone = profile.phone,
-                usernameError = profile.usernameError.orEmpty(),
-                phoneError = profile.phoneError.orEmpty(),
+                usernameError = profile.usernameError,
+                phoneError = profile.phoneError,
                 avatar = profile.avatar
             ),
             onPickAvatar = { vm.onEvent(SignUpContract.Event.PickAvatar) },
@@ -60,11 +60,9 @@ fun SignUpExtendedScreen(
 
     if (showPicker) {
         GalleryPickerScreen(
-            startVisible = true,
-            onResult = { uri ->
+            startVisible = true, onResult = { uri ->
                 showPicker = false
                 uri?.let { vm.onEvent(SignUpContract.Event.AvatarPicked(it)) }
-            }
-        )
+            })
     }
 }

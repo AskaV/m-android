@@ -19,9 +19,9 @@ fun GalleryPickerScreenContent(
     modifier: Modifier = Modifier,
     state: GalleryPickerContract.State,
     onDismiss: () -> Unit = {},
-    onOpenGallery: () -> Unit= {},
-    onOpenCamera: () -> Unit= {},
-    onDeleteCurrent: () -> Unit= {},
+    onOpenGallery: () -> Unit = {},
+    onOpenCamera: () -> Unit = {},
+    onDeleteCurrent: () -> Unit = {},
 ) {
     if (!state.isVisible) return
 
@@ -32,8 +32,7 @@ fun GalleryPickerScreenContent(
             onOpenGallery = onOpenGallery,
             onDeleteCurrent = onDeleteCurrent,
             onCancel = onDismiss,
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
                 .clip(RoundedCornerShape(dimensionResource(R.dimen.spacer_medium)))
                 .background(MaterialTheme.colorScheme.surface)
         )
