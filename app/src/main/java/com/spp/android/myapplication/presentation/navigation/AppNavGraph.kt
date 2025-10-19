@@ -12,7 +12,7 @@ import androidx.navigation.navArgument
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginScreen
 import com.spp.android.myapplication.presentation.feature.auth.signup.base.SignUpScreen
 import com.spp.android.myapplication.presentation.feature.auth.signup.extended.SignUpExtendedScreen
-import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsScreen
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsScreen
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsScreen
 import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileScreen
 import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileScreen

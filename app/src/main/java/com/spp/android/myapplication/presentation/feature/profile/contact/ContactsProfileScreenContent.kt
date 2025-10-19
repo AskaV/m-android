@@ -87,7 +87,7 @@ fun ContactProfileScreen(
                 AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage
             ),
             secondaryOutlined = null,
-            contentPadding = PaddingValues(horizontal = pad),
+            contentPadding = PaddingValues(horizontal = pad, vertical = pad),
             modifier = Modifier.fillMaxHeight()
         )
     }

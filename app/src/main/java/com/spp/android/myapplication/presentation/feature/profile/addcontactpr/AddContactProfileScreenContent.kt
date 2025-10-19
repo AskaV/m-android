@@ -84,7 +84,7 @@ fun AddContactProfileScreenContent(
                 null
             } else {
                 OutlinedBtn(AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage)
-            }, modifier = Modifier.fillMaxHeight(), contentPadding = PaddingValues(horizontal = pad)
+            }, modifier = Modifier.fillMaxHeight(), contentPadding = PaddingValues(horizontal = pad, vertical = pad)
         )
     }
 }
