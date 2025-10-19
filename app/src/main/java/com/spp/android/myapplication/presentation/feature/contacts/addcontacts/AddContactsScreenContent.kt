@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.presentation.feature.contacts.add
+package com.spp.android.myapplication.presentation.feature.contacts.addcontacts
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background

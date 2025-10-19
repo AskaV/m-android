@@ -1,16 +1,16 @@
-package com.spp.android.myapplication.presentation.feature.contacts.add
+package com.spp.android.myapplication.presentation.feature.contacts.addcontacts
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
-import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Effect
-import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.AddClicked
-import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.BackClicked
-import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.ErrorShown
-import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.Load
-import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.MassAddClicked
-import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.SearchClicked
-import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.ToggleSelect
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Effect
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.AddClicked
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.BackClicked
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.ErrorShown
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.Load
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.MassAddClicked
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.SearchClicked
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.ToggleSelect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

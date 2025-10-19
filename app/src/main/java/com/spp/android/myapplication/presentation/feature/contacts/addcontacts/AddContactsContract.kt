@@ -1,4 +1,4 @@
-package com.spp.android.myapplication.presentation.feature.contacts.add
+package com.spp.android.myapplication.presentation.feature.contacts.addcontacts
 
 import androidx.compose.runtime.Immutable
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
