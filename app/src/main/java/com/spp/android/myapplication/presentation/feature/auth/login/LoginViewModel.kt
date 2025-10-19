@@ -1,15 +1,19 @@
 package com.spp.android.myapplication.presentation.feature.auth.login
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
-import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.*
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.Clear
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.EmailBlur
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.EmailChanged
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.ErrorShown
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.ForgotPasswordClicked
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.PasswordBlur
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.PasswordChanged
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.RememberChanged
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.Submit
 import com.spp.android.myapplication.presentation.texts.AppText
-import com.spp.android.myapplication.presentation.texts.text
 import com.spp.android.myapplication.presentation.utils.Validate
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,9 +25,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-    @ApplicationContext private val appContext: Context
-) : ViewModel() {
+class LoginViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow(LoginContract.State())
     val state: StateFlow<LoginContract.State> = _state.asStateFlow()
@@ -38,20 +40,13 @@ class LoginViewModel @Inject constructor(
     private enum class Field { EMAIL, PASSWORD }
 
     private fun LoginContract.State.clear(field: Field): LoginContract.State = when (field) {
-        Field.EMAIL -> copy(email = email, emailError = null, error = null)
-        Field.PASSWORD -> copy(password = password, passwordError = null, error = null)
+        Field.EMAIL -> copy(email = email, emailErrorKey = null, error = null)
+        Field.PASSWORD -> copy(password = password, passwordErrorKey = null, error = null)
     }
 
     private fun LoginContract.State.validate(field: Field): LoginContract.State = when (field) {
-        Field.EMAIL -> {
-            val msg = Validate.email(email)?.text(appContext)
-            copy(emailError = msg)
-        }
-
-        Field.PASSWORD -> {
-            val msg = Validate.password(password)?.text(appContext)
-            copy(passwordError = msg)
-        }
+        Field.EMAIL -> copy(emailErrorKey = Validate.email(email))
+        Field.PASSWORD -> copy(passwordErrorKey = Validate.password(password))
     }
 
     fun onEvent(event: LoginContract.Event) {
@@ -75,24 +70,23 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun submit() = viewModelScope.launch {
-        val s = _state.value
-        val emailErr = Validate.email(s.email.trim())?.text(appContext)
-        val passErr = Validate.password(s.password)?.text(appContext)
+        val emailErrKey = Validate.email(_state.value.email.trim())
+        val passErrKey = Validate.password(_state.value.password)
 
-        if (emailErr != null || passErr != null) {
-            updateState { copy(emailError = emailErr, passwordError = passErr) }
+        if (emailErrKey != null || passErrKey != null) {
+            updateState { copy(emailErrorKey = emailErrKey, passwordErrorKey = passErrKey) }
             return@launch
         }
 
-        updateState { copy(isLoading = true, error = null) }
+        updateState { copy(isLoading = true, errorKey = null) }
 
         runCatching {
             Unit
         }.onSuccess {
             _effect.send(LoginContract.Effect.NavigateToHome)
         }.onFailure { t ->
-            val message = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
-            updateState { copy(error = message) }
+            val msgKey = AppText.OtherInfo.UNKNOWN_ERROR
+            updateState { copy(errorKey = msgKey) }
         }
 
         updateState { copy(isLoading = false) }

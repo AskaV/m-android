@@ -1,6 +1,7 @@
 package com.spp.android.myapplication.presentation.feature.profile.my
 
 import androidx.compose.runtime.Immutable
+import com.spp.android.myapplication.presentation.texts.TextKey
 
 object MyProfileContract {
 
@@ -12,7 +13,7 @@ object MyProfileContract {
         val lineSecondary: String = "",
         val isCompleted: Boolean = false,
         val isLoading: Boolean = false,
-        val error: String? = null
+        val errorKey: TextKey? = null
     )
 
     sealed interface Event {
@@ -35,7 +36,7 @@ object MyProfileContract {
     }
 
     sealed interface Effect {
-        data class ShowMessage(val message: String) : Effect
+        data class ShowMessage(val messageKey: TextKey) : Effect
         data object NavigateToEditProfile : Effect
         data object NavigateToContacts : Effect
         data object NavigateToAuth : Effect

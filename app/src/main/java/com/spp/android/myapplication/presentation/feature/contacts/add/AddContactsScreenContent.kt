@@ -27,12 +27,12 @@ import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.designsystem.theme.MyApplicationTheme
 import com.spp.android.myapplication.presentation.feature.components.ActionFab
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactList
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactListBehavior
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactsHeader
-import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 

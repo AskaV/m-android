@@ -48,7 +48,7 @@ fun SignUpExtendedScreen(
                 SignUpContract.Effect.OpenAvatarPicker -> showPicker = true
                 SignUpContract.Effect.BackFromExtended -> onBack()
                 SignUpContract.Effect.NavigateToHome -> {
-                    val email = prefillEmail ?: vm.state.value.fields.email.orEmpty()
+                    val email = prefillEmail ?: vm.state.value.fields.email
                     val username = profile.username
                     onNavigateHome(email, username)
                 }
@@ -63,8 +63,8 @@ fun SignUpExtendedScreen(
             state = SignUpContract.ProfileState(
                 username = profile.username,
                 phone = profile.phone,
-                usernameError = profile.usernameError,
-                phoneError = profile.phoneError,
+                usernameErrorKey = profile.usernameErrorKey,
+                phoneErrorKey = profile.phoneErrorKey,
                 avatar = profile.avatar
             ),
             onPickAvatar = { vm.onEvent(SignUpContract.Event.PickAvatar) },

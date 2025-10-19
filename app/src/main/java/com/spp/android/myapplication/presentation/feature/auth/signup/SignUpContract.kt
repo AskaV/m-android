@@ -3,6 +3,8 @@ package com.spp.android.myapplication.presentation.feature.auth.signup
 import android.net.Uri
 import androidx.compose.runtime.Immutable
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.AuthFieldsState
+import com.spp.android.myapplication.presentation.texts.TextKey
+import com.spp.android.myapplication.presentation.texts.TextKeyWithArgs
 
 object SignUpContract {
 
@@ -12,7 +14,7 @@ object SignUpContract {
         val fields: AuthFieldsState = AuthFieldsState(),
         val rememberMe: Boolean = false,
         val isLoading: Boolean = false,
-        val error: String = ""
+        val errorKey: TextKey? = null
     )
 
     // Extended profile
@@ -20,13 +22,11 @@ object SignUpContract {
     data class ProfileState(
         val username: String = "",
         val phone: String = "",
-        val usernameError: String = "",
-        val phoneError: String = "",
-        val usernameTouched: Boolean = false,
-        val phoneTouched: Boolean = false,
+        val usernameErrorKey: TextKeyWithArgs? = null,
+        val phoneErrorKey: TextKeyWithArgs? = null,
         val avatar: Uri? = null,
         val isLoading: Boolean = false,
-        val error: String = ""
+        val errorKey: TextKey? = null
     )
 
     sealed interface Event {

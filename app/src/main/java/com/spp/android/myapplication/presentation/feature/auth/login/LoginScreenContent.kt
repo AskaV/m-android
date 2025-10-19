@@ -24,7 +24,6 @@ import com.spp.android.myapplication.presentation.feature.auth.components.AuthFo
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthHeader
 import com.spp.android.myapplication.presentation.feature.auth.components.CheckBoxWithAction
 import com.spp.android.myapplication.presentation.texts.AppText
-import com.spp.android.myapplication.presentation.texts.text
 
 @Composable
 fun LoginScreenContent(
@@ -58,8 +57,8 @@ fun LoginScreenContent(
                 state = AuthFieldsState(
                     email = state.email,
                     password = state.password,
-                    emailError = state.emailError,
-                    passwordError = state.passwordError
+                    emailErrorKey = state.emailErrorKey,
+                    passwordErrorKey = state.passwordErrorKey
                 ),
                 onEmailChange = onEmailChange,
                 onPasswordChange = onPasswordChange,
@@ -123,9 +122,8 @@ fun LoginScreenPreviewErrors() {
                 state = LoginContract.State(
                     email = AppText.Preview.WRONG_EMAIL,
                     password = AppText.Preview.WRONG_PASSWORD,
-                    emailError = AppText.Login.EMAIL_ERROR.text(),
-                    passwordError = AppText.Error.PASSWORD_ERROR.text(),
-                    rememberMe = false
+                    emailErrorKey = AppText.Login.EMAIL_ERROR,
+                    passwordErrorKey = AppText.Error.PASSWORD_ERROR
                 )
             )
         }

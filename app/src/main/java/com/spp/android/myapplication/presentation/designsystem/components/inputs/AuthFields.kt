@@ -14,13 +14,15 @@ import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.texts.AppText
-import com.spp.android.myapplication.presentation.texts.t
+import com.spp.android.myapplication.presentation.texts.TextKey
+import com.spp.android.myapplication.presentation.texts.TextKeyWithArgs
+import com.spp.android.myapplication.presentation.texts.text
 
 data class AuthFieldsState(
     val email: String = "",
     val password: String = "",
-    val emailError: String? = "",
-    val passwordError: String? = ""
+    val emailErrorKey    : TextKey? = null,
+    val passwordErrorKey : TextKeyWithArgs? = null,
 )
 
 @Composable
@@ -37,7 +39,7 @@ fun AuthFields(
             value = state.email,
             onValueChange = onEmailChange,
             kind = FieldKind.Email,
-            error = state.emailError.orEmpty(),
+            error = state.emailErrorKey?.text().orEmpty(),
             imeAction = ImeAction.Next
         )
         LabeledTextField(
@@ -45,7 +47,7 @@ fun AuthFields(
             value = state.password,
             onValueChange = onPasswordChange,
             kind = FieldKind.Password,
-            error = state.passwordError.orEmpty(),
+            error = state.passwordErrorKey?.text().orEmpty(),
             imeAction = ImeAction.Done,
             onImeAction = onDone,
             spacerAfter = false
@@ -73,7 +75,7 @@ fun AuthFieldsPreviewError() = PreviewColumn {
         state = AuthFieldsState(
         email = email,
         password = pass,
-        emailError = AppText.Login.EMAIL_ERROR.text(),
-        passwordError = AppText.Login.PASSWORD_ERROR_TEMPLATE.t(AppText.Integers.PASSWORD_MIN_LENGTH)
+            emailErrorKey = AppText.Login.EMAIL_ERROR,
+            passwordErrorKey = AppText.Error.PASSWORD_ERROR
     ), onEmailChange = { email = it }, onPasswordChange = { pass = it }, onDone = {})
 }

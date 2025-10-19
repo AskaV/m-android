@@ -33,7 +33,7 @@ fun SignUpScreen(
 
                 SignUpContract.Effect.NavigateToExtended -> {
                     val email = vm.state.value.fields.email
-                    if (!email.isNullOrBlank()) {
+                    if (email.isNotBlank()) {
                         onNavigateToExtended(email)
                     }
                 }
@@ -45,7 +45,7 @@ fun SignUpScreen(
 
     Scaffold(snackbarHost = { SnackbarHost(snackbar) }) { paddings ->
         SignUpScreenContent(
-            state = SignUpContract.State(fields = state.fields, rememberMe = state.rememberMe),
+            state = state,
             onEmailChange = { vm.onEvent(SignUpContract.Event.EmailChanged(it)) },
             onPasswordChange = { vm.onEvent(SignUpContract.Event.PasswordChanged(it)) },
             onRememberMeChange = { vm.onEvent(SignUpContract.Event.RememberChanged(it)) },

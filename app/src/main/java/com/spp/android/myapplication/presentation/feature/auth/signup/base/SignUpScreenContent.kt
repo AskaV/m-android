@@ -28,7 +28,6 @@ import com.spp.android.myapplication.presentation.feature.auth.components.AuthHe
 import com.spp.android.myapplication.presentation.feature.auth.components.CheckBoxWithAction
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract
 import com.spp.android.myapplication.presentation.texts.AppText
-import com.spp.android.myapplication.presentation.texts.text
 
 @Composable
 fun SignUpScreenContent(
@@ -147,8 +146,8 @@ fun SignUpScreenPreviewErrors() {
                     fields = AuthFieldsState(
                         email = AppText.Preview.WRONG_EMAIL,
                         password = AppText.Preview.WRONG_PASSWORD,
-                        emailError = AppText.Login.EMAIL_ERROR.text(),
-                        passwordError = AppText.Error.PASSWORD_ERROR.text()
+                        emailErrorKey = AppText.Login.EMAIL_ERROR,
+                        passwordErrorKey = AppText.Error.PASSWORD_ERROR
                     ), rememberMe = false
                 ),
             )

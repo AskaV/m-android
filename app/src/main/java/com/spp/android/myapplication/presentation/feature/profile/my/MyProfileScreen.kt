@@ -1,10 +1,17 @@
 package com.spp.android.myapplication.presentation.feature.profile.my
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect.NavigateToAuth
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect.NavigateToContacts
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect.NavigateToEditProfile
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect.ShowMessage
 
 @Composable
 fun MyProfileScreen(
@@ -16,14 +23,16 @@ fun MyProfileScreen(
     viewModel: MyProfileViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val snackbar = remember { SnackbarHostState() }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { eff ->
             when (eff) {
-                is MyProfileContract.Effect.ShowMessage -> { /* TODO: Snackbar */ }
-                MyProfileContract.Effect.NavigateToContacts -> onNavigateContacts()
-                MyProfileContract.Effect.NavigateToEditProfile -> onNavigateEdit()
-                MyProfileContract.Effect.NavigateToAuth -> onNavigateAuth()
+                is ShowMessage -> snackbar.showSnackbar(eff.messageKey.text(context))
+                is NavigateToContacts -> onNavigateContacts()
+                is NavigateToEditProfile -> onNavigateEdit()
+                is NavigateToAuth -> onNavigateAuth()
             }
         }
     }
@@ -37,7 +46,6 @@ fun MyProfileScreen(
             viewModel.onExternalEmail(externalEmail)
         }
     }
-    // Pass through the state as-is (UI is dumb)
     ProfileScreen(
         state = state,
         onEditProfile = { viewModel.onEvent(MyProfileContract.Event.EditProfileClicked) },

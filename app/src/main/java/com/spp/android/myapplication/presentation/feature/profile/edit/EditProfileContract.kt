@@ -1,6 +1,7 @@
 package com.spp.android.myapplication.presentation.feature.profile.edit
 
 import androidx.compose.runtime.Immutable
+import com.spp.android.myapplication.presentation.texts.TextKey
 
 object EditProfileContract {
 
@@ -13,9 +14,9 @@ object EditProfileContract {
         val birthdate: String = "",
         val isLoading: Boolean = false,
         val isSaving: Boolean = false,
-        val error: String? = "",
-        val usernameError: String? = "",
-        val phoneError: String? = ""
+        val errorKey: TextKey? = null,
+        val usernameErrorKey: TextKey? = null,
+        val phoneErrorKey: TextKey? = null
     )
 
     sealed interface Event {
@@ -34,7 +35,7 @@ object EditProfileContract {
     sealed interface Effect {
         data object NavigateBack : Effect
         data object OpenAvatarPicker : Effect
-        data class ShowMessage(val message: String) : Effect
+        data class ShowMessage(val messageKey: TextKey) : Effect
         data object Saved : Effect
     }
 }

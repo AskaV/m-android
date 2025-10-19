@@ -24,7 +24,6 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPh
 import com.spp.android.myapplication.presentation.feature.auth.components.AuthHeader
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract
 import com.spp.android.myapplication.presentation.texts.AppText
-import com.spp.android.myapplication.presentation.texts.text
 
 @Composable
 fun SignUpProfileScreenContent(
@@ -65,8 +64,8 @@ fun SignUpProfileScreenContent(
                 onUsernameChange = onUserNameChange,
                 phone = state.phone,
                 onPhoneChange = onPhoneChange,
-                usernameError = state.usernameError,
-                phoneError = state.phoneError
+                usernameErrorKey = state.usernameErrorKey,
+                phoneErrorKey = state.phoneErrorKey
             )
         }
 
@@ -119,8 +118,8 @@ private fun SignUpProfileScreenPreviewErrors() {
                 state = SignUpContract.ProfileState(
                     username = "",
                     phone = "",
-                    usernameError = AppText.Error.USERNAME_ERROR.text(),
-                    phoneError = AppText.Error.PHONE_ERROR.text()
+                    usernameErrorKey = AppText.Error.USERNAME_ERROR,
+                    phoneErrorKey = AppText.Error.PHONE_ERROR
                 )
             )
         }

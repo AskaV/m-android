@@ -1,8 +1,11 @@
 package com.spp.android.myapplication.presentation.feature.contacts.list
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
@@ -15,6 +18,8 @@ fun ContactsScreen(
     vm: ContactsViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val snackbar = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
         vm.effect.collect { eff ->
@@ -23,7 +28,8 @@ fun ContactsScreen(
                 ContactsContract.Effect.OpenSearch -> onOpenSearch()
                 ContactsContract.Effect.OpenAddContacts -> onOpenAddContacts()
                 is ContactsContract.Effect.OpenContactProfile -> onOpenContactProfile(eff.contactId)
-                is ContactsContract.Effect.ShowMessage -> { /* TODO Snackbar */
+                is ContactsContract.Effect.ShowMessage -> {
+                    snackbar.showSnackbar(eff.messageKey.text(context))
                 }
             }
         }

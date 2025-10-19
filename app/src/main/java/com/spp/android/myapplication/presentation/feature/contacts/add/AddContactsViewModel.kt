@@ -1,13 +1,17 @@
 package com.spp.android.myapplication.presentation.feature.contacts.add
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Effect
-import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.*
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
+import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Effect
+import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.AddClicked
+import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.BackClicked
+import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.ErrorShown
+import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.Load
+import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.MassAddClicked
+import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.SearchClicked
+import com.spp.android.myapplication.presentation.feature.contacts.add.AddContactsContract.Event.ToggleSelect
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,9 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddContactsViewModel @Inject constructor(
-    @ApplicationContext private val app: Context
-) : ViewModel() {
+class AddContactsViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow(AddContactsContract.State())
     val state = _state.asStateFlow()

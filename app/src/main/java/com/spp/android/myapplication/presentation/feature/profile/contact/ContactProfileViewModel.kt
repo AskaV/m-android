@@ -1,13 +1,11 @@
 package com.spp.android.myapplication.presentation.feature.profile.contact
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Effect
 import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Event
 import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,9 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ContactProfileViewModel @Inject constructor(
-    @ApplicationContext private val appContext: Context
-) : ViewModel() {
+class ContactProfileViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow(ContactProfileContract.State())
     val state: StateFlow<ContactProfileContract.State> = _state.asStateFlow()
@@ -38,12 +34,12 @@ class ContactProfileViewModel @Inject constructor(
             }
 
             is Event.AddClicked -> addContact()
-            is Event.ErrorShown -> _state.update { it.copy(error = null) }
+            is Event.ErrorShown -> _state.update { it.copy(errorKey = null) }
         }
     }
 
     private fun load(id: String) = viewModelScope.launch {
-        _state.update { it.copy(isLoading = true, contactId = id, error = null) }
+        _state.update { it.copy(isLoading = true, contactId = id, errorKey = null) }
 
         runCatching {
             StubContact(
@@ -63,52 +59,26 @@ class ContactProfileViewModel @Inject constructor(
                     isLoading = false
                 )
             }
-        }.onFailure { t ->
-            _state.update {
-                it.copy(
-                    isLoading = false,
-                    error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
-                )
-            }
-            sendEffect(
-                Effect.ShowMessage(
-                    AppText.OtherInfo.CONTACTS_LOAD_FAILED.text(
-                        appContext
-                    )
-                )
-            )
+        }.onFailure {
+            _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+            sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
         }
     }
 
     private fun addContact() = viewModelScope.launch {
         _state.update { it.copy(isLoading = true) }
 
-        runCatching {
-            true
-        }.onSuccess {
-            _state.update { it.copy(isLoading = false, hasSocial = true) }
-            sendEffect(
-                Effect.ShowMessage(
-                    AppText.OtherInfo.CONTACT_ADDED.text(
-                        appContext
+        runCatching { true }.onSuccess {
+                _state.update { it.copy(isLoading = false, hasSocial = true) }
+                sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACT_ADDED))
+            }.onFailure {
+                _state.update {
+                    it.copy(
+                        isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR
                     )
-                )
-            )
-        }.onFailure { t ->
-            _state.update {
-                it.copy(
-                    isLoading = false,
-                    error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
-                )
+                }
+                sendEffect(Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_ADD_CONTACT))
             }
-            sendEffect(
-                Effect.ShowMessage(
-                    AppText.OtherInfo.FAILED_TO_ADD_CONTACT.text(
-                        appContext
-                    )
-                )
-            )
-        }
     }
 
     private fun sendEffect(effect: Effect) = viewModelScope.launch {

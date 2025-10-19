@@ -1,14 +1,21 @@
 package com.spp.android.myapplication.presentation.feature.profile.my
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event
-import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.*
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.EditProfileClicked
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.ErrorShown
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.Load
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.LogoutClicked
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.MarkCompleted
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.ProfileSaved
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.Refresh
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.SignUpFinished
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.ViewContactsClicked
 import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.utils.parseNameFromEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,12 +24,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.spp.android.myapplication.presentation.utils.parseNameFromEmail
 
 @HiltViewModel
-class MyProfileViewModel @Inject constructor(
-    @ApplicationContext private val appContext: Context
-) : ViewModel() {
+class MyProfileViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow(MyProfileContract.State())
     val state: StateFlow<MyProfileContract.State> = _state.asStateFlow()
@@ -40,7 +44,7 @@ class MyProfileViewModel @Inject constructor(
             EditProfileClicked -> sendEffect(Effect.NavigateToEditProfile)
             ViewContactsClicked -> sendEffect(Effect.NavigateToContacts)
             LogoutClicked -> performLogout()
-            ErrorShown -> _state.update { it.copy(error = null) }
+            ErrorShown -> _state.update { it.copy(errorKey = null) }
 
             is ProfileSaved -> {
                 _state.update {
@@ -64,7 +68,7 @@ class MyProfileViewModel @Inject constructor(
     }
 
     private fun loadProfile() = viewModelScope.launch {
-        _state.update { it.copy(isLoading = true, error = null) }
+        _state.update { it.copy(isLoading = true, errorKey = null) }
 
         runCatching {
             StubProfile(
@@ -83,47 +87,26 @@ class MyProfileViewModel @Inject constructor(
                     isLoading = false
                 )
             }
-        }.onFailure { throwable ->
-            _state.update {
-                it.copy(
-                    isLoading = false,
-                    error = throwable.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
-                )
-            }
-            sendEffect(
-                Effect.ShowMessage(
-                    AppText.OtherInfo.FAILED_TO_LOAD_PROFILE.text(
-                        appContext
-                    )
-                )
-            )
+        }.onFailure {
+            _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+            sendEffect(Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_LOAD_PROFILE))
         }
     }
 
     private fun performLogout() = viewModelScope.launch {
         _state.update { it.copy(isLoading = true) }
 
-        runCatching {
-            true
-        }.onSuccess {
-            _state.update { it.copy(isLoading = false) }
-            sendEffect(Effect.NavigateToAuth)
-        }.onFailure { throwable ->
-            _state.update {
-                it.copy(
-                    isLoading = false,
-                    error = throwable.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
-                )
-
-            }
-            sendEffect(
-                Effect.ShowMessage(
-                    AppText.OtherInfo.LOGOUT_FAILED.text(
-                        appContext
+        runCatching { true }.onSuccess {
+                _state.update { it.copy(isLoading = false) }
+                sendEffect(Effect.NavigateToAuth)
+            }.onFailure {
+                _state.update {
+                    it.copy(
+                        isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR
                     )
-                )
-            )
-        }
+                }
+                sendEffect(Effect.ShowMessage(AppText.OtherInfo.LOGOUT_FAILED))
+            }
     }
 
     private fun sendEffect(effect: Effect) = viewModelScope.launch {
@@ -151,7 +134,7 @@ class MyProfileViewModel @Inject constructor(
     private fun applyDerivedName() {
         val s = _state.value
         if (s.name.isBlank() && !s.email.isNullOrBlank()) {
-            val (first, last) = parseNameFromEmail(s.email!!)
+            val (first, last) = parseNameFromEmail(s.email)
             val full = listOf(first, last).filter { it.isNotBlank() }.joinToString(" ")
             if (full.isNotBlank()) _state.update { it.copy(name = full) }
         }

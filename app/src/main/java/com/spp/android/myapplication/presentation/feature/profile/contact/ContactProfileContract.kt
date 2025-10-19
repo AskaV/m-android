@@ -1,6 +1,7 @@
 package com.spp.android.myapplication.presentation.feature.profile.contact
 
 import androidx.compose.runtime.Immutable
+import com.spp.android.myapplication.presentation.texts.TextKey
 
 object ContactProfileContract {
 
@@ -12,11 +13,11 @@ object ContactProfileContract {
         val lineSecondary: String = "",
         val hasSocial: Boolean = true,
         val isLoading: Boolean = false,
-        val error: String? = ""
+        val errorKey: TextKey? = null
     )
 
     sealed interface Event {
-        data class Load(val contactId: String) : Event
+        data class Load(val contactId: String) : Event  //TODO fix String in ID
         data object BackClicked : Event
         data object MessageClicked : Event
         data object AddClicked : Event
@@ -26,6 +27,6 @@ object ContactProfileContract {
     sealed interface Effect {
         data object NavigateBack : Effect
         data class OpenChat(val contactId: String) : Effect
-        data class ShowMessage(val message: String) : Effect
+        data class ShowMessage(val messageKey: TextKey) : Effect
     }
 }

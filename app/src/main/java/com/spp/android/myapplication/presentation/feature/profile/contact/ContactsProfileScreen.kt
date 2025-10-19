@@ -1,8 +1,11 @@
 package com.spp.android.myapplication.presentation.feature.profile.contact
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
@@ -10,9 +13,12 @@ fun ContactProfileScreen(
     contactId: String,
     onBack: () -> Unit = {},
     onOpenChat: (String) -> Unit = {},
-    vm: ContactProfileViewModel = androidx.hilt.navigation.compose.hiltViewModel()
+    vm: ContactProfileViewModel = androidx.hilt.navigation.compose.hiltViewModel() //TODO fix
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val snackbar = remember { SnackbarHostState() }
+    val context = LocalContext.current
+
 
     LaunchedEffect(contactId) {
         vm.onEvent(ContactProfileContract.Event.Load(contactId))
@@ -22,7 +28,8 @@ fun ContactProfileScreen(
             when (eff) {
                 ContactProfileContract.Effect.NavigateBack -> onBack()
                 is ContactProfileContract.Effect.OpenChat -> onOpenChat(eff.contactId)
-                is ContactProfileContract.Effect.ShowMessage -> { /* TODO: Snackbar */
+                is ContactProfileContract.Effect.ShowMessage -> {
+                    snackbar.showSnackbar(eff.messageKey.text(context))
                 }
             }
         }

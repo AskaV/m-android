@@ -1,6 +1,8 @@
 package com.spp.android.myapplication.presentation.feature.auth.login
 
 import androidx.compose.runtime.Immutable
+import com.spp.android.myapplication.presentation.texts.TextKey
+import com.spp.android.myapplication.presentation.texts.TextKeyWithArgs
 
 object LoginContract {
 
@@ -9,8 +11,9 @@ object LoginContract {
         val email: String = "",
         val password: String = "",
         val rememberMe: Boolean = false,
-        val emailError: String? = "",
-        val passwordError: String? = "",
+        val emailErrorKey: TextKey? = null,
+        val passwordErrorKey: TextKeyWithArgs? = null,
+        val errorKey: TextKey? = null,
         val emailTouched: Boolean = false,
         val passwordTouched: Boolean = false,
         val isLoading: Boolean = false,

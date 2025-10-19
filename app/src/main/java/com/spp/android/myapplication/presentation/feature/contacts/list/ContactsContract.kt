@@ -2,6 +2,7 @@ package com.spp.android.myapplication.presentation.feature.contacts.list
 
 import androidx.compose.runtime.Immutable
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
+import com.spp.android.myapplication.presentation.texts.TextKey
 
 object ContactsContract {
 
@@ -9,7 +10,7 @@ object ContactsContract {
     data class State(
         val items: List<ContactUi> = emptyList(),
         val isLoading: Boolean = false,
-        val error: String? = "",
+        val errorKey: TextKey? = null,
         val selected: Set<Int> = emptySet(),
         val isSelectionMode: Boolean = false
     )
@@ -34,6 +35,6 @@ object ContactsContract {
         data object OpenSearch : Effect
         data object OpenAddContacts : Effect
         data class OpenContactProfile(val contactId: Int) : Effect
-        data class ShowMessage(val message: String) : Effect
+        data class ShowMessage(val messageKey: TextKey) : Effect
     }
 }

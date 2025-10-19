@@ -16,11 +16,17 @@ data class TextKey(@StringRes val res: Int) {
 fun @receiver:StringRes Int.t(vararg args: Any): String = stringResource(this, *args)
 fun Context.t(@StringRes id: Int, vararg args: Any): String = getString(id, *args)
 
-class S(@StringRes val id: Int, vararg val args: Any)
+fun tkArgs(@StringRes res: Int, vararg args: Any) =
+    TextKeyWithArgs(res, args.toList())
+data class TextKeyWithArgs(
+    @StringRes val res: Int,
+    val args: List<Any> = emptyList()
+)
 
 @Composable
-fun S.text(): String = stringResource(id, *args)
-fun S.text(ctx: Context): String = ctx.getString(id, *args)
+fun TextKeyWithArgs.text(): String = stringResource(res, *args.toTypedArray())
+
+fun TextKeyWithArgs.text(ctx: Context): String = ctx.getString(res, *args.toTypedArray())
 
 
 object AppText {
@@ -104,9 +110,9 @@ object AppText {
     }
 
     object Error {
-        val PASSWORD_ERROR = S(R.string.password_error_text, Integers.PASSWORD_MIN_LENGTH)
-        val USERNAME_ERROR = S(R.string.user_name_error, Integers.USERNAME_MIN_LENGTH)
-        val PHONE_ERROR = S(R.string.phone_length_error, Integers.PHONE_MIN_LENGTH)
+        val PASSWORD_ERROR = tkArgs(R.string.password_error_text, Integers.PASSWORD_MIN_LENGTH)
+        val USERNAME_ERROR = tkArgs(R.string.user_name_error, Integers.USERNAME_MIN_LENGTH)
+        val PHONE_ERROR = tkArgs(R.string.phone_length_error, Integers.PHONE_MIN_LENGTH)
     }
 
     object Label {

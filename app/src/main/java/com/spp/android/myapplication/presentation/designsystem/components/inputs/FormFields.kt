@@ -10,15 +10,11 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewCo
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 
 enum class FieldId {
-    EMAIL,
-    PASSWORD,
-    USERNAME,
-    PHONE
+    EMAIL, PASSWORD, USERNAME, PHONE
 }
 
 data class FieldSpec(
-    val id: FieldId,
-    val kind: FieldKind
+    val id: FieldId, val kind: FieldKind
 )
 
 data class FieldState(
@@ -31,8 +27,7 @@ data class FieldState(
 
 @Composable
 fun FormFields(
-    modifier: Modifier = Modifier,
-    fields: List<FieldState> = emptyList()
+    modifier: Modifier = Modifier, fields: List<FieldState> = emptyList()
 ) {
     Column(modifier.fillMaxWidth()) {
         fields.forEachIndexed { index, fieldState ->
@@ -50,23 +45,17 @@ fun FormFields(
 
 val AuthSpecs = listOf(
     FieldSpec(
-        FieldId.EMAIL,
-        FieldKind.Email
-    ),
-    FieldSpec(
-        FieldId.PASSWORD,
-        FieldKind.Password
+        FieldId.EMAIL, FieldKind.Email
+    ), FieldSpec(
+        FieldId.PASSWORD, FieldKind.Password
     )
 )
 
 val RegistrationSpecs = listOf(
     FieldSpec(
-        FieldId.USERNAME,
-        FieldKind.Username
-    ),
-    FieldSpec(
-        FieldId.PHONE,
-        FieldKind.Phone
+        FieldId.USERNAME, FieldKind.Username
+    ), FieldSpec(
+        FieldId.PHONE, FieldKind.Phone
     )
 )
 
@@ -81,8 +70,7 @@ fun FormFieldsAuthPreview() = PreviewColumn {
                 label = "Email",
                 error = "",
                 kind = FieldKind.Email,
-            ),
-            FieldState(
+            ), FieldState(
                 value = "asdasdas",
                 label = "password",
                 error = "",
@@ -102,8 +90,7 @@ fun FormFieldsRegistrationPreview() = PreviewColumn {
                 label = "username",
                 error = "",
                 kind = FieldKind.Username,
-            ),
-            FieldState(
+            ), FieldState(
                 value = "+380646584654",
                 label = "phone",
                 error = "",
@@ -124,26 +111,22 @@ fun FormFieldsEditP() = PreviewColumn {
                 label = "username",
                 error = "",
                 kind = FieldKind.Username,
-            ),
-            FieldState(
+            ), FieldState(
                 value = "careed",
                 label = "car",
                 error = "",
                 kind = FieldKind.Username,
-            ),
-            FieldState(
+            ), FieldState(
                 value = "+380646584654",
                 label = "phone",
                 error = "",
                 kind = FieldKind.Phone,
-            ),
-            FieldState(
+            ), FieldState(
                 value = "adresa",
                 label = "address",
                 error = "",
                 kind = FieldKind.Username,
-            ),
-            FieldState(
+            ), FieldState(
                 value = "10/10/10",
                 label = "dateOfBirth",
                 error = "",

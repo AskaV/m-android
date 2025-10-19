@@ -1,13 +1,11 @@
 package com.spp.android.myapplication.presentation.feature.profile.edit
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Effect
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event
 import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,9 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class EditProfileViewModel @Inject constructor(
-    @ApplicationContext private val appContext: Context
-) : ViewModel() {
+class EditProfileViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow(EditProfileContract.State())
     val state: StateFlow<EditProfileContract.State> = _state.asStateFlow()
@@ -36,28 +32,25 @@ class EditProfileViewModel @Inject constructor(
         when (event) {
             Event.Load -> load()
             is Event.UsernameChanged -> _state.update {
-                it.copy(username = event.value, usernameError = null)
+                it.copy(username = event.value, usernameErrorKey = null)
             }
 
             is Event.CareerChanged -> _state.update { it.copy(career = event.value) }
-
             is Event.PhoneChanged -> _state.update {
-                it.copy(phone = event.value, phoneError = null)
+                it.copy(phone = event.value, phoneErrorKey = null)
             }
 
             is Event.AddressChanged -> _state.update { it.copy(address = event.value) }
-
             is Event.BirthdateChanged -> _state.update { it.copy(birthdate = event.value) }
-
             is Event.SaveClicked -> save()
             is Event.BackClicked -> sendEffect(Effect.NavigateBack)
             is Event.AvatarClicked -> sendEffect(Effect.OpenAvatarPicker)
-            is Event.ErrorShown -> _state.update { it.copy(error = null) }
+            is Event.ErrorShown -> _state.update { it.copy(errorKey = null) }
         }
     }
 
     private fun load() = viewModelScope.launch {
-        _state.update { it.copy(isLoading = true, error = null) }
+        _state.update { it.copy(isLoading = true, errorKey = null) }
         runCatching {
             StubProfile(
                 username = "Lucile Alvarado",
@@ -77,45 +70,26 @@ class EditProfileViewModel @Inject constructor(
                     isLoading = false
                 )
             }
-        }.onFailure { t ->
+        }.onFailure {
             _state.update {
-                it.copy(
-                    isLoading = false,
-                    error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
-                )
+                it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR)
             }
-            sendEffect(
-                Effect.ShowMessage(
-                    AppText.OtherInfo.FAILED_TO_LOAD_PROFILE.text(
-                        appContext
-                    )
-                )
-            )
+            sendEffect(Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_LOAD_PROFILE))
         }
     }
 
     private fun save() = viewModelScope.launch {
-        _state.update { it.copy(isSaving = true, error = null) }
-        runCatching {
-            true
-        }.onSuccess {
-            _state.update { it.copy(isSaving = false) }
-            sendEffect(Effect.Saved)
-        }.onFailure { t ->
-            _state.update {
-                it.copy(
-                    isSaving = false,
-                    error = t.message ?: AppText.OtherInfo.UNKNOWN_ERROR.text(appContext)
-                )
+        _state.update { it.copy(isSaving = true, errorKey = null) }
+
+        runCatching { true }.onSuccess {
+                _state.update { it.copy(isSaving = false) }
+                sendEffect(Effect.Saved)
+            }.onFailure {
+                _state.update {
+                    it.copy(isSaving = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR)
+                }
+                sendEffect(Effect.ShowMessage(AppText.OtherInfo.FAILED_PROFILE_SAVE))
             }
-            sendEffect(
-                Effect.ShowMessage(
-                    AppText.OtherInfo.FAILED_PROFILE_SAVE.text(
-                        appContext
-                    )
-                )
-            )
-        }
     }
 
     private fun sendEffect(effect: Effect) = viewModelScope.launch {

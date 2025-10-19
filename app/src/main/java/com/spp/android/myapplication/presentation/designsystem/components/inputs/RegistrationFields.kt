@@ -13,6 +13,7 @@ import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.texts.AppText
+import com.spp.android.myapplication.presentation.texts.TextKeyWithArgs
 import com.spp.android.myapplication.presentation.texts.text
 
 @Composable
@@ -22,8 +23,8 @@ fun RegistrationFields(
     onUsernameChange: (String) -> Unit,
     phone: String,
     onPhoneChange: (String) -> Unit,
-    usernameError: String = "",
-    phoneError: String = "",
+    usernameErrorKey: TextKeyWithArgs? = null,
+    phoneErrorKey: TextKeyWithArgs? = null,
 ) {
     Column(modifier.fillMaxWidth()) {
         LabeledTextField(
@@ -31,14 +32,14 @@ fun RegistrationFields(
             value = username,
             onValueChange = onUsernameChange,
             kind = FieldKind.Username,
-            error = usernameError
+            error = usernameErrorKey?.text().orEmpty()
         )
         LabeledTextField(
             label = AppText.SignUp.PHONE_LABEL.text(),
             value = phone,
             onValueChange = onPhoneChange,
             kind = FieldKind.Phone,
-            error = phoneError
+            error = phoneErrorKey?.text().orEmpty()
         )
     }
 }
@@ -65,7 +66,7 @@ fun RegistrationFieldsPreviewError() = PreviewColumn {
         onUsernameChange = { name = it },
         phone = phone,
         onPhoneChange = { phone = it },
-        usernameError = AppText.Error.USERNAME_ERROR.text(),
-        phoneError = AppText.Error.PHONE_ERROR.text()
+        usernameErrorKey = AppText.Error.USERNAME_ERROR,
+        phoneErrorKey = AppText.Error.PHONE_ERROR
     )
 }
