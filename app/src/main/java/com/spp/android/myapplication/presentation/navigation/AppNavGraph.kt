@@ -109,8 +109,10 @@ fun AppNavGraph() {
                         navController.navigate(Routes.Login.route) { popUpTo(0) }
                     })
             }, contacts = {
-                ContactsScreen(onBack = { tabsController.goTo(HomeTab.Profile) }, onOpenSearch = {
-                    Toast.makeText(context, "Search clicked", Toast.LENGTH_SHORT).show()
+                ContactsScreen(
+                    onBack = { tabsController.goTo(HomeTab.Profile) },
+                    onOpenSearch = {
+                        Toast.makeText(context, "Search clicked", Toast.LENGTH_SHORT).show()
                 }, onOpenAddContacts = {
                     navController.navigate(Routes.AddContacts.route) {
                         launchSingleTop = true

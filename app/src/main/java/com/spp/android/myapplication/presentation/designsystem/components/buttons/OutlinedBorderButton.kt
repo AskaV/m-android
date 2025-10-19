@@ -26,7 +26,8 @@ fun OutlinedBorderButton(
     onClick: () -> Unit = {},
     text: String,
     style: OutlinedButtonStyle = OutlinedButtonStyle.Secondary,
-    buttonHeight: Dp = dimensionResource(R.dimen.button_height)
+    buttonHeight: Dp = dimensionResource(R.dimen.button_height),
+    fillMaxWidth: Boolean = true
 ) {
     val (borderColor, contentColor, textStyle, transformedText) = when (style) {
         OutlinedButtonStyle.Primary -> arrayOf(
@@ -50,10 +51,12 @@ fun OutlinedBorderButton(
             text
         )
     }
+    val applied = (if (fillMaxWidth) modifier.fillMaxWidth() else modifier)
+        .height(buttonHeight)
 
     OutlinedButton(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth().height(buttonHeight),
+        modifier = applied,
         shape = RoundedCornerShape(dimensionResource(id = R.dimen.button_corner_radius)),
         border = BorderStroke(
             dimensionResource(id = R.dimen.button_border_width), borderColor as Color

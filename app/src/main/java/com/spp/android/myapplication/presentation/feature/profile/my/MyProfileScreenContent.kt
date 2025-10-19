@@ -20,7 +20,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedBorderButton
+import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedButtonStyle
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.SocialButtonsRow
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
@@ -62,19 +65,14 @@ fun ProfileScreen(
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.align(Alignment.CenterStart)
                     )
-                    OutlinedButton(
+                    OutlinedBorderButton(
                         onClick = onLogout,
-                        modifier = Modifier.align(Alignment.CenterEnd),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.onBackground
-                        ),
-                        border = BorderStroke(
-                            width = dimensionResource(id = R.dimen.button_border_width),
-                            color = MaterialTheme.colorScheme.outline
-                        )
-                    ) {
-                        Text(text = AppText.MyProfile.LOGOUT.text())
-                    }
+                        text = AppText.MyProfile.LOGOUT.text(),
+                        style = OutlinedButtonStyle.OnBackground,
+                        fillMaxWidth = false,
+                        buttonHeight = 40.dp,
+                        modifier = Modifier.align(Alignment.CenterEnd)
+                    )
                 }
 
                 ProfileHeader(
@@ -90,7 +88,7 @@ fun ProfileScreen(
         val padding = dimensionResource(id = R.dimen.spacer_medium)
 
         Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = padding).fillMaxHeight(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = padding, vertical = padding).fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (state.isCompleted) {
