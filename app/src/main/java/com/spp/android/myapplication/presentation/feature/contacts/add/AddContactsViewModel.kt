@@ -43,7 +43,7 @@ class AddContactsViewModel @Inject constructor() : ViewModel() {
             is ToggleSelect -> {
                 _state.update { st ->
                     val ns = st.selected.toMutableSet().apply {
-                        if (contains(e.item.id)) remove(e.item.id) else add(e.item.id)
+                        if (contains(e.toggleSelect.id)) remove(e.toggleSelect.id) else add(e.toggleSelect.id)
                     }
                     st.copy(selected = ns)
                 }
@@ -65,9 +65,9 @@ class AddContactsViewModel @Inject constructor() : ViewModel() {
 
             is AddClicked -> {
                 _state.update { st ->
-                    st.copy(items = st.items.filterNot { it.id == e.item.id })
+                    st.copy(items = st.items.filterNot { it.id == e.dddClicked.id })
                 }
-                sendEffect(Effect.ShowMessage("Added ${e.item.name}"))
+                sendEffect(Effect.ShowMessage("Added ${e.dddClicked.name}"))
             }
         }
     }

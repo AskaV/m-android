@@ -45,7 +45,7 @@ class GalleryPickerViewModel @Inject constructor() : ViewModel() {
             is GalleryPickerContract.Event.PhotoPicked ->
                 viewModelScope.launch {
                     _state.update { it.copy(isVisible = false) }
-                    _effect.send(GalleryPickerContract.Effect.ReturnResult(event.uri))
+                    _effect.send(GalleryPickerContract.Effect.ReturnResult(event.photoPickedUri))
                 }
 
             GalleryPickerContract.Event.ErrorShown ->

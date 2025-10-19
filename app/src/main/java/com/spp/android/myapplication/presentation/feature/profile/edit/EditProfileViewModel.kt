@@ -32,16 +32,16 @@ class EditProfileViewModel @Inject constructor() : ViewModel() {
         when (event) {
             Event.Load -> load()
             is Event.UsernameChanged -> _state.update {
-                it.copy(username = event.value, usernameErrorKey = null)
+                it.copy(username = event.usernameChanged, usernameErrorKey = null)
             }
 
-            is Event.CareerChanged -> _state.update { it.copy(career = event.value) }
+            is Event.CareerChanged -> _state.update { it.copy(career = event.careerChanged) }
             is Event.PhoneChanged -> _state.update {
-                it.copy(phone = event.value, phoneErrorKey = null)
+                it.copy(phone = event.phoneChanged, phoneErrorKey = null)
             }
 
-            is Event.AddressChanged -> _state.update { it.copy(address = event.value) }
-            is Event.BirthdateChanged -> _state.update { it.copy(birthdate = event.value) }
+            is Event.AddressChanged -> _state.update { it.copy(address = event.addressChanged) }
+            is Event.BirthdateChanged -> _state.update { it.copy(birthdate = event.birthdateChanged) }
             is Event.SaveClicked -> save()
             is Event.BackClicked -> sendEffect(Effect.NavigateBack)
             is Event.AvatarClicked -> sendEffect(Effect.OpenAvatarPicker)

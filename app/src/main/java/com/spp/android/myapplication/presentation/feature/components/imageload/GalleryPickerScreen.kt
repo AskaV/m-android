@@ -26,8 +26,8 @@ fun GalleryPickerScreen(
 
     LaunchedEffect(startVisible) {
         if (startVisible) vm.onEvent(GalleryPickerContract.Event.Show)
-        vm.effect.collectLatest { eff ->
-            when (eff) {
+        vm.effect.collectLatest { effect ->
+            when (effect) {
                 GalleryPickerContract.Effect.LaunchGalleryPicker -> galleryLauncher.launch("image/*")
 
                 GalleryPickerContract.Effect.LaunchCamera -> { /* TODO: */
@@ -36,7 +36,7 @@ fun GalleryPickerScreen(
                 is GalleryPickerContract.Effect.ShowMessage -> {/* TODO: */
                 }
 
-                is GalleryPickerContract.Effect.ReturnResult -> onResult(eff.uri)
+                is GalleryPickerContract.Effect.ReturnResult -> onResult(effect.returnResultUri)
             }
         }
     }

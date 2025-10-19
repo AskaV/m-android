@@ -30,18 +30,18 @@ object SignUpContract {
     )
 
     sealed interface Event {
-        data class EmailChanged(val value: String) : Event
-        data class PasswordChanged(val value: String) : Event
-        data class RememberChanged(val value: Boolean) : Event
+        data class EmailChanged(val email: String) : Event
+        data class PasswordChanged(val password: String) : Event
+        data class RememberChanged(val isChecked: Boolean) : Event
         data object SubmitRegister : Event
         data object RegisterWithGoogle : Event
         data object ErrorShown : Event
 
         data object NavigateToExtendedRequested : Event
 
-        data class UsernameChanged(val value: String) : Event
-        data class PhoneChanged(val value: String) : Event
-        data class AvatarPicked(val uri: Uri) : Event
+        data class UsernameChanged(val username: String) : Event
+        data class PhoneChanged(val phone: String) : Event
+        data class AvatarPicked(val avatarUri: Uri) : Event
         data object PickAvatar : Event
         data object CancelExtended : Event
         data object ForwardExtended : Event

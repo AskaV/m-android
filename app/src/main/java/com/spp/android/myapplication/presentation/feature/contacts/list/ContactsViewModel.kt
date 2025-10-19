@@ -38,11 +38,11 @@ class ContactsViewModel @Inject constructor(private val repository: ContactsRepo
             is BackClicked -> sendEffect(Effect.NavigateBack)
             is SearchClicked -> sendEffect(Effect.OpenSearch)
             is AddContactsClicked -> sendEffect(Effect.OpenAddContacts)
-            is ContactClicked -> sendEffect(Effect.OpenContactProfile(event.item.id))
-            is DeleteClicked -> delete(event.item)
+            is ContactClicked -> sendEffect(Effect.OpenContactProfile(event.contactClicked.id))
+            is DeleteClicked -> delete(event.deleteClicked)
             is ErrorShown -> _state.update { it.copy(errorKey = null) }
-            is ContactLongClicked -> toggleSelectionMode(event.item.id)
-            is ContactSelectionToggled -> toggleSelection(event.item.id)
+            is ContactLongClicked -> toggleSelectionMode(event.contactLongClicked.id)
+            is ContactSelectionToggled -> toggleSelection(event.contactSelectionToggled.id)
             is BulkDeleteClicked -> bulkDelete()
             is ExitSelectionMode -> _state.update {
                 it.copy(selected = emptySet(), isSelectionMode = false)

@@ -21,9 +21,9 @@ object LoginContract {
     )
 
     sealed interface Event {
-        data class EmailChanged(val value: String) : Event
-        data class PasswordChanged(val value: String) : Event
-        data class RememberChanged(val value: Boolean) : Event
+        data class EmailChanged(val email: String) : Event
+        data class PasswordChanged(val password: String) : Event
+        data class RememberChanged(val isChecked: Boolean) : Event
         data object EmailBlur : Event
         data object PasswordBlur : Event
         data object ForgotPasswordClicked : Event

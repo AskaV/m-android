@@ -83,28 +83,28 @@ class SignUpViewModel @Inject constructor() : ViewModel() {
     fun onEvent(event: SignUpContract.Event) {
         when (event) {
             is EmailChanged -> updateState {
-                copy(fields = fields.copy(email = event.value)).clear(
+                copy(fields = fields.copy(email = event.email)).clear(
                     Field.EMAIL
                 )
             }
 
             is PasswordChanged -> updateState {
-                copy(fields = fields.copy(password = event.value)).clear(
+                copy(fields = fields.copy(password = event.password)).clear(
                     Field.PASSWORD
                 )
             }
 
-            is RememberChanged -> updateState { copy(rememberMe = event.value) }
+            is RememberChanged -> updateState { copy(rememberMe = event.isChecked) }
 
             is EmailBlur -> updateState { validate(Field.EMAIL) }
             is PasswordBlur -> updateState { validate(Field.PASSWORD) }
 
-            is UsernameChanged -> updateProfile { copy(username = event.value).clear(Field.USERNAME) }
-            is PhoneChanged -> updateProfile { copy(phone = event.value).clear(Field.PHONE) }
+            is UsernameChanged -> updateProfile { copy(username = event.username).clear(Field.USERNAME) }
+            is PhoneChanged -> updateProfile { copy(phone = event.phone).clear(Field.PHONE) }
             is UsernameBlur -> updateProfile { validate(Field.USERNAME) }
             is PhoneBlur -> updateProfile { validate(Field.PHONE) }
 
-            is AvatarPicked -> updateProfile { copy(avatar = event.uri) }
+            is AvatarPicked -> updateProfile { copy(avatar = event.avatarUri) }
             is PickAvatar -> sendEffect(SignUpContract.Effect.OpenAvatarPicker)
             is RegisterWithGoogle -> sendEffect(SignUpContract.Effect.OpenGoogleSignIn)
 

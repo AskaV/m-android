@@ -51,9 +51,9 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
     fun onEvent(event: LoginContract.Event) {
         when (event) {
-            is EmailChanged -> updateState { copy(email = event.value).clear(Field.EMAIL) }
-            is PasswordChanged -> updateState { copy(password = event.value).clear(Field.PASSWORD) }
-            is RememberChanged -> updateState { copy(rememberMe = event.value) }
+            is EmailChanged -> updateState { copy(email = event.email).clear(Field.EMAIL) }
+            is PasswordChanged -> updateState { copy(password = event.password).clear(Field.PASSWORD) }
+            is RememberChanged -> updateState { copy(rememberMe = event.isChecked) }
 
             is EmailBlur -> updateState { validate(Field.EMAIL) }
             is PasswordBlur -> updateState { validate(Field.PASSWORD) }

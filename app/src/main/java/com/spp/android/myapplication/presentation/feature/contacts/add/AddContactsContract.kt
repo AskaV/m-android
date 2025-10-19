@@ -16,9 +16,9 @@ object AddContactsContract {
         data object Load : Event
         data object BackClicked : Event
         data object SearchClicked : Event
-        data class ToggleSelect(val item: ContactUi) : Event
+        data class ToggleSelect(val toggleSelect: ContactUi) : Event
         data object MassAddClicked : Event
-        data class AddClicked(val item: ContactUi) : Event
+        data class AddClicked(val dddClicked: ContactUi) : Event
         data object ErrorShown : Event
     }
 

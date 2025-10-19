@@ -20,12 +20,12 @@ object ContactsContract {
         data object BackClicked : Event
         data object SearchClicked : Event
         data object AddContactsClicked : Event
-        data class ContactClicked(val item: ContactUi) : Event
-        data class DeleteClicked(val item: ContactUi) : Event
+        data class ContactClicked(val contactClicked: ContactUi) : Event
+        data class DeleteClicked(val deleteClicked: ContactUi) : Event
         data object ErrorShown : Event
 
-        data class ContactLongClicked(val item: ContactUi) : Event
-        data class ContactSelectionToggled(val item: ContactUi) : Event
+        data class ContactLongClicked(val contactLongClicked: ContactUi) : Event
+        data class ContactSelectionToggled(val contactSelectionToggled: ContactUi) : Event
         data object BulkDeleteClicked : Event
         data object ExitSelectionMode : Event
     }

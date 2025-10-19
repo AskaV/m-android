@@ -21,7 +21,7 @@ object GalleryPickerContract {
         data object OpenCamera : Event
         data object DeleteCurrent : Event
 
-        data class PhotoPicked(val uri: Uri) : Event
+        data class PhotoPicked(val photoPickedUri: Uri) : Event
         data object ErrorShown : Event
         data object Clear : Event
     }
@@ -30,6 +30,6 @@ object GalleryPickerContract {
         data object LaunchGalleryPicker : Effect
         data object LaunchCamera : Effect
         data class ShowMessage(val message: String) : Effect
-        data class ReturnResult(val uri: Uri?) : Effect
+        data class ReturnResult(val returnResultUri: Uri?) : Effect
     }
 }

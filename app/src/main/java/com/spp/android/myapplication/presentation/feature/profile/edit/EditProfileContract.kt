@@ -21,11 +21,11 @@ object EditProfileContract {
 
     sealed interface Event {
         data object Load : Event
-        data class UsernameChanged(val value: String) : Event
-        data class CareerChanged(val value: String) : Event
-        data class PhoneChanged(val value: String) : Event
-        data class AddressChanged(val value: String) : Event
-        data class BirthdateChanged(val value: String) : Event
+        data class UsernameChanged(val usernameChanged: String) : Event
+        data class CareerChanged(val careerChanged: String) : Event
+        data class PhoneChanged(val phoneChanged: String) : Event
+        data class AddressChanged(val addressChanged: String) : Event
+        data class BirthdateChanged(val birthdateChanged: String) : Event
         data object SaveClicked : Event
         data object BackClicked : Event
         data object AvatarClicked : Event
