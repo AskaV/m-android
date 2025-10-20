@@ -10,6 +10,13 @@ import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfi
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Effect.OpenAvatarPicker
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Effect.Saved
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Effect.ShowMessage
+import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.AddressChanged
+import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.BackClicked
+import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.BirthdateChanged
+import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.CareerChanged
+import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.PhoneChanged
+import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.SaveClicked
+import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.UsernameChanged
 
 @Composable
 fun EditProfileScreen(
@@ -37,13 +44,13 @@ fun EditProfileScreen(
     }
 
     EditProfileScreenContent(
-        onBack = { vm.onEvent(EditProfileContract.Event.BackClicked) },
+        onBack = { vm.onEvent(BackClicked) },
         onSave = { username, career, phone, address, birthdate ->
-            vm.onEvent(EditProfileContract.Event.UsernameChanged(username))
-            vm.onEvent(EditProfileContract.Event.CareerChanged(career))
-            vm.onEvent(EditProfileContract.Event.PhoneChanged(phone))
-            vm.onEvent(EditProfileContract.Event.AddressChanged(address))
-            vm.onEvent(EditProfileContract.Event.BirthdateChanged(birthdate))
-            vm.onEvent(EditProfileContract.Event.SaveClicked)
+            vm.onEvent(UsernameChanged(username))
+            vm.onEvent(CareerChanged(career))
+            vm.onEvent(PhoneChanged(phone))
+            vm.onEvent(AddressChanged(address))
+            vm.onEvent(BirthdateChanged(birthdate))
+            vm.onEvent(SaveClicked)
         })
 }

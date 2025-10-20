@@ -12,6 +12,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spp.android.myapplication.presentation.feature.components.rememberUndoSnackbarController
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect.NavigateBack
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect.OpenAddContact
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect.OpenContactProfile
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect.OpenSearch
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect.ShowMessage
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.AddContactsClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.BackClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.BulkDeleteClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.ContactClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.ContactLongClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.ContactSelectionToggled
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.DeleteClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.ExitSelectionMode
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.SearchClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.UndoDelete
 import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 
@@ -32,12 +47,12 @@ fun ContactsScreen(
     LaunchedEffect(Unit) {
         vm.effect.collect { effect ->
             when (effect) {
-                ContactsContract.Effect.NavigateBack -> onBack()
-                ContactsContract.Effect.OpenSearch -> onOpenSearch()
-                ContactsContract.Effect.OpenAddContact -> onOpenAddContact()
-                is ContactsContract.Effect.OpenContactProfile -> onOpenContactProfile(effect.contactId)
+                is NavigateBack -> onBack()
+                is OpenSearch -> onOpenSearch()
+                is OpenAddContact -> onOpenAddContact()
+                is OpenContactProfile -> onOpenContactProfile(effect.contactId)
 
-                is ContactsContract.Effect.ShowMessage -> {
+                is ShowMessage -> {
                     val msg = effect.messageKey.text(context)
                     val isRemoval = effect.messageKey == AppText.OtherInfo.CONTACTS_REMOVED
 
@@ -46,7 +61,7 @@ fun ContactsScreen(
                             scope = scope,
                             message = msg,
                             undoLabel = "Undo",
-                            onUndo = { vm.onEvent(ContactsContract.Event.UndoDelete) },
+                            onUndo = { vm.onEvent(UndoDelete) },
                             onTimeout = { Toast.makeText(context, msg, Toast.LENGTH_SHORT).show() })
                     } else {
                         scope.launch { snackbar.showSnackbar(msg) }
@@ -64,25 +79,25 @@ fun ContactsScreen(
             items = state.items,
             onBack = {
                 if (state.isSelectionMode) {
-                    vm.onEvent(ContactsContract.Event.ExitSelectionMode)
+                    vm.onEvent(ExitSelectionMode)
                 } else {
-                    vm.onEvent(ContactsContract.Event.BackClicked)
+                    vm.onEvent(BackClicked)
                 }
             },
-            onSearchClick = { vm.onEvent(ContactsContract.Event.SearchClicked) },
-            onAddContactsClick = { vm.onEvent(ContactsContract.Event.AddContactsClicked) },
+            onSearchClick = { vm.onEvent(SearchClicked) },
+            onAddContactsClick = { vm.onEvent(AddContactsClicked) },
             onContactClick = {
                 if (state.isSelectionMode) vm.onEvent(
-                    ContactsContract.Event.ContactSelectionToggled(
+                    ContactSelectionToggled(
                         it
                     )
                 )
-                else vm.onEvent(ContactsContract.Event.ContactClicked(it))
+                else vm.onEvent(ContactClicked(it))
             },
-            onDeleteClick = { vm.onEvent(ContactsContract.Event.DeleteClicked(it)) },
-            onContactLongClick = { vm.onEvent(ContactsContract.Event.ContactLongClicked(it)) },
+            onDeleteClick = { vm.onEvent(DeleteClicked(it)) },
+            onContactLongClick = { vm.onEvent(ContactLongClicked(it)) },
             showRecycleBin = state.isSelectionMode,
-            onBulkDeleteClick = { vm.onEvent(ContactsContract.Event.BulkDeleteClicked) },
+            onBulkDeleteClick = { vm.onEvent(BulkDeleteClicked) },
             isSelectionMode = state.isSelectionMode,
             selectedIds = state.selected,
         )

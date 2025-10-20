@@ -12,6 +12,9 @@ import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileCo
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect.NavigateToContacts
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect.NavigateToEditProfile
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect.ShowMessage
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.EditProfileClicked
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.LogoutClicked
+import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.ViewContactsClicked
 
 @Composable
 fun MyProfileScreen(
@@ -48,7 +51,7 @@ fun MyProfileScreen(
     }
     ProfileScreen(
         state = state,
-        onEditProfile = { viewModel.onEvent(MyProfileContract.Event.EditProfileClicked) },
-        onViewContacts = { viewModel.onEvent(MyProfileContract.Event.ViewContactsClicked) },
-        onLogout = { viewModel.onEvent(MyProfileContract.Event.LogoutClicked) })
+        onEditProfile = { viewModel.onEvent(EditProfileClicked) },
+        onViewContacts = { viewModel.onEvent(ViewContactsClicked) },
+        onLogout = { viewModel.onEvent(LogoutClicked) })
 }

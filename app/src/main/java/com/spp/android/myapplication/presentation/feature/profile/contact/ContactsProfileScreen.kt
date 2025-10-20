@@ -8,6 +8,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Effect.NavigateBack
+import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Effect.OpenChat
+import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Effect.ShowMessage
+import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Event.BackClicked
+import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Event.Load
+import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Event.MessageClicked
 
 @Composable
 fun ContactProfileScreen(
@@ -22,14 +28,14 @@ fun ContactProfileScreen(
 
 
     LaunchedEffect(contactId) {
-        vm.onEvent(ContactProfileContract.Event.Load(contactId))
+        vm.onEvent(Load(contactId))
     }
     LaunchedEffect(Unit) {
         vm.effect.collect { effect ->
             when (effect) {
-                ContactProfileContract.Effect.NavigateBack -> onBack()
-                is ContactProfileContract.Effect.OpenChat -> onOpenChat(effect.contactId)
-                is ContactProfileContract.Effect.ShowMessage -> {
+                is NavigateBack -> onBack()
+                is OpenChat -> onOpenChat(effect.contactId)
+                is ShowMessage -> {
                     snackBar.showSnackbar(effect.messageKey.text(context))
                 }
             }
@@ -43,6 +49,6 @@ fun ContactProfileScreen(
             lineSecondary = state.lineSecondary,
             hasSocial = state.hasSocial
         ),
-        onBack = { vm.onEvent(ContactProfileContract.Event.BackClicked) },
-        onMessage = { vm.onEvent(ContactProfileContract.Event.MessageClicked) })
+        onBack = { vm.onEvent(BackClicked) },
+        onMessage = { vm.onEvent(MessageClicked) })
 }

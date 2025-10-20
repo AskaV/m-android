@@ -5,6 +5,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Effect.ForgotPassword
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Effect.NavigateToHome
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.EmailChanged
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.ForgotPasswordClicked
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.PasswordChanged
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.RememberChanged
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.Submit
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -19,24 +26,24 @@ fun LoginScreen(
     LaunchedEffect(Unit) {
         vm.effect.collectLatest { effect ->
             when (effect) {
-                is LoginContract.Effect.NavigateToHome -> {
+                is NavigateToHome -> {
                     val email = vm.state.value.email
                     if (email.isNotBlank()) {
                         onNavigateHome(email)
                     }
                 }
 
-                is LoginContract.Effect.ForgotPassword -> onForgotPassword()
+                is ForgotPassword -> onForgotPassword()
             }
         }
     }
 
     LoginScreenContent(
         state = state,
-        onEmailChange = { vm.onEvent(LoginContract.Event.EmailChanged(it)) },
-        onPasswordChange = { vm.onEvent(LoginContract.Event.PasswordChanged(it)) },
-        onRememberMeChange = { vm.onEvent(LoginContract.Event.RememberChanged(it)) },
-        onLoginClick = { vm.onEvent(LoginContract.Event.Submit) },
+        onEmailChange = { vm.onEvent(EmailChanged(it)) },
+        onPasswordChange = { vm.onEvent(PasswordChanged(it)) },
+        onRememberMeChange = { vm.onEvent(RememberChanged(it)) },
+        onLoginClick = { vm.onEvent(Submit) },
         onNavigateToRegister = onNavigateToRegister,
-        onForgotPasswordClick = { vm.onEvent(LoginContract.Event.ForgotPasswordClicked) })
+        onForgotPasswordClick = { vm.onEvent(ForgotPasswordClicked) })
 }

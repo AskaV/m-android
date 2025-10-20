@@ -10,7 +10,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.NavigateToExtended
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.NavigateToLogin
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.OpenGoogleSignIn
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.ShowMessage
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.EmailChanged
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.PasswordChanged
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.RegisterWithGoogle
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.RememberChanged
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.SubmitRegister
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -27,11 +35,11 @@ fun SignUpScreen(
     LaunchedEffect(Unit) {
         vm.effect.collectLatest { effect ->
             when (effect) {
-                is SignUpContract.Effect.ShowMessage -> snackBar.showSnackbar(effect.message)
-                SignUpContract.Effect.OpenGoogleSignIn -> onOpenGoogle()
-                SignUpContract.Effect.NavigateToLogin -> onNavigateToLogin()
+                is ShowMessage -> snackBar.showSnackbar(effect.message)
+                is OpenGoogleSignIn -> onOpenGoogle()
+                is NavigateToLogin -> onNavigateToLogin()
 
-                SignUpContract.Effect.NavigateToExtended -> {
+                is NavigateToExtended -> {
                     val email = vm.state.value.fields.email
                     if (email.isNotBlank()) {
                         onNavigateToExtended(email)
@@ -46,11 +54,11 @@ fun SignUpScreen(
     Scaffold(snackbarHost = { SnackbarHost(snackBar) }) { paddings ->
         SignUpScreenContent(
             state = state,
-            onEmailChange = { vm.onEvent(SignUpContract.Event.EmailChanged(it)) },
-            onPasswordChange = { vm.onEvent(SignUpContract.Event.PasswordChanged(it)) },
-            onRememberMeChange = { vm.onEvent(SignUpContract.Event.RememberChanged(it)) },
-            onRegisterClick = { vm.onEvent(SignUpContract.Event.SubmitRegister) },
-            onRegisterWithGoogleClick = { vm.onEvent(SignUpContract.Event.RegisterWithGoogle) },
+            onEmailChange = { vm.onEvent(EmailChanged(it)) },
+            onPasswordChange = { vm.onEvent(PasswordChanged(it)) },
+            onRememberMeChange = { vm.onEvent(RememberChanged(it)) },
+            onRegisterClick = { vm.onEvent(SubmitRegister) },
+            onRegisterWithGoogleClick = { vm.onEvent(RegisterWithGoogle) },
             onNavigateToLogin = { onNavigateToLogin() },
             modifier = Modifier.padding(paddings)
         )

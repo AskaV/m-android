@@ -9,6 +9,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Effect.LaunchCamera
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Effect.LaunchGalleryPicker
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Effect.ReturnResult
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Effect.ShowMessage
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.DeleteCurrent
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.Dismiss
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.OpenCamera
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.OpenGallery
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.PhotoPicked
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.Show
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -21,30 +31,30 @@ fun GalleryPickerScreen(
     val state by vm.state.collectAsState()
 
     val galleryLauncher = rememberLauncherForActivityResult(GetContent()) { uri ->
-        uri?.let { vm.onEvent(GalleryPickerContract.Event.PhotoPicked(it)) }
+        uri?.let { vm.onEvent(PhotoPicked(it)) }
     }
 
     LaunchedEffect(startVisible) {
-        if (startVisible) vm.onEvent(GalleryPickerContract.Event.Show)
+        if (startVisible) vm.onEvent(Show)
         vm.effect.collectLatest { effect ->
             when (effect) {
-                is GalleryPickerContract.Effect.LaunchGalleryPicker -> galleryLauncher.launch("image/*")
+                is LaunchGalleryPicker -> galleryLauncher.launch("image/*")
 
-                is GalleryPickerContract.Effect.LaunchCamera -> { /* TODO: */
+                is LaunchCamera -> { /* TODO: */
                 }
 
-                is GalleryPickerContract.Effect.ShowMessage -> {effect.message }
-                is GalleryPickerContract.Effect.ReturnResult -> onResult(effect.returnResultUri)
+                is ShowMessage -> {effect.message }
+                is ReturnResult -> onResult(effect.returnResultUri)
             }
         }
     }
 
     GalleryPickerScreenContent(
         state = state,
-        onDismiss = { vm.onEvent(GalleryPickerContract.Event.Dismiss) },
-        onOpenGallery = { vm.onEvent(GalleryPickerContract.Event.OpenGallery) },
-        onOpenCamera = { vm.onEvent(GalleryPickerContract.Event.OpenCamera) },
-        onDeleteCurrent = { vm.onEvent(GalleryPickerContract.Event.DeleteCurrent) },
+        onDismiss = { vm.onEvent(Dismiss) },
+        onOpenGallery = { vm.onEvent(OpenGallery) },
+        onOpenCamera = { vm.onEvent(OpenCamera) },
+        onDeleteCurrent = { vm.onEvent(DeleteCurrent) },
         modifier = modifier
     )
 }

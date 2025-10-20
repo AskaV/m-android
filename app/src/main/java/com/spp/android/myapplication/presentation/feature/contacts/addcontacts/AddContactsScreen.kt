@@ -6,6 +6,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Effect.NavigateBack
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Effect.OpenSearch
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Effect.ShowMessage
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.AddClicked
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.BackClicked
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.MassAddClicked
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.SearchClicked
 
 @Composable
 fun AddContactsScreen(
@@ -19,21 +26,21 @@ fun AddContactsScreen(
     LaunchedEffect(Unit) {
         vm.effect.collect { effect ->
             when (effect) {
-                is AddContactsContract.Effect.NavigateBack -> onBack()
-                is AddContactsContract.Effect.OpenSearch -> onOpenSearch()
-                is AddContactsContract.Effect.ShowMessage -> { effect.message }
+                is NavigateBack -> onBack()
+                is OpenSearch -> onOpenSearch()
+                is ShowMessage -> { effect.message }
             }
         }
     }
 
-    BackHandler { vm.onEvent(AddContactsContract.Event.BackClicked) }
+    BackHandler { vm.onEvent(BackClicked) }
 
     AddContactsScreenContent(
         items = state.items,
         selectedIds = state.selected,
-        onBack = { vm.onEvent(AddContactsContract.Event.BackClicked) },
-        onSearchClick = { vm.onEvent(AddContactsContract.Event.SearchClicked) },
-        onMassAddClick = { vm.onEvent(AddContactsContract.Event.MassAddClicked) },
-        onAddClick = { vm.onEvent(AddContactsContract.Event.AddClicked(it)) },
+        onBack = { vm.onEvent(BackClicked) },
+        onSearchClick = { vm.onEvent(SearchClicked) },
+        onMassAddClick = { vm.onEvent(MassAddClicked) },
+        onAddClick = { vm.onEvent(AddClicked(it)) },
         onRowClick = { contact -> onOpenProfile(contact.id) })
 }
