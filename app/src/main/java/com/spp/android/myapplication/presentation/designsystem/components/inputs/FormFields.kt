@@ -2,8 +2,10 @@ package com.spp.android.myapplication.presentation.designsystem.components.input
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.parts.LabeledTextField
 import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
@@ -27,7 +29,10 @@ data class FieldState(
 
 @Composable
 fun FormFields(
-    modifier: Modifier = Modifier, fields: List<FieldState> = emptyList()
+    modifier: Modifier = Modifier,
+    fields: List<FieldState> = emptyList(),
+    labelColor: Color = MaterialTheme.colorScheme.onSurface,
+    valueColor: Color = MaterialTheme.colorScheme.onSecondary
 ) {
     Column(modifier.fillMaxWidth()) {
         fields.forEachIndexed { index, fieldState ->
@@ -37,7 +42,9 @@ fun FormFields(
                 onValueChange = fieldState.onValueChange,
                 kind = fieldState.kind,
                 error = fieldState.error,
-                spacerAfter = index != fields.lastIndex
+                spacerAfter = index != fields.lastIndex,
+                labelTextColor = labelColor,
+                valueTextColor = valueColor
             )
         }
     }
@@ -105,33 +112,15 @@ fun FormFieldsRegistrationPreview() = PreviewColumn {
 @Composable
 fun FormFieldsEditP() = PreviewColumn {
     FormFields(
-        fields = listOf(
-            FieldState(
-                value = "user",
-                label = "username",
-                error = "",
-                kind = FieldKind.Username,
-            ), FieldState(
-                value = "careed",
-                label = "car",
-                error = "",
-                kind = FieldKind.Username,
-            ), FieldState(
-                value = "+380646584654",
-                label = "phone",
-                error = "",
-                kind = FieldKind.Phone,
-            ), FieldState(
-                value = "adresa",
-                label = "address",
-                error = "",
-                kind = FieldKind.Username,
-            ), FieldState(
-                value = "10/10/10",
-                label = "dateOfBirth",
-                error = "",
-                kind = FieldKind.Username,
-            )
-        )
+        fields = previewFields
     )
 }
+
+private val previewFields = listOf(
+    FieldState("Jenny Walker", "Username", "", FieldKind.Username),
+    FieldState("Make-up artist", "Career", "", FieldKind.Username),
+    FieldState("jname@gmail.com", "Email", "", FieldKind.Email),
+    FieldState("(264)-654-3762", "Phone", "", FieldKind.Phone),
+    FieldState("775 Westminster Avenue APT D5\nBrooklyn, NY, 11230", "Address", "", FieldKind.Username),
+    FieldState("12/05/1995", "Date of birth", "", FieldKind.Username)
+)

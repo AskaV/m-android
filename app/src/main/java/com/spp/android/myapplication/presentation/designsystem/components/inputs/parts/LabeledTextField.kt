@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -38,6 +39,8 @@ fun LabeledTextField(
     imeAction: ImeAction = ImeAction.Next,
     onImeAction: () -> Unit = {},
     spacerAfter: Boolean = true,
+    labelTextColor: Color = MaterialTheme.colorScheme.onSurface,
+    valueTextColor: Color = MaterialTheme.colorScheme.onBackground,
     trailingIcon: @Composable () -> Unit = {},
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(
         color = MaterialTheme.colorScheme.onBackground
@@ -47,7 +50,7 @@ fun LabeledTextField(
         Text(
             text = label,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = labelTextColor,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -60,7 +63,8 @@ fun LabeledTextField(
             imeAction = imeAction,
             onImeAction = onImeAction,
             trailingIcon = trailingIcon,
-            textStyle = textStyle
+            textStyle = textStyle,
+            valueTextColor = valueTextColor
         )
 
         Box(

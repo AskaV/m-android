@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
@@ -41,10 +42,8 @@ fun AppTextField(
     imeAction: ImeAction = ImeAction.Next,
     onImeAction: () -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
-    textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(
-        color = MaterialTheme.colorScheme.onBackground
-    )
-
+    valueTextColor: Color = MaterialTheme.colorScheme.onBackground,
+    textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(color = valueTextColor)
 ) {
     val padding = dimensionResource(R.dimen.spacer_small)
     val visual = kind.visualTransformation
@@ -69,7 +68,7 @@ fun AppTextField(
                     value = value,
                     onValueChange = onValueChange,
                     singleLine = true,
-                    textStyle = textStyle,
+                    textStyle = textStyle.copy(color = valueTextColor),
                     visualTransformation = visual,
                     keyboardOptions = kind.keyboardOptions.copy(imeAction = imeAction),
                     keyboardActions = KeyboardActions(
