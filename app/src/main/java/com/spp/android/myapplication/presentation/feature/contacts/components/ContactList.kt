@@ -47,17 +47,20 @@ fun ContactList(
             modifier = Modifier.fillMaxSize(), state = state, contentPadding = contentPadding
         ) {
             items(items, key = { it.id }) { c ->
-                ContactCardOutlined(
-                    contact = c,
-                    onClick = { onItemClick(c) },
-                    onLongClick = { onItemLongClick(c) },
-                    selected = selectedIds.contains(c.id),
-                    showSelectionControl = behavior.selectionEnabled,
-                    showDeleteIcon = behavior.showDeleteIcon && behavior.trailingForRow == null,
-                    trailing = behavior.trailingForRow?.let { tf -> { tf(c) } },
-                    onDeleteClick = { onDeleteClick(c) },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                SwipeToDeleteContainer(
+                    enabled = !behavior.selectionEnabled, onDelete = { onDeleteClick(c) }) {
+                    ContactCardOutlined(
+                        contact = c,
+                        onClick = { onItemClick(c) },
+                        onLongClick = { onItemLongClick(c) },
+                        selected = selectedIds.contains(c.id),
+                        showSelectionControl = behavior.selectionEnabled,
+                        showDeleteIcon = behavior.showDeleteIcon && behavior.trailingForRow == null,
+                        trailing = behavior.trailingForRow?.let { tf -> { tf(c) } },
+                        onDeleteClick = { onDeleteClick(c) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
                 Spacer(Modifier.height(spaceM))
             }
         }
@@ -71,7 +74,7 @@ private fun ContactListPreviewNormal() {
         val items = remember { demoUsers() }
         ContactList(
             items = items, selectedIds = emptySet(), behavior = ContactListBehavior(
-                selectionEnabled = false, showDeleteIcon = true, trailingForRow = null
+                selectionEnabled = false, showDeleteIcon = true,
             ), contentPadding = PaddingValues(), modifier = Modifier.fillMaxSize()
         )
     }
@@ -85,7 +88,7 @@ private fun ContactListPreviewSelection() {
         val selected = remember { setOf(2, 4) }
         ContactList(
             items = items, selectedIds = selected, behavior = ContactListBehavior(
-                selectionEnabled = true, showDeleteIcon = false, trailingForRow = null
+                selectionEnabled = true, showDeleteIcon = false,
             ), contentPadding = PaddingValues(), modifier = Modifier.fillMaxSize()
         )
     }

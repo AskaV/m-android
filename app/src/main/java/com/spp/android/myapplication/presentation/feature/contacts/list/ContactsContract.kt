@@ -23,11 +23,11 @@ object ContactsContract {
         data class ContactClicked(val contactClicked: ContactUi) : Event
         data class DeleteClicked(val deleteClicked: ContactUi) : Event
         data object ErrorShown : Event
-
         data class ContactLongClicked(val contactLongClicked: ContactUi) : Event
         data class ContactSelectionToggled(val contactSelectionToggled: ContactUi) : Event
         data object BulkDeleteClicked : Event
         data object ExitSelectionMode : Event
+        data object UndoDelete : Event
     }
 
     sealed interface Effect {

@@ -6,7 +6,18 @@ import com.spp.android.myapplication.data.contacts.ContactsRepository
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect
-import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.*
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.AddContactsClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.BackClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.BulkDeleteClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.ContactClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.ContactLongClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.ContactSelectionToggled
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.DeleteClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.ErrorShown
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.ExitSelectionMode
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.Load
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.SearchClicked
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.UndoDelete
 import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -19,14 +30,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ContactsViewModel @Inject constructor(private val repository: ContactsRepository) :
-    ViewModel() {
+class ContactsViewModel @Inject constructor(
+    private val repository: ContactsRepository
+) : ViewModel() {
 
     private val _state = MutableStateFlow(ContactsContract.State())
     val state: StateFlow<ContactsContract.State> = _state.asStateFlow()
 
     private val _effect = Channel<Effect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
+
+    private var lastDeleted: List<ContactUi> = emptyList()
 
     init {
         onEvent(Load)
@@ -47,6 +61,8 @@ class ContactsViewModel @Inject constructor(private val repository: ContactsRepo
             is ExitSelectionMode -> _state.update {
                 it.copy(selected = emptySet(), isSelectionMode = false)
             }
+
+            is UndoDelete -> undoDelete()
         }
     }
 
@@ -76,6 +92,9 @@ class ContactsViewModel @Inject constructor(private val repository: ContactsRepo
 
     private fun bulkDelete() {
         val ids = _state.value.selected
+        val toRemove = _state.value.items.filter { ids.contains(it.id) }
+        lastDeleted = toRemove
+
         _state.update { st ->
             st.copy(
                 items = st.items.filterNot { ids.contains(it.id) },
@@ -100,8 +119,19 @@ class ContactsViewModel @Inject constructor(private val repository: ContactsRepo
     }
 
     private fun delete(item: ContactUi) = viewModelScope.launch {
+        lastDeleted = listOf(item)
+
         _state.update { it.copy(items = it.items.filterNot { c -> c.id == item.id }) }
         sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED))
+    }
+
+    private fun undoDelete() {
+        if (lastDeleted.isEmpty()) return
+        _state.update { st ->
+            val restored = (st.items + lastDeleted).sortedBy { it.id }
+            st.copy(items = restored)
+        }
+        lastDeleted = emptyList()
     }
 
     private fun sendEffect(effect: Effect) = viewModelScope.launch {
