@@ -15,6 +15,7 @@ import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfi
 fun EditProfileScreen(
     onBack: () -> Unit = {},
     onDone: () -> Unit = {},
+    onOpenAvatarPicker: () -> Unit = {},
     vm: EditProfileViewModel = hiltViewModel()
 ) {
     val snackBar = remember { SnackbarHostState() }
@@ -29,8 +30,8 @@ fun EditProfileScreen(
                     snackBar.showSnackbar(effect.messageKey.text(context))
                 }
 
-                OpenAvatarPicker -> { /* TODO open picker */
-                }
+                OpenAvatarPicker -> onOpenAvatarPicker()
+
             }
         }
     }

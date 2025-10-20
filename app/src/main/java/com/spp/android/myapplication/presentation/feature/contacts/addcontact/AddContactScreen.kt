@@ -17,10 +17,10 @@ fun AddContactScreen(
     val state by vm.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        vm.effect.collect { eff ->
-            when (eff) {
+        vm.effect.collect { effect ->
+            when (effect) {
                 is Effect.NavigateBack -> onBack()
-                is Effect.ShowMessage -> { /*TODO Show message to user, e.g.*/}
+                is Effect.ShowMessage -> { effect.message}
             }
         }
     }

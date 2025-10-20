@@ -11,9 +11,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun ContactProfileScreen(
-    contactId: String,
+    contactId: Int,
     onBack: () -> Unit = {},
-    onOpenChat: (String) -> Unit = {},
+    onOpenChat: (Int) -> Unit = {},
     vm: ContactProfileViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsStateWithLifecycle()

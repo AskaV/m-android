@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.presentation.navigation
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -40,7 +41,7 @@ fun AppNavGraph() {
     ) {
         composable(Routes.Login.route) {
             LoginScreen(
-                onForgotPassword = { Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show() },
+                onForgotPassword = { showToast(context, toastMessage) },
                 onNavigateHome = {
                     email -> navController.currentBackStackEntry?.savedStateHandle?.set(NavKeys.USER_EMAIL, email)
                     navController.navigate(Routes.Home.route) { launchSingleTop = true } },
@@ -49,7 +50,7 @@ fun AppNavGraph() {
 
         composable(Routes.SignUp.route) {
             SignUpScreen(
-                onOpenGoogle = { Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show() },
+                onOpenGoogle = { showToast(context, toastMessage) },
                 onNavigateToLogin = { navController.navigate(Routes.Login.route) { launchSingleTop = true } },
                 onNavigateToExtended = {
                     email -> val encoded = java.net.URLEncoder.encode(email, "utf-8")
@@ -98,7 +99,7 @@ fun AppNavGraph() {
             }, contacts = {
                 ContactsScreen(
                     onBack = { tabsController.goTo(HomeTab.Profile) },
-                    onOpenSearch = { Toast.makeText(context, "Search clicked", Toast.LENGTH_SHORT).show() },
+                    onOpenSearch = { showToast(context, toastMessage) },
                     onOpenAddContact = { navController.navigate(Routes.AddContact.route) { launchSingleTop = true } },
                     onOpenContactProfile = { id -> navController.navigate(Routes.ContactProfile.create(id)) })
             })
@@ -120,18 +121,19 @@ fun AppNavGraph() {
                 })
         ) { backStackEntry ->
             val contactId =
-                backStackEntry.arguments?.getString(Routes.ContactProfile.ARG) ?: return@composable
+                backStackEntry.arguments?.getInt(Routes.ContactProfile.ARG) ?: return@composable
 
             ContactProfileScreen(
                 contactId = contactId,
                 onBack = { navController.popBackStack() },
-                onOpenChat = { /* TODO no-op */ })
+                onOpenChat = {showToast(context, toastMessage)
+                })
         }
 
         composable(Routes.AddContacts.route) {
             AddContactsScreen(
                 onBack = { navController.popBackStack() },
-                onOpenSearch = { /* TODO no-op */ },
+                onOpenSearch = { showToast(context, toastMessage)},
                 onOpenProfile = { id -> navController.navigate(Routes.AddContactProfile.create(id)) })
         }
 
@@ -147,12 +149,15 @@ fun AppNavGraph() {
                     type = NavType.StringType
                 })
         ) { backStack ->
-            val id =
-                backStack.arguments?.getString(Routes.AddContactProfile.ARG) ?: return@composable
+            val id = backStack.arguments?.getInt(Routes.AddContactProfile.ARG) ?: return@composable
 
             AddContactProfileScreen(
                 contactId = id,
                 onBack = { navController.popBackStack() })
         }
     }
+}
+
+fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }

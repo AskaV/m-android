@@ -32,13 +32,7 @@ import com.spp.android.myapplication.presentation.texts.AppText
 data class FilledBtn(
     val text: String,
     val onClick: () -> Unit = {},
-) {
-    companion object {   //TODO remove if not used
-        val Empty = FilledBtn(
-            "-1"
-        );
-    }
-}
+)
 
 data class OutlinedBtn(
     val text: String = "",

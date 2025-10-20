@@ -29,16 +29,15 @@ class ContactProfileViewModel @Inject constructor() : ViewModel() {
             is Event.Load -> load(event.contactId)
             is Event.BackClicked -> sendEffect(Effect.NavigateBack)
 
-            is Event.MessageClicked -> _state.value.contactId.takeIf { it.isNotBlank() }?.let {
-                sendEffect(Effect.OpenChat(it))
-            }
+            is Event.MessageClicked -> _state.value.contactId
+                .takeIf { it != 0 } ?.let { id -> sendEffect(Effect.OpenChat(id)) }
 
             is Event.AddClicked -> addContact()
             is Event.ErrorShown -> _state.update { it.copy(errorKey = null) }
         }
     }
 
-    private fun load(id: String) = viewModelScope.launch {
+    private fun load(id: Int) = viewModelScope.launch {
         _state.update { it.copy(isLoading = true, contactId = id, errorKey = null) }
 
         runCatching {
@@ -85,7 +84,7 @@ class ContactProfileViewModel @Inject constructor() : ViewModel() {
     }
 
     private data class StubContact(
-        val id: String,
+        val id: Int,
         val name: String,
         val linePrimary: String,
         val lineSecondary: String,

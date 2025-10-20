@@ -5,7 +5,7 @@ import androidx.compose.runtime.Immutable
 object AddContactProfileContract {
     @Immutable
     data class State(
-        val id: String = "",
+        val id: Int = 0,
         val name: String = "",
         val linePrimary: String = "",
         val lineSecondary: String = "",
@@ -15,7 +15,7 @@ object AddContactProfileContract {
     )
 
     sealed interface Event {
-        data class Load(val id: String) : Event
+        data class Load(val id: Int) : Event
         data object BackClicked : Event
         data object MessageClicked : Event
         data object AddToContactsClicked : Event

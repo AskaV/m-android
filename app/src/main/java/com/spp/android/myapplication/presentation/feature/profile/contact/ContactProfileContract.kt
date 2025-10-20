@@ -7,7 +7,7 @@ object ContactProfileContract {
 
     @Immutable
     data class State(
-        val contactId: String = "",
+        val contactId: Int = 0,
         val name: String = "",
         val linePrimary: String = "",
         val lineSecondary: String = "",
@@ -17,7 +17,7 @@ object ContactProfileContract {
     )
 
     sealed interface Event {
-        data class Load(val contactId: String) : Event  /*TODO fix String in ID */
+        data class Load(val contactId: Int) : Event
         data object BackClicked : Event
         data object MessageClicked : Event
         data object AddClicked : Event
@@ -26,7 +26,7 @@ object ContactProfileContract {
 
     sealed interface Effect {
         data object NavigateBack : Effect
-        data class OpenChat(val contactId: String) : Effect
+        data class OpenChat(val contactId: Int) : Effect
         data class ShowMessage(val messageKey: TextKey) : Effect
     }
 }

@@ -39,7 +39,7 @@ class AddContactProfileViewModel : ViewModel() {
         }
     }
 
-    private fun load(id: String) {
+    private fun load(id: Int) {
         _state.update { it.copy(isLoading = true) }
         _state.update {
             it.copy(

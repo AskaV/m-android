@@ -8,7 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun AddContactProfileScreen(
-    contactId: String = "", /* TODO */
+    contactId: Int = 0,
     onBack: () -> Unit = {},
     vm: AddContactProfileViewModel = hiltViewModel()
 ) {
@@ -16,10 +16,9 @@ fun AddContactProfileScreen(
 
     LaunchedEffect(contactId) { vm.onEvent(AddContactProfileContract.Event.Load(contactId)) }
     LaunchedEffect(Unit) {
-        vm.effect.collect { eff ->
-            when (eff) {
-                is AddContactProfileContract.Effect.ShowMessage -> { /* TODO */
-                }
+        vm.effect.collect { effect ->
+            when (effect) {
+                is AddContactProfileContract.Effect.ShowMessage -> {effect.message }
 
                 AddContactProfileContract.Effect.NavigateBack -> onBack()
             }

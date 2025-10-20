@@ -19,10 +19,9 @@ fun AddContactsScreen(
     LaunchedEffect(Unit) {
         vm.effect.collect { effect ->
             when (effect) {
-                AddContactsContract.Effect.NavigateBack -> onBack()
-                AddContactsContract.Effect.OpenSearch -> onOpenSearch()
-                is AddContactsContract.Effect.ShowMessage -> { /* TODO() */
-                }
+                is AddContactsContract.Effect.NavigateBack -> onBack()
+                is AddContactsContract.Effect.OpenSearch -> onOpenSearch()
+                is AddContactsContract.Effect.ShowMessage -> { effect.message }
             }
         }
     }

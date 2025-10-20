@@ -100,7 +100,6 @@ private fun AddContactProfilePreviewDefault() {
         Surface(color = MaterialTheme.colorScheme.surface) {
             AddContactProfileScreenContent(
                 state = AddContactProfileContract.State(
-                    id = "u1",
                     name = "Jenny Walker",
                     linePrimary = "Make-up artist",
                     lineSecondary = "775 Westminster Ave APT D5\n Brooklyn, NY, 11230",
@@ -118,7 +117,6 @@ private fun AddContactProfilePreviewInMyContacts() {
         Surface(color = MaterialTheme.colorScheme.surface) {
             AddContactProfileScreenContent(
                 state = AddContactProfileContract.State(
-                    id = "u2",
                     name = "Lucile Alvarado",
                     linePrimary = "Graphic designer",
                     lineSecondary = "5295 Gaylord Walks Apk. 110",
