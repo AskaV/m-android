@@ -3,6 +3,8 @@ package com.spp.android.myapplication.presentation.feature.profile.edit
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -27,24 +29,27 @@ fun EditProfileScreen(
 ) {
     val snackBar = remember { SnackbarHostState() }
     val context = LocalContext.current
+    val state by vm.state.collectAsState()
 
     LaunchedEffect(Unit) {
         vm.effect.collect { effect ->
             when (effect) {
-                NavigateBack -> onBack()
-                Saved -> onDone()
+                is NavigateBack -> onBack()
+                is Saved -> onDone()
                 is ShowMessage -> {
                     snackBar.showSnackbar(effect.messageKey.text(context))
                 }
 
-                OpenAvatarPicker -> onOpenAvatarPicker()
+                is OpenAvatarPicker -> onOpenAvatarPicker()
 
             }
         }
     }
 
     EditProfileScreenContent(
+        state = state,
         onBack = { vm.onEvent(BackClicked) },
+        onValueChange = vm::onFieldChange,
         onSave = { username, career, phone, address, birthdate ->
             vm.onEvent(UsernameChanged(username))
             vm.onEvent(CareerChanged(career))

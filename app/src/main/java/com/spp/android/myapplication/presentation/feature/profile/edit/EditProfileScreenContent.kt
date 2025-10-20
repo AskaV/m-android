@@ -18,16 +18,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.FilledButton
-import com.spp.android.myapplication.presentation.designsystem.components.inputs.EditProfileFields
+import com.spp.android.myapplication.presentation.designsystem.components.inputs.FieldState
+import com.spp.android.myapplication.presentation.designsystem.components.inputs.FormFields
+import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
 import com.spp.android.myapplication.presentation.designsystem.imageload.AvatarPicker
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewMoto
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
@@ -37,25 +35,15 @@ import com.spp.android.myapplication.presentation.texts.AppText
 @Composable
 fun EditProfileScreenContent(
     modifier: Modifier = Modifier,
+    state: EditProfileContract.State = EditProfileContract.State(),
     onBack: () -> Unit = {},
+    onValueChange: (field: String, value: String) -> Unit = { _, _ -> },
     onSave: (String, String, String, String, String) -> Unit = { _, _, _, _, _ -> }
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
     val buttonHeight = dimensionResource(id = R.dimen.button_height)
-
-    val usernamePlaceholder = AppText.EditProfile.USERNAME.text()
-    val careerPlaceholder = AppText.EditProfile.CAREER.text()
-    val phonePlaceholder = AppText.EditProfile.PHONE.text()
-    val addressPlaceholder = AppText.EditProfile.ADDRESS.text()
-    val birthdatePlaceholder = AppText.EditProfile.BIRTHDATE.text()
-
-    var username by remember { mutableStateOf(usernamePlaceholder) }
-    var career by remember { mutableStateOf(careerPlaceholder) }
-    var phone by remember { mutableStateOf(phonePlaceholder) }
-    var address by remember { mutableStateOf(addressPlaceholder) }
-    var birthdate by remember { mutableStateOf(birthdatePlaceholder) }
 
     Column(
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
@@ -96,7 +84,7 @@ fun EditProfileScreenContent(
 
         Surface(
             color = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
+            contentColor = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.fillMaxSize()
         ) {
             Box(
@@ -109,12 +97,46 @@ fun EditProfileScreenContent(
                 ) {
                     Spacer(Modifier.height(spaceL))
 
-                    EditProfileFields(
-                        username = username, onUsernameChange = { username = it },
-                        career = career, onCareerChange = { career = it },
-                        phone = phone, onPhoneChange = { phone = it },
-                        address = address, onAddressChange = { address = it },
-                        birthdate = birthdate, onBirthdateChange = { birthdate = it },
+                    FormFields(
+                        fields = listOf(
+                            FieldState(
+                                value = state.username,
+                                label = AppText.EditProfile.USERNAME_LABEL.text(),
+                                error = state.usernameErrorKey?.text() ?: "",
+                                kind = FieldKind.Username,
+                                onValueChange = { onValueChange("username", it) }
+                            ),
+                            FieldState(
+                                value = state.career,
+                                label = AppText.EditProfile.CAREER_LABEL.text(),
+                                error = "",
+                                kind = FieldKind.Username,
+                                onValueChange = { onValueChange("career", it) }
+                            ),
+                            FieldState(
+                                value = state.phone,
+                                label = AppText.EditProfile.PHONE_LABEL.text(),
+                                error = state.phoneErrorKey?.text() ?: "",
+                                kind = FieldKind.Phone,
+                                onValueChange = { onValueChange("phone", it) }
+                            ),
+                            FieldState(
+                                value = state.address,
+                                label = AppText.EditProfile.ADDRESS_LABEL.text(),
+                                error = "",
+                                kind = FieldKind.Username,
+                                onValueChange = { onValueChange("address", it) }
+                            ),
+                            FieldState(
+                                value = state.birthdate,
+                                label = AppText.EditProfile.BIRTHDATE_LABEL.text(),
+                                error = "",
+                                kind = FieldKind.Username,
+                                onValueChange = { onValueChange("birthdate", it) }
+                            )
+                        ),
+                        labelColor = MaterialTheme.colorScheme.onSurface,
+                        valueColor = MaterialTheme.colorScheme.onSecondary
                     )
 
                     Spacer(Modifier.height(spaceL))
@@ -122,13 +144,22 @@ fun EditProfileScreenContent(
 
                 FilledButton(
                     text = AppText.EditProfile.SAVE.text(),
-                    onClick = { onSave(username, career, phone, address, birthdate) },
+                    onClick = {
+                        onSave(
+                            state.username,
+                            state.career,
+                            state.phone,
+                            state.address,
+                            state.birthdate
+                        )
+                    },
                     modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = pad)
                 )
             }
         }
     }
 }
+
 
 @PreviewPhones
 @PreviewMoto

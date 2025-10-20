@@ -120,8 +120,8 @@ private fun ProfileScreenPreviewIncomplete() = PreviewScreenEdgeToEdge {
     ProfileScreen(
         state = MyProfileContract.State(
             name = AppText.MyProfile.NAME.text(),
-            linePrimary = AppText.MyProfile.CAREER.text(),
-            lineSecondary = AppText.MyProfile.ADDRESS.text(),
+            linePrimary = AppText.EditProfile.CAREER_LABEL.text(),
+            lineSecondary = AppText.EditProfile.ADDRESS_LABEL.text(),
             isCompleted = false
         )
     )

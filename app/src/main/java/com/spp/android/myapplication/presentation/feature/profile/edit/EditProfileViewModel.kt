@@ -30,7 +30,7 @@ class EditProfileViewModel @Inject constructor() : ViewModel() {
 
     fun onEvent(event: Event) {
         when (event) {
-            Event.Load -> load()
+            is Event.Load -> load()
             is Event.UsernameChanged -> _state.update {
                 it.copy(username = event.usernameChanged, usernameErrorKey = null)
             }
@@ -103,4 +103,17 @@ class EditProfileViewModel @Inject constructor() : ViewModel() {
         val address: String = "",
         val birthdate: String = ""
     )
+
+    fun onFieldChange(field: String, value: String) {
+        _state.update {
+            when (field) {
+                "username" -> it.copy(username = value)
+                "career" -> it.copy(career = value)
+                "phone" -> it.copy(phone = value)
+                "address" -> it.copy(address = value)
+                "birthdate" -> it.copy(birthdate = value)
+                else -> it
+            }
+        }
+    }
 }

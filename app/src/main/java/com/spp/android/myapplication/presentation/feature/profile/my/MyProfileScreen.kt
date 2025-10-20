@@ -15,6 +15,7 @@ import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileCo
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.EditProfileClicked
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.LogoutClicked
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.ViewContactsClicked
+import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun MyProfileScreen(
@@ -49,8 +50,26 @@ fun MyProfileScreen(
             viewModel.onExternalEmail(externalEmail)
         }
     }
+
+    val careerLabel = AppText.EditProfile.CAREER_LABEL.text()
+    val addressLabel = AppText.EditProfile.ADDRESS_LABEL.text()
+
+    val displayPrimary = if (state.isCompleted && state.linePrimary.isNotBlank()) {
+        state.linePrimary
+    } else {
+        careerLabel
+    }
+    val displaySecondary = if (state.isCompleted && state.lineSecondary.isNotBlank()) {
+        state.lineSecondary
+    } else {
+        addressLabel
+    }
+
     ProfileScreen(
-        state = state,
+        state = state.copy(
+            linePrimary = displayPrimary,
+            lineSecondary = displaySecondary
+        ),
         onEditProfile = { viewModel.onEvent(EditProfileClicked) },
         onViewContacts = { viewModel.onEvent(ViewContactsClicked) },
         onLogout = { viewModel.onEvent(LogoutClicked) })

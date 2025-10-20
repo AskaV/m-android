@@ -58,7 +58,7 @@ class MyProfileViewModel @Inject constructor() : ViewModel() {
             }
 
             SignUpFinished -> {
-                _state.update { it.copy(isCompleted = false) }
+                _state.update { it.copy(isCompleted = false, linePrimary = "", lineSecondary = "") }
             }
 
             MarkCompleted -> {
@@ -73,8 +73,8 @@ class MyProfileViewModel @Inject constructor() : ViewModel() {
         runCatching {
             StubProfile(
                 name = "",
-                linePrimary = "Product Designer",
-                lineSecondary = "New York, USA",
+                linePrimary = "",
+                lineSecondary = "",
                 isCompleted = false
             )
         }.onSuccess { p ->
