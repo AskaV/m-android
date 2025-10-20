@@ -3,7 +3,11 @@ package com.spp.android.myapplication.presentation.feature.profile.addcontactpr
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Effect
+import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Event.AddToContactsClicked
+import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Event.BackClicked
+import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Event.ErrorShown
 import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Event.Load
+import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Event.MessageClicked
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,20 +26,20 @@ class AddContactProfileViewModel : ViewModel() {
     fun onEvent(event: AddContactProfileContract.Event) {
         when (event) {
             is Load -> load(event.id)
-            is AddContactProfileContract.Event.BackClicked -> sendEffect(Effect.NavigateBack)
+            is BackClicked -> sendEffect(Effect.NavigateBack)
 
-            is AddContactProfileContract.Event.MessageClicked -> sendEffect(
+            is MessageClicked -> sendEffect(
                 Effect.ShowMessage(
                     "Open chat"
                 )
             )
 
-            is AddContactProfileContract.Event.AddToContactsClicked -> {
+            is AddToContactsClicked -> {
                 sendEffect(Effect.ShowMessage("Added to contacts"))
                 _state.update { it.copy(isInMyContacts = true) }
             }
 
-            is AddContactProfileContract.Event.ErrorShown -> _state.update { it.copy() }
+            is ErrorShown -> _state.update { it.copy() }
         }
     }
 

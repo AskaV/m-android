@@ -2,6 +2,17 @@ package com.spp.android.myapplication.presentation.feature.components.imageload
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Effect.LaunchCamera
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Effect.LaunchGalleryPicker
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Effect.ReturnResult
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.Clear
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.DeleteCurrent
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.Dismiss
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.ErrorShown
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.OpenCamera
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.OpenGallery
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.PhotoPicked
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerContract.Event.Show
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -24,35 +35,35 @@ class GalleryPickerViewModel @Inject constructor() : ViewModel() {
 
     fun onEvent(event: GalleryPickerContract.Event) {
         when (event) {
-            GalleryPickerContract.Event.Show -> _state.update { it.copy(isVisible = true) }
+            Show -> _state.update { it.copy(isVisible = true) }
 
-            GalleryPickerContract.Event.Dismiss -> _state.update { it.copy(isVisible = false) }
+            Dismiss -> _state.update { it.copy(isVisible = false) }
 
-            GalleryPickerContract.Event.OpenGallery -> viewModelScope.launch {
+            OpenGallery -> viewModelScope.launch {
                 _effect.send(
-                    GalleryPickerContract.Effect.LaunchGalleryPicker
+                    LaunchGalleryPicker
                 )
             }
 
-            GalleryPickerContract.Event.OpenCamera -> viewModelScope.launch {
+            OpenCamera -> viewModelScope.launch {
                 _effect.send(
-                    GalleryPickerContract.Effect.LaunchCamera
+                    LaunchCamera
                 )
             }
 
-            GalleryPickerContract.Event.DeleteCurrent -> viewModelScope.launch {
+            DeleteCurrent -> viewModelScope.launch {
                 _state.update { it.copy(isVisible = false) }
-                _effect.send(GalleryPickerContract.Effect.ReturnResult(null))
+                _effect.send(ReturnResult(null))
             }
 
-            is GalleryPickerContract.Event.PhotoPicked -> viewModelScope.launch {
+            is PhotoPicked -> viewModelScope.launch {
                 _state.update { it.copy(isVisible = false) }
-                _effect.send(GalleryPickerContract.Effect.ReturnResult(event.photoPickedUri))
+                _effect.send(ReturnResult(event.photoPickedUri))
             }
 
-            GalleryPickerContract.Event.ErrorShown -> _state.update { it.copy() }
+            ErrorShown -> _state.update { it.copy() }
 
-            GalleryPickerContract.Event.Clear -> _state.update { GalleryPickerContract.State() }
+            Clear -> _state.update { GalleryPickerContract.State() }
         }
     }
 }

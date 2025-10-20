@@ -3,6 +3,11 @@ package com.spp.android.myapplication.presentation.feature.auth.signup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.data.UserPreferences
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.BackFromExtended
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.NavigateToExtended
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.NavigateToHome
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.OpenAvatarPicker
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.OpenGoogleSignIn
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.AvatarPicked
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.CancelExtended
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.EmailBlur
@@ -123,8 +128,8 @@ class SignUpViewModel @Inject constructor(
             is PhoneBlur -> updateProfile { validate(Field.PHONE) }
 
             is AvatarPicked -> updateProfile { copy(avatar = event.avatarUri) }
-            is PickAvatar -> sendEffect(SignUpContract.Effect.OpenAvatarPicker)
-            is RegisterWithGoogle -> sendEffect(SignUpContract.Effect.OpenGoogleSignIn)
+            is PickAvatar -> sendEffect(OpenAvatarPicker)
+            is RegisterWithGoogle -> sendEffect(OpenGoogleSignIn)
 
             is SubmitRegister -> submitRegister()
             is ForwardExtended -> submitExtended()
@@ -133,7 +138,7 @@ class SignUpViewModel @Inject constructor(
             is CancelExtended -> viewModelScope.launch {
                 updateProfile { SignUpContract.ProfileState() }
                 updateState { SignUpContract.State() }
-                sendEffect(SignUpContract.Effect.BackFromExtended)
+                sendEffect(BackFromExtended)
             }
 
             is ErrorShown -> updateState { copy(errorKey = null) }
@@ -164,7 +169,7 @@ class SignUpViewModel @Inject constructor(
                 userPrefs.saveUser("", false)
             }
         }.onSuccess {
-            sendEffect(SignUpContract.Effect.NavigateToExtended)
+            sendEffect(NavigateToExtended)
         }.onFailure {
             updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
         }
@@ -185,7 +190,7 @@ class SignUpViewModel @Inject constructor(
 
         updateProfile { copy(isLoading = true) }
 
-        runCatching { Unit }.onSuccess { sendEffect(SignUpContract.Effect.NavigateToHome) }
+        runCatching { Unit }.onSuccess { sendEffect(NavigateToHome) }
             .onFailure { updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR) } }
 
         updateProfile { copy(isLoading = false) }
