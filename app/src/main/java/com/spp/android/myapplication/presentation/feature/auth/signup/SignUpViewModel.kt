@@ -2,6 +2,7 @@ package com.spp.android.myapplication.presentation.feature.auth.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.AvatarPicked
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.CancelExtended
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.EmailBlur
@@ -27,13 +28,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor() : ViewModel() {
+class SignUpViewModel @Inject constructor(
+    private val userPrefs: UserPreferences
+) : ViewModel() {
 
     private val _state = MutableStateFlow(SignUpContract.State())
     val state: StateFlow<SignUpContract.State> = _state.asStateFlow()
@@ -53,7 +57,21 @@ class SignUpViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun sendEffect(e: SignUpContract.Effect) = viewModelScope.launch { _effect.send(e) }
-
+    init {
+        viewModelScope.launch {
+            userPrefs.rememberMe.collect { remember ->
+                if (remember) {
+                    val savedEmail = userPrefs.savedEmail.first()
+                    updateState {
+                        copy(
+                            rememberMe = true,
+                            fields = fields.copy(email = savedEmail)
+                        )
+                    }
+                }
+            }
+        }
+    }
     private enum class Field { EMAIL, PASSWORD, USERNAME, PHONE }
 
     private fun SignUpContract.State.clear(field: Field) = when (field) {
@@ -139,11 +157,19 @@ class SignUpViewModel @Inject constructor() : ViewModel() {
 
         updateState { copy(isLoading = true, errorKey = null) }
 
-        runCatching { Unit }.onSuccess { sendEffect(SignUpContract.Effect.NavigateToExtended) }
-            .onFailure { updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR) } }
+        runCatching {
+            if (_state.value.rememberMe) {
+                userPrefs.saveUser(_state.value.fields.email.trim(), true)
+            } else {
+                userPrefs.saveUser("", false)
+            }
+        }.onSuccess {
+            sendEffect(SignUpContract.Effect.NavigateToExtended)
+        }.onFailure {
+            updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+        }
 
         updateState { copy(isLoading = false) }
-
     }
 
     private fun submitExtended() = viewModelScope.launch {

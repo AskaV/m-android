@@ -2,6 +2,7 @@ package com.spp.android.myapplication.presentation.feature.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.data.UserPreferences
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.Clear
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.EmailBlur
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.EmailChanged
@@ -19,13 +20,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val userPrefs: UserPreferences
+) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginContract.State())
     val state: StateFlow<LoginContract.State> = _state.asStateFlow()
@@ -35,6 +39,16 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
     private inline fun updateState(block: LoginContract.State.() -> LoginContract.State) {
         _state.update { it.block() }
+    }
+    init {
+        viewModelScope.launch {
+            userPrefs.rememberMe.collect { remember ->
+                if (remember) {
+                    val savedEmail = userPrefs.savedEmail.first()
+                    updateState { copy(email = savedEmail, rememberMe = true) }
+                }
+            }
+        }
     }
 
     private enum class Field { EMAIL, PASSWORD }
@@ -81,10 +95,14 @@ class LoginViewModel @Inject constructor() : ViewModel() {
         updateState { copy(isLoading = true, errorKey = null) }
 
         runCatching {
-            Unit
+            if (_state.value.rememberMe) {
+                userPrefs.saveUser(_state.value.email.trim(), true)
+            } else {
+                userPrefs.saveUser("", false)
+            }
         }.onSuccess {
             _effect.send(LoginContract.Effect.NavigateToHome)
-        }.onFailure { _ ->
+        }.onFailure {
             updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
         }
 
