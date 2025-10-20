@@ -21,7 +21,7 @@ fun LoginScreen(
             when (effect) {
                 is LoginContract.Effect.NavigateToHome -> {
                     val email = vm.state.value.email
-                    if (!email.isNullOrBlank()) {
+                    if (email.isNotBlank()) {
                         onNavigateHome(email)
                     }
                 }

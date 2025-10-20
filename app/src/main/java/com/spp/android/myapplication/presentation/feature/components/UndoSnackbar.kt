@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.max
 
 @Stable
-class UndoSnackbarController(
+class UndoSnackBarController(
     val hostState: SnackbarHostState, private val totalSeconds: Int
 ) {
     var secondsLeft by mutableIntStateOf(0)
@@ -38,10 +38,10 @@ class UndoSnackbarController(
 
     fun showUndo(
         scope: CoroutineScope,
-        message: String,
+        message: String = "Item deleted",
         undoLabel: String = "Undo",
-        onUndo: () -> Unit,
-        onTimeout: () -> Unit
+        onUndo: () -> Unit = {},
+        onTimeout: () -> Unit = {}
     ) {
         secondsLeft = totalSeconds
         var timeoutJob: Job? = null
@@ -93,9 +93,9 @@ class UndoSnackbarController(
 }
 
 @Composable
-fun rememberUndoSnackbarController(totalSeconds: Int = 5): UndoSnackbarController {
+fun rememberUndoSnackbarController(totalSeconds: Int = 5): UndoSnackBarController {
     val host = remember { SnackbarHostState() }
-    return remember(totalSeconds) { UndoSnackbarController(host, totalSeconds) }
+    return remember(totalSeconds) { UndoSnackBarController(host, totalSeconds) }
 }
 
 @Composable

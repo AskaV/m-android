@@ -8,7 +8,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun AddContactProfileScreen(
-    contactId: String, onBack: () -> Unit = {}, vm: AddContactProfileViewModel = hiltViewModel()
+    contactId: String = "", /* TODO */
+    onBack: () -> Unit = {},
+    vm: AddContactProfileViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
 

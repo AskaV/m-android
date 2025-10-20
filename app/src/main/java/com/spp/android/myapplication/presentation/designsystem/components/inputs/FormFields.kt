@@ -24,7 +24,7 @@ data class FieldState(
     val label: String = "",
     val error: String = "",
     val kind: FieldKind,
-    val onValueChange: (newValue: String) -> Unit = { }
+    val onValueChange: (newValue: String) -> Unit = {}
 )
 
 @Composable
@@ -121,6 +121,8 @@ private val previewFields = listOf(
     FieldState("Make-up artist", "Career", "", FieldKind.Username),
     FieldState("jname@gmail.com", "Email", "", FieldKind.Email),
     FieldState("(264)-654-3762", "Phone", "", FieldKind.Phone),
-    FieldState("775 Westminster Avenue APT D5\nBrooklyn, NY, 11230", "Address", "", FieldKind.Username),
+    FieldState(
+        "775 Westminster Avenue APT D5\nBrooklyn, NY, 11230", "Address", "", FieldKind.Username
+    ),
     FieldState("12/05/1995", "Date of birth", "", FieldKind.Username)
 )

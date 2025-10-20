@@ -22,12 +22,12 @@ fun SignUpScreen(
     vm: SignUpViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
-    val snackbar = SnackbarHostState()
+    val snackBar = SnackbarHostState()
 
     LaunchedEffect(Unit) {
-        vm.effect.collectLatest { eff ->
-            when (eff) {
-                is SignUpContract.Effect.ShowMessage -> snackbar.showSnackbar(eff.message)
+        vm.effect.collectLatest { effect ->
+            when (effect) {
+                is SignUpContract.Effect.ShowMessage -> snackBar.showSnackbar(effect.message)
                 SignUpContract.Effect.OpenGoogleSignIn -> onOpenGoogle()
                 SignUpContract.Effect.NavigateToLogin -> onNavigateToLogin()
 
@@ -43,7 +43,7 @@ fun SignUpScreen(
         }
     }
 
-    Scaffold(snackbarHost = { SnackbarHost(snackbar) }) { paddings ->
+    Scaffold(snackbarHost = { SnackbarHost(snackBar) }) { paddings ->
         SignUpScreenContent(
             state = state,
             onEmailChange = { vm.onEvent(SignUpContract.Event.EmailChanged(it)) },

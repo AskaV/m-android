@@ -2,14 +2,18 @@
     <dimen name="spacer_extra_small">4dp</dimen>
     <dimen name="spacer_small">8dp</dimen>
     <dimen name="spacer_additional">12dp</dimen>
+    <dimen name="spacer_additional_plus">12dp</dimen>
     <dimen name="spacer_medium">16dp</dimen>
-    <dimen name="spacer_large">24dp</dimen>
+    <dimen name="spacer_medium_plus">18dp</dimen>
     <dimen name="form_supporting_text_min_height">20dp</dimen>
+    <dimen name="spacer_large">24dp</dimen>
 
     <dimen name="corner_radius">3dp</dimen>
     <dimen name="button_corner_radius">6dp</dimen>
 
+    <dimen name="smallest_border_width">1dp</dimen>
     <dimen name="button_border_width">2dp</dimen>
+    <dimen name="small_button_height">50dp</dimen>
     <dimen name="button_height">50dp</dimen>
     <dimen name="badge_size">55dp</dimen>
     <dimen name="avatar_size">110dp</dimen>

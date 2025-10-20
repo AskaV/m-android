@@ -19,9 +19,9 @@ class AddContactProfileViewModel : ViewModel() {
     private val _effect = Channel<Effect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
-    fun onEvent(e: AddContactProfileContract.Event) {
-        when (e) {
-            is Load -> load(e.id)
+    fun onEvent(event: AddContactProfileContract.Event) {
+        when (event) {
+            is Load -> load(event.id)
             is AddContactProfileContract.Event.BackClicked -> sendEffect(Effect.NavigateBack)
 
             is AddContactProfileContract.Event.MessageClicked -> sendEffect(
@@ -53,5 +53,5 @@ class AddContactProfileViewModel : ViewModel() {
         }
     }
 
-    private fun sendEffect(e: Effect) = viewModelScope.launch { _effect.send(e) }
+    private fun sendEffect(effect: Effect) = viewModelScope.launch { _effect.send(effect) }
 }

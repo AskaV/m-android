@@ -13,14 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
+import com.spp.android.myapplication.R
 
 @Composable
 fun SelectionCheck(
     modifier: Modifier = Modifier, selected: Boolean
 ) {
-    val size = 20.dp
-    val borderW = 2.dp
+    val size = dimensionResource(id = R.dimen.form_supporting_text_min_height)
+    val borderW = dimensionResource(id = R.dimen.button_border_width)
     val borderColor = MaterialTheme.colorScheme.onSurfaceVariant
     val checkTint = MaterialTheme.colorScheme.primary
 
@@ -33,7 +34,7 @@ fun SelectionCheck(
                 imageVector = Icons.Filled.Check,
                 contentDescription = null,
                 tint = checkTint,
-                modifier = Modifier.size(14.dp)
+                modifier = Modifier.size(dimensionResource(id = R.dimen.spacer_additional_plus))
             )
         }
     }

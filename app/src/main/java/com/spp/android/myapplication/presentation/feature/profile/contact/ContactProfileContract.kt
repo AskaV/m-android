@@ -17,7 +17,7 @@ object ContactProfileContract {
     )
 
     sealed interface Event {
-        data class Load(val contactId: String) : Event  //TODO fix String in ID
+        data class Load(val contactId: String) : Event  /*TODO fix String in ID */
         data object BackClicked : Event
         data object MessageClicked : Event
         data object AddClicked : Event

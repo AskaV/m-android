@@ -13,21 +13,23 @@ import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfi
 
 @Composable
 fun EditProfileScreen(
-    onBack: () -> Unit = {}, onDone: () -> Unit = {}, vm: EditProfileViewModel = hiltViewModel()
+    onBack: () -> Unit = {},
+    onDone: () -> Unit = {},
+    vm: EditProfileViewModel = hiltViewModel()
 ) {
-    val snackbar = remember { SnackbarHostState() }
+    val snackBar = remember { SnackbarHostState() }
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        vm.effect.collect { eff ->
-            when (eff) {
+        vm.effect.collect { effect ->
+            when (effect) {
                 NavigateBack -> onBack()
                 Saved -> onDone()
                 is ShowMessage -> {
-                    snackbar.showSnackbar(eff.messageKey.text(context))
+                    snackBar.showSnackbar(effect.messageKey.text(context))
                 }
 
-                OpenAvatarPicker -> { /* open picker */
+                OpenAvatarPicker -> { /* TODO open picker */
                 }
             }
         }

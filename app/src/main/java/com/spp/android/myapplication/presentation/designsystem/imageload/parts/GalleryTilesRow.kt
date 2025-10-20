@@ -6,19 +6,20 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 
 @Composable
 internal fun GalleryTilesRow(
     modifier: Modifier = Modifier,
-    showCamera: Boolean,
+    showCamera: Boolean = false,
     onCameraClick: () -> Unit = {},
-    maxColumns: Int,
-    minTile: Dp,
-    spacing: Dp
+    maxColumns: Int = 4,
+    minTile: Dp = dimensionResource(id = R.dimen.badge_size),
+    spacing: Dp = dimensionResource(id = R.dimen.spacer_small)
 ) {
     BoxWithConstraints(modifier) {
         val contentWidth = maxWidth
@@ -42,9 +43,6 @@ internal fun GalleryTilesRow(
 @Composable
 private fun GalleryTilesRowWithCameraPreview() = PreviewColumn {
     GalleryTilesRow(
-        showCamera = true,
-        maxColumns = 4,
-        minTile = 64.dp,
-        spacing = 8.dp
+        showCamera = true
     )
 }

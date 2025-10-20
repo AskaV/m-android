@@ -30,8 +30,8 @@ import com.spp.android.myapplication.presentation.texts.t
 @Composable
 fun LabeledTextField(
     modifier: Modifier = Modifier,
-    label: String,
-    value: String,
+    label: String = "",
+    value: String = "",
     onValueChange: (String) -> Unit,
     kind: FieldKind,
     placeholder: String = "",
@@ -59,7 +59,6 @@ fun LabeledTextField(
             onValueChange = onValueChange,
             kind = kind,
             placeholder = placeholder,
-            isError = error.isNotEmpty(),
             imeAction = imeAction,
             onImeAction = onImeAction,
             trailingIcon = trailingIcon,

@@ -24,7 +24,7 @@ enum class OutlinedButtonStyle { Primary, Secondary, OnBackground }
 fun OutlinedBorderButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    text: String,
+    text: String = "",
     style: OutlinedButtonStyle = OutlinedButtonStyle.Secondary,
     buttonHeight: Dp = dimensionResource(R.dimen.button_height),
     fillMaxWidth: Boolean = true
@@ -51,8 +51,7 @@ fun OutlinedBorderButton(
             text
         )
     }
-    val applied = (if (fillMaxWidth) modifier.fillMaxWidth() else modifier)
-        .height(buttonHeight)
+    val applied = (if (fillMaxWidth) modifier.fillMaxWidth() else modifier).height(buttonHeight)
 
     OutlinedButton(
         onClick = onClick,

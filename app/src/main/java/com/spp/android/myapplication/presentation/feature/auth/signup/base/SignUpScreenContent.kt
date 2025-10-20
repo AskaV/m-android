@@ -40,10 +40,10 @@ fun SignUpScreenContent(
     onRegisterWithGoogleClick: () -> Unit = {},
     onNavigateToLogin: () -> Unit = {}
 ) {
-    val hPad = dimensionResource(R.dimen.spacer_medium)
+    val pad = dimensionResource(R.dimen.spacer_medium)
 
     Box(
-        modifier = modifier.fillMaxSize().padding(start = hPad, end = hPad, bottom = hPad)
+        modifier = modifier.fillMaxSize().padding(start = pad, end = pad, bottom = pad)
     ) {
         Column(
             modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth(),
@@ -148,7 +148,7 @@ fun SignUpScreenPreviewErrors() {
                         password = AppText.Preview.WRONG_PASSWORD,
                         emailErrorKey = AppText.Login.EMAIL_ERROR,
                         passwordErrorKey = AppText.Error.PASSWORD_ERROR
-                    ), rememberMe = false
+                    )
                 ),
             )
         }

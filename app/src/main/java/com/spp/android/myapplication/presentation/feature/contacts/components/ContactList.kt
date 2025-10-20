@@ -40,7 +40,6 @@ fun ContactList(
     state: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues = PaddingValues()
 ) {
-    val spaceM = dimensionResource(id = R.dimen.spacer_medium)
 
     Box(modifier = modifier) {
         LazyColumn(
@@ -61,7 +60,7 @@ fun ContactList(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
-                Spacer(Modifier.height(spaceM))
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_medium)))
             }
         }
     }
@@ -71,9 +70,8 @@ fun ContactList(
 @Composable
 private fun ContactListPreviewNormal() {
     MyApplicationTheme {
-        val items = remember { demoUsers() }
         ContactList(
-            items = items, selectedIds = emptySet(), behavior = ContactListBehavior(
+            items = demoUsers(), behavior = ContactListBehavior(
                 selectionEnabled = false, showDeleteIcon = true,
             ), contentPadding = PaddingValues(), modifier = Modifier.fillMaxSize()
         )
@@ -84,10 +82,9 @@ private fun ContactListPreviewNormal() {
 @Composable
 private fun ContactListPreviewSelection() {
     MyApplicationTheme {
-        val items = remember { demoUsers() }
         val selected = remember { setOf(2, 4) }
         ContactList(
-            items = items, selectedIds = selected, behavior = ContactListBehavior(
+            items = demoUsers(), selectedIds = selected, behavior = ContactListBehavior(
                 selectionEnabled = true, showDeleteIcon = false,
             ), contentPadding = PaddingValues(), modifier = Modifier.fillMaxSize()
         )

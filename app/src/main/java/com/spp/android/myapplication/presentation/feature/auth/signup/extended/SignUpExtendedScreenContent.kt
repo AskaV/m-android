@@ -35,10 +35,10 @@ fun SignUpProfileScreenContent(
     onCancel: () -> Unit = {},
     onForward: () -> Unit = {}
 ) {
-    val hPad = dimensionResource(R.dimen.spacer_medium)
+    val pad = dimensionResource(R.dimen.spacer_medium)
 
     Box(
-        modifier = modifier.fillMaxSize().padding(start = hPad, end = hPad, bottom = hPad)
+        modifier = modifier.fillMaxSize().padding(start = pad, end = pad, bottom = pad)
     ) {
         Column(
             modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth(),
@@ -116,8 +116,6 @@ private fun SignUpProfileScreenPreviewErrors() {
         Surface(color = MaterialTheme.colorScheme.background) {
             SignUpProfileScreenContent(
                 state = SignUpContract.ProfileState(
-                    username = "",
-                    phone = "",
                     usernameErrorKey = AppText.Error.USERNAME_ERROR,
                     phoneErrorKey = AppText.Error.PHONE_ERROR
                 )

@@ -11,24 +11,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 
 @Composable
 internal fun CameraTile(
-    size: Dp,
-    onClick: () -> Unit
+    size: Dp, onClick: () -> Unit = {}
 ) {
     Box(
-        Modifier
-            .size(size)
-            .clip(RoundedCornerShape(10))
-            .background(MaterialTheme.colorScheme.onTertiary)
-            .clickable { onClick() },
+        Modifier.size(size).clip(RoundedCornerShape(10))
+            .background(MaterialTheme.colorScheme.onTertiary).clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Image(
@@ -41,9 +37,7 @@ internal fun CameraTile(
 @Composable
 internal fun PlaceholderTile(size: Dp) {
     Box(
-        Modifier
-            .size(size)
-            .clip(RoundedCornerShape(10))
+        Modifier.size(size).clip(RoundedCornerShape(10))
             .background(MaterialTheme.colorScheme.onTertiary)
     )
 }
@@ -51,5 +45,5 @@ internal fun PlaceholderTile(size: Dp) {
 @PreviewPhones
 @Composable
 private fun CameraTilePreview() = PreviewColumn {
-    CameraTile(size = 64.dp, onClick = {})
+    CameraTile(size = dimensionResource(id = R.dimen.social_button_size))
 }

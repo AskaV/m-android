@@ -38,7 +38,7 @@ fun ContactsHeader(
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
-    val addRowMinHeight = dimensionResource(id = R.dimen.button_height)
+    val addRowMinHeight = dimensionResource(id = R.dimen.spacer_large)
 
     Surface(
         color = MaterialTheme.colorScheme.background,

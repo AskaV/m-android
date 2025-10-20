@@ -20,7 +20,7 @@ import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun AuthHeader(
-    modifier: Modifier = Modifier, title: String, subtitle: String
+    modifier: Modifier = Modifier, title: String = "", subtitle: String = ""
 ) {
     Column(
         modifier = modifier.fillMaxWidth().wrapContentHeight(),

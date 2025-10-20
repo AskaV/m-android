@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedBorderButton
 import com.spp.android.myapplication.presentation.designsystem.components.buttons.OutlinedButtonStyle
@@ -67,7 +66,7 @@ fun ProfileScreen(
                         text = AppText.MyProfile.LOGOUT.text(),
                         style = OutlinedButtonStyle.OnBackground,
                         fillMaxWidth = false,
-                        buttonHeight = 40.dp,
+                        buttonHeight = dimensionResource(id = R.dimen.small_button_height),
                         modifier = Modifier.align(Alignment.CenterEnd)
                     )
                 }
@@ -85,8 +84,8 @@ fun ProfileScreen(
         val padding = dimensionResource(id = R.dimen.spacer_medium)
 
         Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = padding, vertical = padding).fillMaxHeight(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxWidth().padding(horizontal = padding, vertical = padding)
+                .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (state.isCompleted) {
                 Box(

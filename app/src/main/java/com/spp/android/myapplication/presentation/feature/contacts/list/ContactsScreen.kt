@@ -30,16 +30,16 @@ fun ContactsScreen(
     val state by vm.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        vm.effect.collect { eff ->
-            when (eff) {
+        vm.effect.collect { effect ->
+            when (effect) {
                 ContactsContract.Effect.NavigateBack -> onBack()
                 ContactsContract.Effect.OpenSearch -> onOpenSearch()
                 ContactsContract.Effect.OpenAddContact -> onOpenAddContact()
-                is ContactsContract.Effect.OpenContactProfile -> onOpenContactProfile(eff.contactId)
+                is ContactsContract.Effect.OpenContactProfile -> onOpenContactProfile(effect.contactId)
 
                 is ContactsContract.Effect.ShowMessage -> {
-                    val msg = eff.messageKey.text(context)
-                    val isRemoval = eff.messageKey == AppText.OtherInfo.CONTACTS_REMOVED
+                    val msg = effect.messageKey.text(context)
+                    val isRemoval = effect.messageKey == AppText.OtherInfo.CONTACTS_REMOVED
 
                     if (isRemoval) {
                         undo.showUndo(

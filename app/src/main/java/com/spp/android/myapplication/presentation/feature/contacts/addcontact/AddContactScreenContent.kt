@@ -43,7 +43,7 @@ fun AddContactScreenContent(
     onAddressChange: (String) -> Unit = {},
     onDobChange: (String) -> Unit = {}
 ) {
-    val padding = dimensionResource(id = R.dimen.spacer_medium)
+    val pad = dimensionResource(id = R.dimen.spacer_medium)
 
     Box(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
@@ -60,7 +60,7 @@ fun AddContactScreenContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Box(
-                        Modifier.fillMaxWidth().padding(horizontal = padding, vertical = padding)
+                        Modifier.fillMaxWidth().padding(horizontal = pad, vertical = pad)
                     ) {
                         IconButton(
                             onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)
@@ -80,12 +80,12 @@ fun AddContactScreenContent(
                         AvatarPicker(onClick = onAvatarClick, showBadge = true)
                     }
 
-                    Spacer(Modifier.height(padding))
+                    Spacer(Modifier.height(pad))
                 }
             }
 
             Column(
-                modifier = Modifier.fillMaxSize().padding(horizontal = padding, vertical = padding),
+                modifier = Modifier.fillMaxSize().padding(horizontal = pad, vertical = pad),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {

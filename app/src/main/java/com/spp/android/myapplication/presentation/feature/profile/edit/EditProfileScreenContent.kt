@@ -87,7 +87,7 @@ fun EditProfileScreenContent(
                 Box(
                     modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
                 ) {
-                    AvatarPicker(onClick = { /* open picker */ }, showBadge = true)
+                    AvatarPicker(onClick = { /* TODO open picker */ }, showBadge = true)
                 }
 
                 Spacer(Modifier.height(spaceM))

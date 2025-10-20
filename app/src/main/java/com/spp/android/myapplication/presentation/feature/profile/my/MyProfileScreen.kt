@@ -23,13 +23,13 @@ fun MyProfileScreen(
     viewModel: MyProfileViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    val snackbar = remember { SnackbarHostState() }
+    val snackBar = remember { SnackbarHostState() }
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.effect.collect { eff ->
-            when (eff) {
-                is ShowMessage -> snackbar.showSnackbar(eff.messageKey.text(context))
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is ShowMessage -> snackBar.showSnackbar(effect.messageKey.text(context))
                 is NavigateToContacts -> onNavigateContacts()
                 is NavigateToEditProfile -> onNavigateEdit()
                 is NavigateToAuth -> onNavigateAuth()

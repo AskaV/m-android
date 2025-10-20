@@ -11,7 +11,7 @@ sealed class FieldKind(
     val keyboardOptions: KeyboardOptions,
     val visualTransformation: VisualTransformation,
     val imeAction: ImeAction = ImeAction.Next,
-    val label: String,
+    val label: String = "",
     val placeholderPreview: String = ""
 ) {
     data object Email : FieldKind(

@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
-import com.spp.android.myapplication.presentation.feature.components.SelectionCheck
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
+import com.spp.android.myapplication.presentation.feature.components.SelectionCheck
 
 data class ContactUi(
     val id: Int,

@@ -82,14 +82,14 @@ class EditProfileViewModel @Inject constructor() : ViewModel() {
         _state.update { it.copy(isSaving = true, errorKey = null) }
 
         runCatching { true }.onSuccess {
-                _state.update { it.copy(isSaving = false) }
-                sendEffect(Effect.Saved)
-            }.onFailure {
-                _state.update {
-                    it.copy(isSaving = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR)
-                }
-                sendEffect(Effect.ShowMessage(AppText.OtherInfo.FAILED_PROFILE_SAVE))
+            _state.update { it.copy(isSaving = false) }
+            sendEffect(Effect.Saved)
+        }.onFailure {
+            _state.update {
+                it.copy(isSaving = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR)
             }
+            sendEffect(Effect.ShowMessage(AppText.OtherInfo.FAILED_PROFILE_SAVE))
+        }
     }
 
     private fun sendEffect(effect: Effect) = viewModelScope.launch {
@@ -97,10 +97,10 @@ class EditProfileViewModel @Inject constructor() : ViewModel() {
     }
 
     private data class StubProfile(
-        val username: String,
-        val career: String,
-        val phone: String,
-        val address: String,
-        val birthdate: String
+        val username: String = "",
+        val career: String = "",
+        val phone: String = "",
+        val address: String = "",
+        val birthdate: String = ""
     )
 }

@@ -27,7 +27,7 @@ fun SignUpExtendedScreen(
     vm: SignUpViewModel = hiltViewModel(),
 ) {
     val profile by vm.profile.collectAsStateWithLifecycle()
-    val snackbar = SnackbarHostState()
+    val snackBar = SnackbarHostState()
     var showPicker by remember { mutableStateOf(false) }
 
     LaunchedEffect(prefillEmail, profile.username) {
@@ -41,10 +41,10 @@ fun SignUpExtendedScreen(
     }
 
     LaunchedEffect(Unit) {
-        vm.effect.collectLatest { eff ->
-            when (eff) {
+        vm.effect.collectLatest { effect ->
+            when (effect) {
 
-                is SignUpContract.Effect.ShowMessage -> snackbar.showSnackbar(eff.message)
+                is SignUpContract.Effect.ShowMessage -> snackBar.showSnackbar(effect.message)
                 SignUpContract.Effect.OpenAvatarPicker -> showPicker = true
                 SignUpContract.Effect.BackFromExtended -> onBack()
                 SignUpContract.Effect.NavigateToHome -> {
@@ -58,15 +58,15 @@ fun SignUpExtendedScreen(
         }
     }
 
-    Scaffold(snackbarHost = { SnackbarHost(snackbar) }) { paddings ->
+    Scaffold(snackbarHost = { SnackbarHost(snackBar) }) { paddings ->
         SignUpProfileScreenContent(
             state = SignUpContract.ProfileState(
-                username = profile.username,
-                phone = profile.phone,
-                usernameErrorKey = profile.usernameErrorKey,
-                phoneErrorKey = profile.phoneErrorKey,
-                avatar = profile.avatar
-            ),
+            username = profile.username,
+            phone = profile.phone,
+            usernameErrorKey = profile.usernameErrorKey,
+            phoneErrorKey = profile.phoneErrorKey,
+            avatar = profile.avatar
+        ),
             onPickAvatar = { vm.onEvent(SignUpContract.Event.PickAvatar) },
             onUserNameChange = { vm.onEvent(SignUpContract.Event.UsernameChanged(it)) },
             onPhoneChange = { vm.onEvent(SignUpContract.Event.PhoneChanged(it)) },

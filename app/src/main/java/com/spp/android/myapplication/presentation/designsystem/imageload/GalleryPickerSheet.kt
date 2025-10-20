@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.imageload.parts.GalleryActions
 import com.spp.android.myapplication.presentation.designsystem.imageload.parts.GalleryTilesRow
@@ -45,8 +44,6 @@ fun GalleryPickerSheet(
                     .padding(start = spacing, top = spacing, end = spacing),
                 showCamera = showCamera,
                 onCameraClick = onCameraClick,
-                maxColumns = 4,
-                minTile = 70.dp,
                 spacing = spacing
             )
 
@@ -67,11 +64,5 @@ fun GalleryPickerSheet(
 @PreviewPhones
 @Composable
 fun GalleryPickerAddPhotoPreview() = PreviewColumn {
-    GalleryPickerSheet(showCamera = true)
-}
-
-@PreviewPhones
-@Composable
-fun GalleryPickerChangeOrDeletePreview() = PreviewColumn {
-    GalleryPickerSheet(showCamera = true, onDeleteCurrent = {})
+    GalleryPickerSheet()
 }

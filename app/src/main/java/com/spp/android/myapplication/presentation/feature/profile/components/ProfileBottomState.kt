@@ -41,7 +41,7 @@ data class FilledBtn(
 }
 
 data class OutlinedBtn(
-    val text: String,
+    val text: String = "",
     val onClick: () -> Unit = {},
     val style: OutlinedButtonStyle = OutlinedButtonStyle.Secondary
 )
@@ -50,8 +50,8 @@ data class OutlinedBtn(
 fun ProfileBottomArea(
     modifier: Modifier = Modifier,
     showSocial: Boolean,
-    primaryFilled: FilledBtn?,
-    secondaryOutlined: OutlinedBtn?,
+    primaryFilled: FilledBtn? = null,
+    secondaryOutlined: OutlinedBtn? = null,
     hint: String? = "",
     contentPadding: PaddingValues = PaddingValues(
         horizontal = dimensionResource(R.dimen.spacer_medium),
@@ -126,9 +126,7 @@ private fun PreviewProfileBottomMessageOnly() {
     MyApplicationTheme {
         ProfileBottomArea(
             showSocial = true,
-            primaryFilled = FilledBtn(
-                text = AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = {}),
-            secondaryOutlined = null,
+            primaryFilled = FilledBtn(text = AppText.ContactProfile.MESSAGE_TEXT.text()),
             modifier = Modifier.fillMaxHeight()
         )
     }
@@ -140,10 +138,8 @@ private fun PreviewProfileBottomAddAndMessage() {
     MyApplicationTheme {
         ProfileBottomArea(
             showSocial = true,
-            primaryFilled = FilledBtn(
-                text = AppText.Contacts.ADD.text(), onClick = {}),
-            secondaryOutlined = OutlinedBtn(
-                text = AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = {}),
+            primaryFilled = FilledBtn(text = AppText.Contacts.ADD.text()),
+            secondaryOutlined = OutlinedBtn(text = AppText.ContactProfile.MESSAGE_TEXT.text()),
             modifier = Modifier.fillMaxHeight()
         )
     }
@@ -154,11 +150,10 @@ private fun PreviewProfileBottomAddAndMessage() {
 private fun PreviewProfileBottomMyProfileCompleted() {
     MyApplicationTheme {
         ProfileBottomArea(
-            showSocial = false, primaryFilled = FilledBtn(
-                text = AppText.MyProfile.VIEW_CONTACTS.text()
-            ), secondaryOutlined = OutlinedBtn(
-                text = AppText.EditProfile.TITLE.text()
-            ), modifier = Modifier.fillMaxHeight()
+            showSocial = false,
+            primaryFilled = FilledBtn(text = AppText.MyProfile.VIEW_CONTACTS.text()),
+            secondaryOutlined = OutlinedBtn(text = AppText.EditProfile.TITLE.text()),
+            modifier = Modifier.fillMaxHeight()
         )
     }
 }
@@ -169,10 +164,7 @@ private fun PreviewProfileBottomMyProfileIncomplete() {
     MyApplicationTheme {
         ProfileBottomArea(
             showSocial = false,
-            primaryFilled = null,
-            secondaryOutlined = OutlinedBtn(
-                text = AppText.EditProfile.TITLE.text()
-            ),
+            secondaryOutlined = OutlinedBtn(text = AppText.EditProfile.TITLE.text()),
             hint = AppText.MyProfile.PROFILE_FILL_HINT.text(),
             modifier = Modifier.fillMaxHeight(),
         )

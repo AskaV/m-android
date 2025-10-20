@@ -20,7 +20,7 @@ import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 @Composable
 fun ContactsList(
     modifier: Modifier = Modifier,
-    items: List<ContactUi>,
+    items: List<ContactUi> = emptyList(),
     onItemClick: (ContactUi) -> Unit = {},
     onDeleteClick: (ContactUi) -> Unit = {},
     contentPadding: PaddingValues = PaddingValues(dimensionResource(id = R.dimen.spacer_medium))

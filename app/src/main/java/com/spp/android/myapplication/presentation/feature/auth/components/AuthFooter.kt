@@ -19,8 +19,8 @@ import com.spp.android.myapplication.presentation.texts.AppText
 @Composable
 fun AuthFooter(
     modifier: Modifier = Modifier,
-    question: String,
-    actionText: String,
+    question: String = "",
+    actionText: String = "",
     onActionClick: () -> Unit = {}
 ) {
     Row(

@@ -100,8 +100,7 @@ private fun ContactProfilePreview() = PreviewScreenEdgeToEdge {
         state = ContactProfileContract.State(
             name = AppText.MyProfileDetailed.NAME.text(),
             linePrimary = AppText.MyProfileDetailed.CAREER.text(),
-            lineSecondary = AppText.MyProfileDetailed.ADDRESS.text(),
-            hasSocial = true
+            lineSecondary = AppText.MyProfileDetailed.ADDRESS.text()
         ),
     )
 }

@@ -23,9 +23,9 @@ import com.spp.android.myapplication.presentation.texts.AppText
 @Composable
 fun ProfileHeader(
     modifier: Modifier = Modifier,
-    name: String,
-    linePrimary: String,
-    lineSecondary: String,
+    name: String = "",
+    linePrimary: String = "",
+    lineSecondary: String = "",
     avatarRes: Int = R.drawable.baseline_account_circle_avatar
 ) {
     Column(

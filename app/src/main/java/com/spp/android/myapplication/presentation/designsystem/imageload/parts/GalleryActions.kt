@@ -10,17 +10,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 internal fun GalleryActions(
     modifier: Modifier = Modifier,
-    onOpenGallery: () -> Unit,
+    onOpenGallery: () -> Unit = {},
     onDeleteCurrent: () -> Unit = {},
-    onCancel: () -> Unit
+    onCancel: () -> Unit = {}
 ) {
     Column(modifier) {
         ActionItem(
@@ -31,14 +32,10 @@ internal fun GalleryActions(
         )
 
         ActionItem(
-            text = AppText.GalleryStrings.DELETE_PHOTO.text(),
-            enabled = false,
-            onClick = {},
-            dimmed = true
+            text = AppText.GalleryStrings.DELETE_PHOTO.text(), enabled = false, dimmed = true
         )
 
-        val cancelColor =
-            MaterialTheme.colorScheme.onBackground
+        val cancelColor = MaterialTheme.colorScheme.onBackground
 
         ActionItem(
             text = AppText.GalleryStrings.CANCEL.text(),
@@ -53,7 +50,7 @@ internal fun GalleryActions(
 fun ActionItem(
     text: String,
     enabled: Boolean,
-    onClick: () -> Unit,
+    onClick: () -> Unit = {},
     dimmed: Boolean = false,
     colorOverride: Color? = null
 ) {
@@ -69,12 +66,10 @@ fun ActionItem(
         style = MaterialTheme.typography.titleMedium,
         color = color,
         textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 48.dp)
-            .padding(vertical = 8.dp)
-            .clickable(enabled = enabled) { onClick() }
-    )
+        modifier = Modifier.fillMaxWidth()
+            .heightIn(min = dimensionResource(id = R.dimen.button_height))
+            .padding(vertical = dimensionResource(id = R.dimen.spacer_small))
+            .clickable(enabled = enabled) { onClick() })
 }
 
 @Preview(showBackground = true)
@@ -82,20 +77,6 @@ fun ActionItem(
 private fun GalleryActionsPreview() {
     MaterialTheme {
         GalleryActions(
-            onOpenGallery = {},
-            onDeleteCurrent = {},
-            onCancel = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun GalleryActionsNoDeletePreview() {
-    MaterialTheme {
-        GalleryActions(
-            onOpenGallery = {},
-            onCancel = {}
         )
     }
 }

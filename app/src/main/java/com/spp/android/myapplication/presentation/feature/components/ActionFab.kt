@@ -18,7 +18,7 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPh
 fun ActionFab(
     modifier: Modifier = Modifier,
     @DrawableRes iconRes: Int,
-    contentDescription: String,
+    contentDescription: String = "",
     onClick: () -> Unit = {},
     alignment: Alignment = Alignment.BottomEnd
 ) {
@@ -32,7 +32,8 @@ fun ActionFab(
         modifier = modifier.padding(pad)
     ) {
         Icon(
-            painter = painterResource(id = iconRes), contentDescription = contentDescription
+            painter = painterResource(id = iconRes),
+            contentDescription = contentDescription
         )
     }
 }
@@ -42,7 +43,7 @@ fun ActionFab(
 private fun ActionFabPreview() {
     MaterialTheme {
         ActionFab(
-            iconRes = R.drawable.recycle_bin, contentDescription = "Delete selected"
+            iconRes = R.drawable.recycle_bin
         )
     }
 }

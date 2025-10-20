@@ -34,11 +34,10 @@ import com.spp.android.myapplication.presentation.texts.AppText
 @Composable
 fun AppTextField(
     modifier: Modifier = Modifier,
-    value: String,
+    value: String = "",
     onValueChange: (String) -> Unit = {},
     kind: FieldKind,
     placeholder: String = "",
-    isError: Boolean = false,
     imeAction: ImeAction = ImeAction.Next,
     onImeAction: () -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
@@ -102,7 +101,6 @@ fun AppTextFieldEmailPreview() = PreviewColumn {
         kind = FieldKind.Email,
         placeholder = AppText.Preview.EMAIL,
         imeAction = ImeAction.Next,
-        isError = false,
         textStyle = MaterialTheme.typography.titleLarge.copy(
             color = MaterialTheme.colorScheme.onBackground
         )
@@ -119,7 +117,6 @@ fun AppTextFieldPasswordErrorPreview() = PreviewColumn {
         kind = FieldKind.Password,
         placeholder = AppText.Preview.DOTS,
         imeAction = ImeAction.Done,
-        isError = true,
         textStyle = MaterialTheme.typography.titleLarge.copy(
             color = MaterialTheme.colorScheme.onBackground
         )

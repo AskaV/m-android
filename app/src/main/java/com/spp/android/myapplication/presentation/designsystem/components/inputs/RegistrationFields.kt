@@ -3,10 +3,6 @@ package com.spp.android.myapplication.presentation.designsystem.components.input
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.parts.LabeledTextField
 import com.spp.android.myapplication.presentation.designsystem.forms.FieldKind
@@ -19,10 +15,10 @@ import com.spp.android.myapplication.presentation.texts.text
 @Composable
 fun RegistrationFields(
     modifier: Modifier = Modifier,
-    username: String,
-    onUsernameChange: (String) -> Unit,
-    phone: String,
-    onPhoneChange: (String) -> Unit,
+    username: String = "",
+    onUsernameChange: (String) -> Unit = {},
+    phone: String = "",
+    onPhoneChange: (String) -> Unit = {},
     usernameErrorKey: TextKeyWithArgs? = null,
     phoneErrorKey: TextKeyWithArgs? = null,
 ) {
@@ -47,25 +43,17 @@ fun RegistrationFields(
 @PreviewPhones
 @Composable
 fun RegistrationFieldsPreview() = PreviewColumn {
-    var name by remember { mutableStateOf(AppText.Preview.USERNAME) }
-    var phone by remember { mutableStateOf(AppText.Preview.PHONE) }
     RegistrationFields(
-        username = name,
-        onUsernameChange = { name = it },
-        phone = phone,
-        onPhoneChange = { phone = it })
+        username = AppText.Preview.USERNAME, phone = AppText.Preview.PHONE
+    )
 }
 
 @PreviewPhones
 @Composable
 fun RegistrationFieldsPreviewError() = PreviewColumn {
-    var name by remember { mutableStateOf(AppText.Preview.WRONG_USERNAME) }
-    var phone by remember { mutableStateOf(AppText.Preview.WRONG_PHONE) }
     RegistrationFields(
-        username = name,
-        onUsernameChange = { name = it },
-        phone = phone,
-        onPhoneChange = { phone = it },
+        username = AppText.Preview.WRONG_USERNAME,
+        phone = AppText.Preview.WRONG_PHONE,
         usernameErrorKey = AppText.Error.USERNAME_ERROR,
         phoneErrorKey = AppText.Error.PHONE_ERROR
     )

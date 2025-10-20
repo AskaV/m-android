@@ -97,16 +97,16 @@ class MyProfileViewModel @Inject constructor() : ViewModel() {
         _state.update { it.copy(isLoading = true) }
 
         runCatching { true }.onSuccess {
-                _state.update { it.copy(isLoading = false) }
-                sendEffect(Effect.NavigateToAuth)
-            }.onFailure {
-                _state.update {
-                    it.copy(
-                        isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR
-                    )
-                }
-                sendEffect(Effect.ShowMessage(AppText.OtherInfo.LOGOUT_FAILED))
+            _state.update { it.copy(isLoading = false) }
+            sendEffect(Effect.NavigateToAuth)
+        }.onFailure {
+            _state.update {
+                it.copy(
+                    isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR
+                )
             }
+            sendEffect(Effect.ShowMessage(AppText.OtherInfo.LOGOUT_FAILED))
+        }
     }
 
     private fun sendEffect(effect: Effect) = viewModelScope.launch {
@@ -114,10 +114,10 @@ class MyProfileViewModel @Inject constructor() : ViewModel() {
     }
 
     private data class StubProfile(
-        val name: String,
-        val linePrimary: String,
-        val lineSecondary: String,
-        val isCompleted: Boolean
+        val name: String = "",
+        val linePrimary: String = "",
+        val lineSecondary: String = "",
+        val isCompleted: Boolean = false
     )
 
     fun onExternalName(name: String) {

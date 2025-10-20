@@ -24,35 +24,35 @@ class GalleryPickerViewModel @Inject constructor() : ViewModel() {
 
     fun onEvent(event: GalleryPickerContract.Event) {
         when (event) {
-            GalleryPickerContract.Event.Show ->
-                _state.update { it.copy(isVisible = true) }
+            GalleryPickerContract.Event.Show -> _state.update { it.copy(isVisible = true) }
 
-            GalleryPickerContract.Event.Dismiss ->
+            GalleryPickerContract.Event.Dismiss -> _state.update { it.copy(isVisible = false) }
+
+            GalleryPickerContract.Event.OpenGallery -> viewModelScope.launch {
+                _effect.send(
+                    GalleryPickerContract.Effect.LaunchGalleryPicker
+                )
+            }
+
+            GalleryPickerContract.Event.OpenCamera -> viewModelScope.launch {
+                _effect.send(
+                    GalleryPickerContract.Effect.LaunchCamera
+                )
+            }
+
+            GalleryPickerContract.Event.DeleteCurrent -> viewModelScope.launch {
                 _state.update { it.copy(isVisible = false) }
+                _effect.send(GalleryPickerContract.Effect.ReturnResult(null))
+            }
 
-            GalleryPickerContract.Event.OpenGallery ->
-                viewModelScope.launch { _effect.send(GalleryPickerContract.Effect.LaunchGalleryPicker) }
+            is GalleryPickerContract.Event.PhotoPicked -> viewModelScope.launch {
+                _state.update { it.copy(isVisible = false) }
+                _effect.send(GalleryPickerContract.Effect.ReturnResult(event.photoPickedUri))
+            }
 
-            GalleryPickerContract.Event.OpenCamera ->
-                viewModelScope.launch { _effect.send(GalleryPickerContract.Effect.LaunchCamera) }
+            GalleryPickerContract.Event.ErrorShown -> _state.update { it.copy() }
 
-            GalleryPickerContract.Event.DeleteCurrent ->
-                viewModelScope.launch {
-                    _state.update { it.copy(isVisible = false) }
-                    _effect.send(GalleryPickerContract.Effect.ReturnResult(null))
-                }
-
-            is GalleryPickerContract.Event.PhotoPicked ->
-                viewModelScope.launch {
-                    _state.update { it.copy(isVisible = false) }
-                    _effect.send(GalleryPickerContract.Effect.ReturnResult(event.photoPickedUri))
-                }
-
-            GalleryPickerContract.Event.ErrorShown ->
-                _state.update { it.copy() }
-
-            GalleryPickerContract.Event.Clear ->
-                _state.update{ GalleryPickerContract.State()}
+            GalleryPickerContract.Event.Clear -> _state.update { GalleryPickerContract.State() }
         }
     }
 }

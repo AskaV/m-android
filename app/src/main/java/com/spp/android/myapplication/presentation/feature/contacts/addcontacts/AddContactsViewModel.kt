@@ -33,8 +33,8 @@ class AddContactsViewModel @Inject constructor() : ViewModel() {
         onEvent(Load)
     }
 
-    fun onEvent(e: AddContactsContract.Event) {
-        when (e) {
+    fun onEvent(event: AddContactsContract.Event) {
+        when (event) {
             is Load -> load()
             is BackClicked -> sendEffect(Effect.NavigateBack)
 
@@ -43,7 +43,9 @@ class AddContactsViewModel @Inject constructor() : ViewModel() {
             is ToggleSelect -> {
                 _state.update { st ->
                     val ns = st.selected.toMutableSet().apply {
-                        if (contains(e.toggleSelect.id)) remove(e.toggleSelect.id) else add(e.toggleSelect.id)
+                        if (contains(event.toggleSelect.id)) remove(event.toggleSelect.id) else add(
+                            event.toggleSelect.id
+                        )
                     }
                     st.copy(selected = ns)
                 }
@@ -65,9 +67,9 @@ class AddContactsViewModel @Inject constructor() : ViewModel() {
 
             is AddClicked -> {
                 _state.update { st ->
-                    st.copy(items = st.items.filterNot { it.id == e.dddClicked.id })
+                    st.copy(items = st.items.filterNot { it.id == event.dddClicked.id })
                 }
-                sendEffect(Effect.ShowMessage("Added ${e.dddClicked.name}"))
+                sendEffect(Effect.ShowMessage("Added ${event.dddClicked.name}"))
             }
         }
     }

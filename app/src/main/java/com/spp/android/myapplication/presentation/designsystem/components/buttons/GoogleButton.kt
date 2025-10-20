@@ -34,7 +34,7 @@ fun GoogleButton(
     onClick: () -> Unit = {},
     text: String = AppText.SignUp.GOOGLE.text().uppercase(),
     enabled: Boolean = true,
-    borderWidth: Dp = 1.dp
+    borderWidth: Dp = dimensionResource(R.dimen.smallest_border_width)
 ) {
     Button(
         onClick = onClick,
@@ -48,7 +48,6 @@ fun GoogleButton(
         elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp),
         contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.spacer_medium))
     ) {
-        val gap = dimensionResource(R.dimen.spacer_medium)
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
@@ -57,9 +56,9 @@ fun GoogleButton(
             Image(
                 painter = painterResource(R.drawable.ic_google_logo),
                 contentDescription = null,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(dimensionResource(R.dimen.spacer_medium_plus))
             )
-            Spacer(Modifier.width(gap))
+            Spacer(Modifier.width(dimensionResource(R.dimen.spacer_medium)))
             Text(text.uppercase(), style = MaterialTheme.typography.titleLarge)
         }
     }

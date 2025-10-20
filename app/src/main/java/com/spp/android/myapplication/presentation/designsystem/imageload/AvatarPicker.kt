@@ -87,7 +87,6 @@ private fun AvatarPickerBadgePreview() {
 private fun AvatarPickerPreview() {
     PreviewColumn {
         AvatarPicker(
-            showBadge = false
         )
     }
 }

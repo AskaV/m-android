@@ -16,10 +16,6 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -33,9 +29,9 @@ import com.spp.android.myapplication.presentation.texts.AppText
 @Composable
 fun CheckBoxWithAction(
     modifier: Modifier = Modifier,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit= {},
-    label: String,
+    checked: Boolean = false,
+    onCheckedChange: (Boolean) -> Unit = {},
+    label: String = "",
     actionText: String = "",
     onActionClick: () -> Unit = {}
 ) {
@@ -90,11 +86,8 @@ fun CheckBoxWithAction(
 @PreviewPhones
 @Composable
 private fun CheckBoxWithActionPreviewFigma() {
-    var checked by remember { mutableStateOf(true) }
     PreviewColumn {
         CheckBoxWithAction(
-            checked = checked,
-            onCheckedChange = { checked = it },
             label = AppText.Login.REMEMBER_ME.text(),
             actionText = AppText.Login.FORGOT_PASSWORD.text()
         )
@@ -104,12 +97,9 @@ private fun CheckBoxWithActionPreviewFigma() {
 @PreviewPhones
 @Composable
 private fun CheckBoxWithActionPreview2Figma() {
-    var checked by remember { mutableStateOf(true) }
     PreviewColumn {
         CheckBoxWithAction(
-            checked = checked,
-            onCheckedChange = { checked = it },
-            label = AppText.Login.REMEMBER_ME.text()
+            checked = true, label = AppText.Login.REMEMBER_ME.text()
         )
     }
 }

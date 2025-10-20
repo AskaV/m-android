@@ -84,9 +84,8 @@ class LoginViewModel @Inject constructor() : ViewModel() {
             Unit
         }.onSuccess {
             _effect.send(LoginContract.Effect.NavigateToHome)
-        }.onFailure { t ->
-            val msgKey = AppText.OtherInfo.UNKNOWN_ERROR
-            updateState { copy(errorKey = msgKey) }
+        }.onFailure { _ ->
+            updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
         }
 
         updateState { copy(isLoading = false) }

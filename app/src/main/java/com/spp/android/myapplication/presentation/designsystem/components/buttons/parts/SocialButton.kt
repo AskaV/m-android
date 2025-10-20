@@ -22,21 +22,18 @@ import com.spp.android.myapplication.presentation.designsystem.theme.socialIcon
 fun SocialButton(
     modifier: Modifier = Modifier,
     iconRes: Int,
-    contentDescription: String
+    contentDescription: String = "",
 ) {
     Box(
         modifier = modifier
             .size(dimensionResource(id = R.dimen.social_button_size))
             .background(
-                color = Color.Transparent,
-                shape = CircleShape
-            )
-            .border(
+                color = Color.Transparent, shape = CircleShape
+            ).border(
                 width = dimensionResource(id = R.dimen.button_border_width),
                 color = MaterialTheme.colorScheme.socialIcon,
                 shape = CircleShape
-            ),
-        contentAlignment = Alignment.Center
+            ), contentAlignment = Alignment.Center
     ) {
         Icon(
             painter = painterResource(id = iconRes),
@@ -50,7 +47,7 @@ fun SocialButton(
 @PreviewPhones
 @Composable
 fun SocialButtonPreview() = PreviewRow {
-    SocialButton(iconRes = R.drawable.social_facebook, contentDescription = "Facebook")
-    SocialButton(iconRes = R.drawable.social_instagram, contentDescription = "Instagram")
-    SocialButton(iconRes = R.drawable.social_telegram, contentDescription = "Telegram")
+    SocialButton(iconRes = R.drawable.social_facebook)
+    SocialButton(iconRes = R.drawable.social_instagram)
+    SocialButton(iconRes = R.drawable.social_telegram)
 }

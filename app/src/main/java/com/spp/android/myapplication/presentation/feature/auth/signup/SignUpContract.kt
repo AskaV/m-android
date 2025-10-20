@@ -8,7 +8,6 @@ import com.spp.android.myapplication.presentation.texts.TextKeyWithArgs
 
 object SignUpContract {
 
-    // Base
     @Immutable
     data class State(
         val fields: AuthFieldsState = AuthFieldsState(),
@@ -17,7 +16,6 @@ object SignUpContract {
         val errorKey: TextKey? = null
     )
 
-    // Extended profile
     @Immutable
     data class ProfileState(
         val username: String = "",

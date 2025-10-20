@@ -21,11 +21,11 @@ import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
+import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.feature.components.ActionFab
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactList
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactListBehavior
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactsHeader
-import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 
@@ -39,14 +39,12 @@ fun ContactsScreenContent(
     onContactClick: (ContactUi) -> Unit = {},
     onDeleteClick: (ContactUi) -> Unit = {},
     onBulkDeleteClick: () -> Unit = {},
-    onScrollTopClick: () -> Unit = {},
     showRecycleBin: Boolean = false,
     onContactLongClick: (ContactUi) -> Unit = {},
     selectedIds: Set<Int> = emptySet(),
     isSelectionMode: Boolean = showRecycleBin
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
-    val spaceM = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
 
     val listState = rememberLazyListState()
@@ -84,7 +82,7 @@ fun ContactsScreenContent(
                     onDeleteClick = onDeleteClick,
                     state = listState,
                     contentPadding = PaddingValues(
-                        start = pad, end = pad, top = spaceM, bottom = spaceL
+                        start = pad, end = pad, top = pad, bottom = spaceL
                     ),
                     modifier = Modifier.fillMaxSize()
                 )
@@ -96,7 +94,6 @@ fun ContactsScreenContent(
         ) {
             ActionFab(
                 iconRes = R.drawable.recycle_bin,
-                contentDescription = "Delete selected",
                 onClick = onBulkDeleteClick,
                 alignment = Alignment.BottomEnd
             )
@@ -106,9 +103,9 @@ fun ContactsScreenContent(
             visible = showScrollTop, modifier = Modifier.align(Alignment.BottomEnd)
         ) {
             ActionFab(
-                iconRes = R.drawable.ic_arrow_up, contentDescription = "Scroll to top", onClick = {
-                    scope.launch { listState.animateScrollToItem(0) }
-                }, alignment = Alignment.BottomStart
+                iconRes = R.drawable.ic_arrow_up,
+                onClick = { scope.launch { listState.animateScrollToItem(0) } },
+                alignment = Alignment.BottomStart
             )
         }
     }
@@ -117,8 +114,5 @@ fun ContactsScreenContent(
 
 @PreviewPhones
 @Composable
-private fun ContactsScreenContentPreview() = PreviewScreenEdgeToEdge {
-    ContactsScreenContent(
-        items = demoUsers()
-    )
-}
+private fun ContactsScreenContentPreview() =
+    PreviewScreenEdgeToEdge { ContactsScreenContent(items = demoUsers()) }

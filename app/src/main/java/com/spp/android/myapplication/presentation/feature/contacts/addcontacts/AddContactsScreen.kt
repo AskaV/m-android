@@ -17,12 +17,11 @@ fun AddContactsScreen(
     val state by vm.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        vm.effect.collect { eff ->
-            when (eff) {
+        vm.effect.collect { effect ->
+            when (effect) {
                 AddContactsContract.Effect.NavigateBack -> onBack()
                 AddContactsContract.Effect.OpenSearch -> onOpenSearch()
-                is AddContactsContract.Effect.ShowMessage -> {
-                    // TODO: Snackbar
+                is AddContactsContract.Effect.ShowMessage -> { /* TODO() */
                 }
             }
         }
@@ -35,7 +34,6 @@ fun AddContactsScreen(
         selectedIds = state.selected,
         onBack = { vm.onEvent(AddContactsContract.Event.BackClicked) },
         onSearchClick = { vm.onEvent(AddContactsContract.Event.SearchClicked) },
-        onToggleSelect = { vm.onEvent(AddContactsContract.Event.ToggleSelect(it)) },
         onMassAddClick = { vm.onEvent(AddContactsContract.Event.MassAddClicked) },
         onAddClick = { vm.onEvent(AddContactsContract.Event.AddClicked(it)) },
         onRowClick = { contact -> onOpenProfile(contact.id) })

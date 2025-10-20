@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
@@ -42,7 +41,6 @@ fun AddContactsScreenContent(
     selectedIds: Set<Int> = emptySet(),
     onBack: () -> Unit = {},
     onSearchClick: () -> Unit = {},
-    onToggleSelect: (ContactUi) -> Unit = {},
     onMassAddClick: () -> Unit = {},
     onAddClick: (ContactUi) -> Unit = {},
     reserveAddRowSpace: Boolean = true,
@@ -78,7 +76,7 @@ fun AddContactsScreenContent(
                     trailingForRow = { contact ->
                         TextButton(onClick = { onAddClick(contact) }) {
                             Text("Add", color = MaterialTheme.colorScheme.primary)
-                            Spacer(Modifier.width(6.dp))
+                            Spacer(Modifier.width(dimensionResource(id = R.dimen.spacer_small)))
                             Icon(
                                 painter = painterResource(R.drawable.ic_add),
                                 contentDescription = "Add",
@@ -87,7 +85,7 @@ fun AddContactsScreenContent(
                         }
                     }),
                 onItemClick = onRowClick,
-                onItemLongClick = { /* not used */ },
+                onItemLongClick = {},
                 onDeleteClick = {},
                 state = listState,
                 contentPadding = PaddingValues(
@@ -127,7 +125,7 @@ private fun AddContactsContentPreviewDefault() {
     MyApplicationTheme {
         Surface(color = MaterialTheme.colorScheme.surface) {
             AddContactsScreenContent(
-                items = demoUsers(), selectedIds = emptySet()
+                items = demoUsers()
             )
         }
     }

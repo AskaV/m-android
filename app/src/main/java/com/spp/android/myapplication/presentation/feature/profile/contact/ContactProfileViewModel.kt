@@ -56,7 +56,6 @@ class ContactProfileViewModel @Inject constructor() : ViewModel() {
                     linePrimary = c.linePrimary,
                     lineSecondary = c.lineSecondary,
                     hasSocial = c.hasSocial,
-                    isLoading = false
                 )
             }
         }.onFailure {
@@ -69,16 +68,16 @@ class ContactProfileViewModel @Inject constructor() : ViewModel() {
         _state.update { it.copy(isLoading = true) }
 
         runCatching { true }.onSuccess {
-                _state.update { it.copy(isLoading = false, hasSocial = true) }
-                sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACT_ADDED))
-            }.onFailure {
-                _state.update {
-                    it.copy(
-                        isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR
-                    )
-                }
-                sendEffect(Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_ADD_CONTACT))
+            _state.update { it.copy(isLoading = false, hasSocial = true) }
+            sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACT_ADDED))
+        }.onFailure {
+            _state.update {
+                it.copy(
+                    isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR
+                )
             }
+            sendEffect(Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_ADD_CONTACT))
+        }
     }
 
     private fun sendEffect(effect: Effect) = viewModelScope.launch {

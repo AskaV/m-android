@@ -28,31 +28,12 @@ class AddContactViewModel @Inject constructor() : ViewModel() {
             is Event.BackClicked -> sendEffect(Effect.NavigateBack)
             is Event.AvatarClicked -> sendEffect(Effect.ShowMessage("Avatar picker clicked"))
 
-            is Event.UsernameChanged -> _state.update {
-                it.copy(
-                    username = event.value, usernameError = ""
-                )
-            }
-
-            is Event.CareerChanged -> _state.update {
-                it.copy(
-                    career = event.value, careerError = ""
-                )
-            }
-
-            is Event.EmailChanged -> _state.update { it.copy(email = event.value, emailError = "") }
-            is Event.PhoneChanged -> _state.update { it.copy(phone = event.value, phoneError = "") }
-            is Event.AddressChanged -> _state.update {
-                it.copy(
-                    address = event.value, addressError = ""
-                )
-            }
-
-            is Event.DateOfBirthChanged -> _state.update {
-                it.copy(
-                    dateOfBirth = event.value, dateOfBirthError = ""
-                )
-            }
+            is Event.UsernameChanged -> _state.update { it.copy(username = event.value) }
+            is Event.CareerChanged -> _state.update { it.copy(career = event.value) }
+            is Event.EmailChanged -> _state.update { it.copy(email = event.value) }
+            is Event.PhoneChanged -> _state.update { it.copy(phone = event.value) }
+            is Event.AddressChanged -> _state.update { it.copy(address = event.value) }
+            is Event.DateOfBirthChanged -> _state.update { it.copy(dateOfBirth = event.value) }
 
             is Event.SaveClicked -> save()
             is Event.ErrorShown -> _state.update { it.copy() }

@@ -74,17 +74,21 @@ fun AddContactProfileScreenContent(
         }
 
         ProfileBottomArea(
-            showSocial = true, primaryFilled = if (state.isInMyContacts) {
+            showSocial = true,
+            primaryFilled = if (state.isInMyContacts) {
                 FilledBtn(AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage)
             } else {
                 FilledBtn(
                     AppText.ContactProfile.ADD_TO_MY_CONTACTS.text(), onClick = onAddToContacts
                 )
-            }, secondaryOutlined = if (state.isInMyContacts) {
+            },
+            secondaryOutlined = if (state.isInMyContacts) {
                 null
             } else {
                 OutlinedBtn(AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage)
-            }, modifier = Modifier.fillMaxHeight(), contentPadding = PaddingValues(horizontal = pad, vertical = pad)
+            },
+            modifier = Modifier.fillMaxHeight(),
+            contentPadding = PaddingValues(horizontal = pad, vertical = pad)
         )
     }
 }
