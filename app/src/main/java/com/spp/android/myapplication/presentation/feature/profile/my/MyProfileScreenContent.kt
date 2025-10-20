@@ -66,7 +66,7 @@ fun ProfileScreen(
                         text = AppText.MyProfile.LOGOUT.text(),
                         style = OutlinedButtonStyle.OnBackground,
                         fillMaxWidth = false,
-                        buttonHeight = dimensionResource(id = R.dimen.small_button_height),
+                        buttonHeight = dimensionResource(id = R.dimen.exit_button),
                         modifier = Modifier.align(Alignment.CenterEnd)
                     )
                 }

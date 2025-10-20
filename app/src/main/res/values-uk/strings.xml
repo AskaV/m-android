@@ -89,7 +89,7 @@
     <string name="edit_profile_birthdate_label">Дата народження</string>
     <string name="edit_profile_birthdate_placeholder">12/05/1994</string>
 
-    <string name="edit_profile_address_label">Адреса</string>
+    <string name="edit_profile_address_label">Домашня адресса</string>
     <string name="edit_profile_address_placeholder">5295 Gaylord Walks Apk. 110</string>
 
     <!--    Превью     -->

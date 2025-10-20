@@ -90,7 +90,7 @@
     <string name="edit_profile_birthdate_label">Date of birth</string>
     <string name="edit_profile_birthdate_placeholder">12/05/1994</string>
 
-    <string name="edit_profile_address_label">Address</string>
+    <string name="edit_profile_address_label">Home address</string>
     <string name="edit_profile_address_placeholder">5295 Gaylord Walks Apk. 110</string>
 
     <!--    Preview     -->

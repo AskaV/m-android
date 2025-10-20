@@ -101,6 +101,7 @@ object AppText {
         val USERNAME = TextKey(R.string.edit_profile_username_placeholder)
         val CAREER_LABEL = TextKey(R.string.edit_profile_career_label)
         val CAREER = TextKey(R.string.edit_profile_career_placeholder)
+
         val PHONE_LABEL = TextKey(R.string.edit_profile_phone_label)
         val PHONE = TextKey(R.string.edit_profile_phone_placeholder)
         val BIRTHDATE_LABEL = TextKey(R.string.edit_profile_birthdate_label)
