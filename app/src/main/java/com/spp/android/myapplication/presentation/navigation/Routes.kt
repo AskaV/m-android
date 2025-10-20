@@ -7,6 +7,8 @@ sealed class Routes(val route: String) {
     data object SignUpExtended : Routes("signup_extended")
     data object Home : Routes("home")
     data object EditProfile : Routes("profile/edit")
+    data object AddContact : Routes("add_contact")
+
     data object AddContacts : Routes("add_contacts")
 
     data object ContactProfile : Routes("contact/{contactId}") {

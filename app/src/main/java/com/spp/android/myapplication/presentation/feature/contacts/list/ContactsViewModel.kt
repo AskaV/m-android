@@ -37,7 +37,7 @@ class ContactsViewModel @Inject constructor(private val repository: ContactsRepo
             is Load -> load()
             is BackClicked -> sendEffect(Effect.NavigateBack)
             is SearchClicked -> sendEffect(Effect.OpenSearch)
-            is AddContactsClicked -> sendEffect(Effect.OpenAddContacts)
+            is AddContactsClicked -> sendEffect(Effect.OpenAddContact)
             is ContactClicked -> sendEffect(Effect.OpenContactProfile(event.contactClicked.id))
             is DeleteClicked -> delete(event.deleteClicked)
             is ErrorShown -> _state.update { it.copy(errorKey = null) }

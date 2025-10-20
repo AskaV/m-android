@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginScreen
 import com.spp.android.myapplication.presentation.feature.auth.signup.base.SignUpScreen
 import com.spp.android.myapplication.presentation.feature.auth.signup.extended.SignUpExtendedScreen
+import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactScreen
 import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsScreen
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsScreen
 import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileScreen
@@ -113,8 +114,8 @@ fun AppNavGraph() {
                     onBack = { tabsController.goTo(HomeTab.Profile) },
                     onOpenSearch = {
                         Toast.makeText(context, "Search clicked", Toast.LENGTH_SHORT).show()
-                }, onOpenAddContacts = {
-                    navController.navigate(Routes.AddContacts.route) {
+                }, onOpenAddContact = {
+                    navController.navigate(Routes.AddContact.route) {
                         launchSingleTop = true
                     }
                 }, onOpenContactProfile = { id ->
@@ -154,6 +155,12 @@ fun AppNavGraph() {
                 onOpenProfile = { id ->
                     navController.navigate(Routes.AddContactProfile.create(id))
                 })
+        }
+
+        composable(Routes.AddContact.route) {
+            AddContactScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
 
         composable(

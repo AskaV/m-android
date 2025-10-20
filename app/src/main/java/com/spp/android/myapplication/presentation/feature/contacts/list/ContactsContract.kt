@@ -33,7 +33,7 @@ object ContactsContract {
     sealed interface Effect {
         data object NavigateBack : Effect
         data object OpenSearch : Effect
-        data object OpenAddContacts : Effect
+        data object OpenAddContact : Effect
         data class OpenContactProfile(val contactId: Int) : Effect
         data class ShowMessage(val messageKey: TextKey) : Effect
     }

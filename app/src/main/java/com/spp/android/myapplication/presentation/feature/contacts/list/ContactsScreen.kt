@@ -5,32 +5,36 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 
 @Composable
 fun ContactsScreen(
     onBack: () -> Unit = {},
     onOpenSearch: () -> Unit = {},
-    onOpenAddContacts: () -> Unit = {},
+    onOpenAddContact: () -> Unit = {},
     onOpenContactProfile: (Int) -> Unit = {},
     vm: ContactsViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val snackbar = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         vm.effect.collect { eff ->
             when (eff) {
                 ContactsContract.Effect.NavigateBack -> onBack()
                 ContactsContract.Effect.OpenSearch -> onOpenSearch()
-                ContactsContract.Effect.OpenAddContacts -> onOpenAddContacts()
+                ContactsContract.Effect.OpenAddContact -> onOpenAddContact()
                 is ContactsContract.Effect.OpenContactProfile -> onOpenContactProfile(eff.contactId)
                 is ContactsContract.Effect.ShowMessage -> {
-                    snackbar.showSnackbar(eff.messageKey.text(context))
-                }
+                    scope.launch {
+                        snackbar.showSnackbar(eff.messageKey.text(context))
+                    }                }
             }
         }
     }
