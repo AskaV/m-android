@@ -8,6 +8,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.spp.android.myapplication.presentation.feature.profile.edit.ProfileResult
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect.NavigateToAuth
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect.NavigateToContacts
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect.NavigateToEditProfile
@@ -17,6 +19,9 @@ import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileCo
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.ViewContactsClicked
 import com.spp.android.myapplication.presentation.texts.AppText
 
+object Keys {
+    const val PROFILE_RESULT = "profile_result"
+}
 @Composable
 fun MyProfileScreen(
     externalEmail: String? = null,
@@ -24,6 +29,7 @@ fun MyProfileScreen(
     onNavigateContacts: () -> Unit = {},
     onNavigateEdit: () -> Unit,
     onNavigateAuth: () -> Unit,
+    navController: NavController,
     viewModel: MyProfileViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -49,6 +55,26 @@ fun MyProfileScreen(
         if (!externalEmail.isNullOrBlank()) {
             viewModel.onExternalEmail(externalEmail)
         }
+    }
+    val navBackStackEntry = navController.currentBackStackEntry
+
+    LaunchedEffect(navBackStackEntry) {
+        navBackStackEntry?.savedStateHandle
+            ?.getStateFlow<ProfileResult?>(Keys.PROFILE_RESULT, null)
+            ?.collect { result ->
+                if (result != null) {
+                    viewModel.onEvent(
+                        MyProfileContract.Event.ProfileSaved(
+                            username  = result.username,
+                            career    = result.career,
+                            phone     = result.phone,
+                            address   = result.address,
+                            birthdate = result.birthdate
+                        )
+                    )
+                    navBackStackEntry.savedStateHandle[Keys.PROFILE_RESULT] = null
+                }
+            }
     }
 
     val careerLabel = AppText.EditProfile.CAREER_LABEL.text()

@@ -19,11 +19,12 @@ import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfi
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.PhoneChanged
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.SaveClicked
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.UsernameChanged
+import java.io.Serializable
 
 @Composable
 fun EditProfileScreen(
     onBack: () -> Unit = {},
-    onDone: () -> Unit = {},
+    onDone: (ProfileResult) -> Unit = {},
     onOpenAvatarPicker: () -> Unit = {},
     vm: EditProfileViewModel = hiltViewModel()
 ) {
@@ -35,7 +36,16 @@ fun EditProfileScreen(
         vm.effect.collect { effect ->
             when (effect) {
                 is NavigateBack -> onBack()
-                is Saved -> onDone()
+                is Saved -> onDone(
+                    ProfileResult(
+                        username = state.username,
+                        career = state.career,
+                        phone = state.phone,
+                        address = state.address,
+                        birthdate = state.birthdate
+                    )
+                )
+
                 is ShowMessage -> {
                     snackBar.showSnackbar(effect.messageKey.text(context))
                 }
@@ -59,3 +69,11 @@ fun EditProfileScreen(
             vm.onEvent(SaveClicked)
         })
 }
+
+data class ProfileResult(
+    val username: String,
+    val career: String,
+    val phone: String,
+    val address: String,
+    val birthdate: String
+) : Serializable

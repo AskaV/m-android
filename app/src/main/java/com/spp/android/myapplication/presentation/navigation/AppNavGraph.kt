@@ -78,10 +78,6 @@ fun AppNavGraph() {
         }
 
         composable(Routes.Home.route) {
-
-            navController.currentBackStackEntry?.savedStateHandle?.set(
-                NavKeys.PROFILE_UPDATED, true
-            )
             val tabsController = remember { HomeTabsController() }
 
             val emailFromAuth =
@@ -95,7 +91,9 @@ fun AppNavGraph() {
                     externalName = nameFromAuth,
                     onNavigateContacts = { tabsController.goTo(HomeTab.Contacts) },
                     onNavigateEdit = { navController.navigate(Routes.EditProfile.route) },
-                    onNavigateAuth = { navController.navigate(Routes.Login.route) { popUpTo(0) } })
+                    onNavigateAuth = { navController.navigate(Routes.Login.route) { popUpTo(0) } },
+                    navController = navController
+                )
             }, contacts = {
                 ContactsScreen(
                     onBack = { tabsController.goTo(HomeTab.Profile) },
@@ -108,7 +106,8 @@ fun AppNavGraph() {
         composable(Routes.EditProfile.route) {
             EditProfileScreen(
                 onBack = { navController.popBackStack() },
-                onDone = { navController.previousBackStackEntry?.savedStateHandle?.set(NavKeys.PROFILE_UPDATED, true)
+                onDone = { result ->
+                    navController.previousBackStackEntry?.savedStateHandle?.set("profile_result", result)
                 navController.popBackStack()
             })
         }
