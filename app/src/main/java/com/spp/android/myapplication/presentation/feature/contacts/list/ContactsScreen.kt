@@ -75,7 +75,7 @@ fun ContactsScreen(
     Scaffold(
         snackbarHost = { undo.Host() }) { paddingValues ->
         ContactsScreenContent(
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier,
             items = state.items,
             onBack = {
                 if (state.isSelectionMode) {

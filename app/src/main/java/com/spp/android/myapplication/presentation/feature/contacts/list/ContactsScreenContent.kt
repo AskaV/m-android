@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -17,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
@@ -42,6 +44,7 @@ fun ContactsScreenContent(
     showRecycleBin: Boolean = false,
     onContactLongClick: (ContactUi) -> Unit = {},
     selectedIds: Set<Int> = emptySet(),
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     isSelectionMode: Boolean = showRecycleBin
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
@@ -53,7 +56,7 @@ fun ContactsScreenContent(
         derivedStateOf { listState.firstVisibleItemIndex > 0 }
     }
     Box(
-        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface).padding(contentPadding)
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
