@@ -1,6 +1,7 @@
 [versions]
 appcompat = "1.7.1"
-composeBom = "2025.10.00"
+coilCompose = "2.7.0"
+composeBom = "2025.10.01"
 material = "1.13.0"
 activityCompose = "1.11.0"
 lifecycleRuntimeKtx = "2.9.4"
@@ -10,7 +11,7 @@ navigationCompose = "2.9.5"
 datastorePreferences = "1.1.7"
 hilt-version = "2.57.2"
 agp = "8.13.0"
-kotlin = "2.2.20"
+kotlin = "2.2.21"
 navigation = "2.9.5"
 
 [libraries]
@@ -22,6 +23,7 @@ androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }

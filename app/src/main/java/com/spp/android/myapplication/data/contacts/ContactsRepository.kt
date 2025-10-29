@@ -16,22 +16,21 @@ class ContactsRepository @Inject constructor(
 
     private val localContacts = MutableStateFlow<List<ContactUi>>(emptyList())
     private val contactDetails = mutableMapOf<Int, ContactDetails>()
-
+    private val avatarProvider = AvatarProvider()
     fun observeContacts(): Flow<List<ContactUi>> = localContacts.asStateFlow()
 
     fun current(): List<ContactUi> = localContacts.value
     fun getContactDetails(id: Int): ContactDetails? = contactDetails[id]
 
     suspend fun addContact(details: ContactDetails) {
-        contactDetails[details.id] = details
-        val ui = details.toUi()
+        val resolvedAvatar = avatarProvider.forId(details.id, details.avatarUrl)
+        val fixedDetails = details.copy(avatarUrl = resolvedAvatar)
+        contactDetails[details.id] = fixedDetails
+
+        val ui = fixedDetails.toUi()
         localContacts.value = (localContacts.value + ui)
             .distinctBy { it.id }
             .sortedBy { it.name.lowercase() }
-    }
-
-    suspend fun addContacts(list: List<ContactDetails>) {
-        list.forEach { addContact(it) }
     }
 
     suspend fun removeContact(id: Int) {
@@ -55,12 +54,10 @@ class ContactsRepository @Inject constructor(
     private fun normalizeContact(contact: ContactUi): ContactUi {
         val name = contact.name.ifBlank { "Без имени" }
         val subtitle = contact.subtitle.ifBlank { "—" }
-        return contact.copy(
-            name = name,
-            subtitle = subtitle,
-            avatarUrl = contact.avatarUrl ?: null
-        )
+        val avatar = avatarProvider.forId(contact.id, contact.avatarUrl)
+        return contact.copy(name = name, subtitle = subtitle, avatarUrl = avatar)
     }
+
     private fun readSystemContacts(): List<ContactUi> {
         val resolver = context.contentResolver
         val cursor = resolver.query(
@@ -93,7 +90,7 @@ class ContactsRepository @Inject constructor(
                     id = id,
                     name = name,
                     subtitle = "",
-                    avatarUrl = null,
+                    avatarUrl = avatarProvider.forId(id, null),
                     transitionName = "contact_$id",
                     phone = phone
                 )
@@ -103,14 +100,13 @@ class ContactsRepository @Inject constructor(
     }
 
     private fun ContactDetails.toUi(): ContactUi {
-        val career = career.ifBlank { "—" }
         return ContactUi(
             id = id,
-            name = name,
-            subtitle = career,
-            avatarUrl = null,
+            name = name.ifBlank { "Без имени" },
+            subtitle = career.ifBlank { "—" },
+            avatarUrl = avatarUrl,
             transitionName = "contact_$id",
-            phone = phone
+            phone = phone.ifBlank { "" }
         )
     }
 }

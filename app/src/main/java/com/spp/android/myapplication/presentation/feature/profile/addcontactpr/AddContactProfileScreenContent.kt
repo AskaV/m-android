@@ -68,7 +68,8 @@ fun AddContactProfileScreenContent(
                 ProfileHeader(
                     name = state.name,
                     linePrimary = state.linePrimary,
-                    lineSecondary = state.lineSecondary
+                    lineSecondary = state.lineSecondary,
+                    avatarUrl = state.avatarUrl
                 )
             }
         }

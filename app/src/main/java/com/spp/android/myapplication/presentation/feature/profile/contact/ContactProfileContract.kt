@@ -13,7 +13,9 @@ object ContactProfileContract {
         val lineSecondary: String = "",
         val hasSocial: Boolean = true,
         val isLoading: Boolean = false,
-        val errorKey: TextKey? = null
+        val errorKey: TextKey? = null,
+        val avatarUrl: String? = null
+
     )
 
     sealed interface Event {

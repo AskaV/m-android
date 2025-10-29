@@ -24,10 +24,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import coil.transform.CircleCropTransformation
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
@@ -81,8 +85,14 @@ fun ContactCardOutlined(
                 )
             }
 
-            Image(
-                painter = painterResource(R.drawable.baseline_account_circle_avatar),
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(contact.avatarUrl)
+                    .crossfade(true)
+                    .transformations(CircleCropTransformation())
+                    .error(R.drawable.baseline_account_circle_avatar)
+                    .placeholder(R.drawable.baseline_account_circle_avatar)
+                    .build(),
                 contentDescription = null,
                 modifier = Modifier.size(56.dp).clip(CircleShape),
                 contentScale = ContentScale.Crop

@@ -13,7 +13,8 @@ object MyProfileContract {
         val lineSecondary: String = "",
         val isCompleted: Boolean = false,
         val isLoading: Boolean = false,
-        val errorKey: TextKey? = null
+        val errorKey: TextKey? = null,
+        val avatarUrl: String? = null
     )
 
     sealed interface Event {

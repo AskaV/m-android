@@ -7,5 +7,6 @@ data class ContactDetails(
     val phone: String = "",
     val email: String = "",
     val address: String = "",
+    val avatarUrl: String = "",
     val dateOfBirth: String = "",
 )

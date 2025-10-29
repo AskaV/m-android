@@ -11,7 +11,9 @@ object AddContactProfileContract {
         val lineSecondary: String = "",
         val isInMyContacts: Boolean = false,
         val isLoading: Boolean = false,
-        val error: String = ""
+        val error: String = "",
+        val avatarUrl: String? = null
+
     )
 
     sealed interface Event {

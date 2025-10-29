@@ -74,7 +74,8 @@ fun ProfileScreen(
                 ProfileHeader(
                     name = state.name,
                     linePrimary = state.linePrimary,
-                    lineSecondary = state.lineSecondary
+                    lineSecondary = state.lineSecondary,
+                    avatarUrl = state.avatarUrl
                 )
 
                 Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_large)))

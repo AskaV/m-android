@@ -53,6 +53,7 @@ class ContactProfileViewModel @Inject constructor(
                     name = details.name,
                     linePrimary = details.career.ifBlank { "—" },
                     lineSecondary = details.address.ifBlank { "—" },
+                    avatarUrl = details.avatarUrl,
                     hasSocial = details.phone.isNotBlank() || details.email.isNotBlank()
                 )
             }
@@ -67,6 +68,7 @@ class ContactProfileViewModel @Inject constructor(
                     name = ui.name,
                     linePrimary = "—",
                     lineSecondary = "—",
+                    avatarUrl = ui.avatarUrl,
                     hasSocial = false
                 )
             }
