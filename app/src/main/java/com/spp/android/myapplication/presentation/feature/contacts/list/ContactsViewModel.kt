@@ -2,8 +2,8 @@ package com.spp.android.myapplication.presentation.feature.contacts.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spp.android.myapplication.data.contacts.ContactsRepository
-import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
+import com.spp.android.myapplication.domain.model.Contact
+import com.spp.android.myapplication.domain.repository.ContactsRepository
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.AddContactsClicked
@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
-    private val repository: ContactsRepository
+    private val contactsRepository: ContactsRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ContactsContract.State())
@@ -40,7 +40,7 @@ class ContactsViewModel @Inject constructor(
     private val _effect = Channel<Effect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
-    private var lastDeleted: List<ContactUi> = emptyList()
+    private var lastDeleted: List<Contact> = emptyList()
 
     init {
         onEvent(Load)
@@ -109,7 +109,7 @@ class ContactsViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true, errorKey = null) }
 
         runCatching {
-            repository.loadContacts().ifEmpty { demoUsers() }
+            contactsRepository.loadContacts().ifEmpty { demoUsers() }
         }.onSuccess { list ->
             _state.update { it.copy(items = list, isLoading = false) }
         }.onFailure {
@@ -118,7 +118,7 @@ class ContactsViewModel @Inject constructor(
         }
     }
 
-    private fun delete(item: ContactUi) = viewModelScope.launch {
+    private fun delete(item: Contact) = viewModelScope.launch {
         lastDeleted = listOf(item)
 
         _state.update { it.copy(items = it.items.filterNot { c -> c.id == item.id }) }

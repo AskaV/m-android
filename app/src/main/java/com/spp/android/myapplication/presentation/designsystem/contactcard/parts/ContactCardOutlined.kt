@@ -29,30 +29,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
+import com.spp.android.myapplication.domain.model.Contact
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.feature.components.SelectionCheck
 
-data class ContactUi(
-    val id: Int,
-    val name: String,
-    val subtitle: String,
-    val avatarUrl: String? = "",
-    val transitionName: String? = ""
-)
-
 @Composable
 fun ContactCardOutlined(
     modifier: Modifier = Modifier,
-    contact: ContactUi,
-    onClick: (ContactUi) -> Unit = {},
-    onLongClick: (ContactUi) -> Unit = {},
+    contact: Contact,
+    onClick: (Contact) -> Unit = {},
+    onLongClick: (Contact) -> Unit = {},
     showSelectionControl: Boolean = false,
     trailing: (@Composable RowScope.() -> Unit)? = null,
     showDeleteIcon: Boolean = false,
     selected: Boolean = false,
-    onDeleteClick: (ContactUi) -> Unit = {}
+    onDeleteClick: (Contact) -> Unit = {}
 ) {
     val corner = dimensionResource(id = R.dimen.button_corner_radius)
     val borderW = dimensionResource(id = R.dimen.button_border_width)

@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
+import com.spp.android.myapplication.domain.model.Contact
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.designsystem.theme.MyApplicationTheme
@@ -37,14 +37,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AddContactsScreenContent(
-    items: List<ContactUi>,
+    items: List<Contact>,
     selectedIds: Set<Int> = emptySet(),
     onBack: () -> Unit = {},
     onSearchClick: () -> Unit = {},
     onMassAddClick: () -> Unit = {},
-    onAddClick: (ContactUi) -> Unit = {},
+    onAddClick: (Contact) -> Unit = {},
     reserveAddRowSpace: Boolean = true,
-    onRowClick: (ContactUi) -> Unit = {},
+    onRowClick: (Contact) -> Unit = {},
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)

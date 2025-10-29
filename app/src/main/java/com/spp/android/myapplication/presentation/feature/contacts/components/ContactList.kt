@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactCardOutlined
-import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
+import com.spp.android.myapplication.domain.model.Contact
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.designsystem.theme.MyApplicationTheme
@@ -25,18 +25,18 @@ import com.spp.android.myapplication.presentation.designsystem.theme.MyApplicati
 data class ContactListBehavior(
     val selectionEnabled: Boolean = false,
     val showDeleteIcon: Boolean = false,
-    val trailingForRow: (@Composable RowScope.(ContactUi) -> Unit)? = null
+    val trailingForRow: (@Composable RowScope.(Contact) -> Unit)? = null
 )
 
 @Composable
 fun ContactList(
     modifier: Modifier = Modifier,
-    items: List<ContactUi>,
+    items: List<Contact>,
     selectedIds: Set<Int> = emptySet(),
     behavior: ContactListBehavior,
-    onItemClick: (ContactUi) -> Unit = {},
-    onItemLongClick: (ContactUi) -> Unit = {},
-    onDeleteClick: (ContactUi) -> Unit = {},
+    onItemClick: (Contact) -> Unit = {},
+    onItemLongClick: (Contact) -> Unit = {},
+    onDeleteClick: (Contact) -> Unit = {},
     state: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues = PaddingValues()
 ) {

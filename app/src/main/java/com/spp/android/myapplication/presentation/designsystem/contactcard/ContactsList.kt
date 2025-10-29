@@ -13,16 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactCardOutlined
-import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
+import com.spp.android.myapplication.domain.model.Contact
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 
 @Composable
 fun ContactsList(
     modifier: Modifier = Modifier,
-    items: List<ContactUi> = emptyList(),
-    onItemClick: (ContactUi) -> Unit = {},
-    onDeleteClick: (ContactUi) -> Unit = {},
+    items: List<Contact> = emptyList(),
+    onItemClick: (Contact) -> Unit = {},
+    onDeleteClick: (Contact) -> Unit = {},
     contentPadding: PaddingValues = PaddingValues(dimensionResource(id = R.dimen.spacer_medium))
 ) {
     LazyColumn(
