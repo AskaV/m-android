@@ -37,7 +37,7 @@ import com.spp.android.myapplication.presentation.feature.components.SelectionCh
 data class ContactUi(
     val id: Int,
     val name: String,
-    val subtitle: String,
+    val subtitle: String = "",
     val avatarUrl: String? = "",
     val transitionName: String? = ""
 )

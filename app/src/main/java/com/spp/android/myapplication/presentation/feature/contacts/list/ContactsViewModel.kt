@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.presentation.feature.contacts.list
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.data.contacts.ContactsRepository
@@ -18,6 +19,7 @@ import com.spp.android.myapplication.presentation.feature.contacts.list.Contacts
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.Load
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.SearchClicked
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.UndoDelete
+import com.spp.android.myapplication.presentation.feature.contacts.util.PhoneContactsReader
 import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -43,6 +45,12 @@ class ContactsViewModel @Inject constructor(
     private var lastDeleted: List<ContactUi> = emptyList()
 
     init {
+
+        viewModelScope.launch {
+            repository.observeContacts().collect { list ->
+                _state.update { it.copy(items = list) }
+            }
+        }
         onEvent(Load)
     }
 
@@ -107,13 +115,14 @@ class ContactsViewModel @Inject constructor(
 
     private fun load() = viewModelScope.launch {
         _state.update { it.copy(isLoading = true, errorKey = null) }
-
         runCatching {
-            repository.loadContacts().ifEmpty { demoUsers() }
+            repository.importFromSystem()
         }.onSuccess { list ->
             _state.update { it.copy(items = list, isLoading = false) }
         }.onFailure {
-            _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+            _state.update {
+                it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR)
+            }
             sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
         }
     }
