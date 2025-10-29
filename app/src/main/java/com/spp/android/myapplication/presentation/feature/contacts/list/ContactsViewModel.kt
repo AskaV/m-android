@@ -1,11 +1,9 @@
 package com.spp.android.myapplication.presentation.feature.contacts.list
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.data.contacts.ContactsRepository
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
-import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.AddContactsClicked
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.BackClicked
@@ -19,7 +17,6 @@ import com.spp.android.myapplication.presentation.feature.contacts.list.Contacts
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.Load
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.SearchClicked
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.UndoDelete
-import com.spp.android.myapplication.presentation.feature.contacts.util.PhoneContactsReader
 import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
