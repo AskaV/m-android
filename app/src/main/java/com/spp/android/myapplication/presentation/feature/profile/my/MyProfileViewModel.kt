@@ -2,6 +2,8 @@ package com.spp.android.myapplication.presentation.feature.profile.my
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.data.profile.UserProfile
+import com.spp.android.myapplication.data.profile.UserProfileRepository
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.EditProfileClicked
@@ -26,7 +28,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyProfileViewModel @Inject constructor() : ViewModel() {
+class MyProfileViewModel @Inject constructor(
+    private val repo: UserProfileRepository
+) : ViewModel() {
 
     private val _state = MutableStateFlow(MyProfileContract.State())
     val state: StateFlow<MyProfileContract.State> = _state.asStateFlow()
@@ -47,6 +51,18 @@ class MyProfileViewModel @Inject constructor() : ViewModel() {
             ErrorShown -> _state.update { it.copy(errorKey = null) }
 
             is ProfileSaved -> {
+                viewModelScope.launch {
+                    repo.save(
+                        UserProfile(
+                            name = event.username,
+                            career = event.career,
+                            phone = event.phone,
+                            email = _state.value.email.orEmpty(),
+                            address = event.address,
+                            avatarUrl = _state.value.avatarUrl
+                        )
+                    )
+                }
                 _state.update {
                     it.copy(
                         name = event.username,
@@ -69,23 +85,20 @@ class MyProfileViewModel @Inject constructor() : ViewModel() {
 
     private fun loadProfile() = viewModelScope.launch {
         _state.update { it.copy(isLoading = true, errorKey = null) }
-
         runCatching {
-            StubProfile(
-                name = "",
-                linePrimary = "",
-                lineSecondary = "",
-                isCompleted = false
-            )
-        }.onSuccess { p ->
-            _state.update {
-                it.copy(
-                    name = p.name,
-                    linePrimary = p.linePrimary,
-                    lineSecondary = p.lineSecondary,
-                    isCompleted = p.isCompleted,
-                    isLoading = false
-                )
+            repo.ensureAvatar()
+            repo.profile.collect { p ->
+                _state.update {
+                    it.copy(
+                        name = p.name,
+                        email = p.email,
+                        linePrimary = p.career,
+                        lineSecondary = p.address,
+                        avatarUrl = p.avatarUrl,
+                        isCompleted = p.name.isNotBlank() || p.career.isNotBlank() || p.address.isNotBlank(),
+                        isLoading = false
+                    )
+                }
             }
         }.onFailure {
             _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
