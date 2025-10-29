@@ -39,7 +39,8 @@ data class ContactUi(
     val name: String,
     val subtitle: String = "",
     val avatarUrl: String? = "",
-    val transitionName: String? = ""
+    val transitionName: String? = "",
+    val phone: String = ""
 )
 
 @Composable

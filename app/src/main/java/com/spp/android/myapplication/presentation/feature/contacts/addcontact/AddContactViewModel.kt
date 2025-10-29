@@ -2,6 +2,7 @@ package com.spp.android.myapplication.presentation.feature.contacts.addcontact
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.data.contacts.ContactDetails
 import com.spp.android.myapplication.data.contacts.ContactsRepository
 import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Effect
@@ -45,29 +46,19 @@ class AddContactViewModel @Inject constructor(
     }
 
     private fun save() {
-        val usernameError = if (_state.value.username.isBlank()) "Required" else ""
-        val emailError = if (_state.value.email.isBlank()) "" else ""
-        val phoneError = ""
-
-        _state.update { it.copy(usernameError = usernameError, emailError = emailError, phoneError = phoneError) }
-        if (usernameError.isNotEmpty() || emailError.isNotEmpty() || phoneError.isNotEmpty()) return
-
         val nextId = (repository.current().maxOfOrNull { it.id } ?: 0) + 1
-        val name = _state.value.username
-        val subtitle = if (_state.value.phone.isNotBlank()) _state.value.phone else _state.value.career
-
-        val contact = ContactUi(
+        val details = ContactDetails(
             id = nextId,
-            name = name,
-            subtitle = subtitle,
-            avatarUrl = null,
-            transitionName = "contact_$nextId"
+            name = _state.value.username,
+            career = _state.value.career,
+            phone = _state.value.phone,
+            email = _state.value.email,
+            address = _state.value.address,
+            dateOfBirth = _state.value.dateOfBirth
         )
 
         viewModelScope.launch {
-            _state.update { it.copy(isSaving = true) }
-            repository.addContact(contact)
-            _state.update { it.copy(isSaving = false) }
+            repository.addContact(details)
             sendEffect(Effect.ShowMessage("Contact saved"))
             sendEffect(Effect.NavigateBack)
         }

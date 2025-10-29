@@ -15,27 +15,28 @@ class ContactsRepository @Inject constructor(
 ) {
 
     private val localContacts = MutableStateFlow<List<ContactUi>>(emptyList())
+    private val contactDetails = mutableMapOf<Int, ContactDetails>()
 
     fun observeContacts(): Flow<List<ContactUi>> = localContacts.asStateFlow()
 
     fun current(): List<ContactUi> = localContacts.value
+    fun getContactDetails(id: Int): ContactDetails? = contactDetails[id]
 
-    suspend fun addContact(contact: ContactUi) {
-        val newList = localContacts.value.toMutableList()
-        if (newList.none { it.id == contact.id }) {
-            newList += contact
-            localContacts.value = newList.sortedBy { it.name.lowercase() }
-        }
+    suspend fun addContact(details: ContactDetails) {
+        contactDetails[details.id] = details
+        val ui = details.toUi()
+        localContacts.value = (localContacts.value + ui)
+            .distinctBy { it.id }
+            .sortedBy { it.name.lowercase() }
     }
 
-    suspend fun addContacts(contacts: List<ContactUi>) {
-        val existing = localContacts.value.associateBy { it.id }.toMutableMap()
-        for (c in contacts) existing.putIfAbsent(c.id, c)
-        localContacts.value = existing.values.sortedBy { it.name.lowercase() }
+    suspend fun addContacts(list: List<ContactDetails>) {
+        list.forEach { addContact(it) }
     }
 
     suspend fun removeContact(id: Int) {
         localContacts.value = localContacts.value.filterNot { it.id == id }
+        contactDetails.remove(id)
     }
 
     fun clear() {
@@ -44,14 +45,22 @@ class ContactsRepository @Inject constructor(
 
 
     suspend fun importFromSystem(): List<ContactUi> {
-        val systemContacts = readSystemContacts()
+        val systemContacts = readSystemContacts().map { normalizeContact(it) }
         val merged = (localContacts.value + systemContacts)
             .distinctBy { it.id }
             .sortedBy { it.name.lowercase() }
         localContacts.value = merged
         return merged
     }
-
+    private fun normalizeContact(contact: ContactUi): ContactUi {
+        val name = contact.name.ifBlank { "Без имени" }
+        val subtitle = contact.subtitle.ifBlank { "—" }
+        return contact.copy(
+            name = name,
+            subtitle = subtitle,
+            avatarUrl = contact.avatarUrl ?: null
+        )
+    }
     private fun readSystemContacts(): List<ContactUi> {
         val resolver = context.contentResolver
         val cursor = resolver.query(
@@ -72,22 +81,36 @@ class ContactsRepository @Inject constructor(
         cursor?.use { c ->
             val idIdx = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)
             val nameIdx = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-            val numIdx = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+            val numIdx  = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
 
             while (c.moveToNext()) {
                 val id = c.getInt(idIdx)
                 if (!seenIds.add(id)) continue
                 val name = c.getString(nameIdx) ?: "Unnamed"
-                val phone = c.getString(numIdx) ?: ""
+                val phone = c.getString(numIdx).orEmpty()
+
                 result += ContactUi(
                     id = id,
                     name = name,
-                    subtitle = phone,
+                    subtitle = "",
                     avatarUrl = null,
-                    transitionName = "contact_$id"
+                    transitionName = "contact_$id",
+                    phone = phone
                 )
             }
         }
         return result
+    }
+
+    private fun ContactDetails.toUi(): ContactUi {
+        val career = career.ifBlank { "—" }
+        return ContactUi(
+            id = id,
+            name = name,
+            subtitle = career,
+            avatarUrl = null,
+            transitionName = "contact_$id",
+            phone = phone
+        )
     }
 }
