@@ -2,7 +2,7 @@ package com.spp.android.myapplication.presentation.feature.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spp.android.myapplication.data.UserPreferences
+import com.spp.android.myapplication.domain.storage.LocalStorage
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.Clear
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.EmailBlur
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.EmailChanged
@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userPrefs: UserPreferences
+    private val localStorage: LocalStorage,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginContract.State())
@@ -42,9 +42,9 @@ class LoginViewModel @Inject constructor(
     }
     init {
         viewModelScope.launch {
-            userPrefs.rememberMe.collect { remember ->
+            localStorage.rememberMe.collect { remember ->
                 if (remember) {
-                    val savedEmail = userPrefs.savedEmail.first()
+                    val savedEmail = localStorage.savedEmail.first()
                     updateState { copy(email = savedEmail, rememberMe = true) }
                 }
             }
@@ -96,9 +96,9 @@ class LoginViewModel @Inject constructor(
 
         runCatching {
             if (_state.value.rememberMe) {
-                userPrefs.saveUser(_state.value.email.trim(), true)
+                localStorage.saveUser(_state.value.email.trim(), true)
             } else {
-                userPrefs.saveUser("", false)
+                localStorage.saveUser("", false)
             }
         }.onSuccess {
             _effect.send(LoginContract.Effect.NavigateToHome)
