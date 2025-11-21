@@ -2,9 +2,6 @@ package com.spp.android.myapplication.presentation.feature.contacts.addcontact
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spp.android.myapplication.data.contacts.ContactDetails
-import com.spp.android.myapplication.data.contacts.ContactsRepository
-import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Effect
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Event
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.State
@@ -18,9 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddContactViewModel @Inject constructor(
-    private val repository: ContactsRepository
-) : ViewModel() {
+class AddContactViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow(State())
     val state = _state.asStateFlow()
@@ -46,24 +41,29 @@ class AddContactViewModel @Inject constructor(
     }
 
     private fun save() {
-        val nextId = (repository.current().maxOfOrNull { it.id } ?: 0) + 1
-        val details = ContactDetails(
-            id = nextId,
-            name = _state.value.username,
-            career = _state.value.career,
-            phone = _state.value.phone,
-            email = _state.value.email,
-            address = _state.value.address,
-            dateOfBirth = _state.value.dateOfBirth
-        )
+        var hasError = false
 
-        viewModelScope.launch {
-            repository.addContact(details)
-            sendEffect(Effect.ShowMessage("Contact saved"))
-            sendEffect(Effect.NavigateBack)
+        val usernameError = if (_state.value.username.isBlank()) "Required" else ""
+        val emailError = if (_state.value.email.isBlank()) "Required" else ""
+        val phoneError = ""
+
+        if (usernameError.isNotEmpty() || emailError.isNotEmpty() || phoneError.isNotEmpty()) {
+            hasError = true
         }
-    }
 
+        _state.update {
+            it.copy(
+                usernameError = usernameError, emailError = emailError, phoneError = phoneError
+            )
+        }
+
+        if (hasError) return
+
+        _state.update { it.copy(isSaving = true) }
+        _state.update { it.copy(isSaving = false) }
+        sendEffect(Effect.ShowMessage("Contact saved"))
+        sendEffect(Effect.NavigateBack)
+    }
 
     private fun sendEffect(e: Effect) = viewModelScope.launch { _effect.send(e) }
 }

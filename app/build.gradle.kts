@@ -59,5 +59,4 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.material.icons.core)
-    implementation(libs.coil.compose)
 }

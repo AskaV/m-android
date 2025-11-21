@@ -74,8 +74,7 @@ fun ContactProfileScreen(
                 ProfileHeader(
                     name = state.name,
                     linePrimary = state.linePrimary,
-                    lineSecondary = state.lineSecondary,
-                    avatarUrl = state.avatarUrl
+                    lineSecondary = state.lineSecondary
                 )
 
                 Spacer(Modifier.height(spaceL))

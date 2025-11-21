@@ -1,12 +1,12 @@
 package com.spp.android.myapplication.presentation.feature.contacts.addcontacts
 
 import androidx.compose.runtime.Immutable
-import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
+import com.spp.android.myapplication.domain.model.Contact
 
 object AddContactsContract {
     @Immutable
     data class State(
-        val items: List<ContactUi> = emptyList(),
+        val items: List<Contact> = emptyList(),
         val selected: Set<Int> = emptySet(),
         val isLoading: Boolean = false,
         val error: String = ""
@@ -16,9 +16,9 @@ object AddContactsContract {
         data object Load : Event
         data object BackClicked : Event
         data object SearchClicked : Event
-        data class ToggleSelect(val toggleSelect: ContactUi) : Event
+        data class ToggleSelect(val toggleSelect: Contact) : Event
         data object MassAddClicked : Event
-        data class AddClicked(val dddClicked: ContactUi) : Event
+        data class AddClicked(val dddClicked: Contact) : Event
         data object ErrorShown : Event
     }
 

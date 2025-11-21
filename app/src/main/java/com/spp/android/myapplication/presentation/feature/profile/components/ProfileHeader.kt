@@ -13,14 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import coil.transform.CircleCropTransformation
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
@@ -32,23 +26,15 @@ fun ProfileHeader(
     name: String = "",
     linePrimary: String = "",
     lineSecondary: String = "",
-    avatarUrl: String? = null,
     avatarRes: Int = R.drawable.baseline_account_circle_avatar
 ) {
     Column(
         modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(avatarUrl)
-                .crossfade(true)
-                .transformations(CircleCropTransformation())
-                .error(avatarRes)
-                .placeholder(avatarRes)
-                .build(),
+        Image(
+            painter = painterResource(id = avatarRes),
             contentDescription = null,
-            modifier = Modifier.size(128.dp).clip(CircleShape),
-            contentScale = ContentScale.Crop
+            modifier = Modifier.size(dimensionResource(id = R.dimen.avatar_size)).clip(CircleShape)
         )
 
         Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_large)))

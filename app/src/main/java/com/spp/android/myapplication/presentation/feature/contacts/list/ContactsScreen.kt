@@ -1,10 +1,7 @@
 package com.spp.android.myapplication.presentation.feature.contacts.list
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spp.android.myapplication.presentation.feature.components.rememberUndoSnackbarController
@@ -47,21 +43,7 @@ fun ContactsScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val state by vm.state.collectAsStateWithLifecycle()
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        if (granted) vm.onEvent(ContactsContract.Event.Load)
-    }
-    LaunchedEffect(Unit) {
-        if (ContextCompat.checkSelfPermission(
-                context, Manifest.permission.READ_CONTACTS
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            vm.onEvent(ContactsContract.Event.Load)
-        } else {
-            launcher.launch(Manifest.permission.READ_CONTACTS)
-        }
-    }
+
     LaunchedEffect(Unit) {
         vm.effect.collect { effect ->
             when (effect) {

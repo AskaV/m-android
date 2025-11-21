@@ -2,7 +2,7 @@ package com.spp.android.myapplication.presentation.feature.auth.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spp.android.myapplication.data.UserPreferences
+import com.spp.android.myapplication.domain.storage.LocalStorage
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.BackFromExtended
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.NavigateToExtended
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.NavigateToHome
@@ -41,7 +41,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val userPrefs: UserPreferences
+    private val localStorage: LocalStorage,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SignUpContract.State())
@@ -62,11 +62,12 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun sendEffect(e: SignUpContract.Effect) = viewModelScope.launch { _effect.send(e) }
+
     init {
         viewModelScope.launch {
-            userPrefs.rememberMe.collect { remember ->
+            localStorage.rememberMe.collect { remember ->
                 if (remember) {
-                    val savedEmail = userPrefs.savedEmail.first()
+                    val savedEmail = localStorage.savedEmail.first()
                     updateState {
                         copy(
                             rememberMe = true,
@@ -77,6 +78,7 @@ class SignUpViewModel @Inject constructor(
             }
         }
     }
+
     private enum class Field { EMAIL, PASSWORD, USERNAME, PHONE }
 
     private fun SignUpContract.State.clear(field: Field) = when (field) {
@@ -164,9 +166,9 @@ class SignUpViewModel @Inject constructor(
 
         runCatching {
             if (_state.value.rememberMe) {
-                userPrefs.saveUser(_state.value.fields.email.trim(), true)
+                localStorage.saveUser(_state.value.fields.email.trim(), true)
             } else {
-                userPrefs.saveUser("", false)
+                localStorage.saveUser("", false)
             }
         }.onSuccess {
             sendEffect(NavigateToExtended)

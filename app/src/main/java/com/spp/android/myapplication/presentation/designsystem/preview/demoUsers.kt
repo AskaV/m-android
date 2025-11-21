@@ -1,14 +1,14 @@
 package com.spp.android.myapplication.presentation.designsystem.preview
 
-import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
+import com.spp.android.myapplication.domain.model.Contact
 
-fun demoUsers(): List<ContactUi> = listOf(
-    ContactUi(1,  ContactPreviewText.Preview.NAME1, ContactPreviewText.Preview.SUBTITLE1),
-    ContactUi(2,  ContactPreviewText.Preview.NAME2, ContactPreviewText.Preview.SUBTITLE2),
-    ContactUi(3,  ContactPreviewText.Preview.NAME3, ContactPreviewText.Preview.SUBTITLE3),
-    ContactUi(4,  ContactPreviewText.Preview.NAME4, ContactPreviewText.Preview.SUBTITLE4),
-    ContactUi(5,  ContactPreviewText.Preview.NAME5, ContactPreviewText.Preview.SUBTITLE5),
-    ContactUi(6,  ContactPreviewText.Preview.NAME6, ContactPreviewText.Preview.SUBTITLE6),
+fun demoUsers(): List<Contact> = listOf(
+    Contact(1,  ContactPreviewText.Preview.NAME1, ContactPreviewText.Preview.SUBTITLE1),
+    Contact(2,  ContactPreviewText.Preview.NAME2, ContactPreviewText.Preview.SUBTITLE2),
+    Contact(3,  ContactPreviewText.Preview.NAME3, ContactPreviewText.Preview.SUBTITLE3),
+    Contact(4,  ContactPreviewText.Preview.NAME4, ContactPreviewText.Preview.SUBTITLE4),
+    Contact(5,  ContactPreviewText.Preview.NAME5, ContactPreviewText.Preview.SUBTITLE5),
+    Contact(6,  ContactPreviewText.Preview.NAME6, ContactPreviewText.Preview.SUBTITLE6),
 
     )
 

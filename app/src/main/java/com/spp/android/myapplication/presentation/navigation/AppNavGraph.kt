@@ -116,7 +116,7 @@ fun AppNavGraph() {
             route = Routes.ContactProfile.route,
             arguments = listOf(
                 navArgument(Routes.ContactProfile.ARG) {
-                    type = NavType.IntType
+                    type = NavType.StringType
                 })
         ) { backStackEntry ->
             val contactId =
@@ -145,7 +145,7 @@ fun AppNavGraph() {
             route = Routes.AddContactProfile.route,
             arguments = listOf(
                 navArgument(Routes.AddContactProfile.ARG) {
-                    type = NavType.IntType
+                    type = NavType.StringType
                 })
         ) { backStack ->
             val id = backStack.arguments?.getInt(Routes.AddContactProfile.ARG) ?: return@composable

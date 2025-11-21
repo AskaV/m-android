@@ -2,8 +2,6 @@ package com.spp.android.myapplication.presentation.feature.profile.contact
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spp.android.myapplication.data.contacts.ContactsRepository
-import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
 import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Effect
 import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Event
 import com.spp.android.myapplication.presentation.texts.AppText
@@ -18,9 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ContactProfileViewModel @Inject constructor(
-    private val repository: ContactsRepository
-) : ViewModel() {
+class ContactProfileViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow(ContactProfileContract.State())
     val state: StateFlow<ContactProfileContract.State> = _state.asStateFlow()
@@ -44,36 +40,26 @@ class ContactProfileViewModel @Inject constructor(
     private fun load(id: Int) = viewModelScope.launch {
         _state.update { it.copy(isLoading = true, contactId = id, errorKey = null) }
 
-        val details = repository.getContactDetails(id)
-
-        if (details != null) {
+        runCatching {
+            StubContact(
+                id = id,
+                name = "Lucile Alvarado",
+                linePrimary = "Product Designer",
+                lineSecondary = "New York, USA",
+                hasSocial = true
+            )
+        }.onSuccess { c ->
             _state.update {
                 it.copy(
-                    isLoading = false,
-                    name = details.name,
-                    linePrimary = details.career.ifBlank { "—" },
-                    lineSecondary = details.address.ifBlank { "—" },
-                    avatarUrl = details.avatarUrl,
-                    hasSocial = details.phone.isNotBlank() || details.email.isNotBlank()
+                    name = c.name,
+                    linePrimary = c.linePrimary,
+                    lineSecondary = c.lineSecondary,
+                    hasSocial = c.hasSocial,
                 )
             }
-            return@launch
-        }
-
-        val ui = repository.current().firstOrNull { it.id == id }
-        if (ui != null) {
-            _state.update {
-                it.copy(
-                    isLoading = false,
-                    name = ui.name,
-                    linePrimary = "—",
-                    lineSecondary = "—",
-                    avatarUrl = ui.avatarUrl,
-                    hasSocial = false
-                )
-            }
-        } else {
-            _state.update { it.copy(isLoading = false) }
+        }.onFailure {
+            _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+            sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
         }
     }
 

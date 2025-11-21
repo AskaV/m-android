@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactUi
+import com.spp.android.myapplication.domain.model.Contact
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
@@ -34,15 +34,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun ContactsScreenContent(
     modifier: Modifier = Modifier,
-    items: List<ContactUi>,
+    items: List<Contact>,
     onBack: () -> Unit = {},
     onSearchClick: () -> Unit = {},
     onAddContactsClick: () -> Unit = {},
-    onContactClick: (ContactUi) -> Unit = {},
-    onDeleteClick: (ContactUi) -> Unit = {},
+    onContactClick: (Contact) -> Unit = {},
+    onDeleteClick: (Contact) -> Unit = {},
     onBulkDeleteClick: () -> Unit = {},
     showRecycleBin: Boolean = false,
-    onContactLongClick: (ContactUi) -> Unit = {},
+    onContactLongClick: (Contact) -> Unit = {},
     selectedIds: Set<Int> = emptySet(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
     isSelectionMode: Boolean = showRecycleBin
