@@ -22,6 +22,7 @@ import com.spp.android.myapplication.presentation.texts.AppText
 object Keys {
     const val PROFILE_RESULT = "profile_result"
 }
+
 @Composable
 fun MyProfileScreen(
     externalEmail: String? = null,
@@ -30,7 +31,7 @@ fun MyProfileScreen(
     onNavigateEdit: () -> Unit,
     onNavigateAuth: () -> Unit,
     navController: NavController,
-    viewModel: MyProfileViewModel = hiltViewModel()
+    viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
     val snackBar = remember { SnackbarHostState() }
@@ -59,18 +60,19 @@ fun MyProfileScreen(
     val navBackStackEntry = navController.currentBackStackEntry
 
     LaunchedEffect(navBackStackEntry) {
-        navBackStackEntry?.savedStateHandle
+        navBackStackEntry
+            ?.savedStateHandle
             ?.getStateFlow<ProfileResult?>(Keys.PROFILE_RESULT, null)
             ?.collect { result ->
                 if (result != null) {
                     viewModel.onEvent(
                         MyProfileContract.Event.ProfileSaved(
-                            username  = result.username,
-                            career    = result.career,
-                            phone     = result.phone,
-                            address   = result.address,
-                            birthdate = result.birthdate
-                        )
+                            username = result.username,
+                            career = result.career,
+                            phone = result.phone,
+                            address = result.address,
+                            birthdate = result.birthdate,
+                        ),
                     )
                     navBackStackEntry.savedStateHandle[Keys.PROFILE_RESULT] = null
                 }
@@ -80,23 +82,27 @@ fun MyProfileScreen(
     val careerLabel = AppText.EditProfile.CAREER_LABEL.text()
     val addressLabel = AppText.EditProfile.ADDRESS_LABEL.text()
 
-    val displayPrimary = if (state.isCompleted && state.linePrimary.isNotBlank()) {
-        state.linePrimary
-    } else {
-        careerLabel
-    }
-    val displaySecondary = if (state.isCompleted && state.lineSecondary.isNotBlank()) {
-        state.lineSecondary
-    } else {
-        addressLabel
-    }
+    val displayPrimary =
+        if (state.isCompleted && state.linePrimary.isNotBlank()) {
+            state.linePrimary
+        } else {
+            careerLabel
+        }
+    val displaySecondary =
+        if (state.isCompleted && state.lineSecondary.isNotBlank()) {
+            state.lineSecondary
+        } else {
+            addressLabel
+        }
 
     ProfileScreen(
-        state = state.copy(
-            linePrimary = displayPrimary,
-            lineSecondary = displaySecondary
-        ),
+        state =
+            state.copy(
+                linePrimary = displayPrimary,
+                lineSecondary = displaySecondary,
+            ),
         onEditProfile = { viewModel.onEvent(EditProfileClicked) },
         onViewContacts = { viewModel.onEvent(ViewContactsClicked) },
-        onLogout = { viewModel.onEvent(LogoutClicked) })
+        onLogout = { viewModel.onEvent(LogoutClicked) },
+    )
 }

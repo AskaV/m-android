@@ -21,17 +21,18 @@ fun AuthFooter(
     modifier: Modifier = Modifier,
     question: String = "",
     actionText: String = "",
-    onActionClick: () -> Unit = {}
+    onActionClick: () -> Unit = {},
 ) {
     Row(
-        modifier = modifier, verticalAlignment = Alignment.CenterVertically
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(Modifier.weight(1f))
         Text(
             text = question,
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
         Spacer(Modifier.width(dimensionResource(R.dimen.spacer_additional)))
 
@@ -40,7 +41,7 @@ fun AuthFooter(
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.clickable { onActionClick() },
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
         Spacer(Modifier.weight(1f))
     }

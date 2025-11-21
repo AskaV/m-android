@@ -25,45 +25,50 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GalleryPickerViewModel @Inject constructor() : ViewModel() {
+class GalleryPickerViewModel
+    @Inject
+    constructor() : ViewModel() {
+        private val _state = MutableStateFlow(GalleryPickerContract.State())
+        val state: StateFlow<GalleryPickerContract.State> = _state.asStateFlow()
 
-    private val _state = MutableStateFlow(GalleryPickerContract.State())
-    val state: StateFlow<GalleryPickerContract.State> = _state.asStateFlow()
+        private val _effect = Channel<GalleryPickerContract.Effect>(Channel.BUFFERED)
+        val effect: Flow<GalleryPickerContract.Effect> = _effect.receiveAsFlow()
 
-    private val _effect = Channel<GalleryPickerContract.Effect>(Channel.BUFFERED)
-    val effect: Flow<GalleryPickerContract.Effect> = _effect.receiveAsFlow()
+        fun onEvent(event: GalleryPickerContract.Event) {
+            when (event) {
+                Show -> _state.update { it.copy(isVisible = true) }
 
-    fun onEvent(event: GalleryPickerContract.Event) {
-        when (event) {
-            Show -> _state.update { it.copy(isVisible = true) }
+                Dismiss -> _state.update { it.copy(isVisible = false) }
 
-            Dismiss -> _state.update { it.copy(isVisible = false) }
+                OpenGallery ->
+                    viewModelScope.launch {
+                        _effect.send(
+                            LaunchGalleryPicker,
+                        )
+                    }
 
-            OpenGallery -> viewModelScope.launch {
-                _effect.send(
-                    LaunchGalleryPicker
-                )
+                OpenCamera ->
+                    viewModelScope.launch {
+                        _effect.send(
+                            LaunchCamera,
+                        )
+                    }
+
+                DeleteCurrent ->
+                    viewModelScope.launch {
+                        _state.update { it.copy(isVisible = false) }
+                        _effect.send(ReturnResult(null))
+                    }
+
+                is PhotoPicked ->
+                    viewModelScope.launch {
+                        _state.update { it.copy(isVisible = false) }
+                        _effect.send(ReturnResult(event.photoPickedUri))
+                    }
+
+                ErrorShown -> _state.update { it.copy() }
+
+                Clear -> _state.update { GalleryPickerContract.State() }
             }
-
-            OpenCamera -> viewModelScope.launch {
-                _effect.send(
-                    LaunchCamera
-                )
-            }
-
-            DeleteCurrent -> viewModelScope.launch {
-                _state.update { it.copy(isVisible = false) }
-                _effect.send(ReturnResult(null))
-            }
-
-            is PhotoPicked -> viewModelScope.launch {
-                _state.update { it.copy(isVisible = false) }
-                _effect.send(ReturnResult(event.photoPickedUri))
-            }
-
-            ErrorShown -> _state.update { it.copy() }
-
-            Clear -> _state.update { GalleryPickerContract.State() }
         }
     }
-}

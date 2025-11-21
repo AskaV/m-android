@@ -20,7 +20,7 @@ fun ActionFab(
     @DrawableRes iconRes: Int,
     contentDescription: String = "",
     onClick: () -> Unit = {},
-    alignment: Alignment = Alignment.BottomEnd
+    alignment: Alignment = Alignment.BottomEnd,
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
 
@@ -29,11 +29,11 @@ fun ActionFab(
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
         shape = CircleShape,
-        modifier = modifier.padding(pad)
+        modifier = modifier.padding(pad),
     ) {
         Icon(
             painter = painterResource(id = iconRes),
-            contentDescription = contentDescription
+            contentDescription = contentDescription,
         )
     }
 }
@@ -43,7 +43,7 @@ fun ActionFab(
 private fun ActionFabPreview() {
     MaterialTheme {
         ActionFab(
-            iconRes = R.drawable.recycle_bin
+            iconRes = R.drawable.recycle_bin,
         )
     }
 }

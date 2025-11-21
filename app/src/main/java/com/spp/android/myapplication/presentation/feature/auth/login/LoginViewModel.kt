@@ -27,85 +27,90 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-    private val localStorage: LocalStorage,
-) : ViewModel() {
+class LoginViewModel
+    @Inject
+    constructor(
+        private val localStorage: LocalStorage,
+    ) : ViewModel() {
+        private val _state = MutableStateFlow(LoginContract.State())
+        val state: StateFlow<LoginContract.State> = _state.asStateFlow()
 
-    private val _state = MutableStateFlow(LoginContract.State())
-    val state: StateFlow<LoginContract.State> = _state.asStateFlow()
+        private val _effect = Channel<LoginContract.Effect>(Channel.BUFFERED)
+        val effect: Flow<LoginContract.Effect> = _effect.receiveAsFlow()
 
-    private val _effect = Channel<LoginContract.Effect>(Channel.BUFFERED)
-    val effect: Flow<LoginContract.Effect> = _effect.receiveAsFlow()
+        private inline fun updateState(block: LoginContract.State.() -> LoginContract.State) {
+            _state.update { it.block() }
+        }
 
-    private inline fun updateState(block: LoginContract.State.() -> LoginContract.State) {
-        _state.update { it.block() }
-    }
-    init {
-        viewModelScope.launch {
-            localStorage.rememberMe.collect { remember ->
-                if (remember) {
-                    val savedEmail = localStorage.savedEmail.first()
-                    updateState { copy(email = savedEmail, rememberMe = true) }
+        init {
+            viewModelScope.launch {
+                localStorage.rememberMe.collect { remember ->
+                    if (remember) {
+                        val savedEmail = localStorage.savedEmail.first()
+                        updateState { copy(email = savedEmail, rememberMe = true) }
+                    }
                 }
             }
         }
-    }
 
-    private enum class Field { EMAIL, PASSWORD }
+        private enum class Field { EMAIL, PASSWORD }
 
-    private fun LoginContract.State.clear(field: Field): LoginContract.State = when (field) {
-        Field.EMAIL -> copy(email = email, emailErrorKey = null, error = null)
-        Field.PASSWORD -> copy(password = password, passwordErrorKey = null, error = null)
-    }
-
-    private fun LoginContract.State.validate(field: Field): LoginContract.State = when (field) {
-        Field.EMAIL -> copy(emailErrorKey = Validate.email(email))
-        Field.PASSWORD -> copy(passwordErrorKey = Validate.password(password))
-    }
-
-    fun onEvent(event: LoginContract.Event) {
-        when (event) {
-            is EmailChanged -> updateState { copy(email = event.email).clear(Field.EMAIL) }
-            is PasswordChanged -> updateState { copy(password = event.password).clear(Field.PASSWORD) }
-            is RememberChanged -> updateState { copy(rememberMe = event.isChecked) }
-
-            is EmailBlur -> updateState { validate(Field.EMAIL) }
-            is PasswordBlur -> updateState { validate(Field.PASSWORD) }
-
-            is ErrorShown -> updateState { copy(error = null) }
-            is Clear -> updateState { LoginContract.State() }
-
-            is ForgotPasswordClicked -> {
-                viewModelScope.launch { _effect.send(LoginContract.Effect.ForgotPassword) }
+        private fun LoginContract.State.clear(field: Field): LoginContract.State =
+            when (field) {
+                Field.EMAIL -> copy(email = email, emailErrorKey = null, error = null)
+                Field.PASSWORD -> copy(password = password, passwordErrorKey = null, error = null)
             }
 
-            is Submit -> submit()
-        }
-    }
-
-    private fun submit() = viewModelScope.launch {
-        val emailErrKey = Validate.email(_state.value.email.trim())
-        val passErrKey = Validate.password(_state.value.password)
-
-        if (emailErrKey != null || passErrKey != null) {
-            updateState { copy(emailErrorKey = emailErrKey, passwordErrorKey = passErrKey) }
-            return@launch
-        }
-
-        updateState { copy(isLoading = true, errorKey = null) }
-
-        runCatching {
-            if (_state.value.rememberMe) {
-                localStorage.saveUser(_state.value.email.trim(), true)
-            } else {
-                localStorage.saveUser("", false)
+        private fun LoginContract.State.validate(field: Field): LoginContract.State =
+            when (field) {
+                Field.EMAIL -> copy(emailErrorKey = Validate.email(email))
+                Field.PASSWORD -> copy(passwordErrorKey = Validate.password(password))
             }
-        }.onSuccess {
-            _effect.send(LoginContract.Effect.NavigateToHome)
-        }.onFailure {
-            updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+
+        fun onEvent(event: LoginContract.Event) {
+            when (event) {
+                is EmailChanged -> updateState { copy(email = event.email).clear(Field.EMAIL) }
+                is PasswordChanged -> updateState { copy(password = event.password).clear(Field.PASSWORD) }
+                is RememberChanged -> updateState { copy(rememberMe = event.isChecked) }
+
+                is EmailBlur -> updateState { validate(Field.EMAIL) }
+                is PasswordBlur -> updateState { validate(Field.PASSWORD) }
+
+                is ErrorShown -> updateState { copy(error = null) }
+                is Clear -> updateState { LoginContract.State() }
+
+                is ForgotPasswordClicked -> {
+                    viewModelScope.launch { _effect.send(LoginContract.Effect.ForgotPassword) }
+                }
+
+                is Submit -> submit()
+            }
         }
 
-        updateState { copy(isLoading = false) }
+        private fun submit() =
+            viewModelScope.launch {
+                val emailErrKey = Validate.email(_state.value.email.trim())
+                val passErrKey = Validate.password(_state.value.password)
+
+                if (emailErrKey != null || passErrKey != null) {
+                    updateState { copy(emailErrorKey = emailErrKey, passwordErrorKey = passErrKey) }
+                    return@launch
+                }
+
+                updateState { copy(isLoading = true, errorKey = null) }
+
+                runCatching {
+                    if (_state.value.rememberMe) {
+                        localStorage.saveUser(_state.value.email.trim(), true)
+                    } else {
+                        localStorage.saveUser("", false)
+                    }
+                }.onSuccess {
+                    _effect.send(LoginContract.Effect.NavigateToHome)
+                }.onFailure {
+                    updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+                }
+
+                updateState { copy(isLoading = false) }
+            }
     }
-}

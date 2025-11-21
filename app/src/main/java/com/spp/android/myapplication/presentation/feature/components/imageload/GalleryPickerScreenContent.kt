@@ -32,15 +32,18 @@ fun GalleryPickerScreenContent(
             onOpenGallery = onOpenGallery,
             onDeleteCurrent = onDeleteCurrent,
             onCancel = onDismiss,
-            modifier = Modifier.fillMaxWidth()
-                .clip(RoundedCornerShape(dimensionResource(R.dimen.spacer_medium)))
-                .background(MaterialTheme.colorScheme.surface)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.spacer_medium)))
+                    .background(MaterialTheme.colorScheme.surface),
         )
     }
 }
 
 @PreviewPhones
 @Composable
-fun GalleryPickerAddPhotoPreview() = PreviewColumn {
-    GalleryPickerSheet(showCamera = true)
-}
+fun GalleryPickerAddPhotoPreview() =
+    PreviewColumn {
+        GalleryPickerSheet(showCamera = true)
+    }

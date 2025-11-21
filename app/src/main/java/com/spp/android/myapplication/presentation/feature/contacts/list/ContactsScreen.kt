@@ -1,7 +1,6 @@
 package com.spp.android.myapplication.presentation.feature.contacts.list
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,7 +35,7 @@ fun ContactsScreen(
     onOpenSearch: () -> Unit = {},
     onOpenAddContact: () -> Unit = {},
     onOpenContactProfile: (Int) -> Unit = {},
-    vm: ContactsViewModel = hiltViewModel()
+    vm: ContactsViewModel = hiltViewModel(),
 ) {
     val undo = rememberUndoSnackbarController(totalSeconds = 5)
     val snackbar = undo.hostState
@@ -62,18 +61,19 @@ fun ContactsScreen(
                             message = msg,
                             undoLabel = "Undo",
                             onUndo = { vm.onEvent(UndoDelete) },
-                            onTimeout = { Toast.makeText(context, msg, Toast.LENGTH_SHORT).show() })
+                            onTimeout = { Toast.makeText(context, msg, Toast.LENGTH_SHORT).show() },
+                        )
                     } else {
                         scope.launch { snackbar.showSnackbar(msg) }
                     }
                 }
-
             }
         }
     }
 
     Scaffold(
-        snackbarHost = { undo.Host() }) { paddingValues ->
+        snackbarHost = { undo.Host() },
+    ) { paddingValues ->
         ContactsScreenContent(
             modifier = Modifier,
             items = state.items,
@@ -87,12 +87,15 @@ fun ContactsScreen(
             onSearchClick = { vm.onEvent(SearchClicked) },
             onAddContactsClick = { vm.onEvent(AddContactsClicked) },
             onContactClick = {
-                if (state.isSelectionMode) vm.onEvent(
-                    ContactSelectionToggled(
-                        it
+                if (state.isSelectionMode) {
+                    vm.onEvent(
+                        ContactSelectionToggled(
+                            it,
+                        ),
                     )
-                )
-                else vm.onEvent(ContactClicked(it))
+                } else {
+                    vm.onEvent(ContactClicked(it))
+                }
             },
             onDeleteClick = { vm.onEvent(DeleteClicked(it)) },
             onContactLongClick = { vm.onEvent(ContactLongClicked(it)) },

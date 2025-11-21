@@ -21,63 +21,69 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddContactsViewModel @Inject constructor() : ViewModel() {
+class AddContactsViewModel
+    @Inject
+    constructor() : ViewModel() {
+        private val _state = MutableStateFlow(AddContactsContract.State())
+        val state = _state.asStateFlow()
 
-    private val _state = MutableStateFlow(AddContactsContract.State())
-    val state = _state.asStateFlow()
+        private val _effect = Channel<Effect>(Channel.BUFFERED)
+        val effect = _effect.receiveAsFlow()
 
-    private val _effect = Channel<Effect>(Channel.BUFFERED)
-    val effect = _effect.receiveAsFlow()
+        init {
+            onEvent(Load)
+        }
 
-    init {
-        onEvent(Load)
-    }
+        fun onEvent(event: AddContactsContract.Event) {
+            when (event) {
+                is Load -> load()
+                is BackClicked -> sendEffect(Effect.NavigateBack)
 
-    fun onEvent(event: AddContactsContract.Event) {
-        when (event) {
-            is Load -> load()
-            is BackClicked -> sendEffect(Effect.NavigateBack)
+                is SearchClicked -> sendEffect(Effect.OpenSearch)
 
-            is SearchClicked -> sendEffect(Effect.OpenSearch)
-
-            is ToggleSelect -> {
-                _state.update { st ->
-                    val ns = st.selected.toMutableSet().apply {
-                        if (contains(event.toggleSelect.id)) remove(event.toggleSelect.id) else add(
-                            event.toggleSelect.id
-                        )
+                is ToggleSelect -> {
+                    _state.update { st ->
+                        val ns =
+                            st.selected.toMutableSet().apply {
+                                if (contains(event.toggleSelect.id)) {
+                                    remove(event.toggleSelect.id)
+                                } else {
+                                    add(
+                                        event.toggleSelect.id,
+                                    )
+                                }
+                            }
+                        st.copy(selected = ns)
                     }
-                    st.copy(selected = ns)
                 }
-            }
 
-            is MassAddClicked -> {
-                val count = _state.value.selected.size
-                if (count > 0) {
-                    sendEffect(
-                        Effect.ShowMessage(
-                            "Added $count contact(s)"
+                is MassAddClicked -> {
+                    val count = _state.value.selected.size
+                    if (count > 0) {
+                        sendEffect(
+                            Effect.ShowMessage(
+                                "Added $count contact(s)",
+                            ),
                         )
-                    )
-                    _state.update { it.copy(selected = emptySet()) }
+                        _state.update { it.copy(selected = emptySet()) }
+                    }
                 }
-            }
 
-            is ErrorShown -> _state.update { it.copy() }
+                is ErrorShown -> _state.update { it.copy() }
 
-            is AddClicked -> {
-                _state.update { st ->
-                    st.copy(items = st.items.filterNot { it.id == event.dddClicked.id })
+                is AddClicked -> {
+                    _state.update { st ->
+                        st.copy(items = st.items.filterNot { it.id == event.dddClicked.id })
+                    }
+                    sendEffect(Effect.ShowMessage("Added ${event.dddClicked.name}"))
                 }
-                sendEffect(Effect.ShowMessage("Added ${event.dddClicked.name}"))
             }
         }
-    }
 
-    private fun load() {
-        _state.update { it.copy(isLoading = true) }
-        _state.update { it.copy(items = demoUsers(), isLoading = false) }
-    }
+        private fun load() {
+            _state.update { it.copy(isLoading = true) }
+            _state.update { it.copy(items = demoUsers(), isLoading = false) }
+        }
 
-    private fun sendEffect(e: Effect) = viewModelScope.launch { _effect.send(e) }
-}
+        private fun sendEffect(e: Effect) = viewModelScope.launch { _effect.send(e) }
+    }

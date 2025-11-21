@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AddContactProfileViewModel : ViewModel() {
-
     private val _state = MutableStateFlow(AddContactProfileContract.State())
     val state = _state.asStateFlow()
 
@@ -28,11 +27,12 @@ class AddContactProfileViewModel : ViewModel() {
             is Load -> load(event.id)
             is BackClicked -> sendEffect(Effect.NavigateBack)
 
-            is MessageClicked -> sendEffect(
-                Effect.ShowMessage(
-                    "Open chat"
+            is MessageClicked ->
+                sendEffect(
+                    Effect.ShowMessage(
+                        "Open chat",
+                    ),
                 )
-            )
 
             is AddToContactsClicked -> {
                 sendEffect(Effect.ShowMessage("Added to contacts"))
@@ -52,7 +52,7 @@ class AddContactProfileViewModel : ViewModel() {
                 linePrimary = "Make-up artist",
                 lineSecondary = "775 Westminster Ave APT D5\nBrooklyn, NY, 11230",
                 isInMyContacts = false,
-                isLoading = false
+                isLoading = false,
             )
         }
     }

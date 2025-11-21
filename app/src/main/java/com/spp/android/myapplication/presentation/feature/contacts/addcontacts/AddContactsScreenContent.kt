@@ -55,7 +55,7 @@ fun AddContactsScreenContent(
     val showScrollTop by remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
 
     Box(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface),
     ) {
         Column(Modifier.fillMaxSize()) {
             ContactsHeader(
@@ -64,56 +64,64 @@ fun AddContactsScreenContent(
                 onSearchClick = onSearchClick,
                 showAddHeaderRow = false,
                 onAddContactsClick = {},
-                reserveAddRowSpace = reserveAddRowSpace
+                reserveAddRowSpace = reserveAddRowSpace,
             )
 
             ContactList(
                 items = items,
                 selectedIds = emptySet(),
-                behavior = ContactListBehavior(
-                    selectionEnabled = false,
-                    showDeleteIcon = false,
-                    trailingForRow = { contact ->
-                        TextButton(onClick = { onAddClick(contact) }) {
-                            Text("Add", color = MaterialTheme.colorScheme.primary)
-                            Spacer(Modifier.width(dimensionResource(id = R.dimen.spacer_small)))
-                            Icon(
-                                painter = painterResource(R.drawable.ic_add),
-                                contentDescription = "Add",
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }),
+                behavior =
+                    ContactListBehavior(
+                        selectionEnabled = false,
+                        showDeleteIcon = false,
+                        trailingForRow = { contact ->
+                            TextButton(onClick = { onAddClick(contact) }) {
+                                Text("Add", color = MaterialTheme.colorScheme.primary)
+                                Spacer(Modifier.width(dimensionResource(id = R.dimen.spacer_small)))
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_add),
+                                    contentDescription = "Add",
+                                    tint = MaterialTheme.colorScheme.primary,
+                                )
+                            }
+                        },
+                    ),
                 onItemClick = onRowClick,
                 onItemLongClick = {},
                 onDeleteClick = {},
                 state = listState,
-                contentPadding = PaddingValues(
-                    start = pad, end = pad, top = spaceM, bottom = spaceL
-                ),
-                modifier = Modifier.fillMaxSize()
+                contentPadding =
+                    PaddingValues(
+                        start = pad,
+                        end = pad,
+                        top = spaceM,
+                        bottom = spaceL,
+                    ),
+                modifier = Modifier.fillMaxSize(),
             )
         }
 
         AnimatedVisibility(
-            visible = selectedIds.isNotEmpty(), modifier = Modifier.align(Alignment.BottomEnd)
+            visible = selectedIds.isNotEmpty(),
+            modifier = Modifier.align(Alignment.BottomEnd),
         ) {
             ActionFab(
                 iconRes = R.drawable.ic_add,
                 contentDescription = "Add selected",
                 onClick = onMassAddClick,
-                alignment = Alignment.BottomEnd
+                alignment = Alignment.BottomEnd,
             )
         }
 
         AnimatedVisibility(
-            visible = showScrollTop, modifier = Modifier.align(Alignment.BottomEnd)
+            visible = showScrollTop,
+            modifier = Modifier.align(Alignment.BottomEnd),
         ) {
             ActionFab(
                 iconRes = R.drawable.ic_arrow_up,
                 contentDescription = "Scroll to top",
                 onClick = { scope.launch { listState.animateScrollToItem(0) } },
-                alignment = Alignment.BottomStart
+                alignment = Alignment.BottomStart,
             )
         }
     }
@@ -125,7 +133,7 @@ private fun AddContactsContentPreviewDefault() {
     MyApplicationTheme {
         Surface(color = MaterialTheme.colorScheme.surface) {
             AddContactsScreenContent(
-                items = demoUsers()
+                items = demoUsers(),
             )
         }
     }
@@ -138,7 +146,8 @@ private fun AddContactsContentPreviewSelected() {
     MyApplicationTheme {
         Surface(color = MaterialTheme.colorScheme.surface) {
             AddContactsScreenContent(
-                items = users, selectedIds = setOf(users[1].id, users[3].id)
+                items = users,
+                selectedIds = setOf(users[1].id, users[3].id),
             )
         }
     }

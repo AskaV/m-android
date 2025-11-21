@@ -45,5 +45,6 @@ fun LoginScreen(
         onRememberMeChange = { vm.onEvent(RememberChanged(it)) },
         onLoginClick = { vm.onEvent(Submit) },
         onNavigateToRegister = onNavigateToRegister,
-        onForgotPasswordClick = { vm.onEvent(ForgotPasswordClicked) })
+        onForgotPasswordClick = { vm.onEvent(ForgotPasswordClicked) },
+    )
 }

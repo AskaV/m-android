@@ -26,15 +26,16 @@ fun ProfileHeader(
     name: String = "",
     linePrimary: String = "",
     lineSecondary: String = "",
-    avatarRes: Int = R.drawable.baseline_account_circle_avatar
+    avatarRes: Int = R.drawable.baseline_account_circle_avatar,
 ) {
     Column(
-        modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             painter = painterResource(id = avatarRes),
             contentDescription = null,
-            modifier = Modifier.size(dimensionResource(id = R.dimen.avatar_size)).clip(CircleShape)
+            modifier = Modifier.size(dimensionResource(id = R.dimen.avatar_size)).clip(CircleShape),
         )
 
         Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_large)))
@@ -42,7 +43,7 @@ fun ProfileHeader(
         Text(
             text = name,
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onBackground,
         )
 
         Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_small)))
@@ -50,7 +51,7 @@ fun ProfileHeader(
         Text(
             text = linePrimary,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
 
         Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_medium)))
@@ -58,7 +59,7 @@ fun ProfileHeader(
         Text(
             text = lineSecondary,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
     }
 }
@@ -71,7 +72,7 @@ private fun ProfileHeaderPreview() {
             ProfileHeader(
                 name = AppText.MyProfile.NAME.text(),
                 linePrimary = AppText.MyProfile.CAREER.text(),
-                lineSecondary = AppText.MyProfile.ADDRESS.text()
+                lineSecondary = AppText.MyProfile.ADDRESS.text(),
             )
         }
     }

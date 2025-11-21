@@ -42,16 +42,17 @@ fun LabeledTextField(
     labelTextColor: Color = MaterialTheme.colorScheme.onSurface,
     valueTextColor: Color = MaterialTheme.colorScheme.onBackground,
     trailingIcon: @Composable () -> Unit = {},
-    textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(
-        color = MaterialTheme.colorScheme.onBackground
-    )
+    textStyle: TextStyle =
+        MaterialTheme.typography.bodyLarge.copy(
+            color = MaterialTheme.colorScheme.onBackground,
+        ),
 ) {
     Column(modifier) {
         Text(
             text = label,
             style = MaterialTheme.typography.titleMedium,
             color = labelTextColor,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         AppTextField(
@@ -63,21 +64,23 @@ fun LabeledTextField(
             onImeAction = onImeAction,
             trailingIcon = trailingIcon,
             textStyle = textStyle,
-            valueTextColor = valueTextColor
+            valueTextColor = valueTextColor,
         )
 
         Box(
-            modifier = Modifier.padding(
-                start = dimensionResource(R.dimen.spacer_small),
-                top = dimensionResource(R.dimen.spacer_small)
-            ).heightIn(min = dimensionResource(R.dimen.form_supporting_text_min_height))
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .padding(
+                        start = dimensionResource(R.dimen.spacer_small),
+                        top = dimensionResource(R.dimen.spacer_small),
+                    ).heightIn(min = dimensionResource(R.dimen.form_supporting_text_min_height))
+                    .fillMaxWidth(),
         ) {
             if (error.isNotEmpty()) {
                 Text(
                     text = error,
                     style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.error,
                 )
             }
         }
@@ -90,35 +93,39 @@ fun LabeledTextField(
 
 @PreviewPhones
 @Composable
-fun LabeledTextFieldEmailPreview() = PreviewColumn {
-    var v by remember { mutableStateOf(AppText.Preview.EMAIL) }
-    LabeledTextField(
-        label = AppText.Login.EMAIL_LABEL.text(),
-        value = v,
-        onValueChange = { v = it },
-        kind = FieldKind.Email,
-        placeholder = AppText.Preview.EMAIL,
-        textStyle = MaterialTheme.typography.titleLarge.copy(
-            color = MaterialTheme.colorScheme.onBackground
+fun LabeledTextFieldEmailPreview() =
+    PreviewColumn {
+        var v by remember { mutableStateOf(AppText.Preview.EMAIL) }
+        LabeledTextField(
+            label = AppText.Login.EMAIL_LABEL.text(),
+            value = v,
+            onValueChange = { v = it },
+            kind = FieldKind.Email,
+            placeholder = AppText.Preview.EMAIL,
+            textStyle =
+                MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.onBackground,
+                ),
         )
-    )
-}
+    }
 
 @PreviewPhones
 @Composable
-fun LabeledTextFieldPasswordErrorPreview() = PreviewColumn {
-    var v by remember { mutableStateOf(AppText.Preview.PASSWORD) }
-    LabeledTextField(
-        label = AppText.Login.PASSWORD_LABEL.text(),
-        value = v,
-        onValueChange = { v = it },
-        kind = FieldKind.Password,
-        placeholder = AppText.Preview.DOTS,
-        error = AppText.Login.PASSWORD_ERROR_TEMPLATE.t(AppText.Integers.PASSWORD_MIN_LENGTH),
-        imeAction = ImeAction.Done,
-        spacerAfter = false,
-        textStyle = MaterialTheme.typography.titleLarge.copy(
-            color = MaterialTheme.colorScheme.onBackground
+fun LabeledTextFieldPasswordErrorPreview() =
+    PreviewColumn {
+        var v by remember { mutableStateOf(AppText.Preview.PASSWORD) }
+        LabeledTextField(
+            label = AppText.Login.PASSWORD_LABEL.text(),
+            value = v,
+            onValueChange = { v = it },
+            kind = FieldKind.Password,
+            placeholder = AppText.Preview.DOTS,
+            error = AppText.Login.PASSWORD_ERROR_TEMPLATE.t(AppText.Integers.PASSWORD_MIN_LENGTH),
+            imeAction = ImeAction.Done,
+            spacerAfter = false,
+            textStyle =
+                MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.onBackground,
+                ),
         )
-    )
-}
+    }

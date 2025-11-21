@@ -27,7 +27,7 @@ fun AuthFields(
     onDone: () -> Unit = {},
     state: AuthFieldsState,
     onEmailChange: (String) -> Unit = {},
-    onPasswordChange: (String) -> Unit = {}
+    onPasswordChange: (String) -> Unit = {},
 ) {
     Column(modifier.fillMaxWidth()) {
         LabeledTextField(
@@ -36,7 +36,7 @@ fun AuthFields(
             onValueChange = onEmailChange,
             kind = FieldKind.Email,
             error = state.emailErrorKey?.text().orEmpty(),
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Next,
         )
         LabeledTextField(
             label = AppText.Login.PASSWORD_LABEL.text(),
@@ -46,29 +46,31 @@ fun AuthFields(
             error = state.passwordErrorKey?.text().orEmpty(),
             imeAction = ImeAction.Done,
             onImeAction = onDone,
-            spacerAfter = false
+            spacerAfter = false,
         )
     }
 }
 
 @PreviewPhones
 @Composable
-fun AuthFieldsPreview() = PreviewColumn {
-    AuthFields(
-        state = AuthFieldsState(AppText.Preview.EMAIL, AppText.Preview.DOTS)
-    )
-}
+fun AuthFieldsPreview() =
+    PreviewColumn {
+        AuthFields(
+            state = AuthFieldsState(AppText.Preview.EMAIL, AppText.Preview.DOTS),
+        )
+    }
 
 @PreviewPhones
 @Composable
-fun AuthFieldsPreviewError() = PreviewColumn {
-
-    AuthFields(
-        state = AuthFieldsState(
-            email = AppText.Preview.WRONG_EMAIL,
-            password = AppText.Preview.WRONG_PASSWORD,
-            emailErrorKey = AppText.Login.EMAIL_ERROR,
-            passwordErrorKey = AppText.Error.PASSWORD_ERROR
+fun AuthFieldsPreviewError() =
+    PreviewColumn {
+        AuthFields(
+            state =
+                AuthFieldsState(
+                    email = AppText.Preview.WRONG_EMAIL,
+                    password = AppText.Preview.WRONG_PASSWORD,
+                    emailErrorKey = AppText.Login.EMAIL_ERROR,
+                    passwordErrorKey = AppText.Error.PASSWORD_ERROR,
+                ),
         )
-    )
-}
+    }

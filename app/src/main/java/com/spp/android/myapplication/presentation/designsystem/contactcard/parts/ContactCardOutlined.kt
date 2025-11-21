@@ -45,31 +45,38 @@ fun ContactCardOutlined(
     trailing: (@Composable RowScope.() -> Unit)? = null,
     showDeleteIcon: Boolean = false,
     selected: Boolean = false,
-    onDeleteClick: (Contact) -> Unit = {}
+    onDeleteClick: (Contact) -> Unit = {},
 ) {
     val corner = dimensionResource(id = R.dimen.button_corner_radius)
     val borderW = dimensionResource(id = R.dimen.button_border_width)
     val spaceS = dimensionResource(id = R.dimen.spacer_small)
 
-    val clickableMod = modifier.combinedClickable(
-        onClick = { onClick(contact) },
-        onLongClick = { onLongClick(contact) })
+    val clickableMod =
+        modifier.combinedClickable(
+            onClick = { onClick(contact) },
+            onLongClick = { onLongClick(contact) },
+        )
 
     Surface(
         modifier = clickableMod,
         shape = RoundedCornerShape(corner),
-        color = if (selected) MaterialTheme.colorScheme.surfaceVariant
-        else MaterialTheme.colorScheme.surface,
+        color =
+            if (selected) {
+                MaterialTheme.colorScheme.surfaceVariant
+            } else {
+                MaterialTheme.colorScheme.surface
+            },
         contentColor = MaterialTheme.colorScheme.onSurface,
         border = BorderStroke(borderW, MaterialTheme.colorScheme.onSurface),
     ) {
         Row(
             Modifier.fillMaxWidth().padding(horizontal = spaceS).heightIn(min = 72.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             if (showSelectionControl) {
                 SelectionCheck(
-                    selected = selected, modifier = Modifier.padding(end = spaceS)
+                    selected = selected,
+                    modifier = Modifier.padding(end = spaceS),
                 )
             }
 
@@ -77,27 +84,27 @@ fun ContactCardOutlined(
                 painter = painterResource(R.drawable.baseline_account_circle_avatar),
                 contentDescription = null,
                 modifier = Modifier.size(56.dp).clip(CircleShape),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
 
             Spacer(Modifier.width(spaceS))
 
             Column(
-                Modifier.weight(1f).padding(end = spaceS)
+                Modifier.weight(1f).padding(end = spaceS),
             ) {
                 Text(
                     text = contact.name,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
                 Text(
                     text = contact.subtitle,
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
 
@@ -108,7 +115,7 @@ fun ContactCardOutlined(
                     Icon(
                         painter = painterResource(R.drawable.recycle_bin),
                         contentDescription = "Delete",
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                 }
             }

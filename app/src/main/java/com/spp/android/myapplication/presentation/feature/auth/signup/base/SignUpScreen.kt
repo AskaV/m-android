@@ -27,7 +27,7 @@ fun SignUpScreen(
     onOpenGoogle: () -> Unit,
     onNavigateToLogin: () -> Unit,
     onNavigateToExtended: (String) -> Unit,
-    vm: SignUpViewModel = hiltViewModel()
+    vm: SignUpViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
     val snackBar = SnackbarHostState()
@@ -60,7 +60,7 @@ fun SignUpScreen(
             onRegisterClick = { vm.onEvent(SubmitRegister) },
             onRegisterWithGoogleClick = { vm.onEvent(RegisterWithGoogle) },
             onNavigateToLogin = { onNavigateToLogin() },
-            modifier = Modifier.padding(paddings)
+            modifier = Modifier.padding(paddings),
         )
     }
 }

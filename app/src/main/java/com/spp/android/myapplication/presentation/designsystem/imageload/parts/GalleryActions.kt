@@ -21,18 +21,20 @@ internal fun GalleryActions(
     modifier: Modifier = Modifier,
     onOpenGallery: () -> Unit = {},
     onDeleteCurrent: () -> Unit = {},
-    onCancel: () -> Unit = {}
+    onCancel: () -> Unit = {},
 ) {
     Column(modifier) {
         ActionItem(
             text = AppText.GalleryStrings.OPEN_GALLERY.text(),
             enabled = true,
             onClick = onOpenGallery,
-            colorOverride = MaterialTheme.colorScheme.onBackground
+            colorOverride = MaterialTheme.colorScheme.onBackground,
         )
 
         ActionItem(
-            text = AppText.GalleryStrings.DELETE_PHOTO.text(), enabled = false, dimmed = true
+            text = AppText.GalleryStrings.DELETE_PHOTO.text(),
+            enabled = false,
+            dimmed = true,
         )
 
         val cancelColor = MaterialTheme.colorScheme.onBackground
@@ -41,7 +43,7 @@ internal fun GalleryActions(
             text = AppText.GalleryStrings.CANCEL.text(),
             enabled = true,
             onClick = onCancel,
-            colorOverride = cancelColor
+            colorOverride = cancelColor,
         )
     }
 }
@@ -52,13 +54,14 @@ fun ActionItem(
     enabled: Boolean,
     onClick: () -> Unit = {},
     dimmed: Boolean = false,
-    colorOverride: Color? = null
+    colorOverride: Color? = null,
 ) {
-    val baseColor = when {
-        dimmed && enabled -> MaterialTheme.colorScheme.onSurfaceVariant
-        !enabled -> MaterialTheme.colorScheme.onSurfaceVariant
-        else -> MaterialTheme.colorScheme.onSurface
-    }
+    val baseColor =
+        when {
+            dimmed && enabled -> MaterialTheme.colorScheme.onSurfaceVariant
+            !enabled -> MaterialTheme.colorScheme.onSurfaceVariant
+            else -> MaterialTheme.colorScheme.onSurface
+        }
     val color = colorOverride ?: baseColor
 
     Text(
@@ -66,17 +69,19 @@ fun ActionItem(
         style = MaterialTheme.typography.titleMedium,
         color = color,
         textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth()
-            .heightIn(min = dimensionResource(id = R.dimen.button_height))
-            .padding(vertical = dimensionResource(id = R.dimen.spacer_small))
-            .clickable(enabled = enabled) { onClick() })
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = dimensionResource(id = R.dimen.button_height))
+                .padding(vertical = dimensionResource(id = R.dimen.spacer_small))
+                .clickable(enabled = enabled) { onClick() },
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun GalleryActionsPreview() {
     MaterialTheme {
-        GalleryActions(
-        )
+        GalleryActions()
     }
 }

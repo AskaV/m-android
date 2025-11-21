@@ -35,46 +35,47 @@ fun ContactProfileScreen(
     modifier: Modifier = Modifier,
     state: ContactProfileContract.State,
     onBack: () -> Unit = {},
-    onMessage: () -> Unit = {}
+    onMessage: () -> Unit = {},
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
 
     Column(
-        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface),
     ) {
         Surface(
             color = MaterialTheme.colorScheme.background,
             contentColor = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth().padding(vertical = spaceL),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
-                    Modifier.fillMaxWidth().padding(horizontal = pad).padding(bottom = spaceL / 2)
+                    Modifier.fillMaxWidth().padding(horizontal = pad).padding(bottom = spaceL / 2),
                 ) {
                     IconButton(
-                        onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)
+                        onClick = onBack,
+                        modifier = Modifier.align(Alignment.CenterStart),
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.back)
+                            contentDescription = stringResource(id = R.string.back),
                         )
                     }
                     Text(
                         text = AppText.MyProfile.PROFILE.text(),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier.align(Alignment.Center),
                     )
                 }
 
                 ProfileHeader(
                     name = state.name,
                     linePrimary = state.linePrimary,
-                    lineSecondary = state.lineSecondary
+                    lineSecondary = state.lineSecondary,
                 )
 
                 Spacer(Modifier.height(spaceL))
@@ -83,24 +84,28 @@ fun ContactProfileScreen(
 
         ProfileBottomArea(
             showSocial = state.hasSocial,
-            primaryFilled = FilledBtn(
-                AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage
-            ),
+            primaryFilled =
+                FilledBtn(
+                    AppText.ContactProfile.MESSAGE_TEXT.text(),
+                    onClick = onMessage,
+                ),
             secondaryOutlined = null,
             contentPadding = PaddingValues(horizontal = pad, vertical = pad),
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier.fillMaxHeight(),
         )
     }
 }
 
 @PreviewPhones
 @Composable
-private fun ContactProfilePreview() = PreviewScreenEdgeToEdge {
-    ContactProfileScreen(
-        state = ContactProfileContract.State(
-            name = AppText.MyProfileDetailed.NAME.text(),
-            linePrimary = AppText.MyProfileDetailed.CAREER.text(),
-            lineSecondary = AppText.MyProfileDetailed.ADDRESS.text()
-        ),
-    )
-}
+private fun ContactProfilePreview() =
+    PreviewScreenEdgeToEdge {
+        ContactProfileScreen(
+            state =
+                ContactProfileContract.State(
+                    name = AppText.MyProfileDetailed.NAME.text(),
+                    linePrimary = AppText.MyProfileDetailed.CAREER.text(),
+                    lineSecondary = AppText.MyProfileDetailed.ADDRESS.text(),
+                ),
+        )
+    }

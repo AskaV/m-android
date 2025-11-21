@@ -17,26 +17,20 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 interface ContactsBinds {
+    @Binds
+    @Singleton
+    fun bindContactsRepository(contactsRepository: ContactsRepositoryImpl): ContactsRepository
 
     @Binds
     @Singleton
-    fun bindContactsRepository(
-        contactsRepository: ContactsRepositoryImpl,
-    ): ContactsRepository
-
-    @Binds
-    @Singleton
-    fun bindContactDataSource(
-        contactDataSource: LocalContactDataSource,
-    ): ContactDataSource
+    fun bindContactDataSource(contactDataSource: LocalContactDataSource): ContactDataSource
 }
-
 
 @Module
 @InstallIn(SingletonComponent::class)
 object ContactsProvides {
     @Provides
     fun provideContentResolver(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): ContentResolver = context.contentResolver
 }

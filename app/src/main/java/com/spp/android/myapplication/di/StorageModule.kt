@@ -18,29 +18,24 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object StorageProvides {
+    @Provides
+    @Singleton
+    fun provideUserPreferences(dataStore: DataStore<Preferences>): UserPreferences = UserPreferences(dataStore)
 
     @Provides
     @Singleton
-    fun provideUserPreferences(
-        dataStore: DataStore<Preferences>
-    ): UserPreferences = UserPreferences(dataStore)
-
-    @Provides
-    @Singleton
-    fun provideUserPrefs(@ApplicationContext context: Context): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.create {
+    fun provideUserPrefs(
+        @ApplicationContext context: Context,
+    ): DataStore<Preferences> =
+        PreferenceDataStoreFactory.create {
             context.preferencesDataStoreFile("user_prefs")
         }
-    }
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
 interface StorageBinds {
-
     @Binds
     @Singleton
-    fun bindUserPreferences(
-        userPreferences: UserPreferences
-    ): LocalStorage
+    fun bindUserPreferences(userPreferences: UserPreferences): LocalStorage
 }

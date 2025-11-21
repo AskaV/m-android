@@ -27,63 +27,74 @@ fun OutlinedBorderButton(
     text: String = "",
     style: OutlinedButtonStyle = OutlinedButtonStyle.Secondary,
     buttonHeight: Dp = dimensionResource(R.dimen.button_height),
-    fillMaxWidth: Boolean = true
+    fillMaxWidth: Boolean = true,
 ) {
-    val (borderColor, contentColor, textStyle, transformedText) = when (style) {
-        OutlinedButtonStyle.Primary -> arrayOf(
-            MaterialTheme.colorScheme.primary,
-            MaterialTheme.colorScheme.onPrimary,
-            MaterialTheme.typography.titleMedium,
-            text.uppercase()
-        )
+    val (borderColor, contentColor, textStyle, transformedText) =
+        when (style) {
+            OutlinedButtonStyle.Primary ->
+                arrayOf(
+                    MaterialTheme.colorScheme.primary,
+                    MaterialTheme.colorScheme.onPrimary,
+                    MaterialTheme.typography.titleMedium,
+                    text.uppercase(),
+                )
 
-        OutlinedButtonStyle.Secondary -> arrayOf(
-            MaterialTheme.colorScheme.onSecondary,
-            MaterialTheme.colorScheme.onSecondary,
-            MaterialTheme.typography.titleMedium,
-            text
-        )
+            OutlinedButtonStyle.Secondary ->
+                arrayOf(
+                    MaterialTheme.colorScheme.onSecondary,
+                    MaterialTheme.colorScheme.onSecondary,
+                    MaterialTheme.typography.titleMedium,
+                    text,
+                )
 
-        OutlinedButtonStyle.OnBackground -> arrayOf(
-            MaterialTheme.colorScheme.onBackground,
-            MaterialTheme.colorScheme.onBackground,
-            MaterialTheme.typography.titleMedium,
-            text
-        )
-    }
+            OutlinedButtonStyle.OnBackground ->
+                arrayOf(
+                    MaterialTheme.colorScheme.onBackground,
+                    MaterialTheme.colorScheme.onBackground,
+                    MaterialTheme.typography.titleMedium,
+                    text,
+                )
+        }
     val applied = (if (fillMaxWidth) modifier.fillMaxWidth() else modifier).height(buttonHeight)
 
     OutlinedButton(
         onClick = onClick,
         modifier = applied,
         shape = RoundedCornerShape(dimensionResource(id = R.dimen.button_corner_radius)),
-        border = BorderStroke(
-            dimensionResource(id = R.dimen.button_border_width), borderColor as Color
-        ),
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = Color.Transparent, contentColor = contentColor as Color
-        )
+        border =
+            BorderStroke(
+                dimensionResource(id = R.dimen.button_border_width),
+                borderColor as Color,
+            ),
+        colors =
+            ButtonDefaults.outlinedButtonColors(
+                containerColor = Color.Transparent,
+                contentColor = contentColor as Color,
+            ),
     ) {
         Text(
             text = transformedText as String,
-            style = textStyle as androidx.compose.ui.text.TextStyle
+            style = textStyle as androidx.compose.ui.text.TextStyle,
         )
     }
 }
 
 @PreviewPhones
 @Composable
-fun OutlinedBorderButtonPrimaryPreview() = PreviewColumn {
-    OutlinedBorderButton(
-        text = AppText.Preview.OUTLINED_BTN_TEXT.text(), style = OutlinedButtonStyle.Primary
-    )
-}
+fun OutlinedBorderButtonPrimaryPreview() =
+    PreviewColumn {
+        OutlinedBorderButton(
+            text = AppText.Preview.OUTLINED_BTN_TEXT.text(),
+            style = OutlinedButtonStyle.Primary,
+        )
+    }
 
 @PreviewPhones
 @Composable
 fun OutlinedBorderButtonSecondaryPreview() =
     PreviewColumn(background = { MaterialTheme.colorScheme.surface }) {
         OutlinedBorderButton(
-            text = AppText.Preview.OUTLINED_BTN_TEXT.text(), style = OutlinedButtonStyle.Secondary
+            text = AppText.Preview.OUTLINED_BTN_TEXT.text(),
+            style = OutlinedButtonStyle.Secondary,
         )
     }

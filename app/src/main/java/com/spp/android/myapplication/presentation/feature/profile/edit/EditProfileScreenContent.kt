@@ -38,7 +38,7 @@ fun EditProfileScreenContent(
     state: EditProfileContract.State = EditProfileContract.State(),
     onBack: () -> Unit = {},
     onValueChange: (field: String, value: String) -> Unit = { _, _ -> },
-    onSave: (String, String, String, String, String) -> Unit = { _, _, _, _, _ -> }
+    onSave: (String, String, String, String, String) -> Unit = { _, _, _, _, _ -> },
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
@@ -46,34 +46,36 @@ fun EditProfileScreenContent(
     val buttonHeight = dimensionResource(id = R.dimen.button_height)
 
     Column(
-        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface),
     ) {
         Surface(
             color = MaterialTheme.colorScheme.background,
             contentColor = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
-                    Modifier.fillMaxWidth().padding(horizontal = pad, vertical = spaceM)
+                    Modifier.fillMaxWidth().padding(horizontal = pad, vertical = spaceM),
                 ) {
                     IconButton(
-                        onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)
+                        onClick = onBack,
+                        modifier = Modifier.align(Alignment.CenterStart),
                     ) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                     Text(
                         text = AppText.EditProfile.TITLE.text(),
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier.align(Alignment.Center),
                     )
                 }
 
                 Box(
-                    modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center,
                 ) {
                     AvatarPicker(onClick = { /* TODO open picker */ }, showBadge = true)
                 }
@@ -85,58 +87,63 @@ fun EditProfileScreenContent(
         Surface(
             color = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             Box(
-                modifier = Modifier.fillMaxSize().padding(horizontal = pad)
+                modifier = Modifier.fillMaxSize().padding(horizontal = pad),
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter)
-                        .verticalScroll(rememberScrollState()).padding(bottom = buttonHeight + pad),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.TopCenter)
+                            .verticalScroll(rememberScrollState())
+                            .padding(bottom = buttonHeight + pad),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(Modifier.height(spaceL))
 
                     FormFields(
-                        fields = listOf(
-                            FieldState(
-                                value = state.username,
-                                label = AppText.EditProfile.USERNAME_LABEL.text(),
-                                error = state.usernameErrorKey?.text() ?: "",
-                                kind = FieldKind.Username,
-                                onValueChange = { onValueChange("username", it) }
+                        fields =
+                            listOf(
+                                FieldState(
+                                    value = state.username,
+                                    label = AppText.EditProfile.USERNAME_LABEL.text(),
+                                    error = state.usernameErrorKey?.text() ?: "",
+                                    kind = FieldKind.Username,
+                                    onValueChange = { onValueChange("username", it) },
+                                ),
+                                FieldState(
+                                    value = state.career,
+                                    label = AppText.EditProfile.CAREER_LABEL.text(),
+                                    error = "",
+                                    kind = FieldKind.Username,
+                                    onValueChange = { onValueChange("career", it) },
+                                ),
+                                FieldState(
+                                    value = state.phone,
+                                    label = AppText.EditProfile.PHONE_LABEL.text(),
+                                    error = state.phoneErrorKey?.text() ?: "",
+                                    kind = FieldKind.Phone,
+                                    onValueChange = { onValueChange("phone", it) },
+                                ),
+                                FieldState(
+                                    value = state.address,
+                                    label = AppText.EditProfile.ADDRESS_LABEL.text(),
+                                    error = "",
+                                    kind = FieldKind.Username,
+                                    onValueChange = { onValueChange("address", it) },
+                                ),
+                                FieldState(
+                                    value = state.birthdate,
+                                    label = AppText.EditProfile.BIRTHDATE_LABEL.text(),
+                                    error = "",
+                                    kind = FieldKind.Username,
+                                    onValueChange = { onValueChange("birthdate", it) },
+                                ),
                             ),
-                            FieldState(
-                                value = state.career,
-                                label = AppText.EditProfile.CAREER_LABEL.text(),
-                                error = "",
-                                kind = FieldKind.Username,
-                                onValueChange = { onValueChange("career", it) }
-                            ),
-                            FieldState(
-                                value = state.phone,
-                                label = AppText.EditProfile.PHONE_LABEL.text(),
-                                error = state.phoneErrorKey?.text() ?: "",
-                                kind = FieldKind.Phone,
-                                onValueChange = { onValueChange("phone", it) }
-                            ),
-                            FieldState(
-                                value = state.address,
-                                label = AppText.EditProfile.ADDRESS_LABEL.text(),
-                                error = "",
-                                kind = FieldKind.Username,
-                                onValueChange = { onValueChange("address", it) }
-                            ),
-                            FieldState(
-                                value = state.birthdate,
-                                label = AppText.EditProfile.BIRTHDATE_LABEL.text(),
-                                error = "",
-                                kind = FieldKind.Username,
-                                onValueChange = { onValueChange("birthdate", it) }
-                            )
-                        ),
                         labelColor = MaterialTheme.colorScheme.onSurface,
-                        valueColor = MaterialTheme.colorScheme.onSecondary
+                        valueColor = MaterialTheme.colorScheme.onSecondary,
                     )
 
                     Spacer(Modifier.height(spaceL))
@@ -150,16 +157,15 @@ fun EditProfileScreenContent(
                             state.career,
                             state.phone,
                             state.address,
-                            state.birthdate
+                            state.birthdate,
                         )
                     },
-                    modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = pad)
+                    modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = pad),
                 )
             }
         }
     }
 }
-
 
 @PreviewPhones
 @PreviewMoto

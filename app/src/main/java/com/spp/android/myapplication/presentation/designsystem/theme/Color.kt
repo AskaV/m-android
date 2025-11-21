@@ -3,16 +3,15 @@ package com.spp.android.myapplication.presentation.designsystem.theme
 import androidx.compose.ui.graphics.Color
 
 // ===== light theme =====
-val BackgroundLight = Color(0xFF242235)        // Blue
-val TextPrimaryLight = Color(0xFFFAFAFA)       // White
-val TextSecondaryLight = Color(0xFFB2B2B3)     // GrayText2
+val BackgroundLight = Color(0xFF242235) // Blue
+val TextPrimaryLight = Color(0xFFFAFAFA) // White
+val TextSecondaryLight = Color(0xFFB2B2B3) // GrayText2
 val TextFontSecondaryAccent = Color(0xFFDADCE0)
-val AccentLight = Color(0xFFFB5E06)            // Orange
-val ErrorLight = Color(0xFFF93E3E)             // Red
-val TextTertiaryLight = Color(0xFF18181F)      // GrayText
-val PanelBackgroundLight = Color(0xFF34324E)   // DarkBlue
-val BackgroundPhotoLight = Color(0xFF4F4D5C)   // GrayPanel
-
+val AccentLight = Color(0xFFFB5E06) // Orange
+val ErrorLight = Color(0xFFF93E3E) // Red
+val TextTertiaryLight = Color(0xFF18181F) // GrayText
+val PanelBackgroundLight = Color(0xFF34324E) // DarkBlue
+val BackgroundPhotoLight = Color(0xFF4F4D5C) // GrayPanel
 
 // ===== dark theme =====
 val BackgroundDark = Color(0xFF121212)
@@ -25,7 +24,6 @@ val TextTertiaryDark = Color(0xFF242235)
 val PanelBackgroundDark = Color(0xFF2A293D)
 val BackgroundPhotoDark = Color(0xFF3A3846)
 
-
 // ===== colored theme ====
 val BackgroundColored = Color(0xFF4B0082)
 val TextPrimaryColored = Color(0xFFFFD700)
@@ -37,8 +35,6 @@ val TextTertiaryColored = Color(0xFF1B1F3B)
 val PanelBackgroundColored = Color(0xFF3E3C60)
 val BackgroundPhotoColored = Color(0xFF5A5870)
 
-
 // ===== other ====
 val Transparent = Color(0x00000000)
 val White = Color(0xFFFAFAFA)
-

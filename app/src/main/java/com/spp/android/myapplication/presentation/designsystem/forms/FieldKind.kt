@@ -12,14 +12,14 @@ sealed class FieldKind(
     val visualTransformation: VisualTransformation,
     val imeAction: ImeAction = ImeAction.Next,
     val label: String = "",
-    val placeholderPreview: String = ""
+    val placeholderPreview: String = "",
 ) {
     data object Email : FieldKind(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         visualTransformation = VisualTransformation.None,
         imeAction = ImeAction.Next,
         label = AppText.Label.EMAIL,
-        placeholderPreview = AppText.Preview.EMAIL
+        placeholderPreview = AppText.Preview.EMAIL,
     )
 
     data object Password : FieldKind(
@@ -27,7 +27,7 @@ sealed class FieldKind(
         visualTransformation = PasswordVisualTransformation(),
         imeAction = ImeAction.Done,
         label = AppText.Label.PASSWORD,
-        placeholderPreview = AppText.Preview.DOTS
+        placeholderPreview = AppText.Preview.DOTS,
     )
 
     data object Username : FieldKind(
@@ -35,7 +35,7 @@ sealed class FieldKind(
         visualTransformation = VisualTransformation.None,
         imeAction = ImeAction.Next,
         label = AppText.Label.USERNAME,
-        placeholderPreview = AppText.Preview.USERNAME
+        placeholderPreview = AppText.Preview.USERNAME,
     )
 
     data object Phone : FieldKind(
@@ -43,6 +43,6 @@ sealed class FieldKind(
         visualTransformation = VisualTransformation.None,
         imeAction = ImeAction.Next,
         label = AppText.Label.PHONE,
-        placeholderPreview = AppText.Preview.PHONE
+        placeholderPreview = AppText.Preview.PHONE,
     )
 }

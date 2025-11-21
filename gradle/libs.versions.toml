@@ -10,7 +10,7 @@ coreKtx = "1.17.0"
 navigationCompose = "2.9.5"
 datastorePreferences = "1.1.7"
 hilt-version = "2.57.2"
-agp = "8.13.0"
+agp = "8.13.1"
 kotlin = "2.2.21"
 navigation = "2.9.5"
 
@@ -42,3 +42,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-version" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "14.0.1" }

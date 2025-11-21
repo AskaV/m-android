@@ -5,5 +5,5 @@ data class Contact(
     val name: String,
     val subtitle: String,
     val avatarUrl: String? = "",
-    val transitionName: String? = ""
+    val transitionName: String? = "",
 )

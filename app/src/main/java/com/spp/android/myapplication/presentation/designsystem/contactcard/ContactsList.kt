@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.spp.android.myapplication.R
-import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactCardOutlined
 import com.spp.android.myapplication.domain.model.Contact
+import com.spp.android.myapplication.presentation.designsystem.contactcard.parts.ContactCardOutlined
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 
@@ -23,24 +23,23 @@ fun ContactsList(
     items: List<Contact> = emptyList(),
     onItemClick: (Contact) -> Unit = {},
     onDeleteClick: (Contact) -> Unit = {},
-    contentPadding: PaddingValues = PaddingValues(dimensionResource(id = R.dimen.spacer_medium))
+    contentPadding: PaddingValues = PaddingValues(dimensionResource(id = R.dimen.spacer_medium)),
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.spacer_medium))
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.spacer_medium)),
     ) {
         items(items, key = { it.id }) { c ->
             ContactCardOutlined(
                 contact = c,
                 onClick = onItemClick,
                 onDeleteClick = onDeleteClick,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
 }
-
 
 @PreviewPhones
 @Composable

@@ -26,7 +26,7 @@ fun EditProfileScreen(
     onBack: () -> Unit = {},
     onDone: (ProfileResult) -> Unit = {},
     onOpenAvatarPicker: () -> Unit = {},
-    vm: EditProfileViewModel = hiltViewModel()
+    vm: EditProfileViewModel = hiltViewModel(),
 ) {
     val snackBar = remember { SnackbarHostState() }
     val context = LocalContext.current
@@ -36,22 +36,22 @@ fun EditProfileScreen(
         vm.effect.collect { effect ->
             when (effect) {
                 is NavigateBack -> onBack()
-                is Saved -> onDone(
-                    ProfileResult(
-                        username = state.username,
-                        career = state.career,
-                        phone = state.phone,
-                        address = state.address,
-                        birthdate = state.birthdate
+                is Saved ->
+                    onDone(
+                        ProfileResult(
+                            username = state.username,
+                            career = state.career,
+                            phone = state.phone,
+                            address = state.address,
+                            birthdate = state.birthdate,
+                        ),
                     )
-                )
 
                 is ShowMessage -> {
                     snackBar.showSnackbar(effect.messageKey.text(context))
                 }
 
                 is OpenAvatarPicker -> onOpenAvatarPicker()
-
             }
         }
     }
@@ -67,7 +67,8 @@ fun EditProfileScreen(
             vm.onEvent(AddressChanged(address))
             vm.onEvent(BirthdateChanged(birthdate))
             vm.onEvent(SaveClicked)
-        })
+        },
+    )
 }
 
 data class ProfileResult(
@@ -75,5 +76,5 @@ data class ProfileResult(
     val career: String,
     val phone: String,
     val address: String,
-    val birthdate: String
+    val birthdate: String,
 ) : Serializable

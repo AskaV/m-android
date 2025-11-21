@@ -18,7 +18,8 @@ import com.spp.android.myapplication.R
 
 @Composable
 fun SelectionCheck(
-    modifier: Modifier = Modifier, selected: Boolean
+    modifier: Modifier = Modifier,
+    selected: Boolean,
 ) {
     val size = dimensionResource(id = R.dimen.form_supporting_text_min_height)
     val borderW = dimensionResource(id = R.dimen.button_border_width)
@@ -26,15 +27,20 @@ fun SelectionCheck(
     val checkTint = MaterialTheme.colorScheme.primary
 
     Box(
-        modifier = modifier.size(size).clip(CircleShape).border(borderW, borderColor, CircleShape)
-            .background(MaterialTheme.colorScheme.surface), contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .size(size)
+                .clip(CircleShape)
+                .border(borderW, borderColor, CircleShape)
+                .background(MaterialTheme.colorScheme.surface),
+        contentAlignment = Alignment.Center,
     ) {
         if (selected) {
             Icon(
                 imageVector = Icons.Filled.Check,
                 contentDescription = null,
                 tint = checkTint,
-                modifier = Modifier.size(dimensionResource(id = R.dimen.spacer_additional_plus))
+                modifier = Modifier.size(dimensionResource(id = R.dimen.spacer_additional_plus)),
             )
         }
     }

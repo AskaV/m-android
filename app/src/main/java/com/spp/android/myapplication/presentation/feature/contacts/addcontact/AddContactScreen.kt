@@ -12,7 +12,7 @@ import com.spp.android.myapplication.presentation.feature.contacts.addcontact.Ad
 @Composable
 fun AddContactScreen(
     onBack: () -> Unit = {},
-    vm: AddContactViewModel = hiltViewModel()
+    vm: AddContactViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
 
@@ -20,7 +20,9 @@ fun AddContactScreen(
         vm.effect.collect { effect ->
             when (effect) {
                 is Effect.NavigateBack -> onBack()
-                is Effect.ShowMessage -> { effect.message}
+                is Effect.ShowMessage -> {
+                    effect.message
+                }
             }
         }
     }

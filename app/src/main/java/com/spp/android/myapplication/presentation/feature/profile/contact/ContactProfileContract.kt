@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 import com.spp.android.myapplication.presentation.texts.TextKey
 
 object ContactProfileContract {
-
     @Immutable
     data class State(
         val contactId: Int = 0,
@@ -13,20 +12,32 @@ object ContactProfileContract {
         val lineSecondary: String = "",
         val hasSocial: Boolean = true,
         val isLoading: Boolean = false,
-        val errorKey: TextKey? = null
+        val errorKey: TextKey? = null,
     )
 
     sealed interface Event {
-        data class Load(val contactId: Int) : Event
+        data class Load(
+            val contactId: Int,
+        ) : Event
+
         data object BackClicked : Event
+
         data object MessageClicked : Event
+
         data object AddClicked : Event
+
         data object ErrorShown : Event
     }
 
     sealed interface Effect {
         data object NavigateBack : Effect
-        data class OpenChat(val contactId: Int) : Effect
-        data class ShowMessage(val messageKey: TextKey) : Effect
+
+        data class OpenChat(
+            val contactId: Int,
+        ) : Effect
+
+        data class ShowMessage(
+            val messageKey: TextKey,
+        ) : Effect
     }
 }

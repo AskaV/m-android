@@ -16,78 +16,86 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ContactProfileViewModel @Inject constructor() : ViewModel() {
+class ContactProfileViewModel
+    @Inject
+    constructor() : ViewModel() {
+        private val _state = MutableStateFlow(ContactProfileContract.State())
+        val state: StateFlow<ContactProfileContract.State> = _state.asStateFlow()
 
-    private val _state = MutableStateFlow(ContactProfileContract.State())
-    val state: StateFlow<ContactProfileContract.State> = _state.asStateFlow()
+        private val _effect = Channel<Effect>(Channel.BUFFERED)
+        val effect = _effect.receiveAsFlow()
 
-    private val _effect = Channel<Effect>(Channel.BUFFERED)
-    val effect = _effect.receiveAsFlow()
+        fun onEvent(event: Event) {
+            when (event) {
+                is Event.Load -> load(event.contactId)
+                is Event.BackClicked -> sendEffect(Effect.NavigateBack)
 
-    fun onEvent(event: Event) {
-        when (event) {
-            is Event.Load -> load(event.contactId)
-            is Event.BackClicked -> sendEffect(Effect.NavigateBack)
+                is Event.MessageClicked ->
+                    _state.value.contactId
+                        .takeIf { it != 0 }
+                        ?.let { id -> sendEffect(Effect.OpenChat(id)) }
 
-            is Event.MessageClicked -> _state.value.contactId
-                .takeIf { it != 0 } ?.let { id -> sendEffect(Effect.OpenChat(id)) }
-
-            is Event.AddClicked -> addContact()
-            is Event.ErrorShown -> _state.update { it.copy(errorKey = null) }
-        }
-    }
-
-    private fun load(id: Int) = viewModelScope.launch {
-        _state.update { it.copy(isLoading = true, contactId = id, errorKey = null) }
-
-        runCatching {
-            StubContact(
-                id = id,
-                name = "Lucile Alvarado",
-                linePrimary = "Product Designer",
-                lineSecondary = "New York, USA",
-                hasSocial = true
-            )
-        }.onSuccess { c ->
-            _state.update {
-                it.copy(
-                    name = c.name,
-                    linePrimary = c.linePrimary,
-                    lineSecondary = c.lineSecondary,
-                    hasSocial = c.hasSocial,
-                )
+                is Event.AddClicked -> addContact()
+                is Event.ErrorShown -> _state.update { it.copy(errorKey = null) }
             }
-        }.onFailure {
-            _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
-            sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
         }
-    }
 
-    private fun addContact() = viewModelScope.launch {
-        _state.update { it.copy(isLoading = true) }
+        private fun load(id: Int) =
+            viewModelScope.launch {
+                _state.update { it.copy(isLoading = true, contactId = id, errorKey = null) }
 
-        runCatching { true }.onSuccess {
-            _state.update { it.copy(isLoading = false, hasSocial = true) }
-            sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACT_ADDED))
-        }.onFailure {
-            _state.update {
-                it.copy(
-                    isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR
-                )
+                runCatching {
+                    StubContact(
+                        id = id,
+                        name = "Lucile Alvarado",
+                        linePrimary = "Product Designer",
+                        lineSecondary = "New York, USA",
+                        hasSocial = true,
+                    )
+                }.onSuccess { c ->
+                    _state.update {
+                        it.copy(
+                            name = c.name,
+                            linePrimary = c.linePrimary,
+                            lineSecondary = c.lineSecondary,
+                            hasSocial = c.hasSocial,
+                        )
+                    }
+                }.onFailure {
+                    _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+                    sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
+                }
             }
-            sendEffect(Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_ADD_CONTACT))
-        }
-    }
 
-    private fun sendEffect(effect: Effect) = viewModelScope.launch {
-        _effect.send(effect)
-    }
+        private fun addContact() =
+            viewModelScope.launch {
+                _state.update { it.copy(isLoading = true) }
 
-    private data class StubContact(
-        val id: Int,
-        val name: String,
-        val linePrimary: String,
-        val lineSecondary: String,
-        val hasSocial: Boolean
-    )
-}
+                runCatching { true }
+                    .onSuccess {
+                        _state.update { it.copy(isLoading = false, hasSocial = true) }
+                        sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACT_ADDED))
+                    }.onFailure {
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                errorKey = AppText.OtherInfo.UNKNOWN_ERROR,
+                            )
+                        }
+                        sendEffect(Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_ADD_CONTACT))
+                    }
+            }
+
+        private fun sendEffect(effect: Effect) =
+            viewModelScope.launch {
+                _effect.send(effect)
+            }
+
+        private data class StubContact(
+            val id: Int,
+            val name: String,
+            val linePrimary: String,
+            val lineSecondary: String,
+            val hasSocial: Boolean,
+        )
+    }

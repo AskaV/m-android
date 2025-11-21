@@ -6,21 +6,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.spp.android.myapplication.R
 
-data class TextKey(@StringRes val res: Int) {
+data class TextKey(
+    @StringRes val res: Int,
+) {
     @Composable
     fun text(): String = stringResource(res)
+
     fun text(ctx: Context): String = ctx.getString(res)
 }
 
 @Composable
 fun @receiver:StringRes Int.t(vararg args: Any): String = stringResource(this, *args)
-fun Context.t(@StringRes id: Int, vararg args: Any): String = getString(id, *args)
 
-fun tkArgs(@StringRes res: Int, vararg args: Any) =
-    TextKeyWithArgs(res, args.toList())
+fun Context.t(
+    @StringRes id: Int,
+    vararg args: Any,
+): String = getString(id, *args)
+
+fun tkArgs(
+    @StringRes res: Int,
+    vararg args: Any,
+) = TextKeyWithArgs(res, args.toList())
+
 data class TextKeyWithArgs(
     @StringRes val res: Int,
-    val args: List<Any> = emptyList()
+    val args: List<Any> = emptyList(),
 )
 
 @Composable
@@ -28,9 +38,7 @@ fun TextKeyWithArgs.text(): String = stringResource(res, *args.toTypedArray())
 
 fun TextKeyWithArgs.text(ctx: Context): String = ctx.getString(res, *args.toTypedArray())
 
-
 object AppText {
-
     object Login {
         val EMAIL_LABEL = TextKey(R.string.email)
         val PASSWORD_LABEL = TextKey(R.string.password)
@@ -92,7 +100,6 @@ object AppText {
         val TITLE = TextKey(R.string.contacts_text)
         val ADD = TextKey(R.string.add_contacts_text)
     }
-
 
     object EditProfile {
         val TITLE = TextKey(R.string.edit_profile_title)
@@ -158,6 +165,7 @@ object AppText {
         val CAREER = TextKey(R.string.user_profession)
         val ADDRESS = TextKey(R.string.user_address)
     }
+
     object AddContactDetailed {
         val TITLE1 = TextKey(R.string.users_title)
         val TITLE2 = TextKey(R.string.users_title2)

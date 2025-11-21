@@ -34,35 +34,37 @@ fun LoginScreenContent(
     onRememberMeChange: (Boolean) -> Unit = {},
     onLoginClick: () -> Unit = {},
     onNavigateToRegister: () -> Unit = {},
-    onForgotPasswordClick: () -> Unit = {}
+    onForgotPasswordClick: () -> Unit = {},
 ) {
     val hPad = dimensionResource(R.dimen.spacer_medium)
 
     Box(
-        modifier = modifier.fillMaxSize().padding(start = hPad, end = hPad, bottom = hPad)
+        modifier = modifier.fillMaxSize().padding(start = hPad, end = hPad, bottom = hPad),
     ) {
         Column(
             modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(dimensionResource(R.dimen.auth_top_spacer)))
 
             AuthHeader(
-                title = AppText.Login.TITLE.text(), subtitle = AppText.Login.SUBTITLE.text()
+                title = AppText.Login.TITLE.text(),
+                subtitle = AppText.Login.SUBTITLE.text(),
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
 
             AuthFields(
-                state = AuthFieldsState(
-                    email = state.email,
-                    password = state.password,
-                    emailErrorKey = state.emailErrorKey,
-                    passwordErrorKey = state.passwordErrorKey
-                ),
+                state =
+                    AuthFieldsState(
+                        email = state.email,
+                        password = state.password,
+                        emailErrorKey = state.emailErrorKey,
+                        passwordErrorKey = state.passwordErrorKey,
+                    ),
                 onEmailChange = onEmailChange,
                 onPasswordChange = onPasswordChange,
-                onDone = onLoginClick
+                onDone = onLoginClick,
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_small)))
@@ -72,16 +74,19 @@ fun LoginScreenContent(
                 onCheckedChange = onRememberMeChange,
                 label = AppText.Login.REMEMBER_ME.text(),
                 actionText = AppText.Login.FORGOT_PASSWORD.text(),
-                onActionClick = onForgotPasswordClick
+                onActionClick = onForgotPasswordClick,
             )
         }
 
         Column(
             modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             OutlinedBorderButton(
-                text = AppText.Login.LOGIN.text().uppercase(),
+                text =
+                    AppText.Login.LOGIN
+                        .text()
+                        .uppercase(),
                 onClick = onLoginClick,
                 style = OutlinedButtonStyle.Primary,
             )
@@ -91,7 +96,7 @@ fun LoginScreenContent(
             AuthFooter(
                 question = AppText.Login.DONT_HAVE_ACCOUNT.text(),
                 actionText = AppText.Login.SIGN_UP.text(),
-                onActionClick = onNavigateToRegister
+                onActionClick = onNavigateToRegister,
             )
         }
     }
@@ -103,11 +108,12 @@ fun LoginScreenPreview() {
     AutoThemePreview {
         Surface(color = MaterialTheme.colorScheme.background) {
             LoginScreenContent(
-                state = LoginContract.State(
-                    email = AppText.Preview.EMAIL,
-                    password = AppText.Preview.PASSWORD,
-                    rememberMe = true
-                )
+                state =
+                    LoginContract.State(
+                        email = AppText.Preview.EMAIL,
+                        password = AppText.Preview.PASSWORD,
+                        rememberMe = true,
+                    ),
             )
         }
     }
@@ -119,12 +125,13 @@ fun LoginScreenPreviewErrors() {
     AutoThemePreview {
         Surface(color = MaterialTheme.colorScheme.background) {
             LoginScreenContent(
-                state = LoginContract.State(
-                    email = AppText.Preview.WRONG_EMAIL,
-                    password = AppText.Preview.WRONG_PASSWORD,
-                    emailErrorKey = AppText.Login.EMAIL_ERROR,
-                    passwordErrorKey = AppText.Error.PASSWORD_ERROR
-                )
+                state =
+                    LoginContract.State(
+                        email = AppText.Preview.WRONG_EMAIL,
+                        password = AppText.Preview.WRONG_PASSWORD,
+                        emailErrorKey = AppText.Login.EMAIL_ERROR,
+                        passwordErrorKey = AppText.Error.PASSWORD_ERROR,
+                    ),
             )
         }
     }

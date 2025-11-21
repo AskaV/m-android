@@ -12,28 +12,25 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewCo
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 
 @Composable
-fun SocialButtonsRow(
-    modifier: Modifier = Modifier
-) {
+fun SocialButtonsRow(modifier: Modifier = Modifier) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.social_button_spacing)),
-        modifier = modifier
+        modifier = modifier,
     ) {
         SocialButton(
             iconRes = R.drawable.social_facebook,
-            contentDescription = stringResource(R.string.facebook)
+            contentDescription = stringResource(R.string.facebook),
         )
         SocialButton(
             iconRes = R.drawable.social_instagram,
-            contentDescription = stringResource(R.string.instagram)
+            contentDescription = stringResource(R.string.instagram),
         )
         SocialButton(
             iconRes = R.drawable.social_telegram,
-            contentDescription = stringResource(R.string.telegram)
+            contentDescription = stringResource(R.string.telegram),
         )
     }
 }
-
 
 @PreviewPhones
 @Composable

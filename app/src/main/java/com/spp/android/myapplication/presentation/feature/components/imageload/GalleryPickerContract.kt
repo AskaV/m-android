@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.compose.runtime.Immutable
 
 object GalleryPickerContract {
-
     @Immutable
     data class State(
         val isVisible: Boolean = false,
@@ -15,21 +14,35 @@ object GalleryPickerContract {
 
     sealed interface Event {
         data object Show : Event
+
         data object Dismiss : Event
 
         data object OpenGallery : Event
+
         data object OpenCamera : Event
+
         data object DeleteCurrent : Event
 
-        data class PhotoPicked(val photoPickedUri: Uri) : Event
+        data class PhotoPicked(
+            val photoPickedUri: Uri,
+        ) : Event
+
         data object ErrorShown : Event
+
         data object Clear : Event
     }
 
     sealed interface Effect {
         data object LaunchGalleryPicker : Effect
+
         data object LaunchCamera : Effect
-        data class ShowMessage(val message: String) : Effect
-        data class ReturnResult(val returnResultUri: Uri?) : Effect
+
+        data class ShowMessage(
+            val message: String,
+        ) : Effect
+
+        data class ReturnResult(
+            val returnResultUri: Uri?,
+        ) : Effect
     }
 }

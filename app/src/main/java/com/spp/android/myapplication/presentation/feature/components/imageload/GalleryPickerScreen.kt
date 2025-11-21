@@ -30,9 +30,10 @@ fun GalleryPickerScreen(
 ) {
     val state by vm.state.collectAsState()
 
-    val galleryLauncher = rememberLauncherForActivityResult(GetContent()) { uri ->
-        uri?.let { vm.onEvent(PhotoPicked(it)) }
-    }
+    val galleryLauncher =
+        rememberLauncherForActivityResult(GetContent()) { uri ->
+            uri?.let { vm.onEvent(PhotoPicked(it)) }
+        }
 
     LaunchedEffect(startVisible) {
         if (startVisible) vm.onEvent(Show)
@@ -40,10 +41,12 @@ fun GalleryPickerScreen(
             when (effect) {
                 is LaunchGalleryPicker -> galleryLauncher.launch("image/*")
 
-                is LaunchCamera -> { /* TODO: */
+                is LaunchCamera -> { // TODO:
                 }
 
-                is ShowMessage -> {effect.message }
+                is ShowMessage -> {
+                    effect.message
+                }
                 is ReturnResult -> onResult(effect.returnResultUri)
             }
         }
@@ -55,6 +58,6 @@ fun GalleryPickerScreen(
         onOpenGallery = { vm.onEvent(OpenGallery) },
         onOpenCamera = { vm.onEvent(OpenCamera) },
         onDeleteCurrent = { vm.onEvent(DeleteCurrent) },
-        modifier = modifier
+        modifier = modifier,
     )
 }

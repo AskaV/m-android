@@ -28,33 +28,36 @@ fun RegistrationFields(
             value = username,
             onValueChange = onUsernameChange,
             kind = FieldKind.Username,
-            error = usernameErrorKey?.text().orEmpty()
+            error = usernameErrorKey?.text().orEmpty(),
         )
         LabeledTextField(
             label = AppText.SignUp.PHONE_LABEL.text(),
             value = phone,
             onValueChange = onPhoneChange,
             kind = FieldKind.Phone,
-            error = phoneErrorKey?.text().orEmpty()
+            error = phoneErrorKey?.text().orEmpty(),
         )
     }
 }
 
 @PreviewPhones
 @Composable
-fun RegistrationFieldsPreview() = PreviewColumn {
-    RegistrationFields(
-        username = AppText.Preview.USERNAME, phone = AppText.Preview.PHONE
-    )
-}
+fun RegistrationFieldsPreview() =
+    PreviewColumn {
+        RegistrationFields(
+            username = AppText.Preview.USERNAME,
+            phone = AppText.Preview.PHONE,
+        )
+    }
 
 @PreviewPhones
 @Composable
-fun RegistrationFieldsPreviewError() = PreviewColumn {
-    RegistrationFields(
-        username = AppText.Preview.WRONG_USERNAME,
-        phone = AppText.Preview.WRONG_PHONE,
-        usernameErrorKey = AppText.Error.USERNAME_ERROR,
-        phoneErrorKey = AppText.Error.PHONE_ERROR
-    )
-}
+fun RegistrationFieldsPreviewError() =
+    PreviewColumn {
+        RegistrationFields(
+            username = AppText.Preview.WRONG_USERNAME,
+            phone = AppText.Preview.WRONG_PHONE,
+            usernameErrorKey = AppText.Error.USERNAME_ERROR,
+            phoneErrorKey = AppText.Error.PHONE_ERROR,
+        )
+    }

@@ -24,7 +24,7 @@ fun FilledButton(
     text: String = "",
     onClick: () -> Unit = {},
     containerColor: Color = AccentLight,
-    contentColor: Color = TextPrimaryLight
+    contentColor: Color = TextPrimaryLight,
 ) {
     val height = dimensionResource(id = R.dimen.button_height)
     val desiredRadius = dimensionResource(id = R.dimen.button_corner_radius)
@@ -34,13 +34,15 @@ fun FilledButton(
         onClick = onClick,
         modifier = modifier.fillMaxWidth().height(height),
         shape = RoundedCornerShape(safeRadius),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-            contentColor = contentColor
-        ),
-        elevation = ButtonDefaults.buttonElevation(
-            defaultElevation = dimensionResource(id = R.dimen.spacer_extra_small)
-        )
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = containerColor,
+                contentColor = contentColor,
+            ),
+        elevation =
+            ButtonDefaults.buttonElevation(
+                defaultElevation = dimensionResource(id = R.dimen.spacer_extra_small),
+            ),
     ) {
         Text(text = text.uppercase(), style = MaterialTheme.typography.titleMedium)
     }
@@ -48,5 +50,4 @@ fun FilledButton(
 
 @PreviewPhones
 @Composable
-fun FilledButtonPreview() =
-    PreviewColumn { FilledButton(text = AppText.Preview.FILLED_BTN_TEXT.text()) }
+fun FilledButtonPreview() = PreviewColumn { FilledButton(text = AppText.Preview.FILLED_BTN_TEXT.text()) }

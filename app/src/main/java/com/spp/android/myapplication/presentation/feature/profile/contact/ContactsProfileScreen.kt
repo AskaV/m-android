@@ -20,12 +20,11 @@ fun ContactProfileScreen(
     contactId: Int,
     onBack: () -> Unit = {},
     onOpenChat: (Int) -> Unit = {},
-    vm: ContactProfileViewModel = hiltViewModel()
+    vm: ContactProfileViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
     val snackBar = remember { SnackbarHostState() }
     val context = LocalContext.current
-
 
     LaunchedEffect(contactId) {
         vm.onEvent(Load(contactId))
@@ -43,12 +42,14 @@ fun ContactProfileScreen(
     }
 
     ContactProfileScreen(
-        state = ContactProfileContract.State(
-            name = state.name,
-            linePrimary = state.linePrimary,
-            lineSecondary = state.lineSecondary,
-            hasSocial = state.hasSocial
-        ),
+        state =
+            ContactProfileContract.State(
+                name = state.name,
+                linePrimary = state.linePrimary,
+                lineSecondary = state.lineSecondary,
+                hasSocial = state.hasSocial,
+            ),
         onBack = { vm.onEvent(BackClicked) },
-        onMessage = { vm.onEvent(MessageClicked) })
+        onMessage = { vm.onEvent(MessageClicked) },
+    )
 }

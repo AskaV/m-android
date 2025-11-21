@@ -37,17 +37,17 @@ annotation class PreviewMoto
 @Preview(name = "3_FIGMA_Colored_Preview", showBackground = false, device = PreviewDevices.FIGMA)
 annotation class PreviewPhones
 
-
 @Composable
 fun AutoThemePreview(content: @Composable () -> Unit) {
     val cfg = LocalConfiguration.current
     val nightMask = cfg.uiMode and Configuration.UI_MODE_NIGHT_MASK
-    val theme = when (nightMask) {
-        Configuration.UI_MODE_NIGHT_YES -> AppTheme.DARK
-        Configuration.UI_MODE_NIGHT_NO -> AppTheme.LIGHT
-        Configuration.UI_MODE_NIGHT_UNDEFINED -> AppTheme.COLORED
-        else -> AppTheme.SYSTEM
-    }
+    val theme =
+        when (nightMask) {
+            Configuration.UI_MODE_NIGHT_YES -> AppTheme.DARK
+            Configuration.UI_MODE_NIGHT_NO -> AppTheme.LIGHT
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> AppTheme.COLORED
+            else -> AppTheme.SYSTEM
+        }
     MyApplicationTheme(theme = theme) { content() }
 }
 
@@ -55,12 +55,12 @@ fun AutoThemePreview(content: @Composable () -> Unit) {
 fun PreviewColumn(
     spacing: Dp = dimensionResource(id = R.dimen.spacer_additional),
     background: @Composable () -> Color = { MaterialTheme.colorScheme.background },
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) = AutoThemePreview {
     Surface(color = background()) {
         Column(
             Modifier.padding(dimensionResource(id = R.dimen.spacer_medium)),
-            verticalArrangement = Arrangement.spacedBy(spacing)
+            verticalArrangement = Arrangement.spacedBy(spacing),
         ) {
             content()
         }
@@ -71,12 +71,12 @@ fun PreviewColumn(
 fun PreviewRow(
     spacing: Dp = dimensionResource(id = R.dimen.spacer_additional),
     background: @Composable () -> Color = { MaterialTheme.colorScheme.background },
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) = AutoThemePreview {
     Surface(color = background()) {
         Row(
             Modifier.padding(dimensionResource(id = R.dimen.spacer_medium)),
-            horizontalArrangement = Arrangement.spacedBy(spacing)
+            horizontalArrangement = Arrangement.spacedBy(spacing),
         ) {
             content()
         }
@@ -84,10 +84,9 @@ fun PreviewRow(
 }
 
 @Composable
-fun PreviewScreenEdgeToEdge(
-    content: @Composable () -> Unit
-) = AutoThemePreview {
-    Surface(color = MaterialTheme.colorScheme.background) {
-        Box(Modifier.fillMaxSize()) { content() }
+fun PreviewScreenEdgeToEdge(content: @Composable () -> Unit) =
+    AutoThemePreview {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            Box(Modifier.fillMaxSize()) { content() }
+        }
     }
-}

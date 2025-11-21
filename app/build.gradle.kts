@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
     alias(libs.plugins.hilt)
+    alias(libs.plugins.ktlint)
 }
 kapt {
     correctErrorTypes = true
@@ -36,6 +37,23 @@ android {
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
+}
+
+tasks.named("check") {
+    dependsOn("ktlintCheck")
+}
+
+ktlint {
+
+    android.set(true)
+    ignoreFailures.set(true)
+    outputToConsole.set(true)
+    verbose.set(true)
+    additionalEditorconfig.set(
+        mapOf(
+            "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
+        ),
+    )
 }
 
 dependencies {

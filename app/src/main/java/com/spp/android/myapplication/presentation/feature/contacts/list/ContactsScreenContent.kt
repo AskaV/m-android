@@ -45,7 +45,7 @@ fun ContactsScreenContent(
     onContactLongClick: (Contact) -> Unit = {},
     selectedIds: Set<Int> = emptySet(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    isSelectionMode: Boolean = showRecycleBin
+    isSelectionMode: Boolean = showRecycleBin,
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
@@ -56,66 +56,72 @@ fun ContactsScreenContent(
         derivedStateOf { listState.firstVisibleItemIndex > 0 }
     }
     Box(
-        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface).padding(contentPadding)
+        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface).padding(contentPadding),
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             ContactsHeader(
                 title = AppText.Contacts.TITLE.text(),
                 onBack = onBack,
                 onSearchClick = onSearchClick,
                 showAddHeaderRow = true,
-                onAddContactsClick = onAddContactsClick
+                onAddContactsClick = onAddContactsClick,
             )
 
             Surface(
                 color = MaterialTheme.colorScheme.surface,
                 contentColor = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 ContactList(
                     items = items,
                     selectedIds = selectedIds,
-                    behavior = ContactListBehavior(
-                        selectionEnabled = isSelectionMode, showDeleteIcon = !isSelectionMode
-                    ),
+                    behavior =
+                        ContactListBehavior(
+                            selectionEnabled = isSelectionMode,
+                            showDeleteIcon = !isSelectionMode,
+                        ),
                     onItemClick = onContactClick,
                     onItemLongClick = onContactLongClick,
                     onDeleteClick = onDeleteClick,
                     state = listState,
-                    contentPadding = PaddingValues(
-                        start = pad, end = pad, top = pad, bottom = spaceL
-                    ),
-                    modifier = Modifier.fillMaxSize()
+                    contentPadding =
+                        PaddingValues(
+                            start = pad,
+                            end = pad,
+                            top = pad,
+                            bottom = spaceL,
+                        ),
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
         }
 
         AnimatedVisibility(
-            visible = showRecycleBin, modifier = Modifier.align(Alignment.BottomEnd)
+            visible = showRecycleBin,
+            modifier = Modifier.align(Alignment.BottomEnd),
         ) {
             ActionFab(
                 iconRes = R.drawable.recycle_bin,
                 onClick = onBulkDeleteClick,
-                alignment = Alignment.BottomEnd
+                alignment = Alignment.BottomEnd,
             )
         }
 
         AnimatedVisibility(
-            visible = showScrollTop, modifier = Modifier.align(Alignment.BottomEnd)
+            visible = showScrollTop,
+            modifier = Modifier.align(Alignment.BottomEnd),
         ) {
             ActionFab(
                 iconRes = R.drawable.ic_arrow_up,
                 onClick = { scope.launch { listState.animateScrollToItem(0) } },
-                alignment = Alignment.BottomStart
+                alignment = Alignment.BottomStart,
             )
         }
     }
 }
 
-
 @PreviewPhones
 @Composable
-private fun ContactsScreenContentPreview() =
-    PreviewScreenEdgeToEdge { ContactsScreenContent(items = demoUsers()) }
+private fun ContactsScreenContentPreview() = PreviewScreenEdgeToEdge { ContactsScreenContent(items = demoUsers()) }

@@ -42,26 +42,31 @@ fun AppTextField(
     onImeAction: () -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
     valueTextColor: Color = MaterialTheme.colorScheme.onBackground,
-    textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(color = valueTextColor)
+    textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(color = valueTextColor),
 ) {
     val padding = dimensionResource(R.dimen.spacer_small)
     val visual = kind.visualTransformation
 
     Column(modifier.fillMaxWidth()) {
-
         Box(Modifier.fillMaxWidth()) {
             if (placeholder.isNotEmpty() && value.isEmpty()) {
                 Text(
                     text = placeholder,
                     style = textStyle.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                    modifier = Modifier.padding(
-                        start = padding, top = padding, end = padding, bottom = padding
-                    ).fillMaxWidth()
+                    modifier =
+                        Modifier
+                            .padding(
+                                start = padding,
+                                top = padding,
+                                end = padding,
+                                bottom = padding,
+                            ).fillMaxWidth(),
                 )
             }
 
             Row(
-                modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 BasicTextField(
                     value = value,
@@ -70,13 +75,19 @@ fun AppTextField(
                     textStyle = textStyle.copy(color = valueTextColor),
                     visualTransformation = visual,
                     keyboardOptions = kind.keyboardOptions.copy(imeAction = imeAction),
-                    keyboardActions = KeyboardActions(
-                        onDone = { onImeAction.invoke() },
-                        onNext = { onImeAction.invoke() }),
+                    keyboardActions =
+                        KeyboardActions(
+                            onDone = { onImeAction.invoke() },
+                            onNext = { onImeAction.invoke() },
+                        ),
                     cursorBrush = SolidColor(textStyle.color),
-                    modifier = Modifier.weight(1f).padding(
-                        start = padding, top = padding, bottom = padding, end = 0.dp
-                    )
+                    modifier =
+                        Modifier.weight(1f).padding(
+                            start = padding,
+                            top = padding,
+                            bottom = padding,
+                            end = 0.dp,
+                        ),
                 )
 
                 Box(Modifier.padding(end = padding, top = padding, bottom = padding)) {
@@ -86,39 +97,43 @@ fun AppTextField(
         }
 
         Box(
-            Modifier.fillMaxWidth().height(1.dp).background(MaterialTheme.colorScheme.onSurface)
+            Modifier.fillMaxWidth().height(1.dp).background(MaterialTheme.colorScheme.onSurface),
         )
     }
 }
 
 @PreviewPhones
 @Composable
-fun AppTextFieldEmailPreview() = PreviewColumn {
-    var v by remember { mutableStateOf(AppText.Preview.EMAIL) }
-    AppTextField(
-        value = v,
-        onValueChange = { v = it },
-        kind = FieldKind.Email,
-        placeholder = AppText.Preview.EMAIL,
-        imeAction = ImeAction.Next,
-        textStyle = MaterialTheme.typography.titleLarge.copy(
-            color = MaterialTheme.colorScheme.onBackground
+fun AppTextFieldEmailPreview() =
+    PreviewColumn {
+        var v by remember { mutableStateOf(AppText.Preview.EMAIL) }
+        AppTextField(
+            value = v,
+            onValueChange = { v = it },
+            kind = FieldKind.Email,
+            placeholder = AppText.Preview.EMAIL,
+            imeAction = ImeAction.Next,
+            textStyle =
+                MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.onBackground,
+                ),
         )
-    )
-}
+    }
 
 @PreviewPhones
 @Composable
-fun AppTextFieldPasswordErrorPreview() = PreviewColumn {
-    var v by remember { mutableStateOf(AppText.Preview.PASSWORD) }
-    AppTextField(
-        value = v,
-        onValueChange = { v = it },
-        kind = FieldKind.Password,
-        placeholder = AppText.Preview.DOTS,
-        imeAction = ImeAction.Done,
-        textStyle = MaterialTheme.typography.titleLarge.copy(
-            color = MaterialTheme.colorScheme.onBackground
+fun AppTextFieldPasswordErrorPreview() =
+    PreviewColumn {
+        var v by remember { mutableStateOf(AppText.Preview.PASSWORD) }
+        AppTextField(
+            value = v,
+            onValueChange = { v = it },
+            kind = FieldKind.Password,
+            placeholder = AppText.Preview.DOTS,
+            imeAction = ImeAction.Done,
+            textStyle =
+                MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.onBackground,
+                ),
         )
-    )
-}
+    }

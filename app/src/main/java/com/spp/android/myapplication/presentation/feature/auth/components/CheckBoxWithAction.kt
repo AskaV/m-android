@@ -33,32 +33,35 @@ fun CheckBoxWithAction(
     onCheckedChange: (Boolean) -> Unit = {},
     label: String = "",
     actionText: String = "",
-    onActionClick: () -> Unit = {}
+    onActionClick: () -> Unit = {},
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
-                modifier = Modifier.size(dimensionResource(R.dimen.spacer_medium)).border(
-                    width = dimensionResource(R.dimen.button_border_width),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_border_width))
-                ), contentAlignment = Alignment.Center
+                modifier =
+                    Modifier.size(dimensionResource(R.dimen.spacer_medium)).border(
+                        width = dimensionResource(R.dimen.button_border_width),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.button_border_width)),
+                    ),
+                contentAlignment = Alignment.Center,
             ) {
                 Checkbox(
                     checked = checked,
                     onCheckedChange = onCheckedChange,
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color.Transparent,
-                        uncheckedColor = Color.Transparent,
-                        checkmarkColor = MaterialTheme.colorScheme.onBackground,
-                        disabledCheckedColor = Color.Transparent,
-                        disabledUncheckedColor = Color.Transparent
-                    ),
-                    modifier = Modifier.fillMaxSize().scale(0.75f)
+                    colors =
+                        CheckboxDefaults.colors(
+                            checkedColor = Color.Transparent,
+                            uncheckedColor = Color.Transparent,
+                            checkmarkColor = MaterialTheme.colorScheme.onBackground,
+                            disabledCheckedColor = Color.Transparent,
+                            disabledUncheckedColor = Color.Transparent,
+                        ),
+                    modifier = Modifier.fillMaxSize().scale(0.75f),
                 )
             }
 
@@ -67,7 +70,7 @@ fun CheckBoxWithAction(
             Text(
                 text = label,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
 
@@ -78,7 +81,8 @@ fun CheckBoxWithAction(
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
                 softWrap = false,
-                modifier = Modifier.clickable { onActionClick() })
+                modifier = Modifier.clickable { onActionClick() },
+            )
         }
     }
 }
@@ -89,7 +93,7 @@ private fun CheckBoxWithActionPreviewFigma() {
     PreviewColumn {
         CheckBoxWithAction(
             label = AppText.Login.REMEMBER_ME.text(),
-            actionText = AppText.Login.FORGOT_PASSWORD.text()
+            actionText = AppText.Login.FORGOT_PASSWORD.text(),
         )
     }
 }
@@ -99,7 +103,8 @@ private fun CheckBoxWithActionPreviewFigma() {
 private fun CheckBoxWithActionPreview2Figma() {
     PreviewColumn {
         CheckBoxWithAction(
-            checked = true, label = AppText.Login.REMEMBER_ME.text()
+            checked = true,
+            label = AppText.Login.REMEMBER_ME.text(),
         )
     }
 }

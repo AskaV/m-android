@@ -32,9 +32,12 @@ import com.spp.android.myapplication.presentation.texts.AppText
 fun GoogleButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    text: String = AppText.SignUp.GOOGLE.text().uppercase(),
+    text: String =
+        AppText.SignUp.GOOGLE
+            .text()
+            .uppercase(),
     enabled: Boolean = true,
-    borderWidth: Dp = dimensionResource(R.dimen.smallest_border_width)
+    borderWidth: Dp = dimensionResource(R.dimen.smallest_border_width),
 ) {
     Button(
         onClick = onClick,
@@ -42,21 +45,23 @@ fun GoogleButton(
         modifier = modifier.fillMaxWidth().height(dimensionResource(R.dimen.button_height)),
         shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
         border = BorderStroke(borderWidth, Color(0xFFE0E0E0)),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White, contentColor = MaterialTheme.colorScheme.onSecondary
-        ),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = MaterialTheme.colorScheme.onSecondary,
+            ),
         elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp),
-        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.spacer_medium))
+        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.spacer_medium)),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_google_logo),
                 contentDescription = null,
-                modifier = Modifier.size(dimensionResource(R.dimen.spacer_medium_plus))
+                modifier = Modifier.size(dimensionResource(R.dimen.spacer_medium_plus)),
             )
             Spacer(Modifier.width(dimensionResource(R.dimen.spacer_medium)))
             Text(text.uppercase(), style = MaterialTheme.typography.titleLarge)
@@ -66,6 +71,7 @@ fun GoogleButton(
 
 @PreviewPhones
 @Composable
-private fun GoogleButtonPreview() = PreviewColumn {
-    GoogleButton(text = AppText.SignUp.GOOGLE.text())
-}
+private fun GoogleButtonPreview() =
+    PreviewColumn {
+        GoogleButton(text = AppText.SignUp.GOOGLE.text())
+    }

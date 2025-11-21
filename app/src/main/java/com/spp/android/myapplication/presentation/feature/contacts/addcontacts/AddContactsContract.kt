@@ -9,22 +9,36 @@ object AddContactsContract {
         val items: List<Contact> = emptyList(),
         val selected: Set<Int> = emptySet(),
         val isLoading: Boolean = false,
-        val error: String = ""
+        val error: String = "",
     )
 
     sealed interface Event {
         data object Load : Event
+
         data object BackClicked : Event
+
         data object SearchClicked : Event
-        data class ToggleSelect(val toggleSelect: Contact) : Event
+
+        data class ToggleSelect(
+            val toggleSelect: Contact,
+        ) : Event
+
         data object MassAddClicked : Event
-        data class AddClicked(val dddClicked: Contact) : Event
+
+        data class AddClicked(
+            val dddClicked: Contact,
+        ) : Event
+
         data object ErrorShown : Event
     }
 
     sealed interface Effect {
         data object NavigateBack : Effect
+
         data object OpenSearch : Effect
-        data class ShowMessage(val message: String) : Effect
+
+        data class ShowMessage(
+            val message: String,
+        ) : Effect
     }
 }

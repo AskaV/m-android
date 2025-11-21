@@ -30,65 +30,73 @@ fun AddContactProfileScreenContent(
     state: AddContactProfileContract.State,
     onBack: () -> Unit = {},
     onMessage: () -> Unit = {},
-    onAddToContacts: () -> Unit = {}
+    onAddToContacts: () -> Unit = {},
 ) {
     val pad = dimensionResource(R.dimen.spacer_medium)
     Column(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface),
     ) {
         Surface(
             color = MaterialTheme.colorScheme.background,
             contentColor = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(vertical = dimensionResource(id = R.dimen.spacer_large)),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = dimensionResource(id = R.dimen.spacer_large)),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
-                    Modifier.fillMaxWidth().padding(horizontal = pad)
-                        .padding(bottom = dimensionResource(id = R.dimen.spacer_large))
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = pad)
+                        .padding(bottom = dimensionResource(id = R.dimen.spacer_large)),
                 ) {
                     androidx.compose.material3.IconButton(
-                        onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)
+                        onClick = onBack,
+                        modifier = Modifier.align(Alignment.CenterStart),
                     ) {
                         androidx.compose.material3.Icon(
                             imageVector = androidx.compose.material.icons.Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = "Back",
                         )
                     }
                     Text(
                         text = AppText.HomeTabs.PROFILE.text(),
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier.align(Alignment.Center),
                     )
                 }
 
                 ProfileHeader(
                     name = state.name,
                     linePrimary = state.linePrimary,
-                    lineSecondary = state.lineSecondary
+                    lineSecondary = state.lineSecondary,
                 )
             }
         }
 
         ProfileBottomArea(
             showSocial = true,
-            primaryFilled = if (state.isInMyContacts) {
-                FilledBtn(AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage)
-            } else {
-                FilledBtn(
-                    AppText.ContactProfile.ADD_TO_MY_CONTACTS.text(), onClick = onAddToContacts
-                )
-            },
-            secondaryOutlined = if (state.isInMyContacts) {
-                null
-            } else {
-                OutlinedBtn(AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage)
-            },
+            primaryFilled =
+                if (state.isInMyContacts) {
+                    FilledBtn(AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage)
+                } else {
+                    FilledBtn(
+                        AppText.ContactProfile.ADD_TO_MY_CONTACTS.text(),
+                        onClick = onAddToContacts,
+                    )
+                },
+            secondaryOutlined =
+                if (state.isInMyContacts) {
+                    null
+                } else {
+                    OutlinedBtn(AppText.ContactProfile.MESSAGE_TEXT.text(), onClick = onMessage)
+                },
             modifier = Modifier.fillMaxHeight(),
-            contentPadding = PaddingValues(horizontal = pad, vertical = pad)
+            contentPadding = PaddingValues(horizontal = pad, vertical = pad),
         )
     }
 }
@@ -99,12 +107,13 @@ private fun AddContactProfilePreviewDefault() {
     MyApplicationTheme {
         Surface(color = MaterialTheme.colorScheme.surface) {
             AddContactProfileScreenContent(
-                state = AddContactProfileContract.State(
-                    name = "Jenny Walker",
-                    linePrimary = "Make-up artist",
-                    lineSecondary = "775 Westminster Ave APT D5\n Brooklyn, NY, 11230",
-                    isInMyContacts = false
-                ),
+                state =
+                    AddContactProfileContract.State(
+                        name = "Jenny Walker",
+                        linePrimary = "Make-up artist",
+                        lineSecondary = "775 Westminster Ave APT D5\n Brooklyn, NY, 11230",
+                        isInMyContacts = false,
+                    ),
             )
         }
     }
@@ -116,12 +125,13 @@ private fun AddContactProfilePreviewInMyContacts() {
     MyApplicationTheme {
         Surface(color = MaterialTheme.colorScheme.surface) {
             AddContactProfileScreenContent(
-                state = AddContactProfileContract.State(
-                    name = "Lucile Alvarado",
-                    linePrimary = "Graphic designer",
-                    lineSecondary = "5295 Gaylord Walks Apk. 110",
-                    isInMyContacts = true
-                ),
+                state =
+                    AddContactProfileContract.State(
+                        name = "Lucile Alvarado",
+                        linePrimary = "Graphic designer",
+                        lineSecondary = "5295 Gaylord Walks Apk. 110",
+                        isInMyContacts = true,
+                    ),
             )
         }
     }

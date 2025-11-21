@@ -33,28 +33,29 @@ fun SignUpProfileScreenContent(
     onPhoneChange: (String) -> Unit = {},
     onPickAvatar: () -> Unit = {},
     onCancel: () -> Unit = {},
-    onForward: () -> Unit = {}
+    onForward: () -> Unit = {},
 ) {
     val pad = dimensionResource(R.dimen.spacer_medium)
 
     Box(
-        modifier = modifier.fillMaxSize().padding(start = pad, end = pad, bottom = pad)
+        modifier = modifier.fillMaxSize().padding(start = pad, end = pad, bottom = pad),
     ) {
         Column(
             modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(dimensionResource(R.dimen.auth_top_small)))
 
             AvatarPicker(
-                onClick = onPickAvatar, showBadge = true
+                onClick = onPickAvatar,
+                showBadge = true,
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
 
             AuthHeader(
                 title = AppText.ExtendedRegister.TITLE.text(),
-                subtitle = AppText.ExtendedRegister.SUBTITLE.text()
+                subtitle = AppText.ExtendedRegister.SUBTITLE.text(),
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
@@ -65,19 +66,19 @@ fun SignUpProfileScreenContent(
                 phone = state.phone,
                 onPhoneChange = onPhoneChange,
                 usernameErrorKey = state.usernameErrorKey,
-                phoneErrorKey = state.phoneErrorKey
+                phoneErrorKey = state.phoneErrorKey,
             )
         }
 
         Column(
             modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             OutlinedBorderButton(
                 text = AppText.ExtendedRegister.BUTTON.text(),
                 onClick = onCancel,
                 style = OutlinedButtonStyle.OnBackground,
-                modifier = Modifier.fillMaxWidth().height(40.dp)
+                modifier = Modifier.fillMaxWidth().height(40.dp),
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_medium)))
@@ -86,7 +87,7 @@ fun SignUpProfileScreenContent(
                 text = AppText.ExtendedRegister.BUTTON2.text(),
                 onClick = onForward,
                 style = OutlinedButtonStyle.Primary,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_small)))
@@ -94,16 +95,17 @@ fun SignUpProfileScreenContent(
     }
 }
 
-
 @PreviewPhones
 @Composable
 private fun SignUpProfileScreenPreview() {
     AutoThemePreview {
         Surface(color = MaterialTheme.colorScheme.background) {
             SignUpProfileScreenContent(
-                state = SignUpContract.ProfileState(
-                    username = AppText.Preview.USERNAME, phone = AppText.Preview.PHONE
-                )
+                state =
+                    SignUpContract.ProfileState(
+                        username = AppText.Preview.USERNAME,
+                        phone = AppText.Preview.PHONE,
+                    ),
             )
         }
     }
@@ -115,10 +117,11 @@ private fun SignUpProfileScreenPreviewErrors() {
     AutoThemePreview {
         Surface(color = MaterialTheme.colorScheme.background) {
             SignUpProfileScreenContent(
-                state = SignUpContract.ProfileState(
-                    usernameErrorKey = AppText.Error.USERNAME_ERROR,
-                    phoneErrorKey = AppText.Error.PHONE_ERROR
-                )
+                state =
+                    SignUpContract.ProfileState(
+                        usernameErrorKey = AppText.Error.USERNAME_ERROR,
+                        phoneErrorKey = AppText.Error.PHONE_ERROR,
+                    ),
             )
         }
     }

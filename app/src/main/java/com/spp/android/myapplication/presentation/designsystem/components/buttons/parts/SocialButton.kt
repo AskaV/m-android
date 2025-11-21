@@ -25,29 +25,33 @@ fun SocialButton(
     contentDescription: String = "",
 ) {
     Box(
-        modifier = modifier
-            .size(dimensionResource(id = R.dimen.social_button_size))
-            .background(
-                color = Color.Transparent, shape = CircleShape
-            ).border(
-                width = dimensionResource(id = R.dimen.button_border_width),
-                color = MaterialTheme.colorScheme.socialIcon,
-                shape = CircleShape
-            ), contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .size(dimensionResource(id = R.dimen.social_button_size))
+                .background(
+                    color = Color.Transparent,
+                    shape = CircleShape,
+                ).border(
+                    width = dimensionResource(id = R.dimen.button_border_width),
+                    color = MaterialTheme.colorScheme.socialIcon,
+                    shape = CircleShape,
+                ),
+        contentAlignment = Alignment.Center,
     ) {
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = contentDescription,
             tint = MaterialTheme.colorScheme.socialIcon,
-            modifier = Modifier.size(dimensionResource(id = R.dimen.social_icon_size))
+            modifier = Modifier.size(dimensionResource(id = R.dimen.social_icon_size)),
         )
     }
 }
 
 @PreviewPhones
 @Composable
-fun SocialButtonPreview() = PreviewRow {
-    SocialButton(iconRes = R.drawable.social_facebook)
-    SocialButton(iconRes = R.drawable.social_instagram)
-    SocialButton(iconRes = R.drawable.social_telegram)
-}
+fun SocialButtonPreview() =
+    PreviewRow {
+        SocialButton(iconRes = R.drawable.social_facebook)
+        SocialButton(iconRes = R.drawable.social_instagram)
+        SocialButton(iconRes = R.drawable.social_telegram)
+    }

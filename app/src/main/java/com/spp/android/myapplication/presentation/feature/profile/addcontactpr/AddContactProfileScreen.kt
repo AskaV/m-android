@@ -14,7 +14,9 @@ import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.A
 
 @Composable
 fun AddContactProfileScreen(
-    contactId: Int = 0, onBack: () -> Unit = {}, vm: AddContactProfileViewModel = hiltViewModel()
+    contactId: Int = 0,
+    onBack: () -> Unit = {},
+    vm: AddContactProfileViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
 
@@ -35,5 +37,6 @@ fun AddContactProfileScreen(
         state = state,
         onBack = { vm.onEvent(BackClicked) },
         onMessage = { vm.onEvent(MessageClicked) },
-        onAddToContacts = { vm.onEvent(AddToContactsClicked) })
+        onAddToContacts = { vm.onEvent(AddToContactsClicked) },
+    )
 }

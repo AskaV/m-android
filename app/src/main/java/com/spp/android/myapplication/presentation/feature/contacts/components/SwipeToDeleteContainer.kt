@@ -36,7 +36,7 @@ fun SwipeToDeleteContainer(
     enabled: Boolean = true,
     deleteThresholdDp: Float = 100f,
     onDelete: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val offsetX = remember { Animatable(0f) }
@@ -45,46 +45,52 @@ fun SwipeToDeleteContainer(
     val showBg by remember { derivedStateOf { offsetX.value < -1f } }
 
     Box(
-        modifier = modifier.clip(RoundedCornerShape(dimensionResource(id = R.dimen.button_corner_radius)))
+        modifier = modifier.clip(RoundedCornerShape(dimensionResource(id = R.dimen.button_corner_radius))),
     ) {
         Box(
-            modifier = Modifier.matchParentSize().alpha(if (showBg) 1f else 0f)
-                .background(MaterialTheme.colorScheme.error)
-                .padding(horizontal = dimensionResource(id = R.dimen.spacer_large)),
+            modifier =
+                Modifier
+                    .matchParentSize()
+                    .alpha(if (showBg) 1f else 0f)
+                    .background(MaterialTheme.colorScheme.error)
+                    .padding(horizontal = dimensionResource(id = R.dimen.spacer_large)),
             contentAlignment = Alignment.CenterEnd,
-
-            ) {
+        ) {
             Icon(
                 painter = painterResource(R.drawable.recycle_bin),
                 contentDescription = "Delete",
-                tint = MaterialTheme.colorScheme.onError
+                tint = MaterialTheme.colorScheme.onError,
             )
         }
 
-        Box(modifier = Modifier.offset { IntOffset(offsetX.value.roundToInt(), 0) }
-            .pointerInput(enabled) {
-                if (!enabled) return@pointerInput
-                detectHorizontalDragGestures(onHorizontalDrag = { _, dragAmount ->
-                    val newX = (offsetX.value + dragAmount).coerceAtMost(0f)
-                    scope.launch { offsetX.snapTo(newX) }
-                }, onDragEnd = {
-                    scope.launch {
-                        if (abs(offsetX.value) >= deleteThresholdPx) {
-                            val further = offsetX.value - deleteThresholdPx
-                            offsetX.animateTo(
-                                targetValue = further - deleteThresholdPx,
-                                animationSpec = tween(180)
-                            )
-                            onDelete()
-                            offsetX.snapTo(0f)
-                        } else {
-                            offsetX.animateTo(0f, animationSpec = tween(180))
-                        }
-                    }
-                }, onDragCancel = {
-                    scope.launch { offsetX.animateTo(0f, tween(180)) }
-                })
-            }) {
+        Box(
+            modifier =
+                Modifier
+                    .offset { IntOffset(offsetX.value.roundToInt(), 0) }
+                    .pointerInput(enabled) {
+                        if (!enabled) return@pointerInput
+                        detectHorizontalDragGestures(onHorizontalDrag = { _, dragAmount ->
+                            val newX = (offsetX.value + dragAmount).coerceAtMost(0f)
+                            scope.launch { offsetX.snapTo(newX) }
+                        }, onDragEnd = {
+                            scope.launch {
+                                if (abs(offsetX.value) >= deleteThresholdPx) {
+                                    val further = offsetX.value - deleteThresholdPx
+                                    offsetX.animateTo(
+                                        targetValue = further - deleteThresholdPx,
+                                        animationSpec = tween(180),
+                                    )
+                                    onDelete()
+                                    offsetX.snapTo(0f)
+                                } else {
+                                    offsetX.animateTo(0f, animationSpec = tween(180))
+                                }
+                            }
+                        }, onDragCancel = {
+                            scope.launch { offsetX.animateTo(0f, tween(180)) }
+                        })
+                    },
+        ) {
             content()
         }
     }

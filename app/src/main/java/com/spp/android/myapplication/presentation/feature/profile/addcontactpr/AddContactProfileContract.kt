@@ -11,19 +11,28 @@ object AddContactProfileContract {
         val lineSecondary: String = "",
         val isInMyContacts: Boolean = false,
         val isLoading: Boolean = false,
-        val error: String = ""
+        val error: String = "",
     )
 
     sealed interface Event {
-        data class Load(val id: Int) : Event
+        data class Load(
+            val id: Int,
+        ) : Event
+
         data object BackClicked : Event
+
         data object MessageClicked : Event
+
         data object AddToContactsClicked : Event
+
         data object ErrorShown : Event
     }
 
     sealed interface Effect {
         data object NavigateBack : Effect
-        data class ShowMessage(val message: String) : Effect
+
+        data class ShowMessage(
+            val message: String,
+        ) : Effect
     }
 }

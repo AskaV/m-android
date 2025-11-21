@@ -41,41 +41,42 @@ fun AddContactScreenContent(
     onEmailChange: (String) -> Unit = {},
     onPhoneChange: (String) -> Unit = {},
     onAddressChange: (String) -> Unit = {},
-    onDobChange: (String) -> Unit = {}
+    onDobChange: (String) -> Unit = {},
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
 
     Box(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface),
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-
             Surface(
                 color = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Box(
-                        Modifier.fillMaxWidth().padding(horizontal = pad, vertical = pad)
+                        Modifier.fillMaxWidth().padding(horizontal = pad, vertical = pad),
                     ) {
                         IconButton(
-                            onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)
+                            onClick = onBack,
+                            modifier = Modifier.align(Alignment.CenterStart),
                         ) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                         }
                         Text(
                             text = AppText.Contacts.ADD.text(),
                             style = MaterialTheme.typography.titleLarge,
-                            modifier = Modifier.align(Alignment.Center)
+                            modifier = Modifier.align(Alignment.Center),
                         )
                     }
 
                     Box(
-                        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center,
                     ) {
                         AvatarPicker(onClick = onAvatarClick, showBadge = true)
                     }
@@ -87,68 +88,68 @@ fun AddContactScreenContent(
             Column(
                 modifier = Modifier.fillMaxSize().padding(horizontal = pad, vertical = pad),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 FormFields(
                     modifier = Modifier.fillMaxWidth().weight(1f),
-                    fields = listOf(
-                        FieldState(
-                            value = state.username,
-                            label = "Username",
-                            error = state.usernameError,
-                            kind = FieldKind.Username,
-                            onValueChange = onUsernameChange
+                    fields =
+                        listOf(
+                            FieldState(
+                                value = state.username,
+                                label = "Username",
+                                error = state.usernameError,
+                                kind = FieldKind.Username,
+                                onValueChange = onUsernameChange,
+                            ),
+                            FieldState(
+                                value = state.career,
+                                label = "Career",
+                                error = state.careerError,
+                                kind = FieldKind.Username,
+                                onValueChange = onCareerChange,
+                            ),
+                            FieldState(
+                                value = state.email,
+                                label = "Email",
+                                error = state.emailError,
+                                kind = FieldKind.Email,
+                                onValueChange = onEmailChange,
+                            ),
+                            FieldState(
+                                value = state.phone,
+                                label = "Phone",
+                                error = state.phoneError,
+                                kind = FieldKind.Phone,
+                                onValueChange = onPhoneChange,
+                            ),
+                            FieldState(
+                                value = state.address,
+                                label = "Address",
+                                error = state.addressError,
+                                kind = FieldKind.Username,
+                                onValueChange = onAddressChange,
+                            ),
+                            FieldState(
+                                value = state.dateOfBirth,
+                                label = "Date of birth",
+                                error = state.dateOfBirthError,
+                                kind = FieldKind.Username,
+                                onValueChange = onDobChange,
+                            ),
                         ),
-                        FieldState(
-                            value = state.career,
-                            label = "Career",
-                            error = state.careerError,
-                            kind = FieldKind.Username,
-                            onValueChange = onCareerChange
-                        ),
-                        FieldState(
-                            value = state.email,
-                            label = "Email",
-                            error = state.emailError,
-                            kind = FieldKind.Email,
-                            onValueChange = onEmailChange
-                        ),
-                        FieldState(
-                            value = state.phone,
-                            label = "Phone",
-                            error = state.phoneError,
-                            kind = FieldKind.Phone,
-                            onValueChange = onPhoneChange
-                        ),
-                        FieldState(
-                            value = state.address,
-                            label = "Address",
-                            error = state.addressError,
-                            kind = FieldKind.Username,
-                            onValueChange = onAddressChange
-                        ),
-                        FieldState(
-                            value = state.dateOfBirth,
-                            label = "Date of birth",
-                            error = state.dateOfBirthError,
-                            kind = FieldKind.Username,
-                            onValueChange = onDobChange
-                        ),
-                    ),
                     labelColor = MaterialTheme.colorScheme.onSurface,
-                    valueColor = MaterialTheme.colorScheme.onSecondary
+                    valueColor = MaterialTheme.colorScheme.onSecondary,
                 )
 
                 FilledButton(
                     text = if (state.isSaving) "SAVING..." else "SAVE",
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = onSave
+                    onClick = onSave,
                 )
             }
         }
     }
 }
-
 
 @PreviewPhones
 @Composable
@@ -156,14 +157,15 @@ private fun AddContactContentPreview() {
     MyApplicationTheme {
         Surface(color = MaterialTheme.colorScheme.surface) {
             AddContactScreenContent(
-                state = AddContactContract.State(
-                    username = "Jenny Walker",
-                    career = "Make-up artist",
-                    email = "jname@gmail.com",
-                    phone = "(264)-654-3762",
-                    address = "775 Westminster Avenue APT D5\nBrooklyn, NY, 11230",
-                    dateOfBirth = "12/05/1995"
-                )
+                state =
+                    AddContactContract.State(
+                        username = "Jenny Walker",
+                        career = "Make-up artist",
+                        email = "jname@gmail.com",
+                        phone = "(264)-654-3762",
+                        address = "775 Westminster Avenue APT D5\nBrooklyn, NY, 11230",
+                        dateOfBirth = "12/05/1995",
+                    ),
             )
         }
     }

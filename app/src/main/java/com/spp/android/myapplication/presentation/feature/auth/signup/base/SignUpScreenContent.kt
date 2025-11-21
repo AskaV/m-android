@@ -38,21 +38,22 @@ fun SignUpScreenContent(
     onRememberMeChange: (Boolean) -> Unit = {},
     onRegisterClick: () -> Unit = {},
     onRegisterWithGoogleClick: () -> Unit = {},
-    onNavigateToLogin: () -> Unit = {}
+    onNavigateToLogin: () -> Unit = {},
 ) {
     val pad = dimensionResource(R.dimen.spacer_medium)
 
     Box(
-        modifier = modifier.fillMaxSize().padding(start = pad, end = pad, bottom = pad)
+        modifier = modifier.fillMaxSize().padding(start = pad, end = pad, bottom = pad),
     ) {
         Column(
             modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(dimensionResource(R.dimen.auth_top_spacer)))
 
             AuthHeader(
-                title = AppText.SignUp.TITLE.text(), subtitle = AppText.SignUp.SUBTITLE.text()
+                title = AppText.SignUp.TITLE.text(),
+                subtitle = AppText.SignUp.SUBTITLE.text(),
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_large)))
@@ -61,7 +62,7 @@ fun SignUpScreenContent(
                 state = state.fields,
                 onEmailChange = onEmailChange,
                 onPasswordChange = onPasswordChange,
-                onDone = onRegisterClick
+                onDone = onRegisterClick,
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_small)))
@@ -69,16 +70,20 @@ fun SignUpScreenContent(
             CheckBoxWithAction(
                 checked = state.rememberMe,
                 onCheckedChange = onRememberMeChange,
-                label = AppText.Login.REMEMBER_ME.text()
+                label = AppText.Login.REMEMBER_ME.text(),
             )
         }
 
         Column(
             modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             GoogleButton(
-                text = AppText.SignUp.GOOGLE.text().uppercase(), onClick = onRegisterWithGoogleClick
+                text =
+                    AppText.SignUp.GOOGLE
+                        .text()
+                        .uppercase(),
+                onClick = onRegisterWithGoogleClick,
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_small)))
@@ -87,15 +92,18 @@ fun SignUpScreenContent(
                 text = AppText.SignUp.OR.text(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_small)))
 
             OutlinedBorderButton(
-                text = AppText.SignUp.REGISTER.text().uppercase(),
+                text =
+                    AppText.SignUp.REGISTER
+                        .text()
+                        .uppercase(),
                 onClick = onRegisterClick,
-                style = OutlinedButtonStyle.Primary
+                style = OutlinedButtonStyle.Primary,
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_small)))
@@ -105,7 +113,7 @@ fun SignUpScreenContent(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.spacer_small))
+                modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.spacer_small)),
             )
 
             Spacer(Modifier.height(dimensionResource(R.dimen.spacer_medium)))
@@ -113,12 +121,11 @@ fun SignUpScreenContent(
             AuthFooter(
                 question = AppText.SignUp.HAVE_ACCOUNT.text(),
                 actionText = AppText.SignUp.SIGN_IN.text(),
-                onActionClick = onNavigateToLogin
+                onActionClick = onNavigateToLogin,
             )
         }
     }
 }
-
 
 @PreviewPhones
 @Composable
@@ -126,11 +133,15 @@ fun SignUpScreenPreview() {
     AutoThemePreview {
         Surface(color = MaterialTheme.colorScheme.background) {
             SignUpScreenContent(
-                state = SignUpContract.State(
-                    fields = AuthFieldsState(
-                        email = AppText.Preview.EMAIL, password = AppText.Preview.PASSWORD
-                    ), rememberMe = true
-                ),
+                state =
+                    SignUpContract.State(
+                        fields =
+                            AuthFieldsState(
+                                email = AppText.Preview.EMAIL,
+                                password = AppText.Preview.PASSWORD,
+                            ),
+                        rememberMe = true,
+                    ),
             )
         }
     }
@@ -142,14 +153,16 @@ fun SignUpScreenPreviewErrors() {
     AutoThemePreview {
         Surface(color = MaterialTheme.colorScheme.background) {
             SignUpScreenContent(
-                state = SignUpContract.State(
-                    fields = AuthFieldsState(
-                        email = AppText.Preview.WRONG_EMAIL,
-                        password = AppText.Preview.WRONG_PASSWORD,
-                        emailErrorKey = AppText.Login.EMAIL_ERROR,
-                        passwordErrorKey = AppText.Error.PASSWORD_ERROR
-                    )
-                ),
+                state =
+                    SignUpContract.State(
+                        fields =
+                            AuthFieldsState(
+                                email = AppText.Preview.WRONG_EMAIL,
+                                password = AppText.Preview.WRONG_PASSWORD,
+                                emailErrorKey = AppText.Login.EMAIL_ERROR,
+                                passwordErrorKey = AppText.Error.PASSWORD_ERROR,
+                            ),
+                    ),
             )
         }
     }

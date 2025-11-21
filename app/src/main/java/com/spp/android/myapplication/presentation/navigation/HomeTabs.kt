@@ -16,13 +16,16 @@ import androidx.compose.ui.res.stringResource
 import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 
-enum class HomeTab(@StringRes val titleRes: Int) {
+enum class HomeTab(
+    @StringRes val titleRes: Int,
+) {
     Profile(AppText.HomeTabs.PROFILE.res),
-    Contacts(AppText.HomeTabs.CONTACTS.res)
+    Contacts(AppText.HomeTabs.CONTACTS.res),
 }
 
 class HomeTabsController {
     internal var jumpTo: ((HomeTab) -> Unit)? = null
+
     fun goTo(tab: HomeTab) {
         jumpTo?.invoke(tab)
     }
@@ -33,7 +36,7 @@ fun HomeTabs(
     modifier: Modifier = Modifier,
     profile: @Composable () -> Unit = {},
     contacts: @Composable () -> Unit = {},
-    controller: HomeTabsController? = null
+    controller: HomeTabsController? = null,
 ) {
     val tabs = HomeTab.entries
     val pagerState = rememberPagerState(pageCount = { tabs.size })
@@ -54,7 +57,8 @@ fun HomeTabs(
                 Tab(
                     selected = pagerState.currentPage == index,
                     onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
-                    text = { Text(stringResource(tab.titleRes)) })
+                    text = { Text(stringResource(tab.titleRes)) },
+                )
             }
         }
         HorizontalPager(state = pagerState) { page ->

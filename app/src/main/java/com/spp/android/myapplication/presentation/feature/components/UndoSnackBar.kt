@@ -30,8 +30,9 @@ import kotlinx.coroutines.launch
 import kotlin.math.max
 
 @Stable
-class UndoSnackBarController(
-    val hostState: SnackbarHostState, private val totalSeconds: Int
+class UndoSnackBar(
+    val hostState: SnackbarHostState,
+    private val totalSeconds: Int,
 ) {
     var secondsLeft by mutableIntStateOf(0)
         private set
@@ -41,35 +42,38 @@ class UndoSnackBarController(
         message: String = "Item deleted",
         undoLabel: String = "Undo",
         onUndo: () -> Unit = {},
-        onTimeout: () -> Unit = {}
+        onTimeout: () -> Unit = {},
     ) {
         secondsLeft = totalSeconds
         var timeoutJob: Job? = null
 
         scope.launch {
-            val showJob = launch {
-                val result = hostState.showSnackbar(
-                    message = message,
-                    actionLabel = undoLabel,
-                    withDismissAction = false,
-                    duration = SnackbarDuration.Indefinite
-                )
-                if (result == SnackbarResult.ActionPerformed) {
-                    timeoutJob?.cancel()
-                    secondsLeft = 0
-                    onUndo()
-                } else {
-                    onTimeout()
+            val showJob =
+                launch {
+                    val result =
+                        hostState.showSnackbar(
+                            message = message,
+                            actionLabel = undoLabel,
+                            withDismissAction = false,
+                            duration = SnackbarDuration.Indefinite,
+                        )
+                    if (result == SnackbarResult.ActionPerformed) {
+                        timeoutJob?.cancel()
+                        secondsLeft = 0
+                        onUndo()
+                    } else {
+                        onTimeout()
+                    }
                 }
-            }
 
-            timeoutJob = launch {
-                while (secondsLeft > 0) {
-                    delay(1_000)
-                    secondsLeft = max(0, secondsLeft - 1)
+            timeoutJob =
+                launch {
+                    while (secondsLeft > 0) {
+                        delay(1_000)
+                        secondsLeft = max(0, secondsLeft - 1)
+                    }
+                    hostState.currentSnackbarData?.dismiss()
                 }
-                hostState.currentSnackbarData?.dismiss()
-            }
 
             showJob.join()
             secondsLeft = 0
@@ -84,7 +88,8 @@ class UndoSnackBarController(
                     message = data.visuals.message,
                     secondsLeft = secondsLeft,
                     totalSeconds = totalSeconds,
-                    onUndo = { data.performAction() })
+                    onUndo = { data.performAction() },
+                )
             } else {
                 Snackbar(snackbarData = data)
             }
@@ -93,14 +98,17 @@ class UndoSnackBarController(
 }
 
 @Composable
-fun rememberUndoSnackbarController(totalSeconds: Int = 5): UndoSnackBarController {
+fun rememberUndoSnackbarController(totalSeconds: Int = 5): UndoSnackBar {
     val host = remember { SnackbarHostState() }
-    return remember(totalSeconds) { UndoSnackBarController(host, totalSeconds) }
+    return remember(totalSeconds) { UndoSnackBar(host, totalSeconds) }
 }
 
 @Composable
 private fun UndoSnackbarWithTimer(
-    message: String, secondsLeft: Int, totalSeconds: Int, onUndo: () -> Unit
+    message: String,
+    secondsLeft: Int,
+    totalSeconds: Int,
+    onUndo: () -> Unit,
 ) {
     Surface(
         tonalElevation = 6.dp,
@@ -113,7 +121,7 @@ private fun UndoSnackbarWithTimer(
                 Text(
                     text = message,
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
                 TextButton(onClick = onUndo) {
                     Text("Undo ($secondsLeft)")
@@ -121,7 +129,8 @@ private fun UndoSnackbarWithTimer(
             }
             val progress = ((totalSeconds - secondsLeft).toFloat() / totalSeconds).coerceIn(0f, 1f)
             LinearProgressIndicator(
-                progress = { progress }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+                progress = { progress },
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
             )
         }
     }

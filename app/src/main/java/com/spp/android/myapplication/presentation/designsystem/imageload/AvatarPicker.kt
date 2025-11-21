@@ -35,37 +35,43 @@ fun AvatarPicker(
     space: Dp = dimensionResource(R.dimen.spacer_medium),
     badgeBg: Color = MaterialTheme.colorScheme.onSurface,
     badgeIconTint: Color = Color.White,
-    showBadge: Boolean = false
+    showBadge: Boolean = false,
 ) {
     Row(
-        modifier = modifier, verticalAlignment = Alignment.CenterVertically
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         androidx.compose.material3.Icon(
             painter = painterResource(R.drawable.baseline_account_circle_avatar),
             contentDescription = null,
             tint = Color.Unspecified,
-            modifier = Modifier.size(avatarSize)
+            modifier = Modifier.size(avatarSize),
         )
 
         if (showBadge) {
             Spacer(modifier = Modifier.width(space))
 
             Box(
-                modifier = Modifier.size(badgeSize).clip(CircleShape).background(badgeBg)
-                    .clickable(onClick = onClick), contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .size(badgeSize)
+                        .clip(CircleShape)
+                        .background(badgeBg)
+                        .clickable(onClick = onClick),
+                contentAlignment = Alignment.Center,
             ) {
                 androidx.compose.material3.Icon(
                     painter = painterResource(R.drawable.ic_camera),
                     contentDescription = null,
                     tint = badgeIconTint,
-                    modifier = Modifier.size(22.dp)
+                    modifier = Modifier.size(22.dp),
                 )
                 Text(
                     text = "+",
                     color = badgeIconTint,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.align(Alignment.TopEnd).offset(x = (-4).dp, y = (-1).dp)
+                    modifier = Modifier.align(Alignment.TopEnd).offset(x = (-4).dp, y = (-1).dp),
                 )
             }
         }
@@ -77,7 +83,7 @@ fun AvatarPicker(
 private fun AvatarPickerBadgePreview() {
     PreviewColumn {
         AvatarPicker(
-            showBadge = true
+            showBadge = true,
         )
     }
 }
@@ -86,7 +92,6 @@ private fun AvatarPickerBadgePreview() {
 @Composable
 private fun AvatarPickerPreview() {
     PreviewColumn {
-        AvatarPicker(
-        )
+        AvatarPicker()
     }
 }

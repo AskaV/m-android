@@ -25,7 +25,7 @@ fun GalleryPickerSheet(
     onCameraClick: () -> Unit = {},
     onOpenGallery: () -> Unit = {},
     onDeleteCurrent: () -> Unit = {},
-    onCancel: () -> Unit = {}
+    onCancel: () -> Unit = {},
 ) {
     val corner = dimensionResource(id = R.dimen.spacer_small)
     val spacing = dimensionResource(id = R.dimen.spacer_small)
@@ -34,17 +34,20 @@ fun GalleryPickerSheet(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(corner),
-        color = MaterialTheme.colorScheme.tertiary
+        color = MaterialTheme.colorScheme.tertiary,
     ) {
         Column(
-            Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
+            Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             GalleryTilesRow(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(start = spacing, top = spacing, end = spacing),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(start = spacing, top = spacing, end = spacing),
                 showCamera = showCamera,
                 onCameraClick = onCameraClick,
-                spacing = spacing
+                spacing = spacing,
             )
 
             Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_large)))
@@ -52,7 +55,7 @@ fun GalleryPickerSheet(
             GalleryActions(
                 modifier = Modifier.padding(horizontal = actionsSidePadding),
                 onOpenGallery = onOpenGallery,
-                onCancel = onCancel
+                onCancel = onCancel,
             )
 
             Spacer(Modifier.height(spacing))
@@ -60,9 +63,9 @@ fun GalleryPickerSheet(
     }
 }
 
-
 @PreviewPhones
 @Composable
-fun GalleryPickerAddPhotoPreview() = PreviewColumn {
-    GalleryPickerSheet()
-}
+fun GalleryPickerAddPhotoPreview() =
+    PreviewColumn {
+        GalleryPickerSheet()
+    }

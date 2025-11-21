@@ -19,7 +19,7 @@ internal fun GalleryTilesRow(
     onCameraClick: () -> Unit = {},
     maxColumns: Int = 4,
     minTile: Dp = dimensionResource(id = R.dimen.badge_size),
-    spacing: Dp = dimensionResource(id = R.dimen.spacer_small)
+    spacing: Dp = dimensionResource(id = R.dimen.spacer_small),
 ) {
     BoxWithConstraints(modifier) {
         val contentWidth = maxWidth
@@ -28,7 +28,7 @@ internal fun GalleryTilesRow(
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(spacing),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             if (showCamera) {
                 CameraTile(size = tile, onClick = onCameraClick)
@@ -41,8 +41,9 @@ internal fun GalleryTilesRow(
 
 @PreviewPhones
 @Composable
-private fun GalleryTilesRowWithCameraPreview() = PreviewColumn {
-    GalleryTilesRow(
-        showCamera = true
-    )
-}
+private fun GalleryTilesRowWithCameraPreview() =
+    PreviewColumn {
+        GalleryTilesRow(
+            showCamera = true,
+        )
+    }

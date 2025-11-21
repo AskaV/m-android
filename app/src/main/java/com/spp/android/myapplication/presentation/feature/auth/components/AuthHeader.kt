@@ -20,24 +20,26 @@ import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
 fun AuthHeader(
-    modifier: Modifier = Modifier, title: String = "", subtitle: String = ""
+    modifier: Modifier = Modifier,
+    title: String = "",
+    subtitle: String = "",
 ) {
     Column(
         modifier = modifier.fillMaxWidth().wrapContentHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onBackground,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(dimensionResource(R.dimen.spacer_small)))
         Text(
             text = subtitle,
             style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
             color = MaterialTheme.colorScheme.onBackground,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }
@@ -47,7 +49,8 @@ fun AuthHeader(
 private fun AuthHeaderPreview() {
     PreviewColumn {
         AuthHeader(
-            title = AppText.Login.TITLE.text(), subtitle = AppText.Login.SUBTITLE.text()
+            title = AppText.Login.TITLE.text(),
+            subtitle = AppText.Login.SUBTITLE.text(),
         )
     }
 }

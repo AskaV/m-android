@@ -20,16 +20,20 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPh
 
 @Composable
 internal fun CameraTile(
-    size: Dp, onClick: () -> Unit = {}
+    size: Dp,
+    onClick: () -> Unit = {},
 ) {
     Box(
-        Modifier.size(size).clip(RoundedCornerShape(10))
-            .background(MaterialTheme.colorScheme.onTertiary).clickable { onClick() },
-        contentAlignment = Alignment.Center
+        Modifier
+            .size(size)
+            .clip(RoundedCornerShape(10))
+            .background(MaterialTheme.colorScheme.onTertiary)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center,
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_camera),
-            contentDescription = "Open gallery"
+            contentDescription = "Open gallery",
         )
     }
 }
@@ -37,13 +41,16 @@ internal fun CameraTile(
 @Composable
 internal fun PlaceholderTile(size: Dp) {
     Box(
-        Modifier.size(size).clip(RoundedCornerShape(10))
-            .background(MaterialTheme.colorScheme.onTertiary)
+        Modifier
+            .size(size)
+            .clip(RoundedCornerShape(10))
+            .background(MaterialTheme.colorScheme.onTertiary),
     )
 }
 
 @PreviewPhones
 @Composable
-private fun CameraTilePreview() = PreviewColumn {
-    CameraTile(size = dimensionResource(id = R.dimen.social_button_size))
-}
+private fun CameraTilePreview() =
+    PreviewColumn {
+        CameraTile(size = dimensionResource(id = R.dimen.social_button_size))
+    }
