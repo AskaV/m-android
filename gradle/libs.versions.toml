@@ -10,7 +10,7 @@ coreKtx = "1.17.0"
 navigationCompose = "2.9.5"
 datastorePreferences = "1.1.7"
 hilt-version = "2.57.2"
-agp = "8.13.1"
+agp = "8.13.2"
 kotlin = "2.2.21"
 navigation = "2.9.5"
 

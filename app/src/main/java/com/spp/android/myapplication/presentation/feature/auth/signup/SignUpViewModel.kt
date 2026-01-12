@@ -2,6 +2,7 @@ package com.spp.android.myapplication.presentation.feature.auth.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.domain.storage.AvatarStorage
 import com.spp.android.myapplication.domain.storage.LocalStorage
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.BackFromExtended
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.NavigateToExtended
@@ -44,6 +45,7 @@ class SignUpViewModel
     @Inject
     constructor(
         private val localStorage: LocalStorage,
+        private val avatarStorage: AvatarStorage,
     ) : ViewModel() {
         private val _state = MutableStateFlow(SignUpContract.State())
         val state: StateFlow<SignUpContract.State> = _state.asStateFlow()
@@ -136,7 +138,7 @@ class SignUpViewModel
                 is UsernameBlur -> updateProfile { validate(Field.USERNAME) }
                 is PhoneBlur -> updateProfile { validate(Field.PHONE) }
 
-                is AvatarPicked -> updateProfile { copy(avatar = event.avatarUri) }
+                is AvatarPicked -> onAvatarPicked(event.uriString)
                 is PickAvatar -> sendEffect(OpenAvatarPicker)
                 is RegisterWithGoogle -> sendEffect(OpenGoogleSignIn)
 
@@ -154,7 +156,18 @@ class SignUpViewModel
                 is ErrorShown -> updateState { copy(errorKey = null) }
             }
         }
+    private fun onAvatarPicked(uriString: String) = viewModelScope.launch {
+        runCatching {
+            val oldPath = _profile.value.avatarPath
+            val newPath = avatarStorage.saveAvatarFromUri(uriString)
 
+            avatarStorage.deleteAvatar(oldPath)
+
+            updateProfile { copy(avatarPath = newPath) }
+        }.onFailure {
+            sendEffect(SignUpContract.Effect.ShowMessage(AppText.OtherInfo.UNKNOWN_ERROR))
+        }
+    }
         private fun submitRegister() =
             viewModelScope.launch {
                 val emailErrKey =

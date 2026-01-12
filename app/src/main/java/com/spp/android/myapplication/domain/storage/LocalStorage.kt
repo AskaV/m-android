@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.domain.storage
 
+import com.spp.android.myapplication.domain.model.UserProfile
 import kotlinx.coroutines.flow.Flow
 
 interface LocalStorage {
@@ -10,6 +11,9 @@ interface LocalStorage {
         email: String,
         remember: Boolean,
     )
+
+    val userProfile: Flow<UserProfile?>
+    suspend fun saveUserProfile(profile: UserProfile)
 
     suspend fun clear()
 }

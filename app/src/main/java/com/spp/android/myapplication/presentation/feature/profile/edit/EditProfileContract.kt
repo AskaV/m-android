@@ -16,6 +16,7 @@ object EditProfileContract {
         val errorKey: TextKey? = null,
         val usernameErrorKey: TextKey? = null,
         val phoneErrorKey: TextKey? = null,
+        val avatarPath: String? = null,
     )
 
     sealed interface Event {
@@ -48,6 +49,9 @@ object EditProfileContract {
         data object AvatarClicked : Event
 
         data object ErrorShown : Event
+
+        data class AvatarSelected(val uriString: String) : Event
+        data object AvatarDeleted : Event
     }
 
     sealed interface Effect {

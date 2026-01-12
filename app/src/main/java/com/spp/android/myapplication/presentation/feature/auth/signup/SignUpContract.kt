@@ -1,6 +1,5 @@
 package com.spp.android.myapplication.presentation.feature.auth.signup
 
-import android.net.Uri
 import androidx.compose.runtime.Immutable
 import com.spp.android.myapplication.presentation.designsystem.components.inputs.AuthFieldsState
 import com.spp.android.myapplication.presentation.texts.TextKey
@@ -21,7 +20,7 @@ object SignUpContract {
         val phone: String = "",
         val usernameErrorKey: TextKeyWithArgs? = null,
         val phoneErrorKey: TextKeyWithArgs? = null,
-        val avatar: Uri? = null,
+        val avatarPath: String? = null,
         val isLoading: Boolean = false,
         val errorKey: TextKey? = null,
     )
@@ -55,9 +54,7 @@ object SignUpContract {
             val phone: String,
         ) : Event
 
-        data class AvatarPicked(
-            val avatarUri: Uri,
-        ) : Event
+        data class AvatarPicked(val uriString: String) : Event
 
         data object PickAvatar : Event
 
@@ -76,7 +73,7 @@ object SignUpContract {
 
     sealed interface Effect {
         data class ShowMessage(
-            val message: String,
+            val message: TextKey,
         ) : Effect
 
         data object OpenGoogleSignIn : Effect

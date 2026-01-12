@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.NavigateToExtended
@@ -31,11 +32,12 @@ fun SignUpScreen(
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
     val snackBar = SnackbarHostState()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         vm.effect.collectLatest { effect ->
             when (effect) {
-                is ShowMessage -> snackBar.showSnackbar(effect.message)
+                is ShowMessage -> snackBar.showSnackbar(effect.message.text(context))
                 is OpenGoogleSignIn -> onOpenGoogle()
                 is NavigateToLogin -> onNavigateToLogin()
 

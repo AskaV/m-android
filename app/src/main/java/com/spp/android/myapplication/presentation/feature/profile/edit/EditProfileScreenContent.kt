@@ -39,7 +39,8 @@ fun EditProfileScreenContent(
     onBack: () -> Unit = {},
     onValueChange: (field: String, value: String) -> Unit = { _, _ -> },
     onSave: (String, String, String, String, String) -> Unit = { _, _, _, _, _ -> },
-) {
+    onAvatarClick: () -> Unit = {},
+    ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
@@ -77,7 +78,11 @@ fun EditProfileScreenContent(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center,
                 ) {
-                    AvatarPicker(onClick = { /* TODO open picker */ }, showBadge = true)
+                    AvatarPicker(
+                        avatarPath = state.avatarPath,
+                        onClick = onAvatarClick,
+                        showBadge = true
+                    )
                 }
 
                 Spacer(Modifier.height(spaceM))

@@ -1,5 +1,7 @@
 package com.spp.android.myapplication.presentation.feature.profile.edit
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,6 +15,7 @@ import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfi
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Effect.Saved
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Effect.ShowMessage
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.AddressChanged
+import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.AvatarSelected
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.BackClicked
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.BirthdateChanged
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Event.CareerChanged
@@ -25,17 +28,24 @@ import java.io.Serializable
 fun EditProfileScreen(
     onBack: () -> Unit = {},
     onDone: (ProfileResult) -> Unit = {},
-    onOpenAvatarPicker: () -> Unit = {},
     vm: EditProfileViewModel = hiltViewModel(),
 ) {
     val snackBar = remember { SnackbarHostState() }
     val context = LocalContext.current
     val state by vm.state.collectAsState()
 
+    val pickImageLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                vm.onEvent(AvatarSelected(uri.toString()))
+            }
+        }
+
     LaunchedEffect(Unit) {
         vm.effect.collect { effect ->
             when (effect) {
                 is NavigateBack -> onBack()
+
                 is Saved ->
                     onDone(
                         ProfileResult(
@@ -51,7 +61,9 @@ fun EditProfileScreen(
                     snackBar.showSnackbar(effect.messageKey.text(context))
                 }
 
-                is OpenAvatarPicker -> onOpenAvatarPicker()
+                is OpenAvatarPicker -> {
+                    pickImageLauncher.launch("image/*")
+                }
             }
         }
     }
@@ -68,6 +80,7 @@ fun EditProfileScreen(
             vm.onEvent(BirthdateChanged(birthdate))
             vm.onEvent(SaveClicked)
         },
+        onAvatarClick = { vm.onEvent(EditProfileContract.Event.AvatarClicked) },
     )
 }
 

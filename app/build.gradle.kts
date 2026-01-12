@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.coil.compose)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

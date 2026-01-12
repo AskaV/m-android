@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract
@@ -42,6 +43,7 @@ fun SignUpExtendedScreen(
     val snackBar = SnackbarHostState()
     var showPicker by remember { mutableStateOf(false) }
     var pickerKey by remember { mutableIntStateOf(0) }
+    val context = LocalContext.current
 
     if (showPicker) {
         key(pickerKey) {
@@ -49,7 +51,7 @@ fun SignUpExtendedScreen(
                 startVisible = true,
                 onResult = { uri ->
                     showPicker = false
-                    uri?.let { vm.onEvent(AvatarPicked(it)) }
+                    uri?.let { vm.onEvent(AvatarPicked(it.toString())) }
                 },
             )
         }
@@ -69,10 +71,10 @@ fun SignUpExtendedScreen(
         vm.effect.collectLatest { effect ->
             when (effect) {
                 OpenAvatarPicker -> {
-                    pickerKey++
                     showPicker = true
                 }
-                is ShowMessage -> snackBar.showSnackbar(effect.message)
+
+                is ShowMessage -> snackBar.showSnackbar(effect.message.text(context))
                 is OpenAvatarPicker -> showPicker = true
                 is BackFromExtended -> onBack()
                 is NavigateToHome -> {
@@ -94,7 +96,7 @@ fun SignUpExtendedScreen(
                     phone = profile.phone,
                     usernameErrorKey = profile.usernameErrorKey,
                     phoneErrorKey = profile.phoneErrorKey,
-                    avatar = profile.avatar,
+                    avatarPath = profile.avatarPath,
                 ),
             onPickAvatar = { vm.onEvent(PickAvatar) },
             onUserNameChange = { vm.onEvent(UsernameChanged(it)) },
@@ -110,7 +112,7 @@ fun SignUpExtendedScreen(
             startVisible = true,
             onResult = { uri ->
                 showPicker = false
-                uri?.let { vm.onEvent(AvatarPicked(it)) }
+                uri?.let { vm.onEvent(AvatarPicked(it.toString())) }
             },
         )
     }

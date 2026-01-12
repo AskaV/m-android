@@ -47,6 +47,7 @@ fun SignUpProfileScreenContent(
             Spacer(Modifier.height(dimensionResource(R.dimen.auth_top_small)))
 
             AvatarPicker(
+                avatarPath = state.avatarPath,
                 onClick = onPickAvatar,
                 showBadge = true,
             )

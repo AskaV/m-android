@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,15 +17,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
+import java.io.File
 
 @Composable
 fun AvatarPicker(
@@ -36,17 +40,38 @@ fun AvatarPicker(
     badgeBg: Color = MaterialTheme.colorScheme.onSurface,
     badgeIconTint: Color = Color.White,
     showBadge: Boolean = false,
+    avatarPath: String? = null,
 ) {
+    val avatarContainer = Modifier
+        .size(avatarSize)
+        .clip(CircleShape)
+        .background(MaterialTheme.colorScheme.surfaceVariant)
+
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        androidx.compose.material3.Icon(
-            painter = painterResource(R.drawable.baseline_account_circle_avatar),
-            contentDescription = null,
-            tint = Color.Unspecified,
-            modifier = Modifier.size(avatarSize),
-        )
+        Box(
+            modifier = avatarContainer,
+            contentAlignment = Alignment.Center
+        ) {
+            if (avatarPath.isNullOrBlank()) {
+                Icon(
+                    painter = painterResource(R.drawable.baseline_account_circle_avatar),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.matchParentSize()
+                )
+            } else {
+                AsyncImage(
+                    model = File(avatarPath),
+                    contentDescription = null,
+                    modifier = Modifier.matchParentSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
+
 
         if (showBadge) {
             Spacer(modifier = Modifier.width(space))
