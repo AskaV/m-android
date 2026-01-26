@@ -2,6 +2,7 @@ package com.spp.android.myapplication.presentation.feature.profile.my
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.domain.storage.LocalStorage
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Effect
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileContract.Event.EditProfileClicked
@@ -16,10 +17,12 @@ import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileCo
 import com.spp.android.myapplication.presentation.texts.AppText
 import com.spp.android.myapplication.presentation.utils.parseNameFromEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,13 +30,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyProfileViewModel
-    @Inject
-    constructor() : ViewModel() {
+@Inject constructor(
+    private val localStorage: LocalStorage,
+) : ViewModel(){
         private val _state = MutableStateFlow(MyProfileContract.State())
         val state: StateFlow<MyProfileContract.State> = _state.asStateFlow()
 
         private val _effect = Channel<Effect>(Channel.BUFFERED)
         val effect = _effect.receiveAsFlow()
+        private var profileJob: Job? = null
 
         init {
             onEvent(Load)
@@ -53,8 +58,7 @@ class MyProfileViewModel
                             name = event.username,
                             linePrimary = event.career,
                             lineSecondary = event.address,
-                            isCompleted = true,
-                        )
+                            isCompleted = true)
                     }
                 }
 
@@ -68,32 +72,30 @@ class MyProfileViewModel
             }
         }
 
-        private fun loadProfile() =
+    private fun loadProfile() {
+        if (profileJob != null) return
+
+        profileJob =
             viewModelScope.launch {
                 _state.update { it.copy(isLoading = true, errorKey = null) }
 
-                runCatching {
-                    StubProfile(
-                        name = "",
-                        linePrimary = "",
-                        lineSecondary = "",
-                        isCompleted = false,
-                    )
-                }.onSuccess { p ->
-                    _state.update {
-                        it.copy(
-                            name = p.name,
-                            linePrimary = p.linePrimary,
-                            lineSecondary = p.lineSecondary,
-                            isCompleted = p.isCompleted,
-                            isLoading = false,
-                        )
+                localStorage.userProfile.collect { profile ->
+                    if (profile != null) {
+                        _state.update {
+                            it.copy(
+                                name = profile.username,
+                                linePrimary = profile.career,
+                                lineSecondary = profile.address,
+                                avatarPath = profile.avatarPath,
+                                isCompleted = profile.isCompleted,
+                                isLoading = false,
+                            )
+                        }
+                    } else {
+                        _state.update { it.copy(isLoading = false) }
                     }
-                }.onFailure {
-                    _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
-                    sendEffect(Effect.ShowMessage(AppText.OtherInfo.FAILED_TO_LOAD_PROFILE))
                 }
-            }
+            }}
 
         private fun performLogout() =
             viewModelScope.launch {

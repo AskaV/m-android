@@ -13,7 +13,8 @@ object MyProfileContract {
         val isCompleted: Boolean = false,
         val isLoading: Boolean = false,
         val errorKey: TextKey? = null,
-    )
+        val avatarPath: String? = null,
+        )
 
     sealed interface Event {
         data object Load : Event

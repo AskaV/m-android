@@ -76,6 +76,7 @@ fun ContactProfileScreen(
                     name = state.name,
                     linePrimary = state.linePrimary,
                     lineSecondary = state.lineSecondary,
+                    avatarPath = "TODo",
                 )
 
                 Spacer(Modifier.height(spaceL))

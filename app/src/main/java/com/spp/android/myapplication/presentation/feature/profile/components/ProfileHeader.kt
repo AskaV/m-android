@@ -13,12 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import coil.compose.AsyncImage
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.texts.AppText
+import java.io.File
 
 @Composable
 fun ProfileHeader(
@@ -27,16 +30,28 @@ fun ProfileHeader(
     linePrimary: String = "",
     lineSecondary: String = "",
     avatarRes: Int = R.drawable.baseline_account_circle_avatar,
+    avatarPath: String? = "",
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Image(
-            painter = painterResource(id = avatarRes),
-            contentDescription = null,
-            modifier = Modifier.size(dimensionResource(id = R.dimen.avatar_size)).clip(CircleShape),
-        )
+        val avatarSize = dimensionResource(id = R.dimen.avatar_size)
+
+        if (avatarPath.isNullOrBlank()) {
+            Image(
+                painter = painterResource(id = avatarRes),
+                contentDescription = null,
+                modifier = Modifier.size(avatarSize).clip(CircleShape),
+            )
+        } else {
+            AsyncImage(
+                model = File(avatarPath),
+                contentDescription = null,
+                modifier = Modifier.size(avatarSize).clip(CircleShape),
+                contentScale = ContentScale.Crop,
+            )
+        }
 
         Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_large)))
 
