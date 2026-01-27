@@ -28,6 +28,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.domain.model.Contact
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
@@ -80,11 +81,13 @@ fun ContactCardOutlined(
                 )
             }
 
-            Image(
-                painter = painterResource(R.drawable.baseline_account_circle_avatar),
+            AsyncImage(
+                model = contact.avatarUrl,
                 contentDescription = null,
                 modifier = Modifier.size(56.dp).clip(CircleShape),
                 contentScale = ContentScale.Crop,
+                placeholder = painterResource(R.drawable.baseline_account_circle_avatar),
+                error = painterResource(R.drawable.baseline_account_circle_avatar),
             )
 
             Spacer(Modifier.width(spaceS))

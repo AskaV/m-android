@@ -128,7 +128,7 @@ fun AppNavGraph() {
             arguments =
                 listOf(
                     navArgument(Routes.ContactProfile.ARG) {
-                        type = NavType.StringType
+                        type = NavType.IntType
                     },
                 ),
         ) { backStackEntry ->

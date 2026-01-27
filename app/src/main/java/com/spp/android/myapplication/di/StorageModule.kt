@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import com.spp.android.myapplication.data.storage.ContactsPreferences
 import com.spp.android.myapplication.data.storage.UserPreferences
 import com.spp.android.myapplication.domain.storage.LocalStorage
 import dagger.Binds
@@ -20,16 +21,24 @@ import javax.inject.Singleton
 object StorageProvides {
     @Provides
     @Singleton
-    fun provideUserPreferences(dataStore: DataStore<Preferences>): UserPreferences = UserPreferences(dataStore)
-
-    @Provides
-    @Singleton
     fun provideUserPrefs(
         @ApplicationContext context: Context,
     ): DataStore<Preferences> =
         PreferenceDataStoreFactory.create {
             context.preferencesDataStoreFile("user_prefs")
         }
+
+    @Provides
+    @Singleton
+    fun provideUserPreferences(
+        dataStore: DataStore<Preferences>,
+    ): UserPreferences = UserPreferences(dataStore)
+
+    @Provides
+    @Singleton
+    fun provideContactsPreferences(
+        dataStore: DataStore<Preferences>,
+    ): ContactsPreferences = ContactsPreferences(dataStore)
 }
 
 @Module

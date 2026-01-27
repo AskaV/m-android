@@ -10,6 +10,7 @@ object ContactProfileContract {
         val name: String = "",
         val linePrimary: String = "",
         val lineSecondary: String = "",
+        val avatarPath: String? = null,
         val hasSocial: Boolean = true,
         val isLoading: Boolean = false,
         val errorKey: TextKey? = null,

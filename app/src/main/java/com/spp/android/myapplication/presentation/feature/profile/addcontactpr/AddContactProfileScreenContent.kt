@@ -74,7 +74,7 @@ fun AddContactProfileScreenContent(
                     name = state.name,
                     linePrimary = state.linePrimary,
                     lineSecondary = state.lineSecondary,
-                    avatarPath = "TODO",
+                    avatarPath = state.avatarPath,
                 )
             }
         }

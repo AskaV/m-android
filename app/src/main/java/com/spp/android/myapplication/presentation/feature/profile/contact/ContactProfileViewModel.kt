@@ -2,6 +2,7 @@ package com.spp.android.myapplication.presentation.feature.profile.contact
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.domain.repository.ContactsRepository
 import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Effect
 import com.spp.android.myapplication.presentation.feature.profile.contact.ContactProfileContract.Event
 import com.spp.android.myapplication.presentation.texts.AppText
@@ -16,9 +17,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ContactProfileViewModel
-    @Inject
-    constructor() : ViewModel() {
+class ContactProfileViewModel @Inject constructor(
+    private val contactsRepository: ContactsRepository,
+) : ViewModel() {
         private val _state = MutableStateFlow(ContactProfileContract.State())
         val state: StateFlow<ContactProfileContract.State> = _state.asStateFlow()
 
@@ -40,32 +41,34 @@ class ContactProfileViewModel
             }
         }
 
-        private fun load(id: Int) =
-            viewModelScope.launch {
-                _state.update { it.copy(isLoading = true, contactId = id, errorKey = null) }
+    private fun load(id: Int) =
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, contactId = id, errorKey = null) }
 
-                runCatching {
-                    StubContact(
-                        id = id,
-                        name = "Lucile Alvarado",
-                        linePrimary = "Product Designer",
-                        lineSecondary = "New York, USA",
-                        hasSocial = true,
-                    )
-                }.onSuccess { c ->
-                    _state.update {
-                        it.copy(
-                            name = c.name,
-                            linePrimary = c.linePrimary,
-                            lineSecondary = c.lineSecondary,
-                            hasSocial = c.hasSocial,
-                        )
-                    }
-                }.onFailure {
+            runCatching {
+                contactsRepository.loadContacts().firstOrNull { it.id == id }
+            }.onSuccess { contact ->
+                if (contact == null) {
                     _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
                     sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
+                    return@onSuccess
                 }
+
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        name = contact.name,
+                        linePrimary = contact.subtitle,
+                        lineSecondary = "",
+                        hasSocial = true,
+                        avatarPath = contact.avatarUrl,
+                    )
+                }
+            }.onFailure {
+                _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+                sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
             }
+        }
 
         private fun addContact() =
             viewModelScope.launch {

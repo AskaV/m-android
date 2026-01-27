@@ -42,13 +42,7 @@ fun ContactProfileScreen(
     }
 
     ContactProfileScreen(
-        state =
-            ContactProfileContract.State(
-                name = state.name,
-                linePrimary = state.linePrimary,
-                lineSecondary = state.lineSecondary,
-                hasSocial = state.hasSocial,
-            ),
+        state = state,
         onBack = { vm.onEvent(BackClicked) },
         onMessage = { vm.onEvent(MessageClicked) },
     )

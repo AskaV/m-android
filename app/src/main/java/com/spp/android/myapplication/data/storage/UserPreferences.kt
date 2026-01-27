@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.spp.android.myapplication.domain.model.Contact
 import com.spp.android.myapplication.domain.model.UserProfile
 import com.spp.android.myapplication.domain.storage.LocalStorage
 import kotlinx.coroutines.flow.Flow

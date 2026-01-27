@@ -2,20 +2,26 @@ package com.spp.android.myapplication.presentation.feature.profile.addcontactpr
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.domain.repository.ContactsRepository
 import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Effect
 import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Event.AddToContactsClicked
 import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Event.BackClicked
 import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Event.ErrorShown
 import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Event.Load
 import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Event.MessageClicked
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AddContactProfileViewModel : ViewModel() {
+@HiltViewModel
+class AddContactProfileViewModel @Inject constructor(
+    private val contactsRepository: ContactsRepository,
+) : ViewModel() {
     private val _state = MutableStateFlow(AddContactProfileContract.State())
     val state = _state.asStateFlow()
 
@@ -44,16 +50,24 @@ class AddContactProfileViewModel : ViewModel() {
     }
 
     private fun load(id: Int) {
-        _state.update { it.copy(isLoading = true) }
-        _state.update {
-            it.copy(
-                id = id,
-                name = "Jenny Walker",
-                linePrimary = "Make-up artist",
-                lineSecondary = "775 Westminster Ave APT D5\nBrooklyn, NY, 11230",
-                isInMyContacts = false,
-                isLoading = false,
-            )
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+
+            val contact = contactsRepository
+                .loadContacts()
+                .firstOrNull { it.id == id }
+
+            _state.update {
+                it.copy(
+                    id = id,
+                    name = contact?.name.orEmpty(),
+                    linePrimary = contact?.subtitle.orEmpty(),
+                    lineSecondary = "",
+                    avatarPath = contact?.avatarUrl,
+                    isInMyContacts = false,
+                    isLoading = false,
+                )
+            }
         }
     }
 

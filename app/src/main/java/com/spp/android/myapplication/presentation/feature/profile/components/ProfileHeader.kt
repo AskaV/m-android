@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
@@ -46,10 +47,12 @@ fun ProfileHeader(
             )
         } else {
             AsyncImage(
-                model = File(avatarPath),
+                model = avatarPath,
                 contentDescription = null,
-                modifier = Modifier.size(avatarSize).clip(CircleShape),
                 contentScale = ContentScale.Crop,
+                placeholder = painterResource(R.drawable.baseline_account_circle_avatar),
+                error = painterResource(R.drawable.baseline_account_circle_avatar),
+                modifier = Modifier.size(avatarSize).clip(CircleShape),
             )
         }
 

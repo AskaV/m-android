@@ -9,6 +9,7 @@ object AddContactProfileContract {
         val name: String = "",
         val linePrimary: String = "",
         val lineSecondary: String = "",
+        val avatarPath: String? = null,
         val isInMyContacts: Boolean = false,
         val isLoading: Boolean = false,
         val error: String = "",
