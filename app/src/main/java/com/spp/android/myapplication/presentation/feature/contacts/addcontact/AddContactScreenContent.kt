@@ -78,7 +78,10 @@ fun AddContactScreenContent(
                         modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.Center,
                     ) {
-                        AvatarPicker(onClick = onAvatarClick, showBadge = true)
+                        AvatarPicker(
+                            onClick = onAvatarClick,
+                            showBadge = true,
+                            avatarPath = state.avatarUrl, )
                     }
 
                     Spacer(Modifier.height(pad))

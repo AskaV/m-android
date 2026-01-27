@@ -1,6 +1,8 @@
 package com.spp.android.myapplication.presentation.feature.contacts.addcontact
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,7 +17,16 @@ fun AddContactScreen(
     vm: AddContactViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
-
+    val pickImageLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent()
+        ) { uri ->
+            uri?.let {
+                vm.onEvent(
+                    Event.OnAvatarPicked(it.toString())
+                )
+            }
+        }
     LaunchedEffect(Unit) {
         vm.effect.collect { effect ->
             when (effect) {
@@ -32,7 +43,7 @@ fun AddContactScreen(
     AddContactScreenContent(
         state = state,
         onBack = { vm.onEvent(Event.BackClicked) },
-        onAvatarClick = { vm.onEvent(Event.AvatarClicked) },
+        onAvatarClick = { pickImageLauncher.launch("image/*") },
         onSave = { vm.onEvent(Event.SaveClicked) },
         onUsernameChange = { vm.onEvent(Event.UsernameChanged(it)) },
         onCareerChange = { vm.onEvent(Event.CareerChanged(it)) },

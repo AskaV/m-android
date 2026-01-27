@@ -18,6 +18,7 @@ object AddContactContract {
         val addressError: String = "",
         val dateOfBirthError: String = "",
         val isSaving: Boolean = false,
+        val avatarUrl: String? = null,
     )
 
     sealed interface Event {
@@ -26,7 +27,9 @@ object AddContactContract {
         data object AvatarClicked : Event
 
         data object SaveClicked : Event
-
+        object OnPickAvatarClick : Event
+        data class OnAvatarPicked(val uri: String) : Event
+        object OnSaveClick : Event
         data class UsernameChanged(
             val value: String,
         ) : Event

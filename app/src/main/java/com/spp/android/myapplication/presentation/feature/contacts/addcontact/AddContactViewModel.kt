@@ -5,9 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.domain.model.Contact
 import com.spp.android.myapplication.domain.repository.ContactsRepository
+import com.spp.android.myapplication.domain.storage.AvatarStorage
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Effect
+import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Effect.*
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Event
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.State
+import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +25,10 @@ import kotlin.math.absoluteValue
 @HiltViewModel
 class AddContactViewModel
     @Inject
-    constructor(private val contactsRepository: ContactsRepository,) : ViewModel() {
+    constructor(
+        private val contactsRepository: ContactsRepository,
+        private val avatarStorage: AvatarStorage,) : ViewModel()
+{
         private val _state = MutableStateFlow(State())
         val state = _state.asStateFlow()
 
@@ -32,7 +38,7 @@ class AddContactViewModel
         fun onEvent(event: Event) {
             when (event) {
                 is Event.BackClicked -> sendEffect(Effect.NavigateBack)
-                is Event.AvatarClicked -> sendEffect(Effect.ShowMessage("Avatar picker clicked"))
+                is Event.AvatarClicked -> sendEffect(ShowMessage("Avatar picker clicked"))
 
                 is Event.UsernameChanged -> _state.update { it.copy(username = event.value) }
                 is Event.CareerChanged -> _state.update { it.copy(career = event.value) }
@@ -43,6 +49,17 @@ class AddContactViewModel
 
                 is Event.SaveClicked -> save()
                 is Event.ErrorShown -> _state.update { it.copy() }
+                is Event.OnAvatarPicked -> {
+                    viewModelScope.launch {
+                        runCatching {
+                            avatarStorage.saveAvatarFromUri(event.uri)
+                        }.onSuccess { savedPath ->
+                            _state.update { it.copy(avatarUrl = savedPath) }
+                        }.onFailure {
+                        }
+                    }
+                }                is Event.OnPickAvatarClick -> {}
+                is Event.OnSaveClick -> save()
             }
         }
 
@@ -77,7 +94,7 @@ class AddContactViewModel
                         id = newId,
                         name = _state.value.username,
                         subtitle = _state.value.career,
-                        avatarUrl = null,
+                        avatarUrl =  _state.value.avatarUrl,
                         transitionName = null,
                     )
 

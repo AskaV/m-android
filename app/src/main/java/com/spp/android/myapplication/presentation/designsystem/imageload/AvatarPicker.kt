@@ -65,7 +65,7 @@ fun AvatarPicker(
                 )
             } else {
                 AsyncImage(
-                    model = File(avatarPath),
+                    model = avatarPath,
                     contentDescription = null,
                     modifier = Modifier.matchParentSize(),
                     contentScale = ContentScale.Crop,
