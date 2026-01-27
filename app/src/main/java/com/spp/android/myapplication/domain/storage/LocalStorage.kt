@@ -15,6 +15,5 @@ interface LocalStorage {
 
     val userProfile: Flow<UserProfile?>
     suspend fun saveUserProfile(profile: UserProfile)
-
     suspend fun clear()
 }

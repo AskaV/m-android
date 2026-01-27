@@ -102,7 +102,7 @@ class ContactsViewModel
 
             _state.update { st ->
                 st.copy(
-                    items = st.items.filterNot { ids.contains(it.id) },
+                    items = sortContacts(st.items.filterNot { ids.contains(it.id) }),
                     selected = emptySet(),
                     isSelectionMode = false,
                 )
@@ -112,6 +112,7 @@ class ContactsViewModel
 
         private fun load() =
             viewModelScope.launch {
+
                 _state.update { it.copy(isLoading = true, errorKey = null) }
 
                 runCatching {
@@ -129,20 +130,34 @@ class ContactsViewModel
                 lastDeleted = listOf(item)
 
                 _state.update { it.copy(items = it.items.filterNot { c -> c.id == item.id }) }
+                val deleted = contactsRepository.deleteContact(item.id)
+                if (deleted) {
+                    sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED))
+                    onEvent(Load)
+                }
                 sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED))
+
             }
 
-        private fun undoDelete() {
-            if (lastDeleted.isEmpty()) return
-            _state.update { st ->
-                val restored = (st.items + lastDeleted).sortedBy { it.id }
-                st.copy(items = restored)
-            }
-            lastDeleted = emptyList()
+    private fun undoDelete() {
+        if (lastDeleted.isEmpty()) return
+        _state.update { st ->
+            val restored = (st.items + lastDeleted)
+                .distinctBy { it.id }
+            st.copy(items = sortContacts(restored))
         }
+        lastDeleted = emptyList()
+    }
 
         private fun sendEffect(effect: Effect) =
             viewModelScope.launch {
                 _effect.send(effect)
             }
+
+    private fun sortContacts(list: List<Contact>): List<Contact> =
+        list.sortedWith(
+            compareBy<Contact> { it.name.lowercase() }
+                .thenBy { it.subtitle.lowercase() }
+                .thenBy { it.id }
+        )
     }

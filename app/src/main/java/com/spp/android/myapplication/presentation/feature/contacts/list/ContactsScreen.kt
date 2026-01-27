@@ -3,12 +3,16 @@ package com.spp.android.myapplication.presentation.feature.contacts.list
 import android.widget.Toast
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spp.android.myapplication.presentation.feature.components.rememberUndoSnackbarController
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect.NavigateBack
@@ -70,7 +74,17 @@ fun ContactsScreen(
             }
         }
     }
+    val lifecycleOwner = LocalLifecycleOwner.current
 
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                vm.onEvent(ContactsContract.Event.Load)
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
     Scaffold(
         snackbarHost = { undo.Host() },
     ) { paddingValues ->

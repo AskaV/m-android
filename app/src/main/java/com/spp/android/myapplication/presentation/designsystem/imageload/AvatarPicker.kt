@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.presentation.designsystem.imageload
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -56,18 +57,20 @@ fun AvatarPicker(
             contentAlignment = Alignment.Center
         ) {
             if (avatarPath.isNullOrBlank()) {
-                Icon(
+                Image(
                     painter = painterResource(R.drawable.baseline_account_circle_avatar),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.matchParentSize()
+                    modifier = Modifier.matchParentSize(),
+                    contentScale = ContentScale.Crop
                 )
             } else {
                 AsyncImage(
                     model = File(avatarPath),
                     contentDescription = null,
                     modifier = Modifier.matchParentSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(R.drawable.baseline_account_circle_avatar),
+                    error = painterResource(R.drawable.baseline_account_circle_avatar),
                 )
             }
         }

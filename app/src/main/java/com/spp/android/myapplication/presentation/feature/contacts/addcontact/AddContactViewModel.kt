@@ -1,7 +1,10 @@
 package com.spp.android.myapplication.presentation.feature.contacts.addcontact
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.domain.model.Contact
+import com.spp.android.myapplication.domain.repository.ContactsRepository
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Effect
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Event
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.State
@@ -12,12 +15,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
+import kotlin.math.absoluteValue
 
 @HiltViewModel
 class AddContactViewModel
     @Inject
-    constructor() : ViewModel() {
+    constructor(private val contactsRepository: ContactsRepository,) : ViewModel() {
         private val _state = MutableStateFlow(State())
         val state = _state.asStateFlow()
 
@@ -59,13 +64,35 @@ class AddContactViewModel
                     phoneError = phoneError,
                 )
             }
-
             if (hasError) return
 
-            _state.update { it.copy(isSaving = true) }
-            _state.update { it.copy(isSaving = false) }
-            sendEffect(Effect.ShowMessage("Contact saved"))
-            sendEffect(Effect.NavigateBack)
+
+            viewModelScope.launch {
+                _state.update { it.copy(isSaving = true) }
+
+                try {
+                    val newId = UUID.randomUUID().hashCode().absoluteValue
+
+                    val contact = Contact(
+                        id = newId,
+                        name = _state.value.username,
+                        subtitle = _state.value.career,
+                        avatarUrl = null,
+                        transitionName = null,
+                    )
+
+                    contactsRepository.addContact(contact)
+
+
+
+                    sendEffect(Effect.ShowMessage("Contact saved"))
+                    sendEffect(Effect.NavigateBack)
+                } catch (t: Throwable) {
+                    sendEffect(Effect.ShowMessage("Save failed: ${t.message ?: "unknown error"}"))
+                } finally {
+                    _state.update { it.copy(isSaving = false) }
+                }
+            }
         }
 
         private fun sendEffect(e: Effect) = viewModelScope.launch { _effect.send(e) }

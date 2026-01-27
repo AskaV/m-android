@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.data.repository
 
+import android.util.Log
 import com.spp.android.myapplication.data.dataSource.contact.ContactDataSource
 import com.spp.android.myapplication.data.storage.ContactsPreferences
 import com.spp.android.myapplication.domain.model.Contact
@@ -53,7 +54,38 @@ class ContactsRepositoryImpl @Inject constructor(
             contactsPreferences.saveContacts(overrides.values.toList())
         }
 
-        return result
+        val systemIds = systemContacts.map { it.id }.toHashSet()
+
+        val locallyAdded = stored
+            .filter { it.name.isNotBlank() || it.subtitle.isNotBlank() }
+            .filter { it.id !in systemIds }
+
+        return result + locallyAdded
+    }
+
+    override suspend fun addContact(contact: Contact) {
+        val final = contact.copy(
+            avatarUrl = contact.avatarUrl.takeUnless { it.isNullOrBlank() }
+                ?: "https://api.dicebear.com/9.x/lorelei-neutral/png?seed=contact_${contact.id}"
+        )
+
+        val current = contactsPreferences.contacts.first().toMutableList()
+        val idx = current.indexOfFirst { it.id == final.id }
+        if (idx >= 0) current[idx] = final else current.add(final)
+
+        contactsPreferences.saveContacts(current)
+    }
+    override suspend fun deleteContact(contactId: Int): Boolean {
+        val stored = contactsPreferences.contacts.first()
+
+        val target = stored.firstOrNull { it.id == contactId } ?: return false
+
+        val isAdded = target.name.isNotBlank() || target.subtitle.isNotBlank()
+        if (!isAdded) return false
+
+        val updated = stored.filterNot { it.id == contactId }
+        contactsPreferences.saveContacts(updated)
+        return true
     }
 
     override suspend fun setContactAvatar(contactId: Int, avatarUrl: String?) {
