@@ -1,0 +1,116 @@
+<resources>
+    <string name="app_name">Мій додаток</string>
+
+    <!-- сторінка входу -->
+    <string name="hello">Привіт!</string>
+    <string name="enter_email_password">Введи свій e-mail та пароль нижче</string>
+    <string name="email">Е-мейл</string>
+    <string name="password">Пароль</string>
+    <string name="remember_me">Запам\'ятати мене</string>
+    <string name="forgot_password">Забули пароль?</string>
+    <string name="login">Увійти</string>
+    <string name="dont_have_account">Немає акаунту?</string>
+    <string name="sign_up">Зареєструватися</string>
+
+    <!-- сторінка реєстрації -->
+    <string name="signup_title">Познайомимось ближче</string>
+    <string name="signup_subtitle">Заповни профіль і переходь до додатку!</string>
+    <string name="signup_google">Google</string>
+    <string name="signup_or">або</string>
+    <string name="signup_register">Зареєструватися</string>
+    <string name="signup_terms">Натискаючи «Зареєструватися», ви погоджуєтесь з нашими умовами</string>
+    <string name="signup_have_account">Вже маєш акаунт?</string>
+    <string name="signup_sign_in">Увійти</string>
+
+    <!-- мій профіль -->
+    <string name="settings">Налаштування</string>
+    <string name="user_name">Люсіль Альварадо</string>
+    <string name="user_avatar">Аватар користувача</string>
+    <string name="user_profession">Графічна дизайнерка</string>
+    <string name="user_address">вул. Гейлорд, 5295, кв. 110</string>
+    <string name="facebook">Фейсбук</string>
+    <string name="instagram">Інстаграм</string>
+    <string name="telegram">Телеграм</string>
+    <string name="edit_profile">Редагувати профіль</string>
+    <string name="view_contacts">Переглянути мої контакти</string>
+    <string name="log_out">Вихід</string>
+    <string name="profile_fill_hint">Перейдіть до налаштувань та заповніть профіль</string>
+
+
+    <!-- contact's profile -->
+    <string name="profile_text">Профіль</string>
+    <string name="message_text">Повідомлення</string>
+    <string name="back">Назад</string>
+
+    <!-- помилки реєстрації / входу -->
+    <string name="email_error_text">Невірна e-mail адреса</string>
+    <string name="blank_email_error_text">Електронна адреса не може бути порожньою</string>
+    <string name="password_error_text">Пароль має містити щонайменше %1$d символів</string>
+    <string name="user_name_error">Ім’я користувача повинно містити щонайменше %1$d літери</string>
+    <string name="phone_length_error">Номер телефону має містити щонайменше %1$d цифр</string>
+
+    <!--   сторінка списку контактів  -->
+    <string name="contacts_text">Контакти</string>
+    <string name="add_contacts_text">Додати контакти</string>
+    <string name="wastebasket_description">Сміттєвий кошик</string>
+    <string name="deleted_contact_toast_text">контакт видалено</string>
+    <string name="return_contact_toast_text">повернути</string>
+    <string name="add_contacts_name">Ім\'я</string>
+    <string name="add_contacts_position">Позиція</string>
+    <string name="add_contacts_save_text">Зберегти</string>
+    <string name="add_contacts_cancel_text">Відмінити</string>
+    <string name="title">Дані вашого профілю</string>
+    <string name="subtitle">Заповніть профіль та перейдіть до заявки!</string>
+    <string name="button2">Вперед</string>
+    <string name="no_results_found_title">Результатів не знайдено</string>
+    <string name="no_results_found_subtitle">Ви можете побачити більше контактів у рекомендації</string>
+
+    <!--   текст вкладок табу  -->
+    <string name="tab_profile">Мій профіль</string>
+    <string name="tab_contacts">Контакти</string>
+
+    <!--    Gallery     -->
+    <string name="open_gallery">Відкрити галерею</string>
+    <string name="delete_photo">Видалити поточне фото</string>
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Редагувати профіль</string>
+    <string name="edit_profile_save">Зберегти</string>
+
+    <string name="edit_profile_username_label">Ім’я користувача</string>
+    <string name="edit_profile_username_placeholder">Lucile Alvarado</string>
+
+    <string name="edit_profile_career_label">Професія</string>
+    <string name="edit_profile_career_placeholder">Графічний дизайнер</string>
+
+    <string name="edit_profile_phone_label">Телефон</string>
+    <string name="edit_profile_phone_placeholder">(264)-654-3452</string>
+
+    <string name="edit_profile_birthdate_label">Дата народження</string>
+    <string name="edit_profile_birthdate_placeholder">12/05/1994</string>
+
+    <string name="edit_profile_address_label">Домашня адресса</string>
+    <string name="edit_profile_address_placeholder">5295 Gaylord Walks Apk. 110</string>
+
+    <!--    Превью     -->
+    <string name="filled_button_text">Заповнений текст кнопки</string>
+    <string name="outlined_button_text">Окреслений текст кнопки</string>
+
+    <!--    AddContactsScreenContent     -->
+    <string name="users_title">Користувачі</string>
+    <string name="users_title2">Рекомендації</string>
+
+    <!--    Other     -->
+    <string name="unknown_error">Невідома помилка</string>
+    <string name="login_failed">Помилка входу</string>
+    <string name="logout_failed">Помилка виходу</string>
+    <string name="contact_removed">Контакт видалено</string>
+    <string name="failed_to_load_contacts">Не вдалося завантажити контакти</string>
+    <string name="failed_to_add_contact">"Не вдалося додати контакт"</string>
+    <string name="contact_added">Контакт додано</string>
+    <string name="failed_to_save_profile">Не вдалося зберегти профіль</string>
+    <string name="failed_to_load_profile">"Не вдалося завантажити профіль"</string>
+    <string name="add_to_my_contacts_text">Додати до моїх контактів</string>
+    <string name="toast_clicked">Кнопка натиснута</string>
+
+</resources>
