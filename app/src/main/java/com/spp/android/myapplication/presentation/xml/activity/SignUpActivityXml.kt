@@ -30,7 +30,6 @@ class SignUpActivityXml : BaseActivity() {
             val passwordText = passwordField.text?.toString()?.trim().orEmpty()
 
             val allValid = ValidationUtils.validateEmailAndPassword(
-                context = this,
                 emailField = emailField,
                 passwordField = passwordField,
                 emailErrorView = binding.commonLoginFields.emailErrorText,

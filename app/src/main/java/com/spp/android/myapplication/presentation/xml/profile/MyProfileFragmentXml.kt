@@ -29,15 +29,21 @@ class MyProfileFragmentXml : Fragment() {
 
         binding.userAvatar.setImageResource(R.drawable.profile_avatar)
 
-        val email = activity?.intent?.getStringExtra("email").orEmpty()
-        binding.userName.text = parseNameFromEmail(if (email.isBlank()) "User" else email)
+        val email = activity?.intent?.getStringExtra(EXTRA_EMAIL).orEmpty()
+        binding.userName.text = parseNameFromEmail(if (email.isBlank()) DEFAULT_USER_NAME else email)
 
         binding.editProfileBtn.setOnClickListener {
-            Toast.makeText(requireContext(), "Edit Profile clicked", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), TOAST_EDIT_PROFILE_CLICKED, Toast.LENGTH_SHORT).show()
         }
         binding.viewMyContactsBtn.setOnClickListener {
             (parentFragment as? MainTabsFragment)?.switchToContacts()
         }
+    }
+
+    companion object {
+        private const val EXTRA_EMAIL = "email"
+        private const val DEFAULT_USER_NAME = "User"
+        private const val TOAST_EDIT_PROFILE_CLICKED = "Edit Profile clicked"
     }
 
     override fun onDestroyView() {

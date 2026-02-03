@@ -22,35 +22,55 @@ class LoginActivityXml : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setupBinding()
+        setupTextListeners()
+        setupViews()
+
+        collectState()
+        checkAutoLogin()
+    }
+
+    private fun setupBinding() {
         binding = LoginPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
 
-        binding.commonLoginFields.editTextTextEmailAddress.doAfterTextChanged {
-            viewModel.setEmail(it?.toString().orEmpty())
-        }
-        binding.commonLoginFields.editTextTextPassword.doAfterTextChanged {
-            viewModel.setPassword(it?.toString().orEmpty())
-        }
 
+    private fun setupTextListeners() = with(binding.commonLoginFields) {
+        editTextTextEmailAddress.doAfterTextChanged { text ->
+            viewModel.setEmail(text?.toString().orEmpty())
+        }
+        editTextTextPassword.doAfterTextChanged { text ->
+            viewModel.setPassword(text?.toString().orEmpty())
+        }
+    }
+
+
+    private fun collectState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { s ->
+                viewModel.state.collect { state ->
                     val emailEt = binding.commonLoginFields.editTextTextEmailAddress
-                    if (emailEt.text?.toString() != s.email) emailEt.setText(s.email)
-
                     val passEt = binding.commonLoginFields.editTextTextPassword
-                    if (passEt.text?.toString() != s.password) passEt.setText(s.password)
+
+                    if (emailEt.text?.toString() != state.email) {
+                        emailEt.setText(state.email)
+                    }
+                    if (passEt.text?.toString() != state.password) {
+                        passEt.setText(state.password)
+                    }
                 }
             }
         }
+    }
 
+    private fun checkAutoLogin() {
         lifecycleScope.launch {
             val savedEmail = UserPreferences.getEmail(this@LoginActivityXml)
             if (!savedEmail.isNullOrBlank()) {
                 navigateToMain(savedEmail)
             }
         }
-        setupViews()
     }
 
     private fun setupViews() = with(binding) {
@@ -58,7 +78,6 @@ class LoginActivityXml : BaseActivity() {
             val emailField = commonLoginFields.editTextTextEmailAddress
 
             val allValid = ValidationUtils.validateEmailAndPassword(
-                context = this@LoginActivityXml,
                 emailField = emailField,
                 passwordField = commonLoginFields.editTextTextPassword,
                 emailErrorView = commonLoginFields.emailErrorText,

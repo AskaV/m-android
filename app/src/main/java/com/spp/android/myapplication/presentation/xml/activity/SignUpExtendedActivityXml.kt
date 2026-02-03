@@ -80,7 +80,6 @@ class SignUpExtendedActivityXml : BaseActivity() {
 
         binding.forwardButton.setOnClickListener {
             val allValid = ValidationUtils.validateNameAndPhone(
-                context = this,
                 nameField = fields.userNameField,
                 phoneField = fields.mobilePhoneField,
                 nameErrorView = fields.userNameErrorText,
