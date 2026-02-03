@@ -7,9 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerScreen
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Effect.NavigateBack
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Effect.OpenAvatarPicker
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Effect.Saved
@@ -34,12 +39,20 @@ fun EditProfileScreen(
     val context = LocalContext.current
     val state by vm.state.collectAsState()
 
-    val pickImageLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            if (uri != null) {
-                vm.onEvent(AvatarSelected(uri.toString()))
-            }
+    var showPicker by remember { mutableStateOf(false) }
+    var pickerKey by remember { mutableIntStateOf(0) }
+
+    if (showPicker) {
+        key(pickerKey) {
+            GalleryPickerScreen(
+                startVisible = true,
+                onResult = { uri ->
+                    showPicker = false
+                    uri?.let { vm.onEvent(AvatarSelected(it.toString())) }
+                }
+            )
         }
+    }
 
     LaunchedEffect(Unit) {
         vm.effect.collect { effect ->
@@ -62,7 +75,8 @@ fun EditProfileScreen(
                 }
 
                 is OpenAvatarPicker -> {
-                    pickImageLauncher.launch("image/*")
+                    pickerKey++
+                    showPicker = true
                 }
             }
         }

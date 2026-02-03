@@ -6,8 +6,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.spp.android.myapplication.presentation.feature.components.imageload.GalleryPickerScreen
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Effect
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Event
 
@@ -17,16 +23,22 @@ fun AddContactScreen(
     vm: AddContactViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
-    val pickImageLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.GetContent()
-        ) { uri ->
-            uri?.let {
-                vm.onEvent(
-                    Event.OnAvatarPicked(it.toString())
-                )
-            }
+
+    var showPicker by remember { mutableStateOf(false) }
+    var pickerKey by remember { mutableIntStateOf(0) }
+
+    if (showPicker) {
+        key(pickerKey) {
+            GalleryPickerScreen(
+                startVisible = true,
+                onResult = { uri ->
+                    showPicker = false
+                    uri?.let { vm.onEvent(Event.OnAvatarPicked(it.toString())) }
+                }
+            )
         }
+    }
+
     LaunchedEffect(Unit) {
         vm.effect.collect { effect ->
             when (effect) {
@@ -43,7 +55,10 @@ fun AddContactScreen(
     AddContactScreenContent(
         state = state,
         onBack = { vm.onEvent(Event.BackClicked) },
-        onAvatarClick = { pickImageLauncher.launch("image/*") },
+        onAvatarClick = {
+            pickerKey++
+            showPicker = true
+        },
         onSave = { vm.onEvent(Event.SaveClicked) },
         onUsernameChange = { vm.onEvent(Event.UsernameChanged(it)) },
         onCareerChange = { vm.onEvent(Event.CareerChanged(it)) },

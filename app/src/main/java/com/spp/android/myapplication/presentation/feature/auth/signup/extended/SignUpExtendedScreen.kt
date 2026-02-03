@@ -70,13 +70,11 @@ fun SignUpExtendedScreen(
     LaunchedEffect(Unit) {
         vm.effect.collectLatest { effect ->
             when (effect) {
-                OpenAvatarPicker -> {
-                    showPicker = true
-                }
-
                 is ShowMessage -> snackBar.showSnackbar(effect.message.text(context))
-                is OpenAvatarPicker -> showPicker = true
-                is BackFromExtended -> onBack()
+                OpenAvatarPicker -> {
+                    pickerKey++
+                    showPicker = true
+                }                is BackFromExtended -> onBack()
                 is NavigateToHome -> {
                     val email = prefillEmail ?: vm.state.value.fields.email
                     val username = profile.username
