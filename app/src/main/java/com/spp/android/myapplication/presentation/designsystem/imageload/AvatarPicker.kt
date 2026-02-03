@@ -29,7 +29,6 @@ import coil.compose.AsyncImage
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewColumn
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
-import java.io.File
 
 @Composable
 fun AvatarPicker(
@@ -43,10 +42,11 @@ fun AvatarPicker(
     showBadge: Boolean = false,
     avatarPath: String? = null,
 ) {
-    val avatarContainer = Modifier
-        .size(avatarSize)
-        .clip(CircleShape)
-        .background(MaterialTheme.colorScheme.surfaceVariant)
+    val avatarContainer =
+        Modifier
+            .size(avatarSize)
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
 
     Row(
         modifier = modifier,
@@ -54,14 +54,14 @@ fun AvatarPicker(
     ) {
         Box(
             modifier = avatarContainer,
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             if (avatarPath.isNullOrBlank()) {
                 Image(
                     painter = painterResource(R.drawable.baseline_account_circle_avatar),
                     contentDescription = null,
                     modifier = Modifier.matchParentSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
                 )
             } else {
                 AsyncImage(
@@ -74,7 +74,6 @@ fun AvatarPicker(
                 )
             }
         }
-
 
         if (showBadge) {
             Spacer(modifier = Modifier.width(space))

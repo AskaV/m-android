@@ -7,5 +7,5 @@ data class UserProfile(
     val address: String = "",
     val birthdate: String = "",
     val avatarPath: String? = null,
-    val isCompleted: Boolean = false
+    val isCompleted: Boolean = false,
 )

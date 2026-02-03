@@ -30,15 +30,11 @@ object StorageProvides {
 
     @Provides
     @Singleton
-    fun provideUserPreferences(
-        dataStore: DataStore<Preferences>,
-    ): UserPreferences = UserPreferences(dataStore)
+    fun provideUserPreferences(dataStore: DataStore<Preferences>): UserPreferences = UserPreferences(dataStore)
 
     @Provides
     @Singleton
-    fun provideContactsPreferences(
-        dataStore: DataStore<Preferences>,
-    ): ContactsPreferences = ContactsPreferences(dataStore)
+    fun provideContactsPreferences(dataStore: DataStore<Preferences>): ContactsPreferences = ContactsPreferences(dataStore)
 }
 
 @Module

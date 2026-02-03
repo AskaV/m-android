@@ -1,7 +1,5 @@
 package com.spp.android.myapplication.presentation.feature.profile.edit
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,7 +47,7 @@ fun EditProfileScreen(
                 onResult = { uri ->
                     showPicker = false
                     uri?.let { vm.onEvent(AvatarSelected(it.toString())) }
-                }
+                },
             )
         }
     }

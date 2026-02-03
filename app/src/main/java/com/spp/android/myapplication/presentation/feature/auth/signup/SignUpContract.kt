@@ -54,7 +54,9 @@ object SignUpContract {
             val phone: String,
         ) : Event
 
-        data class AvatarPicked(val uriString: String) : Event
+        data class AvatarPicked(
+            val uriString: String,
+        ) : Event
 
         data object PickAvatar : Event
 

@@ -1,7 +1,6 @@
 package com.spp.android.myapplication.presentation.designsystem.contactcard.parts
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

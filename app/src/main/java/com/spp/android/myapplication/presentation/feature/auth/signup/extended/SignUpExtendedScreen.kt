@@ -74,7 +74,7 @@ fun SignUpExtendedScreen(
                 OpenAvatarPicker -> {
                     pickerKey++
                     showPicker = true
-                }                is BackFromExtended -> onBack()
+                } is BackFromExtended -> onBack()
                 is NavigateToHome -> {
                     val email = prefillEmail ?: vm.state.value.fields.email
                     val username = profile.username

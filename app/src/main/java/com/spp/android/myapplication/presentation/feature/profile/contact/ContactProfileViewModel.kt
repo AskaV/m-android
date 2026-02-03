@@ -17,9 +17,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ContactProfileViewModel @Inject constructor(
-    private val contactsRepository: ContactsRepository,
-) : ViewModel() {
+class ContactProfileViewModel
+    @Inject
+    constructor(
+        private val contactsRepository: ContactsRepository,
+    ) : ViewModel() {
         private val _state = MutableStateFlow(ContactProfileContract.State())
         val state: StateFlow<ContactProfileContract.State> = _state.asStateFlow()
 
@@ -41,34 +43,34 @@ class ContactProfileViewModel @Inject constructor(
             }
         }
 
-    private fun load(id: Int) =
-        viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, contactId = id, errorKey = null) }
+        private fun load(id: Int) =
+            viewModelScope.launch {
+                _state.update { it.copy(isLoading = true, contactId = id, errorKey = null) }
 
-            runCatching {
-                contactsRepository.loadContacts().firstOrNull { it.id == id }
-            }.onSuccess { contact ->
-                if (contact == null) {
+                runCatching {
+                    contactsRepository.loadContacts().firstOrNull { it.id == id }
+                }.onSuccess { contact ->
+                    if (contact == null) {
+                        _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+                        sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
+                        return@onSuccess
+                    }
+
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            name = contact.name,
+                            linePrimary = contact.subtitle,
+                            lineSecondary = "",
+                            hasSocial = true,
+                            avatarPath = contact.avatarUrl,
+                        )
+                    }
+                }.onFailure {
                     _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
                     sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
-                    return@onSuccess
                 }
-
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        name = contact.name,
-                        linePrimary = contact.subtitle,
-                        lineSecondary = "",
-                        hasSocial = true,
-                        avatarPath = contact.avatarUrl,
-                    )
-                }
-            }.onFailure {
-                _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
-                sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
             }
-        }
 
         private fun addContact() =
             viewModelScope.launch {

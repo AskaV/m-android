@@ -1,8 +1,6 @@
 package com.spp.android.myapplication.presentation.feature.contacts.addcontact
 
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,7 +32,7 @@ fun AddContactScreen(
                 onResult = { uri ->
                     showPicker = false
                     uri?.let { vm.onEvent(Event.OnAvatarPicked(it.toString())) }
-                }
+                },
             )
         }
     }

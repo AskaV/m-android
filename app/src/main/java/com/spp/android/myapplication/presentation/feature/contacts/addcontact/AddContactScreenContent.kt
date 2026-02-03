@@ -81,7 +81,8 @@ fun AddContactScreenContent(
                         AvatarPicker(
                             onClick = onAvatarClick,
                             showBadge = true,
-                            avatarPath = state.avatarUrl, )
+                            avatarPath = state.avatarUrl,
+                        )
                     }
 
                     Spacer(Modifier.height(pad))

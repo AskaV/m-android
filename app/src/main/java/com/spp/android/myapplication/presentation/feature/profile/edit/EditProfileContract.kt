@@ -50,7 +50,10 @@ object EditProfileContract {
 
         data object ErrorShown : Event
 
-        data class AvatarSelected(val uriString: String) : Event
+        data class AvatarSelected(
+            val uriString: String,
+        ) : Event
+
         data object AvatarDeleted : Event
     }
 

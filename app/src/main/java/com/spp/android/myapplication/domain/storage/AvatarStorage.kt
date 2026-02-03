@@ -8,28 +8,33 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
-class AvatarStorage @Inject constructor(
-    @ApplicationContext private val context: Context
-) {
-    suspend fun saveAvatarFromUri(uriString: String): String = withContext(Dispatchers.IO) {
-        val uri = uriString.toUri()
-        val input = context.contentResolver.openInputStream(uri)
-            ?: error("Can't open input stream for uri=$uri")
+class AvatarStorage
+    @Inject
+    constructor(
+        @ApplicationContext private val context: Context,
+    ) {
+        suspend fun saveAvatarFromUri(uriString: String): String =
+            withContext(Dispatchers.IO) {
+                val uri = uriString.toUri()
+                val input =
+                    context.contentResolver.openInputStream(uri)
+                        ?: error("Can't open input stream for uri=$uri")
 
-        val dir = File(context.filesDir, "avatars").apply { mkdirs() }
-        val outFile = File(dir, "avatar_${System.currentTimeMillis()}.jpg")
+                val dir = File(context.filesDir, "avatars").apply { mkdirs() }
+                val outFile = File(dir, "avatar_${System.currentTimeMillis()}.jpg")
 
-        input.use { ins ->
-            outFile.outputStream().use { outs ->
-                ins.copyTo(outs)
+                input.use { ins ->
+                    outFile.outputStream().use { outs ->
+                        ins.copyTo(outs)
+                    }
+                }
+
+                outFile.absolutePath
             }
-        }
 
-        outFile.absolutePath
+        suspend fun deleteAvatar(path: String?) =
+            withContext(Dispatchers.IO) {
+                if (path.isNullOrBlank()) return@withContext
+                runCatching { File(path).delete() }
+            }
     }
-
-    suspend fun deleteAvatar(path: String?) = withContext(Dispatchers.IO) {
-        if (path.isNullOrBlank()) return@withContext
-        runCatching { File(path).delete() }
-    }
-}

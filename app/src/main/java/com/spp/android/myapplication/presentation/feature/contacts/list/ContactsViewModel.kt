@@ -112,7 +112,6 @@ class ContactsViewModel
 
         private fun load() =
             viewModelScope.launch {
-
                 _state.update { it.copy(isLoading = true, errorKey = null) }
 
                 runCatching {
@@ -136,28 +135,28 @@ class ContactsViewModel
                     onEvent(Load)
                 }
                 sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED))
-
             }
 
-    private fun undoDelete() {
-        if (lastDeleted.isEmpty()) return
-        _state.update { st ->
-            val restored = (st.items + lastDeleted)
-                .distinctBy { it.id }
-            st.copy(items = sortContacts(restored))
+        private fun undoDelete() {
+            if (lastDeleted.isEmpty()) return
+            _state.update { st ->
+                val restored =
+                    (st.items + lastDeleted)
+                        .distinctBy { it.id }
+                st.copy(items = sortContacts(restored))
+            }
+            lastDeleted = emptyList()
         }
-        lastDeleted = emptyList()
-    }
 
         private fun sendEffect(effect: Effect) =
             viewModelScope.launch {
                 _effect.send(effect)
             }
 
-    private fun sortContacts(list: List<Contact>): List<Contact> =
-        list.sortedWith(
-            compareBy<Contact> { it.name.lowercase() }
-                .thenBy { it.subtitle.lowercase() }
-                .thenBy { it.id }
-        )
+        private fun sortContacts(list: List<Contact>): List<Contact> =
+            list.sortedWith(
+                compareBy<Contact> { it.name.lowercase() }
+                    .thenBy { it.subtitle.lowercase() }
+                    .thenBy { it.id },
+            )
     }

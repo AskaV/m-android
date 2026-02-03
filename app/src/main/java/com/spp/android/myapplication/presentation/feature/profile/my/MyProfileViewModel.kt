@@ -30,9 +30,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyProfileViewModel
-@Inject constructor(
-    private val localStorage: LocalStorage,
-) : ViewModel(){
+    @Inject
+    constructor(
+        private val localStorage: LocalStorage,
+    ) : ViewModel() {
         private val _state = MutableStateFlow(MyProfileContract.State())
         val state: StateFlow<MyProfileContract.State> = _state.asStateFlow()
 
@@ -58,7 +59,8 @@ class MyProfileViewModel
                             name = event.username,
                             linePrimary = event.career,
                             lineSecondary = event.address,
-                            isCompleted = true)
+                            isCompleted = true,
+                        )
                     }
                 }
 
@@ -72,30 +74,31 @@ class MyProfileViewModel
             }
         }
 
-    private fun loadProfile() {
-        if (profileJob != null) return
+        private fun loadProfile() {
+            if (profileJob != null) return
 
-        profileJob =
-            viewModelScope.launch {
-                _state.update { it.copy(isLoading = true, errorKey = null) }
+            profileJob =
+                viewModelScope.launch {
+                    _state.update { it.copy(isLoading = true, errorKey = null) }
 
-                localStorage.userProfile.collect { profile ->
-                    if (profile != null) {
-                        _state.update {
-                            it.copy(
-                                name = profile.username,
-                                linePrimary = profile.career,
-                                lineSecondary = profile.address,
-                                avatarPath = profile.avatarPath,
-                                isCompleted = profile.isCompleted,
-                                isLoading = false,
-                            )
+                    localStorage.userProfile.collect { profile ->
+                        if (profile != null) {
+                            _state.update {
+                                it.copy(
+                                    name = profile.username,
+                                    linePrimary = profile.career,
+                                    lineSecondary = profile.address,
+                                    avatarPath = profile.avatarPath,
+                                    isCompleted = profile.isCompleted,
+                                    isLoading = false,
+                                )
+                            }
+                        } else {
+                            _state.update { it.copy(isLoading = false) }
                         }
-                    } else {
-                        _state.update { it.copy(isLoading = false) }
                     }
                 }
-            }}
+        }
 
         private fun performLogout() =
             viewModelScope.launch {

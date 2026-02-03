@@ -1,16 +1,14 @@
 package com.spp.android.myapplication.presentation.feature.contacts.addcontact
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.domain.model.Contact
 import com.spp.android.myapplication.domain.repository.ContactsRepository
 import com.spp.android.myapplication.domain.storage.AvatarStorage
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Effect
-import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Effect.*
+import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Effect.ShowMessage
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.Event
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactContract.State
-import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,8 +25,8 @@ class AddContactViewModel
     @Inject
     constructor(
         private val contactsRepository: ContactsRepository,
-        private val avatarStorage: AvatarStorage,) : ViewModel()
-{
+        private val avatarStorage: AvatarStorage,
+    ) : ViewModel() {
         private val _state = MutableStateFlow(State())
         val state = _state.asStateFlow()
 
@@ -58,7 +56,7 @@ class AddContactViewModel
                         }.onFailure {
                         }
                     }
-                }                is Event.OnPickAvatarClick -> {}
+                } is Event.OnPickAvatarClick -> {}
                 is Event.OnSaveClick -> save()
             }
         }
@@ -83,24 +81,22 @@ class AddContactViewModel
             }
             if (hasError) return
 
-
             viewModelScope.launch {
                 _state.update { it.copy(isSaving = true) }
 
                 try {
                     val newId = UUID.randomUUID().hashCode().absoluteValue
 
-                    val contact = Contact(
-                        id = newId,
-                        name = _state.value.username,
-                        subtitle = _state.value.career,
-                        avatarUrl =  _state.value.avatarUrl,
-                        transitionName = null,
-                    )
+                    val contact =
+                        Contact(
+                            id = newId,
+                            name = _state.value.username,
+                            subtitle = _state.value.career,
+                            avatarUrl = _state.value.avatarUrl,
+                            transitionName = null,
+                        )
 
                     contactsRepository.addContact(contact)
-
-
 
                     sendEffect(Effect.ShowMessage("Contact saved"))
                     sendEffect(Effect.NavigateBack)
