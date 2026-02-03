@@ -20,7 +20,9 @@ import com.spp.android.myapplication.presentation.feature.contacts.list.Contacts
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.UndoDelete
 import com.spp.android.myapplication.presentation.texts.AppText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,6 +43,7 @@ class ContactsViewModel
         private val _effect = Channel<Effect>(Channel.BUFFERED)
         val effect = _effect.receiveAsFlow()
 
+        private var pendingDeleteJob: Job? = null
         private var lastDeleted: List<Contact> = emptyList()
 
         init {
@@ -98,6 +101,7 @@ class ContactsViewModel
         private fun bulkDelete() {
             val ids = _state.value.selected
             val toRemove = _state.value.items.filter { ids.contains(it.id) }
+
             lastDeleted = toRemove
 
             _state.update { st ->
@@ -107,6 +111,16 @@ class ContactsViewModel
                     isSelectionMode = false,
                 )
             }
+
+            pendingDeleteJob?.cancel()
+            pendingDeleteJob =
+                viewModelScope.launch {
+                    delay(5_000)
+                    lastDeleted.forEach { contactsRepository.deleteContact(it.id) }
+                    lastDeleted = emptyList()
+                    pendingDeleteJob = null
+                }
+
             sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED))
         }
 
@@ -117,7 +131,7 @@ class ContactsViewModel
                 runCatching {
                     contactsRepository.loadContacts().ifEmpty { demoUsers() }
                 }.onSuccess { list ->
-                    _state.update { it.copy(items = list, isLoading = false) }
+                    _state.update { it.copy(items = sortContacts(list), isLoading = false) }
                 }.onFailure {
                     _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
                     sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
@@ -128,23 +142,34 @@ class ContactsViewModel
             viewModelScope.launch {
                 lastDeleted = listOf(item)
 
-                _state.update { it.copy(items = it.items.filterNot { c -> c.id == item.id }) }
-                val deleted = contactsRepository.deleteContact(item.id)
-                if (deleted) {
-                    sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED))
-                    onEvent(Load)
+                _state.update { st ->
+                    st.copy(items = sortContacts(st.items.filterNot { c -> c.id == item.id }))
                 }
+
+                pendingDeleteJob?.cancel()
+
+                pendingDeleteJob =
+                    viewModelScope.launch {
+                        delay(5_000)
+                        lastDeleted.forEach { contactsRepository.deleteContact(it.id) }
+                        lastDeleted = emptyList()
+                        pendingDeleteJob = null
+                    }
+
                 sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED))
             }
 
         private fun undoDelete() {
             if (lastDeleted.isEmpty()) return
+
+            pendingDeleteJob?.cancel()
+            pendingDeleteJob = null
+
             _state.update { st ->
-                val restored =
-                    (st.items + lastDeleted)
-                        .distinctBy { it.id }
+                val restored = (st.items + lastDeleted).distinctBy { it.id }
                 st.copy(items = sortContacts(restored))
             }
+
             lastDeleted = emptyList()
         }
 
