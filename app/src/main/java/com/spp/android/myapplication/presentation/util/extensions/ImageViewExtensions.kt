@@ -22,7 +22,8 @@ fun ImageView.loadAvatar(url: String?) {
 }
 
 fun ImageView.loadWithGlide(url: String?) {
-    Glide.with(this.context)
+    Glide
+        .with(this.context)
         .load(url)
         .placeholder(R.drawable.baseline_account_circle_avatar)
         .error(android.R.drawable.ic_dialog_alert)
@@ -32,7 +33,8 @@ fun ImageView.loadWithGlide(url: String?) {
 }
 
 fun ImageView.loadWithPicasso(url: String?) {
-    Picasso.get()
+    Picasso
+        .get()
         .load(url)
         .placeholder(R.drawable.baseline_account_circle_avatar)
         .error(android.R.drawable.ic_dialog_alert)
@@ -42,14 +44,16 @@ fun ImageView.loadWithPicasso(url: String?) {
 }
 
 private fun ImageView.loadWithCoil(url: String?) {
-    val request = ImageRequest.Builder(this.context)
-        .data(url)
-        .target(this)
-        .placeholder(R.drawable.baseline_account_circle_avatar)
-        .error(android.R.drawable.ic_dialog_alert)
-        .transformations(CircleCropTransformation())
-        .size(avatarSize, avatarSize)
-        .build()
+    val request =
+        ImageRequest
+            .Builder(this.context)
+            .data(url)
+            .target(this)
+            .placeholder(R.drawable.baseline_account_circle_avatar)
+            .error(android.R.drawable.ic_dialog_alert)
+            .transformations(CircleCropTransformation())
+            .size(avatarSize, avatarSize)
+            .build()
 
     this.context.imageLoader.enqueue(request)
 }

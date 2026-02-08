@@ -15,21 +15,22 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class StartSelection : ComponentActivity() {
-
     companion object {
         const val TEST_MODE = true
 
         enum class StartTarget { AUTH, CONTACTS, SIGNUP_EXTENDED }
+
         val START_THEME = "system" // "light" | "dark" | "colored" | "system"
 
         val START_TARGET = StartTarget.AUTH
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val themePref = runBlocking {
-            ThemePreferences.setTheme(this@StartSelection, START_THEME)
-            ThemePreferences.themeFlow(this@StartSelection).first()
-        }
+        val themePref =
+            runBlocking {
+                ThemePreferences.setTheme(this@StartSelection, START_THEME)
+                ThemePreferences.themeFlow(this@StartSelection).first()
+            }
         applyTheme(themePref)
 
         super.onCreate(savedInstanceState)
@@ -41,7 +42,7 @@ class StartSelection : ComponentActivity() {
                 launchApp()
             }
         } else {
-                launchApp()
+            launchApp()
         }
     }
 
@@ -55,19 +56,22 @@ class StartSelection : ComponentActivity() {
                 startActivity(
                     Intent(this, MainActivityXml::class.java)
                         .putExtra("force_theme", START_THEME)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
                 )
             }
 
             StartTarget.SIGNUP_EXTENDED -> {
-                startActivity(Intent(this, SignUpExtendedActivityXml::class.java).apply {
-                    putExtra("email", "test@example.com")
-                    putExtra("password", "Qwerty123!")
-                })
+                startActivity(
+                    Intent(this, SignUpExtendedActivityXml::class.java).apply {
+                        putExtra("email", "test@example.com")
+                        putExtra("password", "Qwerty123!")
+                    },
+                )
             }
         }
         finish()
     }
+
     private fun applyTheme(themePref: String) {
         when (themePref) {
             "light" -> setTheme(R.style.Theme_MyApplication)

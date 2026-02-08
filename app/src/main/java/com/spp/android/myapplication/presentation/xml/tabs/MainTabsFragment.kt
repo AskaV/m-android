@@ -13,31 +13,40 @@ import com.spp.android.myapplication.presentation.xml.contacts.ContactsFragmentX
 import com.spp.android.myapplication.presentation.xml.profile.MyProfileFragmentXml
 
 class MainTabsFragment : Fragment() {
-
     private var _binding: FragmentMainTabsBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentMainTabsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewPager.adapter = object : FragmentStateAdapter(this) {
-            override fun getItemCount() = 2
-            override fun createFragment(position: Int): Fragment = when (position) {
-                0 -> MyProfileFragmentXml()
-                else -> ContactsFragmentXml()
-            }
-        }
+        binding.viewPager.adapter =
+            object : FragmentStateAdapter(this) {
+                override fun getItemCount() = 2
 
-        val titles = listOf(
-            getString(R.string.tab_profile), getString(R.string.tab_contacts)
-        )
+                override fun createFragment(position: Int): Fragment =
+                    when (position) {
+                        0 -> MyProfileFragmentXml()
+                        else -> ContactsFragmentXml()
+                    }
+            }
+
+        val titles =
+            listOf(
+                getString(R.string.tab_profile),
+                getString(R.string.tab_contacts),
+            )
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, pos ->
             tab.text = titles[pos]
         }.attach()

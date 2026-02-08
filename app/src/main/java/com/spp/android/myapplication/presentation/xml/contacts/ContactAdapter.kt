@@ -12,16 +12,24 @@ import com.spp.android.myapplication.databinding.ItemContactRecyclerVievBinding
 import com.spp.android.myapplication.presentation.util.extensions.loadAvatar
 
 interface ContactAdapterListener {
-    fun onDeleteContact(contact: Contact, position: Int)
-    fun onItemClick(contact: Contact, sharedElementView: View)
+    fun onDeleteContact(
+        contact: Contact,
+        position: Int,
+    )
+
+    fun onItemClick(
+        contact: Contact,
+        sharedElementView: View,
+    )
+
     fun onItemLongClick(position: Int)
+
     fun onItemSelectToggle(position: Int)
 }
 
 class ContactAdapter(
-    private val listener: ContactAdapterListener
+    private val listener: ContactAdapterListener,
 ) : ListAdapter<Contact, ContactAdapter.ContactViewHolder>(DIFF) {
-
     private val selectedKeys = mutableSetOf<String>()
     private var selectionMode = false
 
@@ -29,9 +37,9 @@ class ContactAdapter(
         setHasStableIds(true)
     }
 
-    inner class ContactViewHolder(val binding: ItemContactRecyclerVievBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
+    inner class ContactViewHolder(
+        val binding: ItemContactRecyclerVievBinding,
+    ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
                 val pos = bindingAdapterPosition
@@ -63,14 +71,23 @@ class ContactAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
-        val binding = ItemContactRecyclerVievBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ContactViewHolder {
+        val binding =
+            ItemContactRecyclerVievBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false,
+            )
         return ContactViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ContactViewHolder,
+        position: Int,
+    ) {
         val contact = getItem(position)
         val binding = holder.binding
 
@@ -87,7 +104,7 @@ class ContactAdapter(
         ViewCompat.setTransitionName(binding.avatarImageView, transitionName)
 
         binding.root.setBackgroundResource(
-            if (selected) R.drawable.contact_selected_background else R.drawable.contact_outlined
+            if (selected) R.drawable.contact_selected_background else R.drawable.contact_outlined,
         )
 
         binding.deleteButton.visibility = if (selectionMode) View.INVISIBLE else View.VISIBLE
@@ -99,8 +116,7 @@ class ContactAdapter(
         }
     }
 
-    override fun getItemId(position: Int): Long =
-        stableKey(getItem(position)).hashCode().toLong()
+    override fun getItemId(position: Int): Long = stableKey(getItem(position)).hashCode().toLong()
 
     fun setSelectionMode(enabled: Boolean) {
         if (selectionMode == enabled) return
@@ -110,6 +126,7 @@ class ContactAdapter(
     }
 
     fun isSelectionMode(): Boolean = selectionMode
+
     fun isAnySelected() = selectedKeys.isNotEmpty()
 
     fun toggleSelection(position: Int) {
@@ -125,18 +142,23 @@ class ContactAdapter(
 
     fun itemAt(position: Int): Contact? = currentList.getOrNull(position)
 
-    private fun stableKey(c: Contact): String =
-        "${c.name}|${c.position}|${c.avatarUrl}"
+    private fun stableKey(c: Contact): String = "${c.name}|${c.position}|${c.avatarUrl}"
 
     private companion object {
-        val DIFF = object : DiffUtil.ItemCallback<Contact>() {
-            override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean =
-                oldItem.name == newItem.name &&
+        val DIFF =
+            object : DiffUtil.ItemCallback<Contact>() {
+                override fun areItemsTheSame(
+                    oldItem: Contact,
+                    newItem: Contact,
+                ): Boolean =
+                    oldItem.name == newItem.name &&
                         oldItem.avatarUrl == newItem.avatarUrl &&
                         oldItem.position == newItem.position
 
-            override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean =
-                oldItem == newItem
-        }
+                override fun areContentsTheSame(
+                    oldItem: Contact,
+                    newItem: Contact,
+                ): Boolean = oldItem == newItem
+            }
     }
 }

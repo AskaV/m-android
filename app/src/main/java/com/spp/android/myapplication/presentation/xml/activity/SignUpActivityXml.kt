@@ -26,15 +26,24 @@ class SignUpActivityXml : BaseActivity() {
             val emailField = binding.commonLoginFields.editTextTextEmailAddress
             val passwordField = binding.commonLoginFields.editTextTextPassword
 
-            val emailText = emailField.text?.toString()?.trim().orEmpty()
-            val passwordText = passwordField.text?.toString()?.trim().orEmpty()
+            val emailText =
+                emailField.text
+                    ?.toString()
+                    ?.trim()
+                    .orEmpty()
+            val passwordText =
+                passwordField.text
+                    ?.toString()
+                    ?.trim()
+                    .orEmpty()
 
-            val allValid = ValidationUtils.validateEmailAndPassword(
-                emailField = emailField,
-                passwordField = passwordField,
-                emailErrorView = binding.commonLoginFields.emailErrorText,
-                passwordErrorView = binding.commonLoginFields.passwordErrorText
-            )
+            val allValid =
+                ValidationUtils.validateEmailAndPassword(
+                    emailField = emailField,
+                    passwordField = passwordField,
+                    emailErrorView = binding.commonLoginFields.emailErrorText,
+                    passwordErrorView = binding.commonLoginFields.passwordErrorText,
+                )
             if (!allValid) return@setOnClickListener
 
             lifecycleScope.launch {
@@ -47,13 +56,14 @@ class SignUpActivityXml : BaseActivity() {
                     return@launch
                 }
 
-                val intent = Intent(
-                    this@SignUpActivityXml,
-                    SignUpExtendedActivityXml::class.java
-                ).apply {
-                    putExtra("email", emailText)
-                    putExtra("password", passwordText)
-                }
+                val intent =
+                    Intent(
+                        this@SignUpActivityXml,
+                        SignUpExtendedActivityXml::class.java,
+                    ).apply {
+                        putExtra("email", emailText)
+                        putExtra("password", passwordText)
+                    }
                 startActivity(intent, animOptions().toBundle())
             }
         }
@@ -64,7 +74,10 @@ class SignUpActivityXml : BaseActivity() {
         return true
     }
 
-    private fun animOptions() = ActivityOptions.makeCustomAnimation(
-        this, R.anim.scale_in, R.anim.scale_out
-    )
+    private fun animOptions() =
+        ActivityOptions.makeCustomAnimation(
+            this,
+            R.anim.scale_in,
+            R.anim.scale_out,
+        )
 }

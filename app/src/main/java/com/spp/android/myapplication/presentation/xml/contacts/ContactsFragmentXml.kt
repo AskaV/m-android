@@ -31,9 +31,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class ContactsFragmentXml : Fragment() {
-
     private var _binding: MyContactsPageBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private val viewModel: ContactsViewModel by viewModels()
     private lateinit var adapter: ContactAdapter
@@ -49,59 +48,74 @@ class ContactsFragmentXml : Fragment() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) loadContactsFromPhone()
             if (!granted) {
-                Toast.makeText(
-                    requireContext(),
-                    R.string.contacts_permission_denied,
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast
+                    .makeText(
+                        requireContext(),
+                        R.string.contacts_permission_denied,
+                        Toast.LENGTH_SHORT,
+                    ).show()
             }
         }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = MyContactsPageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter = ContactAdapter(object : ContactAdapterListener {
-            override fun onDeleteContact(contact: Contact, position: Int) {
-                viewModel.removeAt(position)
-            }
+        adapter =
+            ContactAdapter(
+                object : ContactAdapterListener {
+                    override fun onDeleteContact(
+                        contact: Contact,
+                        position: Int,
+                    ) {
+                        viewModel.removeAt(position)
+                    }
 
-            override fun onItemClick(contact: Contact, sharedElementView: View) {
-                val transitionName = ViewCompat.getTransitionName(sharedElementView)
-                    ?: "avatar_${contact.name}_${System.nanoTime()}"
-                val extras = FragmentNavigatorExtras(sharedElementView to transitionName)
-                val address = FakeAddressProvider.forName(contact.name)
-                val action = ContactsFragmentXmlDirections
-                    .actionContactsFragmentXmlToContactDetailFragment(
-                        transitionName = transitionName,
-                        contactName = contact.name,
-                        position = contact.position,
-                        avatarUrl = contact.avatarUrl,
-                        address = address
-                    )
-                findNavController().navigate(action, extras)
-            }
+                    override fun onItemClick(
+                        contact: Contact,
+                        sharedElementView: View,
+                    ) {
+                        val transitionName =
+                            ViewCompat.getTransitionName(sharedElementView)
+                                ?: "avatar_${contact.name}_${System.nanoTime()}"
+                        val extras = FragmentNavigatorExtras(sharedElementView to transitionName)
+                        val address = FakeAddressProvider.forName(contact.name)
+                        val action =
+                            ContactsFragmentXmlDirections
+                                .actionContactsFragmentXmlToContactDetailFragment(
+                                    transitionName = transitionName,
+                                    contactName = contact.name,
+                                    position = contact.position,
+                                    avatarUrl = contact.avatarUrl,
+                                    address = address,
+                                )
+                        findNavController().navigate(action, extras)
+                    }
 
-            override fun onItemLongClick(position: Int) {
-                adapter.setSelectionMode(true)
-                updateFab()
-            }
+                    override fun onItemLongClick(position: Int) {
+                        adapter.setSelectionMode(true)
+                        updateFab()
+                    }
 
-            override fun onItemSelectToggle(position: Int) {
-                if (!adapter.isAnySelected()) adapter.setSelectionMode(false)
-                updateFab()
-            }
-        })
+                    override fun onItemSelectToggle(position: Int) {
+                        if (!adapter.isAnySelected()) adapter.setSelectionMode(false)
+                        updateFab()
+                    }
+                },
+            )
         binding.recyclerView.adapter = adapter
         enableSwipeToDelete(adapter)
 
@@ -119,11 +133,16 @@ class ContactsFragmentXml : Fragment() {
         }
 
         if (useRealContacts) {
-            val granted = ContextCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.READ_CONTACTS
-            ) == PackageManager.PERMISSION_GRANTED
-            if (granted) loadContactsFromPhone() else
+            val granted =
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_CONTACTS,
+                ) == PackageManager.PERMISSION_GRANTED
+            if (granted) {
+                loadContactsFromPhone()
+            } else {
                 requestContactsPermission.launch(Manifest.permission.READ_CONTACTS)
+            }
         }
 
         viewModel.contacts.observe(viewLifecycleOwner) { list ->
@@ -151,15 +170,17 @@ class ContactsFragmentXml : Fragment() {
 
     private fun loadContactsFromPhone() {
         val contactList = mutableListOf<Contact>()
-        val cursor = requireContext().contentResolver.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-            arrayOf(
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                ContactsContract.CommonDataKinds.Phone.NUMBER
-            ),
-            null, null,
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC"
-        )
+        val cursor =
+            requireContext().contentResolver.query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                arrayOf(
+                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                    ContactsContract.CommonDataKinds.Phone.NUMBER,
+                ),
+                null,
+                null,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC",
+            )
         cursor?.use {
             val nameIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
             val numberIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
@@ -174,24 +195,32 @@ class ContactsFragmentXml : Fragment() {
     }
 
     private fun enableSwipeToDelete(adapter: ContactAdapter) {
-        val helper = ItemTouchHelper(object :
-            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                rv: RecyclerView, vh: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
-            ) = false
+        val helper =
+            ItemTouchHelper(
+                object :
+                    ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+                    override fun onMove(
+                        rv: RecyclerView,
+                        vh: RecyclerView.ViewHolder,
+                        target: RecyclerView.ViewHolder,
+                    ) = false
 
-            override fun onSwiped(vh: RecyclerView.ViewHolder, direction: Int) {
-                val pos = vh.bindingAdapterPosition
-                if (pos !in 0 until adapter.itemCount) return
+                    override fun onSwiped(
+                        vh: RecyclerView.ViewHolder,
+                        direction: Int,
+                    ) {
+                        val pos = vh.bindingAdapterPosition
+                        if (pos !in 0 until adapter.itemCount) return
 
-                if (adapter.isSelectionMode()) {
-                    binding.recyclerView.adapter?.notifyItemChanged(pos)
-                    return
-                }
+                        if (adapter.isSelectionMode()) {
+                            binding.recyclerView.adapter?.notifyItemChanged(pos)
+                            return
+                        }
 
-                viewModel.removeAt(pos)
-            }
-        })
+                        viewModel.removeAt(pos)
+                    }
+                },
+            )
         helper.attachToRecyclerView(binding.recyclerView)
     }
 
@@ -201,7 +230,11 @@ class ContactsFragmentXml : Fragment() {
         showUndoSnackbar(contact, position, undoDurationSec)
     }
 
-    private fun showUndoSnackbar(contact: Contact, position: Int, durationSec: Int) {
+    private fun showUndoSnackbar(
+        contact: Contact,
+        position: Int,
+        durationSec: Int,
+    ) {
         val anchor = binding.root
 
         var secondsLeft = durationSec
@@ -212,28 +245,34 @@ class ContactsFragmentXml : Fragment() {
             viewModel.restore(contact, position)
             countdownTimer?.cancel()
         }
-        snackbar.addCallback(object : Snackbar.Callback() {
-            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                currentSnackbar = null
-                if (isAdded && view != null) showNextSnackbar()
-            }
-        })
+        snackbar.addCallback(
+            object : Snackbar.Callback() {
+                override fun onDismissed(
+                    transientBottomBar: Snackbar?,
+                    event: Int,
+                ) {
+                    currentSnackbar = null
+                    if (isAdded && view != null) showNextSnackbar()
+                }
+            },
+        )
         snackbar.show()
         currentSnackbar = snackbar
 
         countdownTimer?.cancel()
-        countdownTimer = object : CountDownTimer((durationSec * 1000).toLong(), 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                secondsLeft--
-                if (currentSnackbar === snackbar) {
-                    snackbar.setText(text())
+        countdownTimer =
+            object : CountDownTimer((durationSec * 1000).toLong(), 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    secondsLeft--
+                    if (currentSnackbar === snackbar) {
+                        snackbar.setText(text())
+                    }
                 }
-            }
 
-            override fun onFinish() {
-                if (currentSnackbar === snackbar) snackbar.dismiss()
-            }
-        }.start()
+                override fun onFinish() {
+                    if (currentSnackbar === snackbar) snackbar.dismiss()
+                }
+            }.start()
     }
 
     override fun onDestroyView() {
@@ -248,22 +287,23 @@ class ContactsFragmentXml : Fragment() {
     private fun showAddContactDialog() {
         val dialogBinding = DialogAddContactBinding.inflate(layoutInflater)
 
-        AlertDialog.Builder(requireContext())
+        AlertDialog
+            .Builder(requireContext())
             .setTitle(getString(R.string.add_contacts_text))
             .setView(dialogBinding.root)
             .setPositiveButton(getString(R.string.add_contacts_save_text)) { _, _ ->
                 val name = dialogBinding.nameEditText.text.toString()
                 val position = dialogBinding.positionEditText.text.toString()
                 if (name.isNotBlank() && position.isNotBlank()) {
-                    val newContact = Contact(
-                        name = name,
-                        position = position,
-                        avatarUrl = "https://i.pravatar.cc/150?img=${(1..70).random()}"
-                    )
+                    val newContact =
+                        Contact(
+                            name = name,
+                            position = position,
+                            avatarUrl = "https://i.pravatar.cc/150?img=${(1..70).random()}",
+                        )
                     viewModel.add(newContact, index = 0)
                 }
-            }
-            .setNegativeButton(getString(R.string.add_contacts_cancel_text), null)
+            }.setNegativeButton(getString(R.string.add_contacts_cancel_text), null)
             .show()
     }
 }

@@ -1,6 +1,5 @@
 package com.spp.android.myapplication.presentation.util.extensions
 
-import android.content.Context
 import android.util.Patterns
 import android.view.View
 import android.widget.EditText
@@ -8,7 +7,6 @@ import android.widget.TextView
 import com.spp.android.myapplication.R
 
 object ValidationUtils {
-
     private const val MIN_PASSWORD_LENGTH = 8
     private const val MIN_NAME_LETTERS = 3
     private const val MIN_PHONE_DIGITS = 10
@@ -18,7 +16,7 @@ object ValidationUtils {
         emailField: EditText,
         passwordField: EditText,
         emailErrorView: TextView,
-        passwordErrorView: TextView
+        passwordErrorView: TextView,
     ): Boolean {
         val email = emailField.text.toString()
         val password = passwordField.text.toString()
@@ -51,10 +49,18 @@ object ValidationUtils {
         nameField: EditText,
         phoneField: EditText,
         nameErrorView: TextView,
-        phoneErrorView: TextView
+        phoneErrorView: TextView,
     ): Boolean {
-        val name = nameField.text?.toString()?.trim().orEmpty()
-        val phoneRaw = phoneField.text?.toString()?.trim().orEmpty()
+        val name =
+            nameField.text
+                ?.toString()
+                ?.trim()
+                .orEmpty()
+        val phoneRaw =
+            phoneField.text
+                ?.toString()
+                ?.trim()
+                .orEmpty()
 
         val lettersCount = name.count { it.isLetter() }
         val isNameValid = lettersCount >= MIN_NAME_LETTERS
@@ -85,10 +91,10 @@ object ValidationUtils {
 
     fun normalizePhone(phone: String): String = phone.filter { it.isDigit() }
 
-    fun parseNameFromEmail(email: String): String {
-        return email.substringBefore("@")
+    fun parseNameFromEmail(email: String): String =
+        email
+            .substringBefore("@")
             .split(".", "_", "-")
             .filter { it.isNotBlank() }
             .joinToString(" ") { it.replaceFirstChar(Char::uppercase) }
-    }
 }

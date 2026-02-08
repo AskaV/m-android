@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 open class BaseActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         val themePref = runBlocking { ThemePreferences.themeFlow(this@BaseActivity).first() }
         applyTheme(themePref)

@@ -12,18 +12,20 @@ private val Context.dataStore by preferencesDataStore(name = "user_prefs")
 private const val EMAIL = "email"
 
 object UserPreferences {
-
     private val EMAIL_KEY = stringPreferencesKey(EMAIL)
 
-    suspend fun saveEmail(context: Context, email: String) {
+    suspend fun saveEmail(
+        context: Context,
+        email: String,
+    ) {
         context.dataStore.edit { prefs ->
             prefs[EMAIL_KEY] = email
         }
     }
 
-    suspend fun getEmail(context: Context): String? {
-        return context.dataStore.data.map { prefs ->
-            prefs[EMAIL_KEY]
-        }.first()
-    }
+    suspend fun getEmail(context: Context): String? =
+        context.dataStore.data
+            .map { prefs ->
+                prefs[EMAIL_KEY]
+            }.first()
 }

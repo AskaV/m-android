@@ -20,10 +20,11 @@ class CircleTransform : Transformation {
 
         val result = Bitmap.createBitmap(size, size, source.config ?: Bitmap.Config.ARGB_8888)
         val canvas = Canvas(result)
-        val paint = Paint().apply {
-            isAntiAlias = true
-            shader = BitmapShader(squared, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-        }
+        val paint =
+            Paint().apply {
+                isAntiAlias = true
+                shader = BitmapShader(squared, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+            }
 
         val radius = size / 2f
         canvas.drawCircle(radius, radius, radius, paint)

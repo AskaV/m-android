@@ -30,52 +30,57 @@ import com.spp.android.myapplication.databinding.OpenGalleryPageBinding
 import com.squareup.picasso.Picasso
 
 object PhotoChooser {
-
     enum class Mode { SIGN_UP, EDIT_PROFILE }
 
     class Portal internal constructor(
         internal val perm: ActivityResultLauncher<String>,
         internal val pick: ActivityResultLauncher<String>,
-        internal val camera: ActivityResultLauncher<Void?>
+        internal val camera: ActivityResultLauncher<Void?>,
     )
 
     fun attach(
         caller: ActivityResultCaller,
         onPickedFromGallery: (Uri?) -> Unit,
         onCameraShot: (Bitmap?) -> Unit,
-        onPermissionGranted: () -> Unit
+        onPermissionGranted: () -> Unit,
     ): Portal {
-        val perm = caller.registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { granted ->
-            if (granted) onPermissionGranted()
-        }
+        val perm =
+            caller.registerForActivityResult(
+                ActivityResultContracts.RequestPermission(),
+            ) { granted ->
+                if (granted) onPermissionGranted()
+            }
 
-        val pick = caller.registerForActivityResult(
-            ActivityResultContracts.GetContent()
-        ) { uri -> onPickedFromGallery(uri) }
+        val pick =
+            caller.registerForActivityResult(
+                ActivityResultContracts.GetContent(),
+            ) { uri -> onPickedFromGallery(uri) }
 
-        val camera = caller.registerForActivityResult(
-            ActivityResultContracts.TakePicturePreview()
-        ) { bmp -> onCameraShot(bmp) }
+        val camera =
+            caller.registerForActivityResult(
+                ActivityResultContracts.TakePicturePreview(),
+            ) { bmp -> onCameraShot(bmp) }
 
         return Portal(perm, pick, camera)
     }
 
     private fun requiredReadImagesPermission(): String =
-        if (Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_IMAGES
-        else Manifest.permission.READ_EXTERNAL_STORAGE
+        if (Build.VERSION.SDK_INT >= 33) {
+            Manifest.permission.READ_MEDIA_IMAGES
+        } else {
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        }
 
     private fun hasReadImagesPermission(context: Context): Boolean =
         ContextCompat.checkSelfPermission(context, requiredReadImagesPermission()) ==
-                PackageManager.PERMISSION_GRANTED
+            PackageManager.PERMISSION_GRANTED
 
     fun ensurePermissionAndShow(
         activity: Activity,
         portal: Portal,
         inflater: LayoutInflater,
         mode: Mode,
-        onDeletePhoto: () -> Unit
+        onDeletePhoto: () -> Unit,
     ) {
         showDialog(
             context = activity,
@@ -83,7 +88,7 @@ object PhotoChooser {
             mode = mode,
             onOpenGallery = { portal.pick.launch("image/*") },
             onDeletePhoto = onDeletePhoto,
-            onTakePhoto = { portal.camera.launch(null) }
+            onTakePhoto = { portal.camera.launch(null) },
         )
 
         if (!hasReadImagesPermission(activity)) {
@@ -97,7 +102,7 @@ object PhotoChooser {
         mode: Mode,
         onOpenGallery: () -> Unit,
         onDeletePhoto: () -> Unit,
-        onTakePhoto: () -> Unit
+        onTakePhoto: () -> Unit,
     ): AlertDialog {
         val binding = OpenGalleryPageBinding.inflate(inflater, null, false)
         val view = binding.root
@@ -139,48 +144,64 @@ object PhotoChooser {
 
         loadRecentThumbsIfPermitted(context, listOf(binding.thumb1, binding.thumb2, binding.thumb3))
 
-        val raw = Dialog(context).apply {
-            requestWindowFeature(Window.FEATURE_NO_TITLE)
-            setContentView(view)
-            window?.apply {
-                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-                setDimAmount(0.6f)
-                attributes = attributes.apply {
-                    width = (context.resources.displayMetrics.widthPixels * 0.88f).toInt()
-                    height = WindowManager.LayoutParams.WRAP_CONTENT
+        val raw =
+            Dialog(context).apply {
+                requestWindowFeature(Window.FEATURE_NO_TITLE)
+                setContentView(view)
+                window?.apply {
+                    setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+                    setDimAmount(0.6f)
+                    attributes =
+                        attributes.apply {
+                            width = (context.resources.displayMetrics.widthPixels * 0.88f).toInt()
+                            height = WindowManager.LayoutParams.WRAP_CONTENT
+                        }
                 }
             }
-        }
 
-        binding.icCamera.setOnClickListener { raw.dismiss(); onTakePhoto() }
-        val open = { raw.dismiss(); onOpenGallery() }
+        binding.icCamera.setOnClickListener {
+            raw.dismiss()
+            onTakePhoto()
+        }
+        val open = {
+            raw.dismiss()
+            onOpenGallery()
+        }
         binding.thumb1.setOnClickListener { open() }
         binding.thumb2.setOnClickListener { open() }
         binding.thumb3.setOnClickListener { open() }
         binding.actionOpenGallery.setOnClickListener { open() }
-        binding.actionDelete.setOnClickListener { onDeletePhoto(); raw.dismiss() }
+        binding.actionDelete.setOnClickListener {
+            onDeletePhoto()
+            raw.dismiss()
+        }
         binding.actionCancel.setOnClickListener { raw.dismiss() }
 
         raw.show()
-        return AlertDialog.Builder(context).create()
+        return AlertDialog
+            .Builder(context)
+            .create()
             .also { it.setOnDismissListener { raw.dismiss() } }
     }
 
-
-    private fun colorFromAttr(context: Context, @AttrRes attr: Int): Int {
+    private fun colorFromAttr(
+        context: Context,
+        @AttrRes attr: Int,
+    ): Int {
         val tv = TypedValue()
         val ok = context.theme.resolveAttribute(attr, tv, true)
-        return if (ok && tv.resourceId != 0)
+        return if (ok && tv.resourceId != 0) {
             ContextCompat.getColor(context, tv.resourceId)
-        else
+        } else {
             tv.data
+        }
     }
 
     private fun loadRecentThumbsIfPermitted(
         context: Context,
         targets: List<ImageView?>,
-        limit: Int = 3
+        limit: Int = 3,
     ) {
         if (!hasReadImagesPermission(context)) return
         val uris = queryRecentImageUris(context, limit)
@@ -192,34 +213,39 @@ object PhotoChooser {
         }
     }
 
-    private fun queryRecentImageUris(context: Context, limit: Int): List<Uri> {
+    private fun queryRecentImageUris(
+        context: Context,
+        limit: Int,
+    ): List<Uri> {
         val out = mutableListOf<Uri>()
         val collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(MediaStore.Images.Media._ID)
 
         val resolver: ContentResolver = context.contentResolver
-        val cursor = if (Build.VERSION.SDK_INT >= 30) {
-            val args = Bundle().apply {
-                putInt(ContentResolver.QUERY_ARG_LIMIT, limit)
-                putStringArray(
-                    ContentResolver.QUERY_ARG_SORT_COLUMNS,
-                    arrayOf(MediaStore.Images.ImageColumns.DATE_ADDED)
-                )
-                putInt(
-                    ContentResolver.QUERY_ARG_SORT_DIRECTION,
-                    ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
+        val cursor =
+            if (Build.VERSION.SDK_INT >= 30) {
+                val args =
+                    Bundle().apply {
+                        putInt(ContentResolver.QUERY_ARG_LIMIT, limit)
+                        putStringArray(
+                            ContentResolver.QUERY_ARG_SORT_COLUMNS,
+                            arrayOf(MediaStore.Images.ImageColumns.DATE_ADDED),
+                        )
+                        putInt(
+                            ContentResolver.QUERY_ARG_SORT_DIRECTION,
+                            ContentResolver.QUERY_SORT_DIRECTION_DESCENDING,
+                        )
+                    }
+                resolver.query(collection, projection, args, null)
+            } else {
+                resolver.query(
+                    collection,
+                    projection,
+                    null,
+                    null,
+                    "${MediaStore.Images.ImageColumns.DATE_ADDED} DESC",
                 )
             }
-            resolver.query(collection, projection, args, null)
-        } else {
-            resolver.query(
-                collection,
-                projection,
-                null,
-                null,
-                "${MediaStore.Images.ImageColumns.DATE_ADDED} DESC"
-            )
-        }
 
         cursor?.use {
             val idCol = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
@@ -237,10 +263,11 @@ object PhotoChooser {
         context: Context,
         target: ImageView,
         uri: Uri,
-        sizeRes: Int = R.dimen.profile_avatar_size
+        sizeRes: Int = R.dimen.profile_avatar_size,
     ) {
         val size = context.resources.getDimensionPixelSize(sizeRes)
-        Picasso.get()
+        Picasso
+            .get()
             .load(uri)
             .resize(size, size)
             .centerCrop()
@@ -252,14 +279,17 @@ object PhotoChooser {
         context: Context,
         target: ImageView,
         source: Bitmap,
-        sizeRes: Int = R.dimen.profile_avatar_size
+        sizeRes: Int = R.dimen.profile_avatar_size,
     ) {
         val size = context.resources.getDimensionPixelSize(sizeRes)
         val circ = CircleTransform().transform(source)
-        val scaled = if (circ.width != size || circ.height != size)
-            Bitmap.createScaledBitmap(circ, size, size, true) else circ
+        val scaled =
+            if (circ.width != size || circ.height != size) {
+                Bitmap.createScaledBitmap(circ, size, size, true)
+            } else {
+                circ
+            }
         target.scaleType = ImageView.ScaleType.CENTER_CROP
         target.setImageBitmap(scaled)
     }
-
 }

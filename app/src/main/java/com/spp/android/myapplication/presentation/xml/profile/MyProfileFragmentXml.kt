@@ -8,23 +8,26 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.spp.android.myapplication.R
 import com.spp.android.myapplication.databinding.MyProfilePageBinding
-import com.spp.android.myapplication.presentation.xml.tabs.MainTabsFragment
 import com.spp.android.myapplication.presentation.util.extensions.ValidationUtils.parseNameFromEmail
+import com.spp.android.myapplication.presentation.xml.tabs.MainTabsFragment
 
 class MyProfileFragmentXml : Fragment() {
-
     private var _binding: MyProfilePageBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = MyProfilePageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.userAvatar.setImageResource(R.drawable.profile_avatar)

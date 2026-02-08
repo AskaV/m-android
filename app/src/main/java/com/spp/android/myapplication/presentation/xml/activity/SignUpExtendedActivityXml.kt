@@ -10,7 +10,6 @@ import com.spp.android.myapplication.presentation.util.extensions.loadAvatar
 import com.spp.android.myapplication.presentation.util.extensions.randomAvatarUrl
 
 class SignUpExtendedActivityXml : BaseActivity() {
-
     private lateinit var binding: SignUpExtendedPageBinding
     private var selectedPhotoUri: Uri? = null
 
@@ -29,32 +28,33 @@ class SignUpExtendedActivityXml : BaseActivity() {
         val nameEt = fields.userNameField
         val phoneEt = fields.mobilePhoneField
 
-        photoPortal = PhotoChooser.attach(
-            caller = this,
-            onPickedFromGallery = { uri ->
-                uri?.let {
-                    selectedPhotoUri = it
-                    PhotoChooser.applyAvatarFromUri(this, binding.avatarImage, it)
-                }
-            },
-            onCameraShot = { bmp ->
-                bmp?.let {
-                    selectedPhotoUri = null
-                    PhotoChooser.applyAvatarFromBitmap(this, binding.avatarImage, it)
-                }
-            },
-            onPermissionGranted = {
-                PhotoChooser.ensurePermissionAndShow(
-                    activity = this,
-                    portal = photoPortal,
-                    inflater = layoutInflater,
-                    mode = PhotoChooser.Mode.SIGN_UP
-                ) {
-                    selectedPhotoUri = null
-                    binding.avatarImage.setImageResource(R.drawable.baseline_account_circle_avatar)
-                }
-            }
-        )
+        photoPortal =
+            PhotoChooser.attach(
+                caller = this,
+                onPickedFromGallery = { uri ->
+                    uri?.let {
+                        selectedPhotoUri = it
+                        PhotoChooser.applyAvatarFromUri(this, binding.avatarImage, it)
+                    }
+                },
+                onCameraShot = { bmp ->
+                    bmp?.let {
+                        selectedPhotoUri = null
+                        PhotoChooser.applyAvatarFromBitmap(this, binding.avatarImage, it)
+                    }
+                },
+                onPermissionGranted = {
+                    PhotoChooser.ensurePermissionAndShow(
+                        activity = this,
+                        portal = photoPortal,
+                        inflater = layoutInflater,
+                        mode = PhotoChooser.Mode.SIGN_UP,
+                    ) {
+                        selectedPhotoUri = null
+                        binding.avatarImage.setImageResource(R.drawable.baseline_account_circle_avatar)
+                    }
+                },
+            )
 
         val openMenu: () -> Unit = {
             PhotoChooser.ensurePermissionAndShow(
@@ -65,7 +65,7 @@ class SignUpExtendedActivityXml : BaseActivity() {
                 onDeletePhoto = {
                     selectedPhotoUri = null
                     binding.avatarImage.setImageResource(R.drawable.baseline_account_circle_avatar)
-                }
+                },
             )
         }
 
@@ -79,15 +79,20 @@ class SignUpExtendedActivityXml : BaseActivity() {
         binding.cancelButton.setOnClickListener { finish() }
 
         binding.forwardButton.setOnClickListener {
-            val allValid = ValidationUtils.validateNameAndPhone(
-                nameField = fields.userNameField,
-                phoneField = fields.mobilePhoneField,
-                nameErrorView = fields.userNameErrorText,
-                phoneErrorView = fields.phoneErrorText
-            )
+            val allValid =
+                ValidationUtils.validateNameAndPhone(
+                    nameField = fields.userNameField,
+                    phoneField = fields.mobilePhoneField,
+                    nameErrorView = fields.userNameErrorText,
+                    phoneErrorView = fields.phoneErrorText,
+                )
             if (!allValid) return@setOnClickListener
 
-            val userName = nameEt.text?.toString()?.trim().orEmpty()
+            val userName =
+                nameEt.text
+                    ?.toString()
+                    ?.trim()
+                    .orEmpty()
             val phoneDigits = ValidationUtils.normalizePhone(phoneEt.text?.toString().orEmpty())
 
             // TODO: next add POST

@@ -13,9 +13,8 @@ import com.spp.android.myapplication.databinding.DetailViewPageBinding
 import com.spp.android.myapplication.presentation.util.extensions.loadAvatar
 
 class ContactDetailFragment : Fragment() {
-
     private var _binding: DetailViewPageBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +27,16 @@ class ContactDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = DetailViewPageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         val args: ContactDetailFragmentArgs by navArgs()

@@ -19,7 +19,10 @@ class ContactsViewModel : ViewModel() {
         _contacts.value = list
     }
 
-    fun add(contact: Contact, index: Int = 0) {
+    fun add(
+        contact: Contact,
+        index: Int = 0,
+    ) {
         val cur = _contacts.value.orEmpty().toMutableList()
         cur.add(index.coerceIn(0, cur.size), contact)
         _contacts.value = cur
@@ -55,13 +58,19 @@ class ContactsViewModel : ViewModel() {
         }
     }
 
-    fun restore(contact: Contact, position: Int) {
+    fun restore(
+        contact: Contact,
+        position: Int,
+    ) {
         val cur = _contacts.value.orEmpty().toMutableList()
         cur.add(position.coerceIn(0, cur.size), contact)
         _contacts.value = cur
     }
 
     sealed interface UiEvent {
-        data class ShowUndo(val contact: Contact, val position: Int) : UiEvent
+        data class ShowUndo(
+            val contact: Contact,
+            val position: Int,
+        ) : UiEvent
     }
 }
