@@ -9,28 +9,14 @@ recyclerview = "1.4.0"
 constraintlayout = "2.2.1"
 lifecycleRuntimeKtx = "2.10.0"
 lifecycleCommon = "2.10.0"
-lifecycleViewmodelCompose = "2.10.0"
-activityCompose = "1.12.3"
-composeBom = "2026.01.01"
-composeCompiler = "1.5.15"
 navigation = "2.9.7"
 navigationFragmentKtx = "2.9.7"
 navigationUiKtx = "2.9.7"
-navigationCompose = "2.9.7"
-material = "1.13.0"
 datastorePreferences = "1.2.0"
-gson = "2.13.2"
-serialization = "1.10.0"
-junit = "4.13.2"
-junitVersion = "1.3.0"
-espressoCore = "3.7.0"
 glide = "5.0.5"
 picasso = "2.71828"
 fresco = "3.6.0"
 coil = "2.7.0"
-coilCompose = "2.7.0"
-inferAnnotation = "0.18.0"
-cronetEmbedded = "143.7445.0"
 
 
 [libraries]
@@ -41,39 +27,15 @@ androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview"
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "lifecycleCommon" }
-androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-androidx-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "composeCompiler" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
-infer-annotation = { module = "com.facebook.infer.annotation:infer-annotation", version.ref = "inferAnnotation" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 fresco = { module = "com.facebook.fresco:fresco", version.ref = "fresco" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
-coil_compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-cronet-embedded = { group = "org.chromium.net", name = "cronet-embedded", version.ref = "cronetEmbedded" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
