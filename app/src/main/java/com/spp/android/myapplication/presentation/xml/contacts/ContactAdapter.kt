@@ -72,26 +72,26 @@ class ContactAdapter(
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         val contact = getItem(position)
-        val b = holder.binding
+        val binding = holder.binding
 
         val key = stableKey(contact)
         val selected = selectedKeys.contains(key)
 
-        b.selectCheck.visibility = if (selectionMode) View.VISIBLE else View.GONE
-        b.selectCheck.isChecked = selected
+        binding.selectCheck.visibility = if (selectionMode) View.VISIBLE else View.GONE
+        binding.selectCheck.isChecked = selected
 
-        b.avatarImageView.loadAvatar(contact.avatarUrl)
-        b.nameTextView.text = contact.name
+        binding.avatarImageView.loadAvatar(contact.avatarUrl)
+        binding.nameTextView.text = contact.name
 
         val transitionName = "avatar_${contact.name.hashCode()}_$position"
-        ViewCompat.setTransitionName(b.avatarImageView, transitionName)
+        ViewCompat.setTransitionName(binding.avatarImageView, transitionName)
 
-        b.root.setBackgroundResource(
+        binding.root.setBackgroundResource(
             if (selected) R.drawable.contact_selected_background else R.drawable.contact_outlined
         )
 
-        b.deleteButton.visibility = if (selectionMode) View.INVISIBLE else View.VISIBLE
-        b.deleteButton.setOnClickListener {
+        binding.deleteButton.visibility = if (selectionMode) View.INVISIBLE else View.VISIBLE
+        binding.deleteButton.setOnClickListener {
             val pos = holder.bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION && !selectionMode) {
                 listener.onDeleteContact(getItem(pos), pos)

@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.safeArgs)
     alias(libs.plugins.kotlin.serialization)
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id("org.jlleitschuh.gradle.ktlint") version "14.0.1"
 }
 
 android {
@@ -46,7 +47,22 @@ android {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
 }
+tasks.named("check") {
+    dependsOn("ktlintCheck")
+}
 
+ktlint {
+
+    android.set(true)
+    ignoreFailures.set(true)
+    outputToConsole.set(true)
+    verbose.set(true)
+    additionalEditorconfig.set(
+        mapOf(
+            "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
+        ),
+    )
+}
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)

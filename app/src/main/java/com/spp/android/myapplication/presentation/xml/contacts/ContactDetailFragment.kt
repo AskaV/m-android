@@ -42,13 +42,13 @@ class ContactDetailFragment : Fragment() {
         val position = args.position
         val avatarUrl = args.avatarUrl
         val address = args.address
-        val tn = args.transitionName
+        val transitionName = args.transitionName
 
         binding.userName.text = name
         binding.userProfession.text = position
         binding.userAddress.text = address
 
-        ViewCompat.setTransitionName(binding.userAvatar, tn)
+        ViewCompat.setTransitionName(binding.userAvatar, transitionName)
 
         postponeEnterTransition()
         binding.userAvatar.loadAvatar(avatarUrl)
