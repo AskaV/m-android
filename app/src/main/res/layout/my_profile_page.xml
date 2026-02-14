@@ -1,5 +1,4 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,10 +7,18 @@
         android:id="@+id/topBackground"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/blue"
-        app:layout_constraintTop_toTopOf="parent"
+        android:background="?android:windowBackground"
         app:layout_constraintBottom_toTopOf="@id/user_avatar"
-        app:layout_constraintDimensionRatio="@string/profile_background_ratio"/>
+        app:layout_constraintDimensionRatio="@string/profile_background_ratio"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/bottomBackground"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?android:textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBackground" />
 
     <TextView
         style="@style/HeadingLarge"
@@ -20,7 +27,7 @@
         android:layout_marginStart="@dimen/margin_start_text"
         android:layout_marginTop="@dimen/margin_top_settings"
         android:text="@string/settings"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,7 +38,7 @@
         android:layout_marginTop="@dimen/margin_top_avatar"
         android:contentDescription="@string/user_avatar"
         android:scaleType="centerCrop"
-        android:src="@drawable/baseline_account_circle_avatar"
+        android:src="@drawable/profile_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_user_name"
         android:text="@string/user_name"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -55,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_text"
         android:text="@string/user_profession"
-        android:textColor="@color/grayText2"
+        android:textColor="?android:textColorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/user_name" />
@@ -67,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_text"
         android:text="@string/user_address"
-        android:textColor="@color/grayText2"
+        android:textColor="?android:textColorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/user_profession" />
@@ -84,39 +91,39 @@
         android:padding="@dimen/social_button_padding"
         android:scaleType="centerInside"
         android:src="@drawable/social_facebook"
-        android:tint="@color/orange"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBackground" />
+        app:layout_constraintTop_toBottomOf="@id/topBackground"
+        app:tint="?android:colorAccent" />
 
     <ImageButton
         android:id="@+id/imageButtonInstagram"
         android:layout_width="@dimen/social_button_size"
         android:layout_height="@dimen/social_button_size"
-        android:layout_marginStart="@dimen/margin_between_social"
         android:layout_marginTop="@dimen/margin_top_social"
         android:background="@drawable/social_button_border"
         android:contentDescription="@string/instagram"
         android:padding="@dimen/social_button_padding"
         android:scaleType="centerInside"
         android:src="@drawable/social_instagram"
-        android:tint="@color/orange"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonTelegram"
         app:layout_constraintStart_toEndOf="@+id/imageButtonFacebook"
-        app:layout_constraintTop_toBottomOf="@id/topBackground" />
+        app:layout_constraintTop_toBottomOf="@id/topBackground"
+        app:tint="?android:colorAccent" />
 
     <ImageButton
         android:id="@+id/imageButtonTelegram"
         android:layout_width="@dimen/social_button_size"
         android:layout_height="@dimen/social_button_size"
         android:layout_marginTop="@dimen/margin_top_social"
-        android:layout_marginEnd="@dimen/margin_end_social"
+        android:layout_marginEnd="@dimen/margin_top_social"
         android:background="@drawable/social_button_border"
         android:contentDescription="@string/telegram"
         android:padding="@dimen/social_button_padding"
         android:scaleType="centerInside"
         android:src="@drawable/social_telegram"
-        android:tint="@color/orange"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBackground" />
+        app:layout_constraintTop_toBottomOf="@id/topBackground"
+        app:tint="?android:colorAccent" />
 
     <Button
         android:id="@+id/editProfileBtn"
@@ -128,6 +135,8 @@
         android:background="@drawable/button_outlined"
         android:text="@string/edit_profile"
         android:textAllCaps="false"
+        android:textColor="?android:textColorTertiary"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toTopOf="@+id/viewMyContactsBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -142,7 +151,8 @@
         android:layout_marginBottom="@dimen/button_margin_bottom"
         android:background="@drawable/button_filled_orange"
         android:text="@string/view_contacts"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

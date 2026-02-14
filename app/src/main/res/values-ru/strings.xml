@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">Мій додаток</string>
+
+    <!-- мій профіль -->
+    <string name="settings">Налаштування</string>
+    <string name="user_name">Люсіль Альварадо</string>
+    <string name="user_avatar">Аватар користувача</string>
+    <string name="user_profession">Графічна дизайнерка</string>
+    <string name="user_address">вул. Гейлорд, 5295, кв. 110</string>
+    <string name="facebook">Фейсбук</string>
+    <string name="instagram">Інстаграм</string>
+    <string name="telegram">Телеграм</string>
+    <string name="edit_profile">Редагувати профіль</string>
+    <string name="view_contacts">Переглянути мої контакти</string>
+
+    <!-- contact's profile -->
+    <string name="profile_text">Профіль</string>
+    <string name="message_text">Повідомлення</string>
+
+    <!-- сторінка реєстрації -->
+    <string name="signup_title">Познайомимось ближче</string>
+    <string name="signup_subtitle">Заповни профіль і переходь до додатку!</string>
+    <string name="signup_google">Google</string>
+    <string name="signup_or">або</string>
+    <string name="signup_register">Зареєструватися</string>
+    <string name="signup_terms">Натискаючи «Зареєструватися», ви погоджуєтесь з нашими умовами</string>
+    <string name="signup_have_account">Вже маєш акаунт?</string>
+    <string name="signup_sign_in">Увійти</string>
+
+    <!-- сторінка входу -->
+    <string name="hello">Привіт!</string>
+    <string name="enter_email_password">Введи свій e-mail та пароль нижче</string>
+    <string name="email">E-mail</string>
+    <string name="password">Пароль</string>
+    <string name="remember_me">Запам\'ятати мене</string>
+    <string name="forgot_password">Забули пароль?</string>
+    <string name="login">Увійти</string>
+    <string name="dont_have_account">Немає акаунту?</string>
+    <string name="sign_up">Зареєструватися</string>
+
+    <!-- помилки реєстрації / входу -->
+    <string name="email_error_text">Невірна e-mail адреса</string>
+    <string name="password_error_text">Пароль має містити щонайменше 8 символів</string>
+    <string name="user_name_error">Ім’я користувача повинно містити щонайменше 3 літери</string>
+    <string name="phone_length_error">Номер телефону має містити щонайменше 10 цифр</string>
+
+    <!--   сторінка списку контактів  -->
+    <string name="contacts_text">Контакти</string>
+    <string name="add_contacts_text">Додати контакти</string>
+    <string name="wastebasket_description">Сміттєвий кошик</string>
+    <string name="deleted_contact_toast_text_with_seconds">контакт видалено (%1$d)</string>
+    <string name="return_contact_toast_text">повернути</string>
+    <string name="add_contacts_name">Ім\'я</string>
+    <string name="add_contacts_position">Позиція</string>
+    <string name="add_contacts_save_text">Зберегти</string>
+    <string name="add_contacts_cancel_text">Відмінити</string>
+
+    <!--   текст вкладок табу  -->
+
+    <string name="tab_profile">Мій профіль</string>
+    <string name="tab_contacts">Контакти</string>
+
+    <string name="delete">Видалити</string>
+
+    <!--   ключі для Bundle/Intent extras   -->
+    <string name="key_email">текст емейл</string>
+    <string name="key_password">текст пароля</string>
+    <string name="extra_email">Емейл</string>
+
+    <!--   Повідомлення Toast   -->
+    <string name="toast_edit_profile">Натиснута кнопка редагування профіля</string>
+    <string name="toast_view_contacts">Натиснута кнопка перегляду контактів</string>
+</resources>
