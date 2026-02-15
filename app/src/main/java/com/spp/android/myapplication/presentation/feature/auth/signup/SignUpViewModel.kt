@@ -230,9 +230,6 @@ class SignUpViewModel
                     .register(
                         email = email,
                         password = password,
-                        name = name,
-                        phone = phone,
-                        imageFile = imageFile,
                     ).getOrElse { throw it }
 
             authPreferences.saveTokens(auth.accessToken, auth.refreshToken)
@@ -250,44 +247,23 @@ class SignUpViewModel
 
         private fun submitRegister() =
             viewModelScope.launch {
-                val emailErrKey =
-                    Validate.email(
-                        _state.value.fields.email
-                            .trim(),
-                    )
-                val passErrKey = Validate.password(_state.value.fields.password)
-
-                if (emailErrKey != null || passErrKey != null) {
-                    updateState {
-                        copy(
-                            fields =
-                                fields.copy(
-                                    emailErrorKey = emailErrKey,
-                                    passwordErrorKey = passErrKey,
-                                ),
-                        )
-                    }
-                    return@launch
-                }
+                val email =
+                    _state.value.fields.email
+                        .trim()
+                val password = _state.value.fields.password
 
                 updateState { copy(isLoading = true, errorKey = null) }
 
                 runCatching {
-                    if (_state.value.rememberMe) {
-                        localStorage.saveUser(
-                            _state.value.fields.email
-                                .trim(),
-                            true,
-                        )
-                    } else {
-                        localStorage.saveUser("", false)
-                    }
-                }.onSuccess {
-                    println("STEP1 before nav: email=${_state.value.fields.email} passLen=${_state.value.fields.password.length}")
+                    val auth = authRepository.register(email, password).getOrElse { throw it }
 
+                    authPreferences.saveTokens(auth.accessToken, auth.refreshToken)
+                    authPreferences.saveUserId(auth.user.id)
+                }.onSuccess {
                     sendEffect(NavigateToExtended)
-                }.onFailure {
-                    updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+                }.onFailure { e ->
+                    val msg = e.message?.takeIf { it.isNotBlank() } ?: "Unknown error"
+                    sendEffect(SignUpContract.Effect.ShowToast(msg))
                 }
 
                 updateState { copy(isLoading = false) }
@@ -297,41 +273,36 @@ class SignUpViewModel
             viewModelScope.launch {
                 val normalizedPhone = _profile.value.phone.replace(Regex("[^+\\d]"), "")
 
-                val usernameErrKey = Validate.username(_profile.value.username)
-                val phoneErrKey = Validate.phone(normalizedPhone)
-
-                if (usernameErrKey != null || phoneErrKey != null) {
-                    println("VALIDATION FAIL: username=$usernameErrKey phone=$phoneErrKey")
-
-                    updateProfile {
-                        copy(
-                            usernameErrorKey = usernameErrKey,
-                            phoneErrorKey = phoneErrKey,
-                        )
-                    }
-                    return@launch
-                }
-
                 updateProfile { copy(isLoading = true, errorKey = null) }
 
-                updateState { copy(isLoading = true, errorKey = null) }
-
                 runCatching {
-                    withContext(Dispatchers.IO) {
-                        if (useRemote) {
-                            registerRemote(normalizedPhone)
-                        } else {
-                            registerLocal(normalizedPhone)
-                        }
-                    }
+                    val userId = authPreferences.userId.first() ?: throw Exception("UserId missing")
+                    val access = authPreferences.accessToken.first() ?: throw Exception("Token missing")
+
+                    authRepository
+                        .editUser(
+                            userId = userId,
+                            accessToken = access,
+                            name = _profile.value.username,
+                            phone = normalizedPhone,
+                        ).getOrElse { throw it }
+
+                    val current = localStorage.userProfile.first()
+                    val updated =
+                        (current ?: UserProfile()).copy(
+                            username = _profile.value.username,
+                            phone = normalizedPhone,
+                            avatarPath = _profile.value.avatarPath, // локально
+                            isCompleted = true,
+                        )
+                    localStorage.saveUserProfile(updated)
                 }.onSuccess {
-                    sendEffect(NavigateToHome)
+                    sendEffect(SignUpContract.Effect.NavigateToHome)
                 }.onFailure { e ->
                     val msg = e.message?.takeIf { it.isNotBlank() } ?: "Unknown error"
                     sendEffect(SignUpContract.Effect.ShowToast(msg))
                 }
 
                 updateProfile { copy(isLoading = false) }
-                updateState { copy(isLoading = false) }
             }
     }
