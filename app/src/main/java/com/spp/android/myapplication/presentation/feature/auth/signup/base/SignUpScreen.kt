@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.NavigateToExtended
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.NavigateToLogin
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.OpenGoogleSignIn
@@ -21,6 +22,7 @@ import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpCont
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.RememberChanged
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Event.SubmitRegister
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpViewModel
+import com.spp.android.myapplication.presentation.navigation.showToast
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -47,7 +49,9 @@ fun SignUpScreen(
                         onNavigateToExtended(email)
                     }
                 }
-
+                is SignUpContract.Effect.ShowToast -> {
+                    showToast(context, effect.text)
+                }
                 else -> Unit
             }
         }

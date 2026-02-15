@@ -78,6 +78,10 @@ object SignUpContract {
             val message: TextKey,
         ) : Effect
 
+        data class ShowToast(
+            val text: String,
+        ) : Effect
+
         data object OpenGoogleSignIn : Effect
 
         data object NavigateToLogin : Effect

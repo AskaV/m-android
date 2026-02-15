@@ -5,12 +5,14 @@ import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginScreen
+import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpViewModel
 import com.spp.android.myapplication.presentation.feature.auth.signup.base.SignUpScreen
 import com.spp.android.myapplication.presentation.feature.auth.signup.extended.SignUpExtendedScreen
 import com.spp.android.myapplication.presentation.feature.contacts.addcontact.AddContactScreen
@@ -50,8 +52,11 @@ fun AppNavGraph() {
             )
         }
 
-        composable(Routes.SignUp.route) {
+        composable(Routes.SignUp.route) { backStackEntry ->
+            val vm: SignUpViewModel = hiltViewModel(backStackEntry)
+
             SignUpScreen(
+                vm = vm,
                 onOpenGoogle = { showToast(context, toastMessage) },
                 onNavigateToLogin = { navController.navigate(Routes.Login.route) { launchSingleTop = true } },
                 onNavigateToExtended = { email ->
@@ -75,7 +80,13 @@ fun AppNavGraph() {
         ) { backStackEntry ->
             val emailFromSignUp = backStackEntry.arguments?.getString(NavKeys.EMAIL)
 
+            val parentEntry =
+                remember(backStackEntry) {
+                    navController.getBackStackEntry(Routes.SignUp.route)
+                }
+            val vm: SignUpViewModel = hiltViewModel(parentEntry)
             SignUpExtendedScreen(
+                vm = vm,
                 onBack = { navController.popBackStack() },
                 onNavigateHome = { email, username ->
                     navController.currentBackStackEntry?.savedStateHandle?.set(NavKeys.USER_EMAIL, email)

@@ -2,7 +2,9 @@ package com.spp.android.myapplication.presentation.feature.auth.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.data.storage.AuthPreferences
 import com.spp.android.myapplication.domain.model.UserProfile
+import com.spp.android.myapplication.domain.repository.AuthRepository
 import com.spp.android.myapplication.domain.storage.AvatarStorage
 import com.spp.android.myapplication.domain.storage.LocalStorage
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpContract.Effect.BackFromExtended
@@ -30,6 +32,7 @@ import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpCont
 import com.spp.android.myapplication.presentation.texts.AppText
 import com.spp.android.myapplication.presentation.utils.Validate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,6 +42,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,7 +52,11 @@ class SignUpViewModel
     constructor(
         private val localStorage: LocalStorage,
         private val avatarStorage: AvatarStorage,
+        private val authRepository: AuthRepository,
+        private val authPreferences: AuthPreferences,
     ) : ViewModel() {
+        private val useRemote = true
+
         private val _state = MutableStateFlow(SignUpContract.State())
         val state: StateFlow<SignUpContract.State> = _state.asStateFlow()
 
@@ -175,15 +184,69 @@ class SignUpViewModel
             viewModelScope.launch {
                 runCatching {
                     val oldPath = _profile.value.avatarPath
-                    val newPath = avatarStorage.saveAvatarFromUri(uriString)
 
-                    avatarStorage.deleteAvatar(oldPath)
+                    val newPath =
+                        withContext(Dispatchers.IO) {
+                            val saved = avatarStorage.saveAvatarFromUri(uriString)
+                            avatarStorage.deleteAvatar(oldPath)
+                            saved
+                        }
 
                     updateProfile { copy(avatarPath = newPath) }
                 }.onFailure {
                     sendEffect(SignUpContract.Effect.ShowMessage(AppText.OtherInfo.UNKNOWN_ERROR))
                 }
             }
+
+        private suspend fun registerLocal(normalizedPhone: String) {
+            val current = localStorage.userProfile.first()
+            val updated =
+                (current ?: UserProfile()).copy(
+                    username = _profile.value.username,
+                    phone = normalizedPhone,
+                    avatarPath = _profile.value.avatarPath,
+                    isCompleted = true,
+                )
+            localStorage.saveUserProfile(updated)
+        }
+
+        private suspend fun registerRemote(normalizedPhone: String) {
+            val email =
+                _state.value.fields.email
+                    .trim()
+            val password = _state.value.fields.password
+            val name = _profile.value.username
+            val phone = normalizedPhone
+            println("REGISTER: email=$email passwordLen=${password.length} name=$name phone=$phone")
+
+            val imageFile =
+                _profile.value.avatarPath
+                    ?.takeIf { it.isNotBlank() }
+                    ?.let { File(it) }
+                    ?.takeIf { it.exists() }
+
+            val auth =
+                authRepository
+                    .register(
+                        email = email,
+                        password = password,
+                        name = name,
+                        phone = phone,
+                        imageFile = imageFile,
+                    ).getOrElse { throw it }
+
+            authPreferences.saveTokens(auth.accessToken, auth.refreshToken)
+
+            val current = localStorage.userProfile.first()
+            val updated =
+                (current ?: UserProfile()).copy(
+                    username = name,
+                    phone = phone,
+                    avatarPath = _profile.value.avatarPath,
+                    isCompleted = true,
+                )
+            localStorage.saveUserProfile(updated)
+        }
 
         private fun submitRegister() =
             viewModelScope.launch {
@@ -220,6 +283,8 @@ class SignUpViewModel
                         localStorage.saveUser("", false)
                     }
                 }.onSuccess {
+                    println("STEP1 before nav: email=${_state.value.fields.email} passLen=${_state.value.fields.password.length}")
+
                     sendEffect(NavigateToExtended)
                 }.onFailure {
                     updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
@@ -236,6 +301,8 @@ class SignUpViewModel
                 val phoneErrKey = Validate.phone(normalizedPhone)
 
                 if (usernameErrKey != null || phoneErrKey != null) {
+                    println("VALIDATION FAIL: username=$usernameErrKey phone=$phoneErrKey")
+
                     updateProfile {
                         copy(
                             usernameErrorKey = usernameErrKey,
@@ -245,26 +312,26 @@ class SignUpViewModel
                     return@launch
                 }
 
-                updateProfile { copy(isLoading = true) }
+                updateProfile { copy(isLoading = true, errorKey = null) }
+
+                updateState { copy(isLoading = true, errorKey = null) }
 
                 runCatching {
-                    val current = localStorage.userProfile.first()
-                    val updated =
-                        (current ?: UserProfile()).copy(
-                            username = _profile.value.username,
-                            phone = normalizedPhone,
-                            avatarPath = _profile.value.avatarPath,
-                            isCompleted = true,
-                        )
-
-                    localStorage.saveUserProfile(updated)
+                    withContext(Dispatchers.IO) {
+                        if (useRemote) {
+                            registerRemote(normalizedPhone)
+                        } else {
+                            registerLocal(normalizedPhone)
+                        }
+                    }
                 }.onSuccess {
                     sendEffect(NavigateToHome)
-                }.onFailure {
-                    updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
-                    sendEffect(SignUpContract.Effect.ShowMessage(AppText.OtherInfo.UNKNOWN_ERROR))
+                }.onFailure { e ->
+                    val msg = e.message?.takeIf { it.isNotBlank() } ?: "Unknown error"
+                    sendEffect(SignUpContract.Effect.ShowToast(msg))
                 }
 
                 updateProfile { copy(isLoading = false) }
+                updateState { copy(isLoading = false) }
             }
     }

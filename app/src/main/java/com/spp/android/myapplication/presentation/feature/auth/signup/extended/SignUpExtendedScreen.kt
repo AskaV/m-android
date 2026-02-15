@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.presentation.feature.auth.signup.extended
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -80,7 +81,9 @@ fun SignUpExtendedScreen(
                     val username = profile.username
                     onNavigateHome(email, username)
                 }
-
+                is SignUpContract.Effect.ShowToast -> {
+                    Toast.makeText(context, effect.text, Toast.LENGTH_LONG).show()
+                }
                 else -> Unit
             }
         }
