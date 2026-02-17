@@ -3,6 +3,7 @@ package com.spp.android.myapplication.data.repository
 import com.spp.android.myapplication.data.remote.api.AuthApi
 import com.spp.android.myapplication.data.remote.dto.AuthDataDto
 import com.spp.android.myapplication.data.remote.dto.EditUserBody
+import com.spp.android.myapplication.data.remote.dto.LoginBody
 import com.spp.android.myapplication.data.remote.dto.UserDto
 import com.spp.android.myapplication.data.remote.util.toPart
 import com.spp.android.myapplication.domain.repository.AuthRepository
@@ -63,8 +64,34 @@ class AuthRepositoryImpl
                 if (body?.status != "success" || body.data == null) {
                     throw Exception(body?.message ?: "Unknown error")
                 }
-
+                println("EDIT PUT response user = ${body?.data?.user}")
                 body.data.user
+            }
+
+        override suspend fun login(
+            email: String,
+            password: String,
+        ): Result<AuthDataDto> =
+            runCatching {
+                val resp =
+                    api.login(
+                        LoginBody(
+                            email = email.trim(),
+                            password = password,
+                        ),
+                    )
+
+                if (!resp.isSuccessful) {
+                    val raw = resp.errorBody()?.string()
+                    throw Exception(parseErrorMessage(raw, resp.code()))
+                }
+
+                val body = resp.body()
+                if (body?.status != "success" || body.data == null) {
+                    throw Exception(body?.message ?: "Unknown error")
+                }
+
+                body.data
             }
     }
 

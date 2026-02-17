@@ -15,4 +15,9 @@ interface AuthRepository {
         name: String?,
         phone: String?,
     ): Result<UserDto>
+
+    suspend fun login(
+        email: String,
+        password: String,
+    ): Result<AuthDataDto>
 }

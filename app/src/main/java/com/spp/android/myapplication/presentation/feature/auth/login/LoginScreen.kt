@@ -1,12 +1,15 @@
 package com.spp.android.myapplication.presentation.feature.auth.login
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Effect.ForgotPassword
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Effect.NavigateToHome
+import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Effect.ShowToast
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.EmailChanged
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.ForgotPasswordClicked
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.PasswordChanged
@@ -19,32 +22,34 @@ fun LoginScreen(
     onNavigateHome: (String) -> Unit,
     onNavigateToRegister: () -> Unit,
     onForgotPassword: () -> Unit,
-    vm: LoginViewModel = hiltViewModel(),
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    val state by vm.state.collectAsState()
+    val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        vm.effect.collectLatest { effect ->
+        viewModel.effect.collectLatest { effect ->
             when (effect) {
                 is NavigateToHome -> {
-                    val email = vm.state.value.email
+                    val email = viewModel.state.value.email
                     if (email.isNotBlank()) {
                         onNavigateHome(email)
                     }
                 }
 
                 is ForgotPassword -> onForgotPassword()
+                is ShowToast -> Toast.makeText(context, effect.text, Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     LoginScreenContent(
         state = state,
-        onEmailChange = { vm.onEvent(EmailChanged(it)) },
-        onPasswordChange = { vm.onEvent(PasswordChanged(it)) },
-        onRememberMeChange = { vm.onEvent(RememberChanged(it)) },
-        onLoginClick = { vm.onEvent(Submit) },
+        onEmailChange = { viewModel.onEvent(EmailChanged(it)) },
+        onPasswordChange = { viewModel.onEvent(PasswordChanged(it)) },
+        onRememberMeChange = { viewModel.onEvent(RememberChanged(it)) },
+        onLoginClick = { viewModel.onEvent(Submit) },
         onNavigateToRegister = onNavigateToRegister,
-        onForgotPasswordClick = { vm.onEvent(ForgotPasswordClicked) },
+        onForgotPasswordClick = { viewModel.onEvent(ForgotPasswordClicked) },
     )
 }

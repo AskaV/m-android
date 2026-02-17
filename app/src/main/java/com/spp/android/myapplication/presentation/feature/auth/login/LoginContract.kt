@@ -49,5 +49,9 @@ object LoginContract {
         data object NavigateToHome : Effect
 
         data object ForgotPassword : Effect
+
+        data class ShowToast(
+            val text: String,
+        ) : Effect
     }
 }
