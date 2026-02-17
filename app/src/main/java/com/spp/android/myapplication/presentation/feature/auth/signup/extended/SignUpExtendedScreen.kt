@@ -75,15 +75,19 @@ fun SignUpExtendedScreen(
                 OpenAvatarPicker -> {
                     pickerKey++
                     showPicker = true
-                } is BackFromExtended -> onBack()
+                }
+
+                is BackFromExtended -> onBack()
                 is NavigateToHome -> {
                     val email = prefillEmail ?: viewModel.state.value.fields.email
                     val username = profile.username
                     onNavigateHome(email, username)
                 }
+
                 is SignUpContract.Effect.ShowToast -> {
                     Toast.makeText(context, effect.text, Toast.LENGTH_LONG).show()
                 }
+
                 else -> Unit
             }
         }

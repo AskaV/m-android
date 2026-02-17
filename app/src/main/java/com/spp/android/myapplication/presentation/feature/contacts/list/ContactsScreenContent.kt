@@ -56,7 +56,11 @@ fun ContactsScreenContent(
         derivedStateOf { listState.firstVisibleItemIndex > 0 }
     }
     Box(
-        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface).padding(contentPadding),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(contentPadding),
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),

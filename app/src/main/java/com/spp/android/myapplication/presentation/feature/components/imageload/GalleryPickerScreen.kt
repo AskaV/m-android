@@ -47,6 +47,7 @@ fun GalleryPickerScreen(
                 is ShowMessage -> {
                     effect.message
                 }
+
                 is ReturnResult -> onResult(effect.returnResultUri)
             }
         }

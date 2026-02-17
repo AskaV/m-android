@@ -49,9 +49,11 @@ fun SignUpScreen(
                         onNavigateToExtended(email)
                     }
                 }
+
                 is SignUpContract.Effect.ShowToast -> {
                     showToast(context, effect.text)
                 }
+
                 else -> Unit
             }
         }

@@ -51,7 +51,12 @@ class ContactProfileViewModel
                     contactsRepository.loadContacts().firstOrNull { it.id == id }
                 }.onSuccess { contact ->
                     if (contact == null) {
-                        _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                errorKey = AppText.OtherInfo.UNKNOWN_ERROR,
+                            )
+                        }
                         sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
                         return@onSuccess
                     }
@@ -67,7 +72,12 @@ class ContactProfileViewModel
                         )
                     }
                 }.onFailure {
-                    _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            errorKey = AppText.OtherInfo.UNKNOWN_ERROR,
+                        )
+                    }
                     sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
                 }
             }

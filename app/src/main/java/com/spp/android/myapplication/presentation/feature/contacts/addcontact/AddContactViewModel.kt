@@ -53,10 +53,11 @@ class AddContactViewModel
                             avatarStorage.saveAvatarFromUri(event.uri)
                         }.onSuccess { savedPath ->
                             _state.update { it.copy(avatarUrl = savedPath) }
-                        }.onFailure {
-                        }
+                        }.onFailure {}
                     }
-                } is Event.OnPickAvatarClick -> {}
+                }
+
+                is Event.OnPickAvatarClick -> {}
                 is Event.OnSaveClick -> save()
             }
         }

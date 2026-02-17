@@ -45,7 +45,10 @@ fun AppNavGraph() {
             LoginScreen(
                 onForgotPassword = { showToast(context, toastMessage) },
                 onNavigateHome = { email ->
-                    navController.currentBackStackEntry?.savedStateHandle?.set(NavKeys.USER_EMAIL, email)
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        NavKeys.USER_EMAIL,
+                        email,
+                    )
                     navController.navigate(Routes.Home.route) { launchSingleTop = true }
                 },
                 onNavigateToRegister = { navController.navigate(Routes.SignUp.route) },
@@ -58,7 +61,11 @@ fun AppNavGraph() {
             SignUpScreen(
                 viewModel = viewModel,
                 onOpenGoogle = { showToast(context, toastMessage) },
-                onNavigateToLogin = { navController.navigate(Routes.Login.route) { launchSingleTop = true } },
+                onNavigateToLogin = {
+                    navController.navigate(Routes.Login.route) {
+                        launchSingleTop = true
+                    }
+                },
                 onNavigateToExtended = { email ->
                     val encoded = java.net.URLEncoder.encode(email, "utf-8")
                     navController.navigate(Routes.SignUpExtended.route + "?${NavKeys.EMAIL}=$encoded") {
@@ -89,8 +96,14 @@ fun AppNavGraph() {
                 viewModel = viewModel,
                 onBack = { navController.popBackStack() },
                 onNavigateHome = { email, username ->
-                    navController.currentBackStackEntry?.savedStateHandle?.set(NavKeys.USER_EMAIL, email)
-                    navController.currentBackStackEntry?.savedStateHandle?.set(NavKeys.USER_NAME, username)
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        NavKeys.USER_EMAIL,
+                        email,
+                    )
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        NavKeys.USER_NAME,
+                        username,
+                    )
                     navController.navigate(Routes.Home.route) { launchSingleTop = true }
                 },
                 prefillEmail = emailFromSignUp,
@@ -118,8 +131,18 @@ fun AppNavGraph() {
                 ContactsScreen(
                     onBack = { tabsController.goTo(HomeTab.Profile) },
                     onOpenSearch = { showToast(context, toastMessage) },
-                    onOpenAddContact = { navController.navigate(Routes.AddContact.route) { launchSingleTop = true } },
-                    onOpenContactProfile = { id -> navController.navigate(Routes.ContactProfile.create(id)) },
+                    onOpenAddContact = {
+                        navController.navigate(Routes.AddContact.route) {
+                            launchSingleTop = true
+                        }
+                    },
+                    onOpenContactProfile = { id ->
+                        navController.navigate(
+                            Routes.ContactProfile.create(
+                                id,
+                            ),
+                        )
+                    },
                 )
             })
         }
@@ -128,7 +151,10 @@ fun AppNavGraph() {
             EditProfileScreen(
                 onBack = { navController.popBackStack() },
                 onDone = { result ->
-                    navController.previousBackStackEntry?.savedStateHandle?.set("profile_result", result)
+                    navController.previousBackStackEntry?.savedStateHandle?.set(
+                        "profile_result",
+                        result,
+                    )
                     navController.popBackStack()
                 },
             )

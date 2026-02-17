@@ -133,7 +133,12 @@ class ContactsViewModel
                 }.onSuccess { list ->
                     _state.update { it.copy(items = sortContacts(list), isLoading = false) }
                 }.onFailure {
-                    _state.update { it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            errorKey = AppText.OtherInfo.UNKNOWN_ERROR,
+                        )
+                    }
                     sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
                 }
             }
