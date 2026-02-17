@@ -31,11 +31,11 @@ import java.io.Serializable
 fun EditProfileScreen(
     onBack: () -> Unit = {},
     onDone: (ProfileResult) -> Unit = {},
-    vm: EditProfileViewModel = hiltViewModel(),
+    viewModel: EditProfileViewModel = hiltViewModel(),
 ) {
     val snackBar = remember { SnackbarHostState() }
     val context = LocalContext.current
-    val state by vm.state.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     var showPicker by remember { mutableStateOf(false) }
     var pickerKey by remember { mutableIntStateOf(0) }
@@ -46,14 +46,14 @@ fun EditProfileScreen(
                 startVisible = true,
                 onResult = { uri ->
                     showPicker = false
-                    uri?.let { vm.onEvent(AvatarSelected(it.toString())) }
+                    uri?.let { viewModel.onEvent(AvatarSelected(it.toString())) }
                 },
             )
         }
     }
 
     LaunchedEffect(Unit) {
-        vm.effect.collect { effect ->
+        viewModel.effect.collect { effect ->
             when (effect) {
                 is NavigateBack -> onBack()
 
@@ -82,17 +82,17 @@ fun EditProfileScreen(
 
     EditProfileScreenContent(
         state = state,
-        onBack = { vm.onEvent(BackClicked) },
-        onValueChange = vm::onFieldChange,
+        onBack = { viewModel.onEvent(BackClicked) },
+        onValueChange = viewModel::onFieldChange,
         onSave = { username, career, phone, address, birthdate ->
-            vm.onEvent(UsernameChanged(username))
-            vm.onEvent(CareerChanged(career))
-            vm.onEvent(PhoneChanged(phone))
-            vm.onEvent(AddressChanged(address))
-            vm.onEvent(BirthdateChanged(birthdate))
-            vm.onEvent(SaveClicked)
+            viewModel.onEvent(UsernameChanged(username))
+            viewModel.onEvent(CareerChanged(career))
+            viewModel.onEvent(PhoneChanged(phone))
+            viewModel.onEvent(AddressChanged(address))
+            viewModel.onEvent(BirthdateChanged(birthdate))
+            viewModel.onEvent(SaveClicked)
         },
-        onAvatarClick = { vm.onEvent(EditProfileContract.Event.AvatarClicked) },
+        onAvatarClick = { viewModel.onEvent(EditProfileContract.Event.AvatarClicked) },
     )
 }
 

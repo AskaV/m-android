@@ -39,16 +39,16 @@ fun ContactsScreen(
     onOpenSearch: () -> Unit = {},
     onOpenAddContact: () -> Unit = {},
     onOpenContactProfile: (Int) -> Unit = {},
-    vm: ContactsViewModel = hiltViewModel(),
+    viewModel: ContactsViewModel = hiltViewModel(),
 ) {
     val undo = rememberUndoSnackbarController(totalSeconds = 5)
     val snackbar = undo.hostState
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val state by vm.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        vm.effect.collect { effect ->
+        viewModel.effect.collect { effect ->
             when (effect) {
                 is NavigateBack -> onBack()
                 is OpenSearch -> onOpenSearch()
@@ -64,7 +64,7 @@ fun ContactsScreen(
                             scope = scope,
                             message = msg,
                             undoLabel = "Undo",
-                            onUndo = { vm.onEvent(UndoDelete) },
+                            onUndo = { viewModel.onEvent(UndoDelete) },
                             onTimeout = { Toast.makeText(context, msg, Toast.LENGTH_SHORT).show() },
                         )
                     } else {
@@ -80,7 +80,7 @@ fun ContactsScreen(
         val observer =
             LifecycleEventObserver { _, event ->
                 if (event == Lifecycle.Event.ON_RESUME) {
-                    vm.onEvent(ContactsContract.Event.Load)
+                    viewModel.onEvent(ContactsContract.Event.Load)
                 }
             }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -94,28 +94,28 @@ fun ContactsScreen(
             items = state.items,
             onBack = {
                 if (state.isSelectionMode) {
-                    vm.onEvent(ExitSelectionMode)
+                    viewModel.onEvent(ExitSelectionMode)
                 } else {
-                    vm.onEvent(BackClicked)
+                    viewModel.onEvent(BackClicked)
                 }
             },
-            onSearchClick = { vm.onEvent(SearchClicked) },
-            onAddContactsClick = { vm.onEvent(AddContactsClicked) },
+            onSearchClick = { viewModel.onEvent(SearchClicked) },
+            onAddContactsClick = { viewModel.onEvent(AddContactsClicked) },
             onContactClick = {
                 if (state.isSelectionMode) {
-                    vm.onEvent(
+                    viewModel.onEvent(
                         ContactSelectionToggled(
                             it,
                         ),
                     )
                 } else {
-                    vm.onEvent(ContactClicked(it))
+                    viewModel.onEvent(ContactClicked(it))
                 }
             },
-            onDeleteClick = { vm.onEvent(DeleteClicked(it)) },
-            onContactLongClick = { vm.onEvent(ContactLongClicked(it)) },
+            onDeleteClick = { viewModel.onEvent(DeleteClicked(it)) },
+            onContactLongClick = { viewModel.onEvent(ContactLongClicked(it)) },
             showRecycleBin = state.isSelectionMode,
-            onBulkDeleteClick = { vm.onEvent(BulkDeleteClicked) },
+            onBulkDeleteClick = { viewModel.onEvent(BulkDeleteClicked) },
             isSelectionMode = state.isSelectionMode,
             selectedIds = state.selected,
         )

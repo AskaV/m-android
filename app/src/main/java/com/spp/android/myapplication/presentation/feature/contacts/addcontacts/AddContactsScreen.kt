@@ -19,12 +19,12 @@ fun AddContactsScreen(
     onBack: () -> Unit = {},
     onOpenSearch: () -> Unit = {},
     onOpenProfile: (Int) -> Unit = {},
-    vm: AddContactsViewModel = hiltViewModel(),
+    viewModel: AddContactsViewModel = hiltViewModel(),
 ) {
-    val state by vm.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        vm.effect.collect { effect ->
+        viewModel.effect.collect { effect ->
             when (effect) {
                 is NavigateBack -> onBack()
                 is OpenSearch -> onOpenSearch()
@@ -35,15 +35,15 @@ fun AddContactsScreen(
         }
     }
 
-    BackHandler { vm.onEvent(BackClicked) }
+    BackHandler { viewModel.onEvent(BackClicked) }
 
     AddContactsScreenContent(
         items = state.items,
         selectedIds = state.selected,
-        onBack = { vm.onEvent(BackClicked) },
-        onSearchClick = { vm.onEvent(SearchClicked) },
-        onMassAddClick = { vm.onEvent(MassAddClicked) },
-        onAddClick = { vm.onEvent(AddClicked(it)) },
+        onBack = { viewModel.onEvent(BackClicked) },
+        onSearchClick = { viewModel.onEvent(SearchClicked) },
+        onMassAddClick = { viewModel.onEvent(MassAddClicked) },
+        onAddClick = { viewModel.onEvent(AddClicked(it)) },
         onRowClick = { contact -> onOpenProfile(contact.id) },
     )
 }

@@ -26,18 +26,18 @@ fun GalleryPickerScreen(
     modifier: Modifier = Modifier,
     onResult: (Uri?) -> Unit = {},
     startVisible: Boolean = false,
-    vm: GalleryPickerViewModel = hiltViewModel(),
+    viewModel: GalleryPickerViewModel = hiltViewModel(),
 ) {
-    val state by vm.state.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     val galleryLauncher =
         rememberLauncherForActivityResult(GetContent()) { uri ->
-            uri?.let { vm.onEvent(PhotoPicked(it)) }
+            uri?.let { viewModel.onEvent(PhotoPicked(it)) }
         }
 
     LaunchedEffect(startVisible) {
-        if (startVisible) vm.onEvent(Show)
-        vm.effect.collectLatest { effect ->
+        if (startVisible) viewModel.onEvent(Show)
+        viewModel.effect.collectLatest { effect ->
             when (effect) {
                 is LaunchGalleryPicker -> galleryLauncher.launch("image/*")
 
@@ -54,10 +54,10 @@ fun GalleryPickerScreen(
 
     GalleryPickerScreenContent(
         state = state,
-        onDismiss = { vm.onEvent(Dismiss) },
-        onOpenGallery = { vm.onEvent(OpenGallery) },
-        onOpenCamera = { vm.onEvent(OpenCamera) },
-        onDeleteCurrent = { vm.onEvent(DeleteCurrent) },
+        onDismiss = { viewModel.onEvent(Dismiss) },
+        onOpenGallery = { viewModel.onEvent(OpenGallery) },
+        onOpenCamera = { viewModel.onEvent(OpenCamera) },
+        onDeleteCurrent = { viewModel.onEvent(DeleteCurrent) },
         modifier = modifier,
     )
 }

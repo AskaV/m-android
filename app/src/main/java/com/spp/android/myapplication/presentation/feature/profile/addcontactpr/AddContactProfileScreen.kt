@@ -16,13 +16,13 @@ import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.A
 fun AddContactProfileScreen(
     contactId: Int = 0,
     onBack: () -> Unit = {},
-    vm: AddContactProfileViewModel = hiltViewModel(),
+    viewModel: AddContactProfileViewModel = hiltViewModel(),
 ) {
-    val state by vm.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(contactId) { vm.onEvent(Load(contactId)) }
+    LaunchedEffect(contactId) { viewModel.onEvent(Load(contactId)) }
     LaunchedEffect(Unit) {
-        vm.effect.collect { effect ->
+        viewModel.effect.collect { effect ->
             when (effect) {
                 is ShowMessage -> {
                     effect.message
@@ -35,8 +35,8 @@ fun AddContactProfileScreen(
 
     AddContactProfileScreenContent(
         state = state,
-        onBack = { vm.onEvent(BackClicked) },
-        onMessage = { vm.onEvent(MessageClicked) },
-        onAddToContacts = { vm.onEvent(AddToContactsClicked) },
+        onBack = { viewModel.onEvent(BackClicked) },
+        onMessage = { viewModel.onEvent(MessageClicked) },
+        onAddToContacts = { viewModel.onEvent(AddToContactsClicked) },
     )
 }

@@ -53,10 +53,10 @@ fun AppNavGraph() {
         }
 
         composable(Routes.SignUp.route) { backStackEntry ->
-            val vm: SignUpViewModel = hiltViewModel(backStackEntry)
+            val viewModel: SignUpViewModel = hiltViewModel(backStackEntry)
 
             SignUpScreen(
-                vm = vm,
+                viewModel = viewModel,
                 onOpenGoogle = { showToast(context, toastMessage) },
                 onNavigateToLogin = { navController.navigate(Routes.Login.route) { launchSingleTop = true } },
                 onNavigateToExtended = { email ->
@@ -84,9 +84,9 @@ fun AppNavGraph() {
                 remember(backStackEntry) {
                     navController.getBackStackEntry(Routes.SignUp.route)
                 }
-            val vm: SignUpViewModel = hiltViewModel(parentEntry)
+            val viewModel: SignUpViewModel = hiltViewModel(parentEntry)
             SignUpExtendedScreen(
-                vm = vm,
+                viewModel = viewModel,
                 onBack = { navController.popBackStack() },
                 onNavigateHome = { email, username ->
                     navController.currentBackStackEntry?.savedStateHandle?.set(NavKeys.USER_EMAIL, email)

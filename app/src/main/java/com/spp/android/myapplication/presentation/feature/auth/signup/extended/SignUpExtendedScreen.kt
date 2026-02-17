@@ -38,9 +38,9 @@ fun SignUpExtendedScreen(
     onBack: () -> Unit,
     onNavigateHome: (String, String) -> Unit = { _, _ -> },
     prefillEmail: String? = null,
-    vm: SignUpViewModel = hiltViewModel(),
+    viewModel: SignUpViewModel = hiltViewModel(),
 ) {
-    val profile by vm.profile.collectAsStateWithLifecycle()
+    val profile by viewModel.profile.collectAsStateWithLifecycle()
     val snackBar = SnackbarHostState()
     var showPicker by remember { mutableStateOf(false) }
     var pickerKey by remember { mutableIntStateOf(0) }
@@ -52,7 +52,7 @@ fun SignUpExtendedScreen(
                 startVisible = true,
                 onResult = { uri ->
                     showPicker = false
-                    uri?.let { vm.onEvent(AvatarPicked(it.toString())) }
+                    uri?.let { viewModel.onEvent(AvatarPicked(it.toString())) }
                 },
             )
         }
@@ -63,13 +63,13 @@ fun SignUpExtendedScreen(
             val (first, last) = parseNameFromEmail(prefillEmail)
             val full = listOf(first, last).filter { it.isNotBlank() }.joinToString(" ")
             if (full.isNotBlank()) {
-                vm.onEvent(UsernameChanged(full))
+                viewModel.onEvent(UsernameChanged(full))
             }
         }
     }
 
     LaunchedEffect(Unit) {
-        vm.effect.collectLatest { effect ->
+        viewModel.effect.collectLatest { effect ->
             when (effect) {
                 is ShowMessage -> snackBar.showSnackbar(effect.message.text(context))
                 OpenAvatarPicker -> {
@@ -77,7 +77,7 @@ fun SignUpExtendedScreen(
                     showPicker = true
                 } is BackFromExtended -> onBack()
                 is NavigateToHome -> {
-                    val email = prefillEmail ?: vm.state.value.fields.email
+                    val email = prefillEmail ?: viewModel.state.value.fields.email
                     val username = profile.username
                     onNavigateHome(email, username)
                 }
@@ -99,11 +99,11 @@ fun SignUpExtendedScreen(
                     phoneErrorKey = profile.phoneErrorKey,
                     avatarPath = profile.avatarPath,
                 ),
-            onPickAvatar = { vm.onEvent(PickAvatar) },
-            onUserNameChange = { vm.onEvent(UsernameChanged(it)) },
-            onPhoneChange = { vm.onEvent(PhoneChanged(it)) },
-            onCancel = { vm.onEvent(CancelExtended) },
-            onForward = { vm.onEvent(ForwardExtended) },
+            onPickAvatar = { viewModel.onEvent(PickAvatar) },
+            onUserNameChange = { viewModel.onEvent(UsernameChanged(it)) },
+            onPhoneChange = { viewModel.onEvent(PhoneChanged(it)) },
+            onCancel = { viewModel.onEvent(CancelExtended) },
+            onForward = { viewModel.onEvent(ForwardExtended) },
             modifier = Modifier.padding(paddings),
         )
     }
@@ -113,7 +113,7 @@ fun SignUpExtendedScreen(
             startVisible = true,
             onResult = { uri ->
                 showPicker = false
-                uri?.let { vm.onEvent(AvatarPicked(it.toString())) }
+                uri?.let { viewModel.onEvent(AvatarPicked(it.toString())) }
             },
         )
     }

@@ -20,17 +20,17 @@ fun ContactProfileScreen(
     contactId: Int,
     onBack: () -> Unit = {},
     onOpenChat: (Int) -> Unit = {},
-    vm: ContactProfileViewModel = hiltViewModel(),
+    viewModel: ContactProfileViewModel = hiltViewModel(),
 ) {
-    val state by vm.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val snackBar = remember { SnackbarHostState() }
     val context = LocalContext.current
 
     LaunchedEffect(contactId) {
-        vm.onEvent(Load(contactId))
+        viewModel.onEvent(Load(contactId))
     }
     LaunchedEffect(Unit) {
-        vm.effect.collect { effect ->
+        viewModel.effect.collect { effect ->
             when (effect) {
                 is NavigateBack -> onBack()
                 is OpenChat -> onOpenChat(effect.contactId)
@@ -43,7 +43,7 @@ fun ContactProfileScreen(
 
     ContactProfileScreen(
         state = state,
-        onBack = { vm.onEvent(BackClicked) },
-        onMessage = { vm.onEvent(MessageClicked) },
+        onBack = { viewModel.onEvent(BackClicked) },
+        onMessage = { viewModel.onEvent(MessageClicked) },
     )
 }
