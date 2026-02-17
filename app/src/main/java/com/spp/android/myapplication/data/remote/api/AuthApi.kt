@@ -3,6 +3,7 @@ package com.spp.android.myapplication.data.remote.api
 import com.spp.android.myapplication.data.remote.dto.ApiResponse
 import com.spp.android.myapplication.data.remote.dto.AuthDataDto
 import com.spp.android.myapplication.data.remote.dto.EditUserBody
+import com.spp.android.myapplication.data.remote.dto.EditUserDataDto
 import com.spp.android.myapplication.data.remote.dto.LoginBody
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -31,7 +32,7 @@ interface AuthApi {
         @Path("id") userId: Int,
         @Header("Authorization") bearer: String,
         @Body body: EditUserBody,
-    ): Response<ApiResponse<AuthDataDto>>
+    ): Response<ApiResponse<EditUserDataDto>>
 
     @POST("login")
     suspend fun login(

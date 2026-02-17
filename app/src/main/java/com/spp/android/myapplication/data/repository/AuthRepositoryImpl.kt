@@ -46,13 +46,31 @@ class AuthRepositoryImpl
             accessToken: String,
             name: String?,
             phone: String?,
+            address: String?,
+            career: String?,
+            birthday: String?,
+            facebook: String?,
+            instagram: String?,
+            twitter: String?,
+            linkedin: String?,
         ): Result<UserDto> =
             runCatching {
                 val resp =
                     api.editUser(
                         userId = userId,
                         bearer = "Bearer $accessToken",
-                        body = EditUserBody(name, phone),
+                        body =
+                            EditUserBody(
+                                name = name?.takeIf { it.isNotBlank() },
+                                phone = phone?.takeIf { it.isNotBlank() },
+                                address = address?.takeIf { it.isNotBlank() },
+                                career = career?.takeIf { it.isNotBlank() },
+                                birthday = birthday?.takeIf { it.isNotBlank() },
+                                facebook = facebook?.takeIf { it.isNotBlank() },
+                                instagram = instagram?.takeIf { it.isNotBlank() },
+                                twitter = twitter?.takeIf { it.isNotBlank() },
+                                linkedin = linkedin?.takeIf { it.isNotBlank() },
+                            ),
                     )
 
                 if (!resp.isSuccessful) {

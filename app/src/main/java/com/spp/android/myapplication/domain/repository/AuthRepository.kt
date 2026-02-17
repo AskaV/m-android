@@ -14,6 +14,13 @@ interface AuthRepository {
         accessToken: String,
         name: String?,
         phone: String?,
+        address: String? = null,
+        career: String? = null,
+        birthday: String? = null,
+        facebook: String? = null,
+        instagram: String? = null,
+        twitter: String? = null,
+        linkedin: String? = null,
     ): Result<UserDto>
 
     suspend fun login(

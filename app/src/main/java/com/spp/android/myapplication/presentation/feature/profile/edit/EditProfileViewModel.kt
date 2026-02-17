@@ -2,7 +2,9 @@ package com.spp.android.myapplication.presentation.feature.profile.edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.data.storage.AuthPreferences
 import com.spp.android.myapplication.domain.model.UserProfile
+import com.spp.android.myapplication.domain.repository.AuthRepository
 import com.spp.android.myapplication.domain.storage.AvatarStorage
 import com.spp.android.myapplication.domain.storage.LocalStorage
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileContract.Effect
@@ -13,6 +15,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,7 +27,13 @@ class EditProfileViewModel
     constructor(
         private val localStorage: LocalStorage,
         private val avatarStorage: AvatarStorage,
+        private val authRepository: AuthRepository,
+        private val authPreferences: AuthPreferences,
     ) : ViewModel() {
+        private enum class StorageMode { LOCAL, REMOTE, BOTH }
+
+        private val storageMode = StorageMode.BOTH
+
         private val _state = MutableStateFlow(EditProfileContract.State())
         val state: StateFlow<EditProfileContract.State> = _state.asStateFlow()
 
@@ -42,12 +51,22 @@ class EditProfileViewModel
                 is Event.Load -> load()
 
                 is Event.UsernameChanged ->
-                    _state.update { it.copy(username = event.usernameChanged, usernameErrorKey = null) }
+                    _state.update {
+                        it.copy(
+                            username = event.usernameChanged,
+                            usernameErrorKey = null,
+                        )
+                    }
 
                 is Event.CareerChanged -> _state.update { it.copy(career = event.careerChanged) }
 
                 is Event.PhoneChanged ->
-                    _state.update { it.copy(phone = event.phoneChanged, phoneErrorKey = null) }
+                    _state.update {
+                        it.copy(
+                            phone = event.phoneChanged,
+                            phoneErrorKey = null,
+                        )
+                    }
 
                 is Event.AddressChanged -> _state.update { it.copy(address = event.addressChanged) }
 
@@ -132,7 +151,6 @@ class EditProfileViewModel
 
                 runCatching {
                     val current = cachedProfile
-
                     val updated =
                         if (current != null) {
                             current.copy(
@@ -154,14 +172,47 @@ class EditProfileViewModel
                             )
                         }
 
-                    localStorage.saveUserProfile(updated)
-                    cachedProfile = updated
+                    if (storageMode == StorageMode.REMOTE || storageMode == StorageMode.BOTH) {
+                        val userId = authPreferences.userId.first() ?: throw Exception("UserId missing")
+                        val token = authPreferences.accessToken.first()
+                        if (token.isBlank()) throw Exception("Token missing")
+
+                        println(
+                            "EDIT PUT: name=${updated.username} phone=${updated.phone} address=${updated.address} career=${updated.career} birth=${updated.birthdate}",
+                        )
+
+                        authRepository
+                            .editUser(
+                                userId = userId,
+                                accessToken = token,
+                                name = updated.username.ifBlank { null },
+                                phone = updated.phone.ifBlank { null },
+                                address = updated.address.ifBlank { null },
+                                career = updated.career.ifBlank { null },
+                                birthday = updated.birthdate.ifBlank { null },
+                                facebook = null,
+                                instagram = null,
+                                twitter = null,
+                                linkedin = null,
+                            ).getOrElse { throw it }
+                    }
+
+                    if (storageMode == StorageMode.LOCAL || storageMode == StorageMode.BOTH) {
+                        localStorage.saveUserProfile(updated)
+                        cachedProfile = updated
+                    }
+
                     true
                 }.onSuccess {
                     _state.update { it.copy(isSaving = false) }
                     sendEffect(Effect.Saved)
-                }.onFailure {
-                    _state.update { it.copy(isSaving = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+                }.onFailure { e ->
+                    _state.update {
+                        it.copy(
+                            isSaving = false,
+                            errorKey = AppText.OtherInfo.UNKNOWN_ERROR,
+                        )
+                    }
                     sendEffect(Effect.ShowMessage(AppText.OtherInfo.FAILED_PROFILE_SAVE))
                 }
             }
