@@ -34,3 +34,4 @@ object ContactsProvides {
         @ApplicationContext context: Context,
     ): ContentResolver = context.contentResolver
 }
+

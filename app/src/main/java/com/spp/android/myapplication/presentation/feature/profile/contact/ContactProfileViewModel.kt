@@ -48,7 +48,7 @@ class ContactProfileViewModel
                 _state.update { it.copy(isLoading = true, contactId = id, errorKey = null) }
 
                 runCatching {
-                    contactsRepository.loadContacts().firstOrNull { it.id == id }
+                    contactsRepository.loadContactsPhone().firstOrNull { it.id == id }
                 }.onSuccess { contact ->
                     if (contact == null) {
                         _state.update {

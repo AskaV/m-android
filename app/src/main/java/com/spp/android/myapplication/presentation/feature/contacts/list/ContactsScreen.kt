@@ -38,6 +38,7 @@ fun ContactsScreen(
     onBack: () -> Unit = {},
     onOpenSearch: () -> Unit = {},
     onOpenAddContact: () -> Unit = {},
+    onOpenAddContacts: () -> Unit = {},
     onOpenContactProfile: (Int) -> Unit = {},
     viewModel: ContactsViewModel = hiltViewModel(),
 ) {
@@ -77,12 +78,11 @@ fun ContactsScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
 
     DisposableEffect(lifecycleOwner) {
-        val observer =
-            LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_RESUME) {
-                    viewModel.onEvent(ContactsContract.Event.Load)
-                }
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.onEvent(ContactsContract.Event.Load)
             }
+        }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
@@ -100,7 +100,8 @@ fun ContactsScreen(
                 }
             },
             onSearchClick = { viewModel.onEvent(SearchClicked) },
-            onAddContactsClick = { viewModel.onEvent(AddContactsClicked) },
+            onAddContactClick = { viewModel.onEvent(AddContactsClicked) },
+            onAddContactsClick = { onOpenAddContacts() },
             onContactClick = {
                 if (state.isSelectionMode) {
                     viewModel.onEvent(

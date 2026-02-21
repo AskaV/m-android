@@ -1,6 +1,7 @@
 package com.spp.android.myapplication.presentation.feature.contacts.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -32,6 +33,7 @@ fun ContactsHeader(
     onBack: () -> Unit = {},
     onSearchClick: () -> Unit = {},
     showAddHeaderRow: Boolean,
+    onAddContactClick: () -> Unit = {},
     onAddContactsClick: () -> Unit = {},
     reserveAddRowSpace: Boolean = false,
 ) {
@@ -79,7 +81,7 @@ fun ContactsHeader(
                             .fillMaxWidth()
                             .heightIn(min = addRowMinHeight)
                             .padding(vertical = spaceM, horizontal = pad)
-                            .clickable(onClick = onAddContactsClick),
+                            .combinedClickable(onClick = onAddContactsClick,onLongClick = onAddContactClick),
                 )
             } else if (reserveAddRowSpace) {
                 Spacer(

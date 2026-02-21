@@ -55,7 +55,7 @@ class AddContactProfileViewModel
             viewModelScope.launch {
                 _state.update { it.copy(isLoading = true) }
 
-                val contact = contactsRepository.loadContacts().firstOrNull { it.id == id }
+                val contact = contactsRepository.loadContactsPhone().firstOrNull { it.id == id }
 
                 _state.update {
                     it.copy(

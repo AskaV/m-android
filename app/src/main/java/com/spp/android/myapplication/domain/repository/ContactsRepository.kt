@@ -1,16 +1,21 @@
 package com.spp.android.myapplication.domain.repository
 
+import com.spp.android.myapplication.data.remote.dto.UserDto
 import com.spp.android.myapplication.domain.model.Contact
 
 interface ContactsRepository {
-    suspend fun loadContacts(): List<Contact>
+    suspend fun loadContactsPhone(): List<Contact>
 
-    suspend fun addContact(contact: Contact)
+    suspend fun addContactLocal(contact: Contact)
 
-    suspend fun deleteContact(contactId: Int): Boolean
+    suspend fun deleteContactLocal(contactId: Int): Boolean
 
     suspend fun setContactAvatar(
         contactId: Int,
         avatarUrl: String?,
     )
+
+    suspend fun getUserContactsRemote(): List<Contact>
+    suspend fun addUserContactRemote(userId: Int, accessToken: String, contactId: Int): Result<List<UserDto>>
+    suspend fun deleteUserContactRemote(userId: Int, accessToken: String, contactId: Int): Result<List<UserDto>>
 }

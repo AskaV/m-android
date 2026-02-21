@@ -27,15 +27,15 @@ interface AuthApi {
         @Part image: MultipartBody.Part? = null,
     ): Response<ApiResponse<AuthDataDto>>
 
+    @POST("login")
+    suspend fun login(
+        @Body body: LoginBody,
+    ): Response<ApiResponse<AuthDataDto>>
+
     @PUT("users/{id}")
     suspend fun editUser(
         @Path("id") userId: Int,
         @Header("Authorization") bearer: String,
         @Body body: EditUserBody,
     ): Response<ApiResponse<EditUserDataDto>>
-
-    @POST("login")
-    suspend fun login(
-        @Body body: LoginBody,
-    ): Response<ApiResponse<AuthDataDto>>
 }

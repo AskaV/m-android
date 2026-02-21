@@ -1,21 +1,13 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.safeArgs)
     alias(libs.plugins.kotlin.serialization)
-    id("kotlin-kapt")
+    id("com.android.built-in-kotlin")
+    alias(libs.plugins.legacy.kapt)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ktlint)
 }
-kapt {
-    correctErrorTypes = true
-    arguments {
-        arg("dagger.fastInit", "enabled")
-    }
-}
+
 android {
     namespace = "com.spp.android.myapplication"
     compileSdk = 36
@@ -31,11 +23,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
     }
 }
 

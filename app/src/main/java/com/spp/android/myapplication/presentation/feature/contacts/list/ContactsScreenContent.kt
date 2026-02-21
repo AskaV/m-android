@@ -37,6 +37,8 @@ fun ContactsScreenContent(
     items: List<Contact>,
     onBack: () -> Unit = {},
     onSearchClick: () -> Unit = {},
+    onAddContactClick: () -> Unit = {},
+
     onAddContactsClick: () -> Unit = {},
     onContactClick: (Contact) -> Unit = {},
     onDeleteClick: (Contact) -> Unit = {},
@@ -56,11 +58,8 @@ fun ContactsScreenContent(
         derivedStateOf { listState.firstVisibleItemIndex > 0 }
     }
     Box(
-        modifier =
-            modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
-                .padding(contentPadding),
+        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+            .padding(contentPadding),
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -71,6 +70,7 @@ fun ContactsScreenContent(
                 onSearchClick = onSearchClick,
                 showAddHeaderRow = true,
                 onAddContactsClick = onAddContactsClick,
+                onAddContactClick = onAddContactClick,
             )
 
             Surface(
@@ -81,22 +81,20 @@ fun ContactsScreenContent(
                 ContactList(
                     items = items,
                     selectedIds = selectedIds,
-                    behavior =
-                        ContactListBehavior(
-                            selectionEnabled = isSelectionMode,
-                            showDeleteIcon = !isSelectionMode,
-                        ),
+                    behavior = ContactListBehavior(
+                        selectionEnabled = isSelectionMode,
+                        showDeleteIcon = !isSelectionMode,
+                    ),
                     onItemClick = onContactClick,
                     onItemLongClick = onContactLongClick,
                     onDeleteClick = onDeleteClick,
                     state = listState,
-                    contentPadding =
-                        PaddingValues(
-                            start = pad,
-                            end = pad,
-                            top = pad,
-                            bottom = spaceL,
-                        ),
+                    contentPadding = PaddingValues(
+                        start = pad,
+                        end = pad,
+                        top = pad,
+                        bottom = spaceL,
+                    ),
                     modifier = Modifier.fillMaxSize(),
                 )
             }
@@ -128,4 +126,5 @@ fun ContactsScreenContent(
 
 @PreviewPhones
 @Composable
-private fun ContactsScreenContentPreview() = PreviewScreenEdgeToEdge { ContactsScreenContent(items = demoUsers()) }
+private fun ContactsScreenContentPreview() =
+    PreviewScreenEdgeToEdge { ContactsScreenContent(items = demoUsers()) }

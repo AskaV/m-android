@@ -1,6 +1,8 @@
 package com.spp.android.myapplication.di
 
 import com.spp.android.myapplication.data.remote.api.AuthApi
+import com.spp.android.myapplication.data.remote.api.ContactsApi
+import com.spp.android.myapplication.data.remote.api.UsersApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,4 +40,14 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideContactsApi(retrofit: Retrofit): ContactsApi =
+        retrofit.create(ContactsApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUsersApi(retrofit: Retrofit): UsersApi =
+        retrofit.create(UsersApi::class.java)
 }

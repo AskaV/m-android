@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,7 +22,9 @@ class AuthPreferences
     ) {
         private val dataStore = context.authDataStore
         private val keyUserId = intPreferencesKey("user_id")
-
+        val userIdFlow = dataStore.data.map { prefs ->
+            prefs[keyUserId] ?: 0
+        }
         private object Keys {
             val ACCESS = stringPreferencesKey("access_token")
             val REFRESH = stringPreferencesKey("refresh_token")
@@ -48,5 +51,9 @@ class AuthPreferences
 
         suspend fun clear() {
             dataStore.edit { it.clear() }
+        }
+
+        suspend fun getUserId(): Int {
+            return userIdFlow.first()
         }
     }
