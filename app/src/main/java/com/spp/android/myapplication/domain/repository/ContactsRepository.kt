@@ -16,6 +16,6 @@ interface ContactsRepository {
     )
 
     suspend fun getUserContactsRemote(): List<Contact>
-    suspend fun addUserContactRemote(userId: Int, accessToken: String, contactId: Int): Result<List<UserDto>>
-    suspend fun deleteUserContactRemote(userId: Int, accessToken: String, contactId: Int): Result<List<UserDto>>
+    suspend fun addUserContactRemote(contactId: Int): Result<List<UserDto>>
+    suspend fun deleteUserContactRemote(contactId: Int): Result<List<UserDto>>
 }

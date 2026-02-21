@@ -69,11 +69,9 @@ class AddContactsViewModel @Inject constructor(
 
                 runCatching {
                     ids.forEach { id ->
-                        val token = authPreferences.accessToken.first()
-                        val userId = authPreferences.getUserId()
-                        contactsRepo.addUserContactRemote(
-                            userId = userId, accessToken = token, contactId = id
-                        ).getOrThrow()
+                        contactsRepo
+                            .addUserContactRemote(id)
+                            .getOrThrow()
                     }
                 }.onSuccess {
                     _state.update { st ->
@@ -93,14 +91,13 @@ class AddContactsViewModel @Inject constructor(
 
             is AddClicked -> viewModelScope.launch {
                 runCatching {
-                    val token = authPreferences.accessToken.first()
-                    val userId = authPreferences.getUserId()
-
-                    contactsRepo.addUserContactRemote(
-                        userId = userId, accessToken = token, contactId = event.dddClicked.id
-                    ).getOrThrow()
+                    contactsRepo
+                        .addUserContactRemote(event.dddClicked.id)
+                        .getOrThrow()
                 }.onSuccess {
-                    _state.update { st -> st.copy(items = st.items.filterNot { it.id == event.dddClicked.id }) }
+                    _state.update { st ->
+                        st.copy(items = st.items.filterNot { it.id == event.dddClicked.id })
+                    }
                     sendEffect(Effect.ShowMessage("Added ${event.dddClicked.name}"))
                 }.onFailure {
                     sendEffect(Effect.ShowMessage("Failed to add ${event.dddClicked.name}"))

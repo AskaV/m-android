@@ -132,44 +132,60 @@ class ContactsRepositoryImpl
             .distinctBy { it.id }
     }
 
-    override suspend fun addUserContactRemote(
-        userId: Int, accessToken: String, contactId: Int
-    ): Result<List<UserDto>> = runCatching {
-        val resp = api.addContact(
-            userId = userId, bearer = "Bearer $accessToken", body = AddContactBody(contactId)
+    override suspend fun addUserContactRemote(contactId: Int): Result<List<UserDto>> {
+        return runCatching {
+            val userId = authPreferences.getUserId()
+            val token = authPreferences.accessToken.first()
+
+            val resp = api.addContact(
+                userId = userId,
+                bearer = "Bearer $token",
+                body = AddContactBody(contactId = contactId),
+            )
+
+            if (!resp.isSuccessful) {
+                val raw = resp.errorBody()?.string()
+                throw Exception(parseErrorMessage(raw, resp.code()))
+            }
+
+            val body = resp.body()
+            if (body?.status != "success" || body.data == null) {
+                throw Exception(body?.message ?: "Unknown error")
+            }
+
+            body.data.contacts // <-- List<UserDto>
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
         )
-
-        if (!resp.isSuccessful) {
-            val raw = resp.errorBody()?.string()
-            throw Exception(parseErrorMessage(raw, resp.code()))
-        }
-
-        val body = resp.body()
-        if (body?.status != "success" || body.data == null) {
-            throw Exception(body?.message ?: "Unknown error")
-        }
-
-        body.data.contacts
     }
 
-    override suspend fun deleteUserContactRemote(
-        userId: Int, accessToken: String, contactId: Int
-    ): Result<List<UserDto>> = runCatching {
-        val resp = api.deleteContact(
-            userId = userId, contactId = contactId, bearer = "Bearer $accessToken"
+    override suspend fun deleteUserContactRemote(contactId: Int): Result<List<UserDto>> {
+        return runCatching {
+            val userId = authPreferences.getUserId()
+            val token = authPreferences.accessToken.first()
+
+            val resp = api.deleteContact(
+                userId = userId,
+                contactId = contactId,
+                bearer = "Bearer $token",
+            )
+
+            if (!resp.isSuccessful) {
+                val raw = resp.errorBody()?.string()
+                throw Exception(parseErrorMessage(raw, resp.code()))
+            }
+
+            val body = resp.body()
+            if (body?.status != "success" || body.data == null) {
+                throw Exception(body?.message ?: "Unknown error")
+            }
+
+            body.data.contacts
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
         )
-
-        if (!resp.isSuccessful) {
-            val raw = resp.errorBody()?.string()
-            throw Exception(parseErrorMessage(raw, resp.code()))
-        }
-
-        val body = resp.body()
-        if (body?.status != "success" || body.data == null) {
-            throw Exception(body?.message ?: "Unknown error")
-        }
-
-        body.data.contacts
     }
 }
 
