@@ -11,9 +11,9 @@ lifecycleViewmodelCompose = "2.10.0"
 coreKtx = "1.17.0"
 navigationCompose = "2.9.7"
 datastorePreferences = "1.2.0"
-hilt-version = "2.57.2"
+hilt-version = "2.59.2"
 agp = "9.0.1"
-kotlin = "2.2.21"
+kotlin = "2.3.10"
 navigation = "2.9.7"
 retrofit = "3.0.0"
 
@@ -43,6 +43,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+legacy-kapt = { id = "com.android.legacy-kapt", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
