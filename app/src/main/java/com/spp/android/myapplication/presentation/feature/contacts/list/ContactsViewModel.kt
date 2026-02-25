@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.presentation.feature.contacts.list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spp.android.myapplication.domain.model.Contact
@@ -100,25 +101,14 @@ class ContactsViewModel
 
     private fun bulkDelete() {
         val ids = _state.value.selected
-        val toRemove = _state.value.items.filter { ids.contains(it.id) }
+        if (ids.isEmpty()) return
 
+        val toRemove = _state.value.items.filter { ids.contains(it.id) }
         lastDeleted = toRemove
 
-        _state.update { st ->
-            st.copy(
-                items = sortContacts(st.items.filterNot { ids.contains(it.id) }),
-                selected = emptySet(),
-                isSelectionMode = false,
-            )
-        }
+        removeFromUi(ids)
 
-        pendingDeleteJob?.cancel()
-        pendingDeleteJob = viewModelScope.launch {
-            delay(5_000)
-            lastDeleted.forEach { contactsRepository.deleteContactLocal(it.id) }
-            lastDeleted = emptyList()
-            pendingDeleteJob = null
-        }
+        scheduleFinalizeDelete(ids.toList())
 
         sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED))
     }
@@ -127,7 +117,13 @@ class ContactsViewModel
         _state.update { it.copy(isLoading = true, errorKey = null) }
 
         runCatching {
-            contactsRepository.getUserContactsRemote().distinctBy { it.id }
+            val remote = contactsRepository.getUserContactsRemote()
+            val local = contactsRepository.loadContactsLocal()
+            val phone =
+                if (USE_PHONEBOOK_CONTACTS) contactsRepository.loadContactsPhone() else emptyList()
+
+            val merged = (remote + local + phone).distinctBy { it.id }
+            sortContacts(merged)
         }.onSuccess { list ->
             _state.update { it.copy(items = sortContacts(list), isLoading = false) }
         }.onFailure {
@@ -141,37 +137,37 @@ class ContactsViewModel
         }
     }
 
-    private fun delete(item: Contact) = viewModelScope.launch {
+    private fun delete(item: Contact) {
         lastDeleted = listOf(item)
+        removeFromUi(setOf(item.id))
 
-        _state.update { st ->
-            st.copy(items = sortContacts(st.items.filterNot { c -> c.id == item.id }))
-        }
-
-        pendingDeleteJob?.cancel()
-
-        pendingDeleteJob = viewModelScope.launch {
-            delay(5_000)
-            lastDeleted.forEach { contactsRepository.deleteContactLocal(it.id) }
-            lastDeleted = emptyList()
-            pendingDeleteJob = null
+        viewModelScope.launch {
+            runCatching {
+                runCatching { contactsRepository.deleteUserContactRemote(item.id).getOrThrow() }
+                runCatching { contactsRepository.deleteContactLocal(item.id) }
+            }.onFailure {
+                Log.e("Contacts", "Delete failed", it)
+            }
         }
 
         sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED))
     }
 
-    private fun undoDelete() {
-        if (lastDeleted.isEmpty()) return
+    private fun undoDelete() = viewModelScope.launch {
+        val restore = lastDeleted
+        if (restore.isEmpty()) return@launch
 
-        pendingDeleteJob?.cancel()
-        pendingDeleteJob = null
-
-        _state.update { st ->
-            val restored = (st.items + lastDeleted).distinctBy { it.id }
-            st.copy(items = sortContacts(restored))
+        runCatching {
+            restore.forEach { c ->
+                runCatching { contactsRepository.addUserContactRemote(c.id).getOrThrow() }
+                runCatching { contactsRepository.addContactLocal(c) }
+            }
+        }.onSuccess {
+            load()
+            lastDeleted = emptyList()
+        }.onFailure {
+            Log.e("Contacts", "Undo failed", it)
         }
-
-        lastDeleted = emptyList()
     }
 
     private fun sendEffect(effect: Effect) = viewModelScope.launch {
@@ -182,4 +178,42 @@ class ContactsViewModel
         compareBy<Contact> { it.name.lowercase() }.thenBy { it.subtitle.lowercase() }
             .thenBy { it.id },
     )
+
+    private fun scheduleFinalizeDelete(ids: List<Int>) {
+        pendingDeleteJob?.cancel()
+        pendingDeleteJob = viewModelScope.launch {
+            delay(5_000)
+
+            ids.forEach { id ->
+                val remoteRes = runCatching {
+                    contactsRepository.deleteUserContactRemote(id).getOrThrow()
+                }
+                if (remoteRes.isFailure) {
+                    Log.e(
+                        "Contacts", "Remote delete failed for id=$id", remoteRes.exceptionOrNull()
+                    )
+                }
+
+                val localRes = runCatching {
+                    contactsRepository.deleteContactLocal(id)
+                }
+                if (localRes.isFailure) {
+                    Log.e("Contacts", "Local delete failed for id=$id", localRes.exceptionOrNull())
+                }
+            }
+
+            lastDeleted = emptyList()
+            pendingDeleteJob = null
+        }
+    }
+
+    private fun removeFromUi(ids: Set<Int>) {
+        _state.update { st ->
+            st.copy(
+                items = sortContacts(st.items.filterNot { ids.contains(it.id) }),
+                selected = emptySet(),
+                isSelectionMode = false,
+            )
+        }
+    }
 }

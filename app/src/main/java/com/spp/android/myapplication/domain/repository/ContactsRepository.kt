@@ -5,7 +5,7 @@ import com.spp.android.myapplication.domain.model.Contact
 
 interface ContactsRepository {
     suspend fun loadContactsPhone(): List<Contact>
-
+    suspend fun loadContactsLocal(): List<Contact>
     suspend fun addContactLocal(contact: Contact)
 
     suspend fun deleteContactLocal(contactId: Int): Boolean
