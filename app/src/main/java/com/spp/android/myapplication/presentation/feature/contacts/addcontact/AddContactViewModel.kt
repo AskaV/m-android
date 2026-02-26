@@ -97,10 +97,10 @@ class AddContactViewModel
 
                 contactsRepository.addContactLocal(contact)
 
-                sendEffect(Effect.ShowMessage("Contact saved"))
+                sendEffect(ShowMessage("Contact saved"))
                 sendEffect(Effect.NavigateBack)
             } catch (t: Throwable) {
-                sendEffect(Effect.ShowMessage("Save failed: ${t.message ?: "unknown error"}"))
+                sendEffect(ShowMessage("Save failed: ${t.message ?: "unknown error"}"))
             } finally {
                 _state.update { it.copy(isSaving = false) }
             }

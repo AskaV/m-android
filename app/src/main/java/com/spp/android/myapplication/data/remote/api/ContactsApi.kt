@@ -11,7 +11,6 @@ import retrofit2.http.Header
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
-
 interface ContactsApi {
 
     @GET("users/{userId}/contacts")

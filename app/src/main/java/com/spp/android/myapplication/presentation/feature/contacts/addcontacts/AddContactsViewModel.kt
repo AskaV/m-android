@@ -2,35 +2,24 @@ package com.spp.android.myapplication.presentation.feature.contacts.addcontacts
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spp.android.myapplication.data.remote.api.UsersApi
-import com.spp.android.myapplication.data.remote.dto.toContact
-import com.spp.android.myapplication.data.storage.AuthPreferences
 import com.spp.android.myapplication.domain.repository.ContactsRepository
-import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Effect
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.AddClicked
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.BackClicked
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.ErrorShown
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.Load
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.MassAddClicked
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.SearchClicked
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.ToggleSelect
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.flow.combine
 
 @HiltViewModel
 class AddContactsViewModel @Inject constructor(
-    private val usersApi: UsersApi,
     private val contactsRepo: ContactsRepository,
-    private val authPreferences: AuthPreferences,
 ) : ViewModel() {
+
     private val _state = MutableStateFlow(AddContactsContract.State())
     val state = _state.asStateFlow()
 
@@ -38,102 +27,107 @@ class AddContactsViewModel @Inject constructor(
     val effect = _effect.receiveAsFlow()
 
     init {
-        onEvent(Load)
+        observeAllUsersCache()
+        onEvent(Event.Load)
     }
 
-    fun onEvent(event: AddContactsContract.Event) {
+    fun onEvent(event: Event) {
         when (event) {
-            is Load -> load()
-            is BackClicked -> sendEffect(Effect.NavigateBack)
+            is Event.Load -> refresh()
 
-            is SearchClicked -> sendEffect(Effect.OpenSearch)
+            is Event.BackClicked -> sendEffect(Effect.NavigateBack)
+            is Event.SearchClicked -> sendEffect(Effect.OpenSearch)
 
-            is ToggleSelect -> {
-                _state.update { st ->
-                    val ns = st.selected.toMutableSet().apply {
-                        if (contains(event.toggleSelect.id)) {
-                            remove(event.toggleSelect.id)
-                        } else {
-                            add(
-                                event.toggleSelect.id,
-                            )
-                        }
-                    }
-                    st.copy(selected = ns)
-                }
-            }
+            is Event.ToggleSelect -> toggleSelect(event.toggleSelect.id)
 
-            is MassAddClicked -> viewModelScope.launch {
-                val ids = _state.value.selected.toList()
-                if (ids.isEmpty()) return@launch
+            is Event.MassAddClicked -> massAddSelected()
 
-                runCatching {
-                    ids.forEach { id ->
-                        contactsRepo
-                            .addUserContactRemote(id)
-                            .getOrThrow()
-                    }
-                }.onSuccess {
-                    _state.update { st ->
-                        st.copy(
-                            items = st.items.filterNot { st.selected.contains(it.id) },
-                            selected = emptySet(),
-                        )
-                    }
-                    sendEffect(Effect.ShowMessage("Added ${ids.size} contact(s)"))
-                    sendEffect(Effect.NavigateBack)
-                }.onFailure {
-                    sendEffect(Effect.ShowMessage("Failed to add contacts"))
-                }
-            }
+            is Event.AddClicked -> addOne(event.dddClicked.id, event.dddClicked.name)
 
-            is ErrorShown -> _state.update { it.copy() }
+            is Event.ErrorShown -> _state.update { it.copy(error = "") }
+        }
+    }
 
-            is AddClicked -> viewModelScope.launch {
-                runCatching {
-                    contactsRepo
-                        .addUserContactRemote(event.dddClicked.id)
-                        .getOrThrow()
-                }.onSuccess {
-                    _state.update { st ->
-                        st.copy(items = st.items.filterNot { it.id == event.dddClicked.id })
-                    }
-                    sendEffect(Effect.ShowMessage("Added ${event.dddClicked.name}"))
-                }.onFailure {
-                    sendEffect(Effect.ShowMessage("Failed to add ${event.dddClicked.name}"))
-                }
+    private fun observeAllUsersCache() = viewModelScope.launch {
+        combine(
+            contactsRepo.apiAllUsers,
+            contactsRepo.apiMyContacts,
+            contactsRepo.localAdded,
+        ) { allUsers, myContacts, localAdded ->
+            val bannedIds = (myContacts + localAdded).map { it.id }.toSet()
+            allUsers.filterNot { it.id in bannedIds }
+        }.collect { filtered ->
+            _state.update { st ->
+                val existingIds = filtered.map { it.id }.toSet()
+                st.copy(
+                    items = filtered,
+                    selected = st.selected.intersect(existingIds),
+                )
             }
         }
     }
 
-    private fun load() = viewModelScope.launch {
+    private fun refresh() = viewModelScope.launch {
         _state.update { it.copy(isLoading = true, error = "") }
 
-        runCatching {
-            val token = authPreferences.accessToken.first()
-            val bearer = "Bearer $token"
-
-            val response = usersApi.getAllUsers(bearer)
-
-            if (!response.isSuccessful) {
-                error("HTTP ${response.code()}")
-            }
-
-            val body = response.body() ?: error("Empty body")
-
-            if (body.status != "success") {
-                error(body.message ?: "Server error")
-            }
-
-            val users = body.data?.users ?: emptyList()
-
-            users.map { it.toContact() }
-
-        }.onSuccess { contacts ->
-            _state.update { it.copy(items = contacts, isLoading = false) }
+        contactsRepo.refreshAllUsers().onSuccess {
+            _state.update { it.copy(isLoading = false) }
         }.onFailure { e ->
             _state.update { it.copy(isLoading = false, error = e.message.orEmpty()) }
-            sendEffect(Effect.ShowMessage("Не удалось загрузить пользователей"))
+            sendEffect(Effect.ShowMessage("Не удалось обновить список пользователей"))
+        }
+    }
+
+    private fun toggleSelect(id: Int) {
+        _state.update { st ->
+            val ns = st.selected.toMutableSet().apply {
+                if (contains(id)) remove(id) else add(id)
+            }
+            st.copy(selected = ns)
+        }
+    }
+
+    private fun addOne(id: Int, name: String) = viewModelScope.launch {
+        val contact = _state.value.items.firstOrNull { it.id == id } ?: return@launch
+
+        contactsRepo.addContactOfflineFirst(contact).onSuccess {
+            _state.update { st -> st.copy(items = st.items.filterNot { it.id == id }) }
+            sendEffect(Effect.ShowMessage("Added $name"))
+        }.onFailure {
+            sendEffect(Effect.ShowMessage("Failed to add $name"))
+        }
+    }
+
+    private fun massAddSelected() = viewModelScope.launch {
+        val ids = _state.value.selected.toList()
+        if (ids.isEmpty()) return@launch
+
+        val itemsById = _state.value.items.associateBy { it.id }
+        val toAdd = ids.mapNotNull { itemsById[it] }
+
+        val okIds = mutableSetOf<Int>()
+        var failCount = 0
+
+        toAdd.forEach { c ->
+            contactsRepo.addContactOfflineFirst(c).onSuccess { okIds.add(c.id) }
+                .onFailure { failCount++ }
+        }
+
+        _state.update { st ->
+            st.copy(
+                items = st.items.filterNot { it.id in okIds },
+                selected = emptySet(),
+            )
+        }
+
+        when {
+            failCount == 0 -> {
+                sendEffect(Effect.ShowMessage("Added ${okIds.size} contact(s)"))
+                sendEffect(Effect.NavigateBack)
+            }
+
+            okIds.isEmpty() -> sendEffect(Effect.ShowMessage("Failed to add contacts"))
+            else -> sendEffect(Effect.ShowMessage("Added ${okIds.size}, failed $failCount"))
         }
     }
 
