@@ -184,6 +184,7 @@ fun AppNavGraph() {
 
         composable(Routes.AddContacts.route) {
             AddContactsScreen(
+
                 onBack = { navController.popBackStack() },
                 onOpenSearch = { showToast(context, toastMessage) },
                 onOpenProfile = { id -> navController.navigate(Routes.AddContactProfile.create(id)) },
@@ -200,7 +201,7 @@ fun AppNavGraph() {
             route = Routes.AddContactProfile.route,
             arguments = listOf(
                 navArgument(Routes.AddContactProfile.ARG) {
-                    type = NavType.StringType
+                    type = NavType.IntType
                 },
             ),
         ) { backStack ->
