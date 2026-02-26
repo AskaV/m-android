@@ -44,6 +44,15 @@ fun AddContactsScreen(
         onSearchClick = { viewModel.onEvent(SearchClicked) },
         onMassAddClick = { viewModel.onEvent(MassAddClicked) },
         onAddClick = { viewModel.onEvent(AddClicked(it)) },
-        onRowClick = { contact -> onOpenProfile(contact.id) },
+        onItemClick = { c ->
+            if (state.isSelectionMode) {
+                viewModel.onEvent(AddContactsContract.Event.UserClicked(c))
+            } else {
+                onOpenProfile(c.id)
+            }
+        },
+        onItemLongClick = { c ->
+            viewModel.onEvent(AddContactsContract.Event.UserLongClicked(c))
+        },
     )
 }

@@ -38,13 +38,23 @@ class AddContactsViewModel @Inject constructor(
             is Event.BackClicked -> sendEffect(Effect.NavigateBack)
             is Event.SearchClicked -> sendEffect(Effect.OpenSearch)
 
-            is Event.ToggleSelect -> toggleSelect(event.toggleSelect.id)
-
             is Event.MassAddClicked -> massAddSelected()
 
             is Event.AddClicked -> addOne(event.dddClicked.id, event.dddClicked.name)
 
             is Event.ErrorShown -> _state.update { it.copy(error = "") }
+
+            is Event.UserLongClicked -> toggleSelectionMode(event.contact.id)
+
+            is Event.UserClicked -> {
+                if (_state.value.isSelectionMode) {
+                    toggleSelection(event.contact.id)
+                }
+            }
+
+            is Event.ExitSelectionMode -> _state.update {
+                it.copy(selected = emptySet(), isSelectionMode = false)
+            }
         }
     }
 
@@ -78,12 +88,26 @@ class AddContactsViewModel @Inject constructor(
         }
     }
 
-    private fun toggleSelect(id: Int) {
+
+    private fun toggleSelectionMode(id: Int) {
         _state.update { st ->
-            val ns = st.selected.toMutableSet().apply {
+            if (st.isSelectionMode) {
+                val newSelected = st.selected.toMutableSet().apply {
+                    if (contains(id)) remove(id) else add(id)
+                }
+                st.copy(selected = newSelected, isSelectionMode = newSelected.isNotEmpty())
+            } else {
+                st.copy(selected = setOf(id), isSelectionMode = true)
+            }
+        }
+    }
+
+    private fun toggleSelection(id: Int) {
+        _state.update { st ->
+            val newSelected = st.selected.toMutableSet().apply {
                 if (contains(id)) remove(id) else add(id)
             }
-            st.copy(selected = ns)
+            st.copy(selected = newSelected, isSelectionMode = newSelected.isNotEmpty())
         }
     }
 

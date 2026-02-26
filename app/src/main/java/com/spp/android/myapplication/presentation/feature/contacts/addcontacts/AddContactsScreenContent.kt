@@ -41,10 +41,11 @@ fun AddContactsScreenContent(
     selectedIds: Set<Int> = emptySet(),
     onBack: () -> Unit = {},
     onSearchClick: () -> Unit = {},
-    onMassAddClick: () -> Unit = {},
     onAddClick: (Contact) -> Unit = {},
     reserveAddRowSpace: Boolean = true,
-    onRowClick: (Contact) -> Unit = {},
+    onItemClick: (Contact) -> Unit = {},
+    onItemLongClick: (Contact) -> Unit = {},
+    onMassAddClick: () -> Unit = {},
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
@@ -69,34 +70,32 @@ fun AddContactsScreenContent(
 
             ContactList(
                 items = items,
-                selectedIds = emptySet(),
-                behavior =
-                    ContactListBehavior(
-                        selectionEnabled = false,
-                        showDeleteIcon = false,
-                        trailingForRow = { contact ->
-                            TextButton(onClick = { onAddClick(contact) }) {
-                                Text("Add", color = MaterialTheme.colorScheme.primary)
-                                Spacer(Modifier.width(dimensionResource(id = R.dimen.spacer_small)))
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_add),
-                                    contentDescription = "Add",
-                                    tint = MaterialTheme.colorScheme.primary,
-                                )
-                            }
-                        },
-                    ),
-                onItemClick = onRowClick,
-                onItemLongClick = {},
+                selectedIds = selectedIds,
+                behavior = ContactListBehavior(
+                    selectionEnabled = false,
+                    showDeleteIcon = false,
+                    trailingForRow = { contact ->
+                        TextButton(onClick = { onAddClick(contact) }) {
+                            Text("Add", color = MaterialTheme.colorScheme.primary)
+                            Spacer(Modifier.width(dimensionResource(id = R.dimen.spacer_small)))
+                            Icon(
+                                painter = painterResource(R.drawable.ic_add),
+                                contentDescription = "Add",
+                                tint = MaterialTheme.colorScheme.primary,
+                            )
+                        }
+                    },
+                ),
+                onItemClick = onItemClick,
+                onItemLongClick = onItemLongClick,
                 onDeleteClick = {},
                 state = listState,
-                contentPadding =
-                    PaddingValues(
-                        start = pad,
-                        end = pad,
-                        top = spaceM,
-                        bottom = spaceL,
-                    ),
+                contentPadding = PaddingValues(
+                    start = pad,
+                    end = pad,
+                    top = spaceM,
+                    bottom = spaceL,
+                ),
                 modifier = Modifier.fillMaxSize(),
             )
         }
