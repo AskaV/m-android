@@ -23,51 +23,22 @@ object AddContactContract {
 
     sealed interface Event {
         data object BackClicked : Event
-
         data object AvatarClicked : Event
-
         data object SaveClicked : Event
-
         object OnPickAvatarClick : Event
-
-        data class OnAvatarPicked(
-            val uri: String,
-        ) : Event
-
+        data class OnAvatarPicked(val uri: String) : Event
         object OnSaveClick : Event
-
-        data class UsernameChanged(
-            val value: String,
-        ) : Event
-
-        data class CareerChanged(
-            val value: String,
-        ) : Event
-
-        data class EmailChanged(
-            val value: String,
-        ) : Event
-
-        data class PhoneChanged(
-            val value: String,
-        ) : Event
-
-        data class AddressChanged(
-            val value: String,
-        ) : Event
-
-        data class DateOfBirthChanged(
-            val value: String,
-        ) : Event
-
+        data class UsernameChanged(val value: String) : Event
+        data class CareerChanged(val value: String) : Event
+        data class EmailChanged(val value: String) : Event
+        data class PhoneChanged(val value: String) : Event
+        data class AddressChanged(val value: String) : Event
+        data class DateOfBirthChanged(val value: String) : Event
         data object ErrorShown : Event
     }
 
     sealed interface Effect {
         data object NavigateBack : Effect
-
-        data class ShowMessage(
-            val message: String,
-        ) : Effect
+        data class ShowMessage(val message: String) : Effect
     }
 }

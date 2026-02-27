@@ -17,28 +17,16 @@ object ContactProfileContract {
     )
 
     sealed interface Event {
-        data class Load(
-            val contactId: Int,
-        ) : Event
-
+        data class Load(val contactId: Int) : Event
         data object BackClicked : Event
-
         data object MessageClicked : Event
-
         data object AddClicked : Event
-
         data object ErrorShown : Event
     }
 
     sealed interface Effect {
         data object NavigateBack : Effect
-
-        data class OpenChat(
-            val contactId: Int,
-        ) : Effect
-
-        data class ShowMessage(
-            val messageKey: TextKey,
-        ) : Effect
+        data class OpenChat(val contactId: Int) : Effect
+        data class ShowMessage(val messageKey: TextKey) : Effect
     }
 }
