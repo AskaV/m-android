@@ -5,4 +5,5 @@ data class UserDto(
     val email: String,
     val name: String? = null,
     val phone: String? = null,
+    val image: String? = null,
 )

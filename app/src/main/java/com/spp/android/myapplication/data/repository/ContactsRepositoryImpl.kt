@@ -71,6 +71,8 @@ class ContactsRepositoryImpl @Inject constructor(
         if (body?.status != "success" || body.data == null) {
             throw Exception(body?.message ?: "Unknown error")
         }
+//        val rawBody = resp.body()
+//        Log.d("RAW_USERS", rawBody.toString())
 
         val users = body.data.users.map { it.toContact() }.distinctBy { it.id }
         local.saveApiAllUsersCache(users)
