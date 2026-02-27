@@ -1,5 +1,6 @@
 package com.spp.android.myapplication.presentation.feature.contacts.list
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -10,11 +11,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spp.android.myapplication.presentation.feature.components.rememberUndoSnackbarController
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect.NavigateBack
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect.OpenAddContact
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect.OpenContactProfile
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect.OpenSearch
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Effect.ShowMessage
+import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.AddContactsClicked
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.BackClicked
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.BulkDeleteClicked
@@ -70,7 +73,15 @@ fun ContactsScreen(
             }
         }
     }
-
+    BackHandler {
+        if (state.isSearchOpen) {
+            viewModel.onEvent(Event.SearchClosed)
+        } else if (state.isSelectionMode) {
+            viewModel.onEvent(ExitSelectionMode)
+        } else {
+            viewModel.onEvent(BackClicked)
+        }
+    }
     Scaffold(
         snackbarHost = { undo.Host() },
     ) { paddingValues ->
@@ -84,7 +95,6 @@ fun ContactsScreen(
                     viewModel.onEvent(BackClicked)
                 }
             },
-            onSearchClick = { viewModel.onEvent(SearchClicked) },
             onAddContactClick = { viewModel.onEvent(AddContactsClicked) },
             onAddContactsClick = { onOpenAddContacts() },
             onContactClick = {
@@ -104,6 +114,11 @@ fun ContactsScreen(
             onBulkDeleteClick = { viewModel.onEvent(BulkDeleteClicked) },
             isSelectionMode = state.isSelectionMode,
             selectedIds = state.selected,
+            isSearchOpen = state.isSearchOpen,
+            query = state.query,
+            onQueryChange = { viewModel.onEvent(Event.QueryChanged(it)) },
+            onSearchClose = { viewModel.onEvent(Event.SearchClosed) },
+            onSearchClick = { viewModel.onEvent(SearchClicked) },
         )
     }
 }

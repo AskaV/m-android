@@ -11,6 +11,8 @@ object AddContactsContract {
         val isLoading: Boolean = false,
         val error: String = "",
         val isSelectionMode: Boolean = false,
+        val isSearchOpen: Boolean = false,
+        val query: String = "",
     )
 
     sealed interface Event {
@@ -23,11 +25,12 @@ object AddContactsContract {
         data class UserLongClicked(val contact: Contact) : Event
         data class UserClicked(val contact: Contact) : Event
         data object ExitSelectionMode : Event
+        data object SearchClosed : Event
+        data class QueryChanged(val query: String) : Event
     }
 
     sealed interface Effect {
         data object NavigateBack : Effect
-        data object OpenSearch : Effect
         data class ShowMessage(val message: String) : Effect
     }
 }

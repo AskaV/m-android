@@ -40,6 +40,7 @@ class ContactsViewModel @Inject constructor(
     private var phonebookIdsSnapshot: Set<Int> = emptySet()
 
     private val phonebookFlow = MutableStateFlow<List<Contact>>(emptyList())
+    private var baseList: List<Contact> = emptyList()
 
     init {
         observeMergedContacts()
@@ -51,7 +52,6 @@ class ContactsViewModel @Inject constructor(
             is Event.Load -> refresh()
 
             is Event.BackClicked -> sendEffect(Effect.NavigateBack)
-            is Event.SearchClicked -> sendEffect(Effect.OpenSearch)
             is Event.AddContactsClicked -> sendEffect(Effect.OpenAddContact)
 
             is Event.ContactClicked -> sendEffect(Effect.OpenContactProfile(event.contactClicked.id))
@@ -74,6 +74,31 @@ class ContactsViewModel @Inject constructor(
             is Event.ExitSelectionMode -> _state.update {
                 it.copy(selected = emptySet(), isSelectionMode = false)
             }
+
+            is Event.SearchClicked -> _state.update { it.copy(isSearchOpen = true) }
+
+            is Event.SearchClosed -> _state.update { st ->
+                st.copy(
+                    isSearchOpen = false,
+                    query = "",
+                    items = baseList,
+                    selected = st.selected.intersect(baseList.map { it.id }.toSet()),
+                    isSelectionMode = st.selected.isNotEmpty(),
+                )
+            }
+
+            is Event.QueryChanged -> _state.update { st ->
+                val q = event.query
+                val visible = applyQuery(baseList, q)
+                val ids = visible.map { it.id }.toSet()
+
+                st.copy(
+                    query = q,
+                    items = visible,
+                    selected = st.selected.intersect(ids),
+                    isSelectionMode = st.isSelectionMode && st.selected.intersect(ids).isNotEmpty(),
+                )
+            }
         }
     }
 
@@ -87,18 +112,29 @@ class ContactsViewModel @Inject constructor(
             localIdsSnapshot = localAdded.map { it.id }.toSet()
             phonebookIdsSnapshot = phonebook.map { it.id }.toSet()
 
-            val merged = (apiMine + localAdded + phonebook).distinctBy { it.id }
-            sortContacts(merged)
-        }.collect { merged ->
+            baseList = sortContacts((apiMine + localAdded + phonebook).distinctBy { it.id })
+
+            applyQuery(baseList, _state.value.query)
+        }.collect { visible ->
             _state.update { st ->
-                val ids = merged.map { it.id }.toSet()
-                val filteredSelected = st.selected.intersect(ids)
+                val existingIds = visible.map { it.id }.toSet()
+                val filteredSelected = st.selected.intersect(existingIds)
+
                 st.copy(
-                    items = merged,
+                    items = visible,
                     selected = filteredSelected,
                     isSelectionMode = filteredSelected.isNotEmpty(),
                 )
             }
+        }
+    }
+
+    private fun applyQuery(list: List<Contact>, query: String): List<Contact> {
+        val q = query.trim()
+        if (q.isEmpty()) return list
+        val lower = q.lowercase()
+        return list.filter { c ->
+            c.name.lowercase().contains(lower) || c.subtitle.lowercase().contains(lower)
         }
     }
 

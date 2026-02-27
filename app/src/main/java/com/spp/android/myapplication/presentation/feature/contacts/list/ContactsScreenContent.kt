@@ -28,6 +28,7 @@ import com.spp.android.myapplication.presentation.feature.components.ActionFab
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactList
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactListBehavior
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactsHeader
+import com.spp.android.myapplication.presentation.feature.contacts.components.EmptySearchResult
 import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 
@@ -48,7 +49,12 @@ fun ContactsScreenContent(
     selectedIds: Set<Int> = emptySet(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
     isSelectionMode: Boolean = showRecycleBin,
-) {
+    isSearchOpen: Boolean = false,
+    query: String = "",
+    onQueryChange: (String) -> Unit = {},
+    onSearchClose: () -> Unit = {},
+
+    ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
 
@@ -71,32 +77,40 @@ fun ContactsScreenContent(
                 showAddHeaderRow = true,
                 onAddContactsClick = onAddContactsClick,
                 onAddContactClick = onAddContactClick,
+                isSearchOpen = isSearchOpen,
+                query = query,
+                onQueryChange = onQueryChange,
+                onSearchClose = onSearchClose,
             )
+            if (items.isEmpty() && isSearchOpen && query.isNotBlank()) {
+                EmptySearchResult()
 
-            Surface(
-                color = MaterialTheme.colorScheme.surface,
-                contentColor = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                ContactList(
-                    items = items,
-                    selectedIds = selectedIds,
-                    behavior = ContactListBehavior(
-                        selectionEnabled = isSelectionMode,
-                        showDeleteIcon = !isSelectionMode,
-                    ),
-                    onItemClick = onContactClick,
-                    onItemLongClick = onContactLongClick,
-                    onDeleteClick = onDeleteClick,
-                    state = listState,
-                    contentPadding = PaddingValues(
-                        start = pad,
-                        end = pad,
-                        top = pad,
-                        bottom = spaceL,
-                    ),
+            } else {
+                Surface(
+                    color = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.fillMaxSize(),
-                )
+                ) {
+                    ContactList(
+                        items = items,
+                        selectedIds = selectedIds,
+                        behavior = ContactListBehavior(
+                            selectionEnabled = isSelectionMode,
+                            showDeleteIcon = !isSelectionMode,
+                        ),
+                        onItemClick = onContactClick,
+                        onItemLongClick = onContactLongClick,
+                        onDeleteClick = onDeleteClick,
+                        state = listState,
+                        contentPadding = PaddingValues(
+                            start = pad,
+                            end = pad,
+                            top = pad,
+                            bottom = spaceL,
+                        ),
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
             }
         }
 

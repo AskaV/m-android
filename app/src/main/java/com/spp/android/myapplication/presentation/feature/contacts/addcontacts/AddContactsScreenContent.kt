@@ -32,6 +32,7 @@ import com.spp.android.myapplication.presentation.feature.components.ActionFab
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactList
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactListBehavior
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactsHeader
+import com.spp.android.myapplication.presentation.feature.contacts.components.EmptySearchResult
 import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 
@@ -46,6 +47,11 @@ fun AddContactsScreenContent(
     onItemClick: (Contact) -> Unit = {},
     onItemLongClick: (Contact) -> Unit = {},
     onMassAddClick: () -> Unit = {},
+    isSearchOpen: Boolean = false,
+    query: String = "",
+    onQueryChange: (String) -> Unit = {},
+    onSearchClose: () -> Unit = {},
+    isSelectionMode: Boolean = selectedIds.isNotEmpty(),
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
@@ -66,38 +72,45 @@ fun AddContactsScreenContent(
                 showAddHeaderRow = false,
                 onAddContactsClick = {},
                 reserveAddRowSpace = reserveAddRowSpace,
+                isSearchOpen = isSearchOpen,
+                query = query,
+                onQueryChange = onQueryChange,
+                onSearchClose = onSearchClose,
             )
-
-            ContactList(
-                items = items,
-                selectedIds = selectedIds,
-                behavior = ContactListBehavior(
-                    selectionEnabled = false,
-                    showDeleteIcon = false,
-                    trailingForRow = { contact ->
-                        TextButton(onClick = { onAddClick(contact) }) {
-                            Text("Add", color = MaterialTheme.colorScheme.primary)
-                            Spacer(Modifier.width(dimensionResource(id = R.dimen.spacer_small)))
-                            Icon(
-                                painter = painterResource(R.drawable.ic_add),
-                                contentDescription = "Add",
-                                tint = MaterialTheme.colorScheme.primary,
-                            )
-                        }
-                    },
-                ),
-                onItemClick = onItemClick,
-                onItemLongClick = onItemLongClick,
-                onDeleteClick = {},
-                state = listState,
-                contentPadding = PaddingValues(
-                    start = pad,
-                    end = pad,
-                    top = spaceM,
-                    bottom = spaceL,
-                ),
-                modifier = Modifier.fillMaxSize(),
-            )
+            if (items.isEmpty() && isSearchOpen && query.isNotBlank()) {
+                EmptySearchResult()
+            } else {
+                ContactList(
+                    items = items,
+                    selectedIds = selectedIds,
+                    behavior = ContactListBehavior(
+                        selectionEnabled = isSelectionMode,
+                        showDeleteIcon = false,
+                        trailingForRow = { contact ->
+                            TextButton(onClick = { onAddClick(contact) }) {
+                                Text("Add", color = MaterialTheme.colorScheme.primary)
+                                Spacer(Modifier.width(dimensionResource(id = R.dimen.spacer_small)))
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_add),
+                                    contentDescription = "Add",
+                                    tint = MaterialTheme.colorScheme.primary,
+                                )
+                            }
+                        },
+                    ),
+                    onItemClick = onItemClick,
+                    onItemLongClick = onItemLongClick,
+                    onDeleteClick = {},
+                    state = listState,
+                    contentPadding = PaddingValues(
+                        start = pad,
+                        end = pad,
+                        top = spaceM,
+                        bottom = spaceL,
+                    ),
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
         }
 
         AnimatedVisibility(

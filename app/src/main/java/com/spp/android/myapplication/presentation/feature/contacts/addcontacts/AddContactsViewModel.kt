@@ -2,6 +2,7 @@ package com.spp.android.myapplication.presentation.feature.contacts.addcontacts
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.domain.model.Contact
 import com.spp.android.myapplication.domain.repository.ContactsRepository
 import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Effect
 import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event
@@ -9,11 +10,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlinx.coroutines.flow.combine
 
 @HiltViewModel
 class AddContactsViewModel @Inject constructor(
@@ -26,6 +27,8 @@ class AddContactsViewModel @Inject constructor(
     private val _effect = Channel<Effect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
+    private var baseFiltered: List<Contact> = emptyList()
+
     init {
         observeAllUsersCache()
         onEvent(Event.Load)
@@ -36,7 +39,29 @@ class AddContactsViewModel @Inject constructor(
             is Event.Load -> refresh()
 
             is Event.BackClicked -> sendEffect(Effect.NavigateBack)
-            is Event.SearchClicked -> sendEffect(Effect.OpenSearch)
+            is Event.SearchClicked -> _state.update { it.copy(isSearchOpen = true) }
+            is Event.SearchClosed -> _state.update {
+                it.copy(
+                    isSearchOpen = false,
+                    query = "",
+                    items = baseFiltered,
+                    selected = emptySet(),
+                    isSelectionMode = false,
+                )
+            }
+
+            is Event.QueryChanged -> _state.update { st ->
+                val q = event.query
+                val visible = applyQuery(baseFiltered, q)
+                val ids = visible.map { it.id }.toSet()
+
+                st.copy(
+                    query = q,
+                    items = visible,
+                    selected = st.selected.intersect(ids),
+                    isSelectionMode = st.isSelectionMode && st.selected.intersect(ids).isNotEmpty(),
+                )
+            }
 
             is Event.MassAddClicked -> massAddSelected()
 
@@ -67,11 +92,17 @@ class AddContactsViewModel @Inject constructor(
             val bannedIds = (myContacts + localAdded).map { it.id }.toSet()
             allUsers.filterNot { it.id in bannedIds }
         }.collect { filtered ->
+            baseFiltered = filtered
+
             _state.update { st ->
-                val existingIds = filtered.map { it.id }.toSet()
+                val visible = applyQuery(baseFiltered, st.query)
+                val existingIds = visible.map { it.id }.toSet()
+
                 st.copy(
-                    items = filtered,
+                    items = visible,
                     selected = st.selected.intersect(existingIds),
+                    isSelectionMode = st.isSelectionMode && st.selected.intersect(existingIds)
+                        .isNotEmpty(),
                 )
             }
         }
@@ -99,6 +130,15 @@ class AddContactsViewModel @Inject constructor(
             } else {
                 st.copy(selected = setOf(id), isSelectionMode = true)
             }
+        }
+    }
+
+    private fun applyQuery(list: List<Contact>, query: String): List<Contact> {
+        val q = query.trim()
+        if (q.isEmpty()) return list
+        val lower = q.lowercase()
+        return list.filter { c ->
+            c.name.lowercase().contains(lower) || c.subtitle.lowercase().contains(lower)
         }
     }
 

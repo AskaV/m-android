@@ -186,7 +186,6 @@ fun AppNavGraph() {
             AddContactsScreen(
 
                 onBack = { navController.popBackStack() },
-                onOpenSearch = { showToast(context, toastMessage) },
                 onOpenProfile = { id -> navController.navigate(Routes.AddContactProfile.create(id)) },
             )
         }
