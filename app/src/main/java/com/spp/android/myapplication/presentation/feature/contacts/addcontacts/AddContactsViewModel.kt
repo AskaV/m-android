@@ -37,46 +37,15 @@ class AddContactsViewModel @Inject constructor(
     fun onEvent(event: Event) {
         when (event) {
             is Event.Load -> refresh()
-
             is Event.BackClicked -> sendEffect(Effect.NavigateBack)
             is Event.SearchClicked -> _state.update { it.copy(isSearchOpen = true) }
-            is Event.SearchClosed -> _state.update {
-                it.copy(
-                    isSearchOpen = false,
-                    query = "",
-                    items = baseFiltered,
-                    selected = emptySet(),
-                    isSelectionMode = false,
-                )
-            }
-
-            is Event.QueryChanged -> _state.update { st ->
-                val q = event.query
-                val visible = applyQuery(baseFiltered, q)
-                val ids = visible.map { it.id }.toSet()
-
-                st.copy(
-                    query = q,
-                    items = visible,
-                    selected = st.selected.intersect(ids),
-                    isSelectionMode = st.isSelectionMode && st.selected.intersect(ids).isNotEmpty(),
-                )
-            }
-
+            is Event.SearchClosed -> closeSearch()
+            is Event.QueryChanged -> updateQuery(event.query)
             is Event.MassAddClicked -> massAddSelected()
-
             is Event.AddClicked -> addOne(event.dddClicked.id, event.dddClicked.name)
-
             is Event.ErrorShown -> _state.update { it.copy(error = "") }
-
             is Event.UserLongClicked -> toggleSelectionMode(event.contact.id)
-
-            is Event.UserClicked -> {
-                if (_state.value.isSelectionMode) {
-                    toggleSelection(event.contact.id)
-                }
-            }
-
+            is Event.UserClicked -> handleUserClicked(event.contact.id)
             is Event.ExitSelectionMode -> _state.update {
                 it.copy(selected = emptySet(), isSelectionMode = false)
             }
@@ -163,35 +132,71 @@ class AddContactsViewModel @Inject constructor(
     }
 
     private fun massAddSelected() = viewModelScope.launch {
-        val ids = _state.value.selected.toList()
-        if (ids.isEmpty()) return@launch
+        val selectedIds = _state.value.selected
+        if (selectedIds.isEmpty()) return@launch
 
-        val itemsById = _state.value.items.associateBy { it.id }
-        val toAdd = ids.mapNotNull { itemsById[it] }
+        val itemsById = baseFiltered.associateBy { it.id }
+        val toAdd = selectedIds.mapNotNull { itemsById[it] }
 
         val okIds = mutableSetOf<Int>()
         var failCount = 0
 
-        toAdd.forEach { c ->
-            contactsRepo.addContactOfflineFirst(c).onSuccess { okIds.add(c.id) }
+        toAdd.forEach { contact ->
+            contactsRepo.addContactOfflineFirst(contact).onSuccess { okIds.add(contact.id) }
                 .onFailure { failCount++ }
         }
 
+        baseFiltered = baseFiltered.filterNot { it.id in okIds }
+
         _state.update { st ->
+            val visible = applyQuery(baseFiltered, st.query)
             st.copy(
-                items = st.items.filterNot { it.id in okIds },
+                items = visible,
                 selected = emptySet(),
+                isSelectionMode = false,
             )
         }
 
         when {
             failCount == 0 -> {
                 sendEffect(Effect.ShowMessage("Added ${okIds.size} contact(s)"))
-                sendEffect(Effect.NavigateBack)
             }
 
             okIds.isEmpty() -> sendEffect(Effect.ShowMessage("Failed to add contacts"))
             else -> sendEffect(Effect.ShowMessage("Added ${okIds.size}, failed $failCount"))
+        }
+    }
+
+    private fun closeSearch() {
+        _state.update {
+            it.copy(
+                isSearchOpen = false,
+                query = "",
+                items = baseFiltered,
+                selected = emptySet(),
+                isSelectionMode = false,
+            )
+        }
+    }
+
+    private fun updateQuery(query: String) {
+        _state.update { st ->
+            val visible = applyQuery(baseFiltered, query)
+            val ids = visible.map { it.id }.toSet()
+            val newSelected = st.selected.intersect(ids)
+
+            st.copy(
+                query = query,
+                items = visible,
+                selected = newSelected,
+                isSelectionMode = st.isSelectionMode && newSelected.isNotEmpty(),
+            )
+        }
+    }
+
+    private fun handleUserClicked(contactId: Int) {
+        if (_state.value.isSelectionMode) {
+            toggleSelection(contactId)
         }
     }
 

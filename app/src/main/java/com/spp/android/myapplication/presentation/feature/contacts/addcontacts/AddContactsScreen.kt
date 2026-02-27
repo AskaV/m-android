@@ -62,5 +62,6 @@ fun AddContactsScreen(
         query = state.query,
         onQueryChange = { viewModel.onEvent(Event.QueryChanged(it)) },
         onSearchClose = { viewModel.onEvent(Event.SearchClosed) },
+        onMassAddClick = { viewModel.onEvent(Event.MassAddClicked) }
     )
 }

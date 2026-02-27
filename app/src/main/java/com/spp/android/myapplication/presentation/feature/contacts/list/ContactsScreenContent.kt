@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +27,7 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPh
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.feature.components.ActionFab
+import com.spp.android.myapplication.presentation.feature.contacts.components.BottomEndFabStack
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactList
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactListBehavior
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactsHeader
@@ -114,27 +117,16 @@ fun ContactsScreenContent(
             }
         }
 
-        AnimatedVisibility(
-            visible = showRecycleBin,
+        BottomEndFabStack(
             modifier = Modifier.align(Alignment.BottomEnd),
-        ) {
-            ActionFab(
-                iconRes = R.drawable.recycle_bin,
-                onClick = onBulkDeleteClick,
-                alignment = Alignment.BottomEnd,
-            )
-        }
-
-        AnimatedVisibility(
-            visible = showScrollTop,
-            modifier = Modifier.align(Alignment.BottomEnd),
-        ) {
-            ActionFab(
-                iconRes = R.drawable.ic_arrow_up,
-                onClick = { scope.launch { listState.animateScrollToItem(0) } },
-                alignment = Alignment.BottomStart,
-            )
-        }
+            showScrollTop = showScrollTop,
+            showMassAction = showRecycleBin,
+            massActionIconRes = R.drawable.recycle_bin,
+            massActionContentDescription = "Delete selected",
+            onScrollTop = { scope.launch { listState.animateScrollToItem(0) } },
+            onMassAction = onBulkDeleteClick,
+            hideScrollWhenMassAction = false,
+        )
     }
 }
 
