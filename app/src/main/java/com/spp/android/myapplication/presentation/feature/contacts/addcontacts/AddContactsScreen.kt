@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Effect.NavigateBack
@@ -12,6 +13,7 @@ import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.A
 import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.AddClicked
 import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.BackClicked
 import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.SearchClicked
+import com.spp.android.myapplication.presentation.notifications.ContactsNotificationHelper
 
 @Composable
 fun AddContactsScreen(
@@ -20,6 +22,7 @@ fun AddContactsScreen(
     viewModel: AddContactsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
@@ -27,6 +30,12 @@ fun AddContactsScreen(
                 is NavigateBack -> onBack()
                 is ShowMessage -> {
                     effect.message
+                }
+                is AddContactsContract.Effect.ShowAddedNotification -> {
+                    ContactsNotificationHelper.showAdded(
+                        context = context,
+                        contactId = effect.contactId,
+                    )
                 }
             }
         }

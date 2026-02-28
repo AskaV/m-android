@@ -53,7 +53,7 @@
     <string name="contacts_text">Contacts</string>
     <string name="add_contacts_text">Add contacts</string>
     <string name="wastebasket_description">Wastebasket</string>
-    <string name="deleted_contact_toast_text">contact has been removed</string>
+    <string name="deleted_contact_toast_text">Contact has been removed</string>
     <string name="return_contact_toast_text">undo</string>
     <string name="add_contacts_name">Name</string>
     <string name="add_contacts_position">Position</string>
@@ -114,6 +114,7 @@
     <string name="failed_to_load_profile">"Failed to load profile"</string>
     <string name="add_to_my_contacts_text">Add to my contacts</string>
     <string name="toast_clicked">Button clicked</string>
+    <string name="notification_text">Click to open profile of contact</string>
 
 
 </resources>

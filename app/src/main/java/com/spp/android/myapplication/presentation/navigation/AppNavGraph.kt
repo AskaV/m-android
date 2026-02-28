@@ -1,8 +1,10 @@
 package com.spp.android.myapplication.presentation.navigation
 
 import android.content.Context
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -11,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginScreen
 import com.spp.android.myapplication.presentation.feature.auth.signup.SignUpViewModel
 import com.spp.android.myapplication.presentation.feature.auth.signup.base.SignUpScreen
@@ -23,6 +26,7 @@ import com.spp.android.myapplication.presentation.feature.profile.contact.Contac
 import com.spp.android.myapplication.presentation.feature.profile.edit.EditProfileScreen
 import com.spp.android.myapplication.presentation.feature.profile.my.MyProfileScreen
 import com.spp.android.myapplication.presentation.texts.AppText
+import kotlinx.coroutines.flow.Flow
 
 object NavKeys {
     const val EMAIL = "email"
@@ -32,10 +36,41 @@ object NavKeys {
 }
 
 @Composable
-fun AppNavGraph() {
+fun AppNavGraph(intentFlow: Flow<Intent>) {
     val navController = rememberNavController()
     val context = LocalContext.current
     val toastMessage = AppText.OtherInfo.TOAST_CLICKED.text(context)
+
+    val resolverVm: DeepLinkResolverViewModel = hiltViewModel()
+
+    LaunchedEffect(navController) {
+        intentFlow.collect { intent ->
+            val id = parseContactId(intent)
+
+            if (id != null) {
+                val inMy = resolverVm.isInMyContacts(id)
+
+                navController.navigate(Routes.Home.route) {
+                    popUpTo(0) { inclusive = true }
+                    launchSingleTop = true
+                }
+
+                val target = if (inMy) {
+                    Routes.ContactProfile.create(id)
+                } else {
+                    Routes.AddContactProfile.create(id)
+                }
+
+                navController.navigate(target) {
+                    launchSingleTop = true
+                }
+
+                return@collect
+            }
+
+            navController.handleDeepLink(intent)
+        }
+    }
 
     NavHost(
         navController = navController,
@@ -176,9 +211,7 @@ fun AppNavGraph() {
             ContactProfileScreen(
                 contactId = contactId,
                 onBack = { navController.popBackStack() },
-                onOpenChat = {
-                    showToast(context, toastMessage)
-                },
+                onOpenChat = { showToast(context, toastMessage) },
             )
         }
 
@@ -214,6 +247,12 @@ fun AppNavGraph() {
     }
 }
 
+private fun parseContactId(intent: Intent): Int? {
+    val uri = intent.data ?: return null
+    if (intent.action != Intent.ACTION_VIEW) return null
+    if (uri.scheme != "myapp" || uri.host != "contact") return null
+    return uri.lastPathSegment?.toIntOrNull()
+}
 fun showToast(
     context: Context,
     message: String,

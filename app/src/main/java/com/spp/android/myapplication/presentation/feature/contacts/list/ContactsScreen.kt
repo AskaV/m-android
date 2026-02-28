@@ -28,6 +28,8 @@ import com.spp.android.myapplication.presentation.feature.contacts.list.Contacts
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.ExitSelectionMode
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.SearchClicked
 import com.spp.android.myapplication.presentation.feature.contacts.list.ContactsContract.Event.UndoDelete
+import com.spp.android.myapplication.presentation.notifications.ContactsNotificationHelper
+import com.spp.android.myapplication.presentation.notifications.EnsureNotificationsPermission
 import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 
@@ -45,7 +47,7 @@ fun ContactsScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
-
+    EnsureNotificationsPermission()
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -69,6 +71,15 @@ fun ContactsScreen(
                     } else {
                         scope.launch { snackbar.showSnackbar(msg) }
                     }
+                }
+                is ContactsContract.Effect.ShowDeletedNotification -> {
+                    //android.util.Log.d("ContactsUI", "Show notif for id=${effect.contactId}")
+
+                    ContactsNotificationHelper.showDeleted(
+                        context = context,
+                        contactId = effect.contactId,
+
+                    )
                 }
             }
         }

@@ -39,5 +39,6 @@ object ContactsContract {
         data object OpenAddContact : Effect
         data class OpenContactProfile(val contactId: Int) : Effect
         data class ShowMessage(val messageKey: TextKey) : Effect
+        data class ShowDeletedNotification(val contactId: Int) : Effect
     }
 }

@@ -11,6 +11,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -44,18 +45,22 @@ class ContactProfileViewModel
         _state.update { it.copy(isLoading = true, contactId = id, errorKey = null) }
 
         runCatching {
-            contactsRepository.findContactById(id) ?: run {
-                contactsRepository.refreshMyContacts()
+            val contact = contactsRepository.findContactById(id) ?: run {
                 contactsRepository.refreshAllUsers()
                 contactsRepository.findContactById(id)
             }
-        }.onSuccess { contact ->
+
+            val myIds = buildSet {
+                addAll(contactsRepository.apiMyContacts.first().map { it.id })
+                addAll(contactsRepository.localAdded.first().map { it.id })
+            }
+            val isInMyContacts = id in myIds
+
+            contact to isInMyContacts
+        }.onSuccess { (contact, isInMyContacts) ->
             if (contact == null) {
                 _state.update {
-                    it.copy(
-                        isLoading = false,
-                        errorKey = AppText.OtherInfo.UNKNOWN_ERROR,
-                    )
+                    it.copy(isLoading = false, errorKey = AppText.OtherInfo.UNKNOWN_ERROR)
                 }
                 sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_LOAD_FAILED))
                 return@onSuccess
@@ -67,7 +72,7 @@ class ContactProfileViewModel
                     name = contact.name,
                     linePrimary = contact.subtitle,
                     lineSecondary = "",
-                    hasSocial = true,
+                    hasSocial = isInMyContacts,
                     avatarPath = contact.avatarUrl,
                 )
             }

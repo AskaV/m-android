@@ -182,6 +182,14 @@ class ContactsViewModel @Inject constructor(
         removeFromUi(items.map { it.id }.toSet())
         scheduleFinalizeDelete()
         sendEffect(Effect.ShowMessage(AppText.OtherInfo.CONTACTS_REMOVED))
+
+        items.forEach { contact ->
+            val isUserContact = !phonebookIdsSnapshot.contains(contact.id)
+            if (isUserContact) {
+                //Log.d("ContactsVM", "Send notif effect id=${contact.id}")
+                sendEffect(Effect.ShowDeletedNotification(contact.id))
+            }
+        }
     }
 
     private fun undoDelete() = viewModelScope.launch {

@@ -126,6 +126,7 @@ class AddContactsViewModel @Inject constructor(
         contactsRepo.addContactOfflineFirst(contact).onSuccess {
             _state.update { st -> st.copy(items = st.items.filterNot { it.id == id }) }
             sendEffect(Effect.ShowMessage("Added $name"))
+            sendEffect(Effect.ShowAddedNotification(id))
         }.onFailure {
             sendEffect(Effect.ShowMessage("Failed to add $name"))
         }
@@ -146,6 +147,9 @@ class AddContactsViewModel @Inject constructor(
                 .onFailure { failCount++ }
         }
 
+        okIds.forEach { id ->
+            sendEffect(Effect.ShowAddedNotification(id))
+        }
         baseFiltered = baseFiltered.filterNot { it.id in okIds }
 
         _state.update { st ->

@@ -32,5 +32,6 @@ object AddContactsContract {
     sealed interface Effect {
         data object NavigateBack : Effect
         data class ShowMessage(val message: String) : Effect
+        data class ShowAddedNotification(val contactId: Int) : Effect
     }
 }
