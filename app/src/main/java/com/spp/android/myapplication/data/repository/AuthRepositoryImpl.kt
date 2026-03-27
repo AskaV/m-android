@@ -82,7 +82,7 @@ class AuthRepositoryImpl
                 if (body?.status != "success" || body.data == null) {
                     throw Exception(body?.message ?: "Unknown error")
                 }
-                println("EDIT PUT response user = ${body?.data?.user}")
+                println("EDIT PUT response user = ${body.data.user}")
                 body.data.user
             }
 
