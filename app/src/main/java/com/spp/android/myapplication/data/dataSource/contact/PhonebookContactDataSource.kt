@@ -5,7 +5,7 @@ import android.provider.ContactsContract
 import com.spp.android.myapplication.domain.model.Contact
 import javax.inject.Inject
 
-class LocalContactDataSource
+class PhonebookContactDataSource
     @Inject
     constructor(
         private val contentResolver: ContentResolver,

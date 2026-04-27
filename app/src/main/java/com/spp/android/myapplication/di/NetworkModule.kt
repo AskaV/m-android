@@ -12,7 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-
+private const val BASE_URL = "http://178.63.9.114:7777/api/"
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
@@ -32,7 +32,7 @@ object NetworkModule {
     fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit
             .Builder()
-            .baseUrl("http://178.63.9.114:7777/api/")
+            .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

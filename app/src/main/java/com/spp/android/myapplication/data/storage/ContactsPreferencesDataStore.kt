@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.spp.android.myapplication.data.dataSource.contact.ContactsLocalDataSource
+import com.spp.android.myapplication.data.dataSource.contact.ContactsLocalStore
 import com.spp.android.myapplication.domain.model.Contact
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class ContactsPreferencesDataStore @Inject constructor(
     private val dataStore: DataStore<Preferences>,
-) : ContactsLocalDataSource {
+) : ContactsLocalStore {
 
     private val localAddedJson = stringPreferencesKey("local_added_contacts_json")
     private val phonebookAvatarJson = stringPreferencesKey("phonebook_avatar_cache_json")

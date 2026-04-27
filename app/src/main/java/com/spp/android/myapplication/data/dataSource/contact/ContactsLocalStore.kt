@@ -3,7 +3,7 @@ package com.spp.android.myapplication.data.dataSource.contact
 import com.spp.android.myapplication.domain.model.Contact
 import kotlinx.coroutines.flow.Flow
 
-interface ContactsLocalDataSource {
+interface ContactsLocalStore {
 
     val localAddedContacts: Flow<List<Contact>>
     suspend fun saveLocalAddedContacts(contacts: List<Contact>)

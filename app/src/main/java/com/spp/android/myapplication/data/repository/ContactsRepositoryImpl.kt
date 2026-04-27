@@ -1,7 +1,7 @@
 package com.spp.android.myapplication.data.repository
 
 import com.spp.android.myapplication.data.dataSource.contact.ContactDataSource
-import com.spp.android.myapplication.data.dataSource.contact.ContactsLocalDataSource
+import com.spp.android.myapplication.data.dataSource.contact.ContactsLocalStore
 import com.spp.android.myapplication.data.remote.api.ContactsApi
 import com.spp.android.myapplication.data.remote.api.UsersApi
 import com.spp.android.myapplication.data.remote.dto.AddContactBody
@@ -20,10 +20,11 @@ import kotlin.math.abs
 
 class ContactsRepositoryImpl @Inject constructor(
     private val contactDataSource: ContactDataSource,
-    private val local: ContactsLocalDataSource,
+    private val local: ContactsLocalStore,
     private val authPreferences: AuthPreferences,
     private val api: ContactsApi,
     private val usersApi: UsersApi,
+
 
     ) : ContactsRepository {
 
@@ -31,6 +32,8 @@ class ContactsRepositoryImpl @Inject constructor(
         private const val SHOW_PHONEBOOK = false  //false true
 
         private const val PHONEBOOK_ID_OFFSET = 1_000_000
+        private const val BEARER_PREFIX = "Bearer "
+
     }
 
     override val apiAllUsers: Flow<List<Contact>> = local.apiAllUsersCache
@@ -42,7 +45,7 @@ class ContactsRepositoryImpl @Inject constructor(
         val userId = authPreferences.getUserId()
         val token = authPreferences.accessToken.first()
 
-        val resp = api.getContacts(userId, "Bearer $token")
+        val resp = api.getContacts(userId, "$BEARER_PREFIX$token")
         if (!resp.isSuccessful) {
             val raw = resp.errorBody()?.string()
             throw Exception(parseErrorMessage(raw, resp.code()))
@@ -59,7 +62,7 @@ class ContactsRepositoryImpl @Inject constructor(
 
     override suspend fun refreshAllUsers(): Result<Unit> = runCatching {
         val token = authPreferences.accessToken.first()
-        val bearer = "Bearer $token"
+        val bearer =  "$BEARER_PREFIX$token"
 
         val resp = usersApi.getAllUsers(bearer)
         if (!resp.isSuccessful) {
@@ -85,7 +88,7 @@ class ContactsRepositoryImpl @Inject constructor(
         val userId = authPreferences.getUserId()
         val token = authPreferences.accessToken.first()
 
-        val resp = api.addContact(userId, "Bearer $token", AddContactBody(contactId = contact.id))
+        val resp = api.addContact(userId,  "$BEARER_PREFIX$token", AddContactBody(contactId = contact.id))
         if (!resp.isSuccessful) {
             val raw = resp.errorBody()?.string()
             throw Exception(parseErrorMessage(raw, resp.code()))
@@ -107,7 +110,7 @@ class ContactsRepositoryImpl @Inject constructor(
         val userId = authPreferences.getUserId()
         val token = authPreferences.accessToken.first()
 
-        val resp = api.deleteContact(userId, contactId, "Bearer $token")
+        val resp = api.deleteContact(userId, contactId,  "$BEARER_PREFIX$token")
         if (!resp.isSuccessful) {
             val raw = resp.errorBody()?.string()
             throw Exception(parseErrorMessage(raw, resp.code()))

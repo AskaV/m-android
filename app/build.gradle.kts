@@ -26,23 +26,6 @@ android {
     }
 }
 
-tasks.named("check") {
-    dependsOn("ktlintCheck")
-}
-
-ktlint {
-
-    android.set(true)
-    ignoreFailures.set(true)
-    outputToConsole.set(true)
-    verbose.set(true)
-    additionalEditorconfig.set(
-        mapOf(
-            "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
-        ),
-    )
-}
-
 dependencies {
     implementation(libs.androidx.appcompat)
     implementation(platform(libs.androidx.compose.bom))
@@ -68,4 +51,21 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+}
+
+tasks.named("check") {
+    dependsOn("ktlintCheck")
+}
+
+ktlint {
+
+    android.set(true)
+    ignoreFailures.set(true)
+    outputToConsole.set(true)
+    verbose.set(true)
+    additionalEditorconfig.set(
+        mapOf(
+            "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
+        ),
+    )
 }

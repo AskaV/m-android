@@ -20,7 +20,7 @@ class AuthRepositoryImpl
         ): Result<AuthDataDto> =
             runCatching {
                 val resp =
-                    api.createUser(
+                    api.registerUser(
                         email = email.trim().toPart(),
                         password = password.toPart(),
                         name = null,
@@ -91,7 +91,7 @@ class AuthRepositoryImpl
             password: String,
         ): Result<AuthDataDto> =
             runCatching {
-                val resp =
+                val response =
                     api.login(
                         LoginBody(
                             email = email.trim(),
@@ -99,12 +99,12 @@ class AuthRepositoryImpl
                         ),
                     )
 
-                if (!resp.isSuccessful) {
-                    val raw = resp.errorBody()?.string()
-                    throw Exception(parseErrorMessage(raw, resp.code()))
+                if (!response.isSuccessful) {
+                    val raw = response.errorBody()?.string()
+                    throw Exception(parseErrorMessage(raw, response.code()))
                 }
 
-                val body = resp.body()
+                val body = response.body()
                 if (body?.status != "success" || body.data == null) {
                     throw Exception(body?.message ?: "Unknown error")
                 }

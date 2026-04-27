@@ -3,8 +3,8 @@ package com.spp.android.myapplication.di
 import android.content.ContentResolver
 import android.content.Context
 import com.spp.android.myapplication.data.dataSource.contact.ContactDataSource
-import com.spp.android.myapplication.data.dataSource.contact.ContactsLocalDataSource
-import com.spp.android.myapplication.data.dataSource.contact.LocalContactDataSource
+import com.spp.android.myapplication.data.dataSource.contact.ContactsLocalStore
+import com.spp.android.myapplication.data.dataSource.contact.PhonebookContactDataSource
 import com.spp.android.myapplication.data.repository.ContactsRepositoryImpl
 import com.spp.android.myapplication.data.storage.ContactsPreferencesDataStore
 import com.spp.android.myapplication.domain.repository.ContactsRepository
@@ -26,11 +26,11 @@ interface ContactsBinds {
 
     @Binds
     @Singleton
-    fun bindContactDataSource(impl: LocalContactDataSource): ContactDataSource
+    fun bindContactDataSource(impl: PhonebookContactDataSource): ContactDataSource
 
     @Binds
     @Singleton
-    fun bindContactsLocalDataSource(impl: ContactsPreferencesDataStore): ContactsLocalDataSource
+    fun bindContactsLocalDataSource(impl: ContactsPreferencesDataStore): ContactsLocalStore
 }
 
 @Module

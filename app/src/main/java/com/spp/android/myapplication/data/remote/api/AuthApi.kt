@@ -19,7 +19,7 @@ import retrofit2.http.Path
 interface AuthApi {
     @Multipart
     @POST("users")
-    suspend fun createUser(
+    suspend fun registerUser(
         @Part("email") email: RequestBody,
         @Part("password") password: RequestBody,
         @Part("name") name: RequestBody? = null,
