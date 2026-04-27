@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
@@ -29,9 +31,11 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPh
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.designsystem.theme.MyApplicationTheme
 import com.spp.android.myapplication.presentation.feature.components.ActionFab
+import com.spp.android.myapplication.presentation.feature.contacts.components.BottomEndFabStack
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactList
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactListBehavior
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactsHeader
+import com.spp.android.myapplication.presentation.feature.contacts.components.EmptySearchResult
 import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 
@@ -41,10 +45,16 @@ fun AddContactsScreenContent(
     selectedIds: Set<Int> = emptySet(),
     onBack: () -> Unit = {},
     onSearchClick: () -> Unit = {},
-    onMassAddClick: () -> Unit = {},
     onAddClick: (Contact) -> Unit = {},
     reserveAddRowSpace: Boolean = true,
-    onRowClick: (Contact) -> Unit = {},
+    onItemClick: (Contact) -> Unit = {},
+    onItemLongClick: (Contact) -> Unit = {},
+    onMassAddClick: () -> Unit = {},
+    isSearchOpen: Boolean = false,
+    query: String = "",
+    onQueryChange: (String) -> Unit = {},
+    onSearchClose: () -> Unit = {},
+    isSelectionMode: Boolean = selectedIds.isNotEmpty(),
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
@@ -65,14 +75,19 @@ fun AddContactsScreenContent(
                 showAddHeaderRow = false,
                 onAddContactsClick = {},
                 reserveAddRowSpace = reserveAddRowSpace,
+                isSearchOpen = isSearchOpen,
+                query = query,
+                onQueryChange = onQueryChange,
+                onSearchClose = onSearchClose,
             )
-
-            ContactList(
-                items = items,
-                selectedIds = emptySet(),
-                behavior =
-                    ContactListBehavior(
-                        selectionEnabled = false,
+            if (items.isEmpty() && isSearchOpen && query.isNotBlank()) {
+                EmptySearchResult()
+            } else {
+                ContactList(
+                    items = items,
+                    selectedIds = selectedIds,
+                    behavior = ContactListBehavior(
+                        selectionEnabled = isSelectionMode,
                         showDeleteIcon = false,
                         trailingForRow = { contact ->
                             TextButton(onClick = { onAddClick(contact) }) {
@@ -86,44 +101,33 @@ fun AddContactsScreenContent(
                             }
                         },
                     ),
-                onItemClick = onRowClick,
-                onItemLongClick = {},
-                onDeleteClick = {},
-                state = listState,
-                contentPadding =
-                    PaddingValues(
+                    onItemClick = onItemClick,
+                    onItemLongClick = onItemLongClick,
+                    onDeleteClick = {},
+                    state = listState,
+                    contentPadding = PaddingValues(
                         start = pad,
                         end = pad,
                         top = spaceM,
                         bottom = spaceL,
                     ),
-                modifier = Modifier.fillMaxSize(),
-            )
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
         }
 
-        AnimatedVisibility(
-            visible = selectedIds.isNotEmpty(),
-            modifier = Modifier.align(Alignment.BottomEnd),
-        ) {
-            ActionFab(
-                iconRes = R.drawable.ic_add,
-                contentDescription = "Add selected",
-                onClick = onMassAddClick,
-                alignment = Alignment.BottomEnd,
-            )
-        }
 
-        AnimatedVisibility(
-            visible = showScrollTop,
+        BottomEndFabStack(
             modifier = Modifier.align(Alignment.BottomEnd),
-        ) {
-            ActionFab(
-                iconRes = R.drawable.ic_arrow_up,
-                contentDescription = "Scroll to top",
-                onClick = { scope.launch { listState.animateScrollToItem(0) } },
-                alignment = Alignment.BottomStart,
-            )
-        }
+            showScrollTop = showScrollTop,
+            showMassAction = selectedIds.isNotEmpty(),
+            massActionIconRes = R.drawable.ic_add,
+            massActionContentDescription = "Add selected",
+            onScrollTop = { scope.launch { listState.animateScrollToItem(0) } },
+            onMassAction = onMassAddClick,
+            hideScrollWhenMassAction = false,
+        )
+
     }
 }
 

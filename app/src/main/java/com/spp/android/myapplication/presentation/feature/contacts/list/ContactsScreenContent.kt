@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
@@ -25,9 +27,11 @@ import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPh
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
 import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
 import com.spp.android.myapplication.presentation.feature.components.ActionFab
+import com.spp.android.myapplication.presentation.feature.contacts.components.BottomEndFabStack
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactList
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactListBehavior
 import com.spp.android.myapplication.presentation.feature.contacts.components.ContactsHeader
+import com.spp.android.myapplication.presentation.feature.contacts.components.EmptySearchResult
 import com.spp.android.myapplication.presentation.texts.AppText
 import kotlinx.coroutines.launch
 
@@ -37,6 +41,8 @@ fun ContactsScreenContent(
     items: List<Contact>,
     onBack: () -> Unit = {},
     onSearchClick: () -> Unit = {},
+    onAddContactClick: () -> Unit = {},
+
     onAddContactsClick: () -> Unit = {},
     onContactClick: (Contact) -> Unit = {},
     onDeleteClick: (Contact) -> Unit = {},
@@ -46,7 +52,12 @@ fun ContactsScreenContent(
     selectedIds: Set<Int> = emptySet(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
     isSelectionMode: Boolean = showRecycleBin,
-) {
+    isSearchOpen: Boolean = false,
+    query: String = "",
+    onQueryChange: (String) -> Unit = {},
+    onSearchClose: () -> Unit = {},
+
+    ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceL = dimensionResource(id = R.dimen.spacer_large)
 
@@ -56,7 +67,8 @@ fun ContactsScreenContent(
         derivedStateOf { listState.firstVisibleItemIndex > 0 }
     }
     Box(
-        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface).padding(contentPadding),
+        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+            .padding(contentPadding),
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -67,61 +79,58 @@ fun ContactsScreenContent(
                 onSearchClick = onSearchClick,
                 showAddHeaderRow = true,
                 onAddContactsClick = onAddContactsClick,
+                onAddContactClick = onAddContactClick,
+                isSearchOpen = isSearchOpen,
+                query = query,
+                onQueryChange = onQueryChange,
+                onSearchClose = onSearchClose,
             )
+            if (items.isEmpty() && isSearchOpen && query.isNotBlank()) {
+                EmptySearchResult()
 
-            Surface(
-                color = MaterialTheme.colorScheme.surface,
-                contentColor = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                ContactList(
-                    items = items,
-                    selectedIds = selectedIds,
-                    behavior =
-                        ContactListBehavior(
+            } else {
+                Surface(
+                    color = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    ContactList(
+                        items = items,
+                        selectedIds = selectedIds,
+                        behavior = ContactListBehavior(
                             selectionEnabled = isSelectionMode,
                             showDeleteIcon = !isSelectionMode,
                         ),
-                    onItemClick = onContactClick,
-                    onItemLongClick = onContactLongClick,
-                    onDeleteClick = onDeleteClick,
-                    state = listState,
-                    contentPadding =
-                        PaddingValues(
+                        onItemClick = onContactClick,
+                        onItemLongClick = onContactLongClick,
+                        onDeleteClick = onDeleteClick,
+                        state = listState,
+                        contentPadding = PaddingValues(
                             start = pad,
                             end = pad,
                             top = pad,
                             bottom = spaceL,
                         ),
-                    modifier = Modifier.fillMaxSize(),
-                )
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
             }
         }
 
-        AnimatedVisibility(
-            visible = showRecycleBin,
+        BottomEndFabStack(
             modifier = Modifier.align(Alignment.BottomEnd),
-        ) {
-            ActionFab(
-                iconRes = R.drawable.recycle_bin,
-                onClick = onBulkDeleteClick,
-                alignment = Alignment.BottomEnd,
-            )
-        }
-
-        AnimatedVisibility(
-            visible = showScrollTop,
-            modifier = Modifier.align(Alignment.BottomEnd),
-        ) {
-            ActionFab(
-                iconRes = R.drawable.ic_arrow_up,
-                onClick = { scope.launch { listState.animateScrollToItem(0) } },
-                alignment = Alignment.BottomStart,
-            )
-        }
+            showScrollTop = showScrollTop,
+            showMassAction = showRecycleBin,
+            massActionIconRes = R.drawable.recycle_bin,
+            massActionContentDescription = "Delete selected",
+            onScrollTop = { scope.launch { listState.animateScrollToItem(0) } },
+            onMassAction = onBulkDeleteClick,
+            hideScrollWhenMassAction = false,
+        )
     }
 }
 
 @PreviewPhones
 @Composable
-private fun ContactsScreenContentPreview() = PreviewScreenEdgeToEdge { ContactsScreenContent(items = demoUsers()) }
+private fun ContactsScreenContentPreview() =
+    PreviewScreenEdgeToEdge { ContactsScreenContent(items = demoUsers()) }

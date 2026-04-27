@@ -18,9 +18,9 @@ import com.spp.android.myapplication.presentation.feature.contacts.addcontact.Ad
 @Composable
 fun AddContactScreen(
     onBack: () -> Unit = {},
-    vm: AddContactViewModel = hiltViewModel(),
+    viewModel: AddContactViewModel = hiltViewModel(),
 ) {
-    val state by vm.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     var showPicker by remember { mutableStateOf(false) }
     var pickerKey by remember { mutableIntStateOf(0) }
@@ -31,14 +31,14 @@ fun AddContactScreen(
                 startVisible = true,
                 onResult = { uri ->
                     showPicker = false
-                    uri?.let { vm.onEvent(Event.OnAvatarPicked(it.toString())) }
+                    uri?.let { viewModel.onEvent(Event.OnAvatarPicked(it.toString())) }
                 },
             )
         }
     }
 
     LaunchedEffect(Unit) {
-        vm.effect.collect { effect ->
+        viewModel.effect.collect { effect ->
             when (effect) {
                 is Effect.NavigateBack -> onBack()
                 is Effect.ShowMessage -> {
@@ -48,21 +48,21 @@ fun AddContactScreen(
         }
     }
 
-    BackHandler { vm.onEvent(Event.BackClicked) }
+    BackHandler { viewModel.onEvent(Event.BackClicked) }
 
     AddContactScreenContent(
         state = state,
-        onBack = { vm.onEvent(Event.BackClicked) },
+        onBack = { viewModel.onEvent(Event.BackClicked) },
         onAvatarClick = {
             pickerKey++
             showPicker = true
         },
-        onSave = { vm.onEvent(Event.SaveClicked) },
-        onUsernameChange = { vm.onEvent(Event.UsernameChanged(it)) },
-        onCareerChange = { vm.onEvent(Event.CareerChanged(it)) },
-        onEmailChange = { vm.onEvent(Event.EmailChanged(it)) },
-        onPhoneChange = { vm.onEvent(Event.PhoneChanged(it)) },
-        onAddressChange = { vm.onEvent(Event.AddressChanged(it)) },
-        onDobChange = { vm.onEvent(Event.DateOfBirthChanged(it)) },
+        onSave = { viewModel.onEvent(Event.SaveClicked) },
+        onUsernameChange = { viewModel.onEvent(Event.UsernameChanged(it)) },
+        onCareerChange = { viewModel.onEvent(Event.CareerChanged(it)) },
+        onEmailChange = { viewModel.onEvent(Event.EmailChanged(it)) },
+        onPhoneChange = { viewModel.onEvent(Event.PhoneChanged(it)) },
+        onAddressChange = { viewModel.onEvent(Event.AddressChanged(it)) },
+        onDobChange = { viewModel.onEvent(Event.DateOfBirthChanged(it)) },
     )
 }

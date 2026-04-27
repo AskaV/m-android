@@ -2,88 +2,207 @@ package com.spp.android.myapplication.presentation.feature.contacts.addcontacts
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spp.android.myapplication.presentation.designsystem.preview.demoUsers
+import com.spp.android.myapplication.domain.model.Contact
+import com.spp.android.myapplication.domain.repository.ContactsRepository
 import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Effect
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.AddClicked
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.BackClicked
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.ErrorShown
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.Load
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.MassAddClicked
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.SearchClicked
-import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event.ToggleSelect
+import com.spp.android.myapplication.presentation.feature.contacts.addcontacts.AddContactsContract.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddContactsViewModel
-    @Inject
-    constructor() : ViewModel() {
-        private val _state = MutableStateFlow(AddContactsContract.State())
-        val state = _state.asStateFlow()
+class AddContactsViewModel @Inject constructor(
+    private val contactsRepo: ContactsRepository,
+) : ViewModel() {
 
-        private val _effect = Channel<Effect>(Channel.BUFFERED)
-        val effect = _effect.receiveAsFlow()
+    private val _state = MutableStateFlow(AddContactsContract.State())
+    val state = _state.asStateFlow()
 
-        init {
-            onEvent(Load)
-        }
+    private val _effect = Channel<Effect>(Channel.BUFFERED)
+    val effect = _effect.receiveAsFlow()
 
-        fun onEvent(event: AddContactsContract.Event) {
-            when (event) {
-                is Load -> load()
-                is BackClicked -> sendEffect(Effect.NavigateBack)
+    private var baseFiltered: List<Contact> = emptyList()
 
-                is SearchClicked -> sendEffect(Effect.OpenSearch)
+    init {
+        observeAllUsersCache()
+        onEvent(Event.Load)
+    }
 
-                is ToggleSelect -> {
-                    _state.update { st ->
-                        val ns =
-                            st.selected.toMutableSet().apply {
-                                if (contains(event.toggleSelect.id)) {
-                                    remove(event.toggleSelect.id)
-                                } else {
-                                    add(
-                                        event.toggleSelect.id,
-                                    )
-                                }
-                            }
-                        st.copy(selected = ns)
-                    }
-                }
-
-                is MassAddClicked -> {
-                    val count = _state.value.selected.size
-                    if (count > 0) {
-                        sendEffect(
-                            Effect.ShowMessage(
-                                "Added $count contact(s)",
-                            ),
-                        )
-                        _state.update { it.copy(selected = emptySet()) }
-                    }
-                }
-
-                is ErrorShown -> _state.update { it.copy() }
-
-                is AddClicked -> {
-                    _state.update { st ->
-                        st.copy(items = st.items.filterNot { it.id == event.dddClicked.id })
-                    }
-                    sendEffect(Effect.ShowMessage("Added ${event.dddClicked.name}"))
-                }
+    fun onEvent(event: Event) {
+        when (event) {
+            is Event.Load -> refresh()
+            is Event.BackClicked -> sendEffect(Effect.NavigateBack)
+            is Event.SearchClicked -> _state.update { it.copy(isSearchOpen = true) }
+            is Event.SearchClosed -> closeSearch()
+            is Event.QueryChanged -> updateQuery(event.query)
+            is Event.MassAddClicked -> massAddSelected()
+            is Event.AddClicked -> addOne(event.dddClicked.id, event.dddClicked.name)
+            is Event.ErrorShown -> _state.update { it.copy(error = "") }
+            is Event.UserLongClicked -> toggleSelectionMode(event.contact.id)
+            is Event.UserClicked -> handleUserClicked(event.contact.id)
+            is Event.ExitSelectionMode -> _state.update {
+                it.copy(selected = emptySet(), isSelectionMode = false)
             }
         }
+    }
 
-        private fun load() {
-            _state.update { it.copy(isLoading = true) }
-            _state.update { it.copy(items = demoUsers(), isLoading = false) }
+    private fun observeAllUsersCache() = viewModelScope.launch {
+        combine(
+            contactsRepo.apiAllUsers,
+            contactsRepo.apiMyContacts,
+            contactsRepo.localAdded,
+        ) { allUsers, myContacts, localAdded ->
+            val bannedIds = (myContacts + localAdded).map { it.id }.toSet()
+            allUsers.filterNot { it.id in bannedIds }
+        }.collect { filtered ->
+            baseFiltered = filtered
+
+            _state.update { st ->
+                val visible = applyQuery(baseFiltered, st.query)
+                val existingIds = visible.map { it.id }.toSet()
+
+                st.copy(
+                    items = visible,
+                    selected = st.selected.intersect(existingIds),
+                    isSelectionMode = st.isSelectionMode && st.selected.intersect(existingIds)
+                        .isNotEmpty(),
+                )
+            }
+        }
+    }
+
+    private fun refresh() = viewModelScope.launch {
+        _state.update { it.copy(isLoading = true, error = "") }
+
+        contactsRepo.refreshAllUsers().onSuccess {
+            _state.update { it.copy(isLoading = false) }
+        }.onFailure { e ->
+            _state.update { it.copy(isLoading = false, error = e.message.orEmpty()) }
+            sendEffect(Effect.ShowMessage("Не удалось обновить список пользователей"))
+        }
+    }
+
+
+    private fun toggleSelectionMode(id: Int) {
+        _state.update { st ->
+            if (st.isSelectionMode) {
+                val newSelected = st.selected.toMutableSet().apply {
+                    if (contains(id)) remove(id) else add(id)
+                }
+                st.copy(selected = newSelected, isSelectionMode = newSelected.isNotEmpty())
+            } else {
+                st.copy(selected = setOf(id), isSelectionMode = true)
+            }
+        }
+    }
+
+    private fun applyQuery(list: List<Contact>, query: String): List<Contact> {
+        val q = query.trim()
+        if (q.isEmpty()) return list
+        val lower = q.lowercase()
+        return list.filter { c ->
+            c.name.lowercase().contains(lower) || c.subtitle.lowercase().contains(lower)
+        }
+    }
+
+    private fun toggleSelection(id: Int) {
+        _state.update { st ->
+            val newSelected = st.selected.toMutableSet().apply {
+                if (contains(id)) remove(id) else add(id)
+            }
+            st.copy(selected = newSelected, isSelectionMode = newSelected.isNotEmpty())
+        }
+    }
+
+    private fun addOne(id: Int, name: String) = viewModelScope.launch {
+        val contact = _state.value.items.firstOrNull { it.id == id } ?: return@launch
+
+        contactsRepo.addContactOfflineFirst(contact).onSuccess {
+            _state.update { st -> st.copy(items = st.items.filterNot { it.id == id }) }
+            sendEffect(Effect.ShowMessage("Added $name"))
+            sendEffect(Effect.ShowAddedNotification(id))
+        }.onFailure {
+            sendEffect(Effect.ShowMessage("Failed to add $name"))
+        }
+    }
+
+    private fun massAddSelected() = viewModelScope.launch {
+        val selectedIds = _state.value.selected
+        if (selectedIds.isEmpty()) return@launch
+
+        val itemsById = baseFiltered.associateBy { it.id }
+        val toAdd = selectedIds.mapNotNull { itemsById[it] }
+
+        val okIds = mutableSetOf<Int>()
+        var failCount = 0
+
+        toAdd.forEach { contact ->
+            contactsRepo.addContactOfflineFirst(contact).onSuccess { okIds.add(contact.id) }
+                .onFailure { failCount++ }
         }
 
-        private fun sendEffect(e: Effect) = viewModelScope.launch { _effect.send(e) }
+        okIds.forEach { id ->
+            sendEffect(Effect.ShowAddedNotification(id))
+        }
+        baseFiltered = baseFiltered.filterNot { it.id in okIds }
+
+        _state.update { st ->
+            val visible = applyQuery(baseFiltered, st.query)
+            st.copy(
+                items = visible,
+                selected = emptySet(),
+                isSelectionMode = false,
+            )
+        }
+
+        when {
+            failCount == 0 -> {
+                sendEffect(Effect.ShowMessage("Added ${okIds.size} contact(s)"))
+            }
+
+            okIds.isEmpty() -> sendEffect(Effect.ShowMessage("Failed to add contacts"))
+            else -> sendEffect(Effect.ShowMessage("Added ${okIds.size}, failed $failCount"))
+        }
     }
+
+    private fun closeSearch() {
+        _state.update {
+            it.copy(
+                isSearchOpen = false,
+                query = "",
+                items = baseFiltered,
+                selected = emptySet(),
+                isSelectionMode = false,
+            )
+        }
+    }
+
+    private fun updateQuery(query: String) {
+        _state.update { st ->
+            val visible = applyQuery(baseFiltered, query)
+            val ids = visible.map { it.id }.toSet()
+            val newSelected = st.selected.intersect(ids)
+
+            st.copy(
+                query = query,
+                items = visible,
+                selected = newSelected,
+                isSelectionMode = st.isSelectionMode && newSelected.isNotEmpty(),
+            )
+        }
+    }
+
+    private fun handleUserClicked(contactId: Int) {
+        if (_state.value.isSelectionMode) {
+            toggleSelection(contactId)
+        }
+    }
+
+    private fun sendEffect(e: Effect) = viewModelScope.launch { _effect.send(e) }
+}

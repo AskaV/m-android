@@ -30,6 +30,7 @@ import com.spp.android.myapplication.presentation.designsystem.imageload.AvatarP
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewMoto
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewPhones
 import com.spp.android.myapplication.presentation.designsystem.preview.PreviewScreenEdgeToEdge
+import com.spp.android.myapplication.presentation.feature.profile.components.BirthdateLabeledField
 import com.spp.android.myapplication.presentation.texts.AppText
 
 @Composable
@@ -139,16 +140,18 @@ fun EditProfileScreenContent(
                                     kind = FieldKind.Username,
                                     onValueChange = { onValueChange("address", it) },
                                 ),
-                                FieldState(
-                                    value = state.birthdate,
-                                    label = AppText.EditProfile.BIRTHDATE_LABEL.text(),
-                                    error = "",
-                                    kind = FieldKind.Username,
-                                    onValueChange = { onValueChange("birthdate", it) },
-                                ),
                             ),
                         labelColor = MaterialTheme.colorScheme.onSurface,
                         valueColor = MaterialTheme.colorScheme.onSecondary,
+                    )
+                    BirthdateLabeledField(
+                        value = state.birthdate,
+                        label = AppText.EditProfile.BIRTHDATE_LABEL.text(),
+                        error = "",
+                        onDateSelected = { onValueChange("birthdate", it) },
+                        modifier = Modifier.fillMaxWidth(),
+                        labelTextColor = MaterialTheme.colorScheme.onSurface,
+                        valueTextColor = MaterialTheme.colorScheme.onSecondary,
                     )
 
                     Spacer(Modifier.height(spaceL))

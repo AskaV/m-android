@@ -1,131 +1,253 @@
 package com.spp.android.myapplication.data.repository
 
 import com.spp.android.myapplication.data.dataSource.contact.ContactDataSource
-import com.spp.android.myapplication.data.storage.ContactsPreferences
+import com.spp.android.myapplication.data.dataSource.contact.ContactsLocalStore
+import com.spp.android.myapplication.data.remote.api.ContactsApi
+import com.spp.android.myapplication.data.remote.api.UsersApi
+import com.spp.android.myapplication.data.remote.dto.AddContactBody
+import com.spp.android.myapplication.data.remote.dto.toContact
+import com.spp.android.myapplication.data.storage.AuthPreferences
 import com.spp.android.myapplication.domain.model.Contact
 import com.spp.android.myapplication.domain.repository.ContactsRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import org.json.JSONObject
 import javax.inject.Inject
+import kotlin.math.abs
 
-class ContactsRepositoryImpl
-    @Inject
-    constructor(
-        private val contactDataSource: ContactDataSource,
-        private val contactsPreferences: ContactsPreferences,
+class ContactsRepositoryImpl @Inject constructor(
+    private val contactDataSource: ContactDataSource,
+    private val local: ContactsLocalStore,
+    private val authPreferences: AuthPreferences,
+    private val api: ContactsApi,
+    private val usersApi: UsersApi,
+
+
     ) : ContactsRepository {
-        override suspend fun loadContacts(): List<Contact> {
-            val systemContacts = contactDataSource.fetchContacts()
-            val stored = contactsPreferences.contacts.first()
 
-            val overrides = stored.associateBy { it.id }.toMutableMap()
+    companion object {
+        private const val SHOW_PHONEBOOK = false  //false true
 
-            val migrated = migrateAvatarStyle(overrides)
-            if (migrated) {
-                contactsPreferences.saveContacts(overrides.values.toList())
-            }
+        private const val PHONEBOOK_ID_OFFSET = 1_000_000
+        private const val BEARER_PREFIX = "Bearer "
 
-            var changed = false
-
-            val result =
-                systemContacts.map { contact ->
-                    val overrideAvatar = overrides[contact.id]?.avatarUrl
-                    val systemAvatar = contact.avatarUrl
-
-                    val finalAvatar =
-                        when {
-                            !overrideAvatar.isNullOrBlank() -> overrideAvatar
-                            !systemAvatar.isNullOrBlank() -> systemAvatar
-                            else -> {
-                                val generated = generateAvatarUrl(contact.id)
-                                overrides[contact.id] =
-                                    Contact(
-                                        id = contact.id,
-                                        name = "",
-                                        subtitle = "",
-                                        avatarUrl = generated,
-                                    )
-                                changed = true
-                                generated
-                            }
-                        }
-
-                    contact.copy(avatarUrl = finalAvatar)
-                }
-
-            if (changed) {
-                contactsPreferences.saveContacts(overrides.values.toList())
-            }
-
-            val systemIds = systemContacts.map { it.id }.toHashSet()
-
-            val locallyAdded =
-                stored
-                    .filter { it.name.isNotBlank() || it.subtitle.isNotBlank() }
-                    .filter { it.id !in systemIds }
-
-            return result + locallyAdded
-        }
-
-        override suspend fun addContact(contact: Contact) {
-            val final =
-                contact.copy(
-                    avatarUrl =
-                        contact.avatarUrl.takeUnless { it.isNullOrBlank() }
-                            ?: "https://api.dicebear.com/9.x/lorelei-neutral/png?seed=contact_${contact.id}",
-                )
-
-            val current = contactsPreferences.contacts.first().toMutableList()
-            val idx = current.indexOfFirst { it.id == final.id }
-            if (idx >= 0) current[idx] = final else current.add(final)
-
-            contactsPreferences.saveContacts(current)
-        }
-
-        override suspend fun deleteContact(contactId: Int): Boolean {
-            val stored = contactsPreferences.contacts.first()
-
-            val target = stored.firstOrNull { it.id == contactId } ?: return false
-
-            val isAdded = target.name.isNotBlank() || target.subtitle.isNotBlank()
-            if (!isAdded) return false
-
-            val updated = stored.filterNot { it.id == contactId }
-            contactsPreferences.saveContacts(updated)
-            return true
-        }
-
-        override suspend fun setContactAvatar(
-            contactId: Int,
-            avatarUrl: String?,
-        ) {
-            val current = contactsPreferences.contacts.first().toMutableList()
-
-            val idx = current.indexOfFirst { it.id == contactId }
-            if (idx >= 0) {
-                current[idx] = current[idx].copy(avatarUrl = avatarUrl)
-            } else {
-                current.add(Contact(id = contactId, name = "", subtitle = "", avatarUrl = avatarUrl))
-            }
-
-            contactsPreferences.saveContacts(current)
-        }
-
-        private fun generateAvatarUrl(contactId: Int): String = "https://api.dicebear.com/9.x/lorelei-neutral/png?seed=contact_$contactId"
-
-        private fun migrateAvatarStyle(overrides: MutableMap<Int, Contact>): Boolean {
-            var changed = false
-
-            overrides.entries.forEach { (id, c) ->
-                val url = c.avatarUrl ?: return@forEach
-                if (url.contains("/9.x/bottts/")) {
-                    overrides[id] =
-                        c.copy(
-                            avatarUrl = "https://api.dicebear.com/9.x/lorelei-neutral/png?seed=contact_$id",
-                        )
-                    changed = true
-                }
-            }
-
-            return changed
-        }
     }
+
+    override val apiAllUsers: Flow<List<Contact>> = local.apiAllUsersCache
+    override val apiMyContacts: Flow<List<Contact>> = local.apiMyContactsCache
+    override val localAdded: Flow<List<Contact>> = local.localAddedContacts
+    private val phonebookCache = MutableStateFlow<List<Contact>>(emptyList())
+
+    override suspend fun refreshMyContacts(): Result<Unit> = runCatching {
+        val userId = authPreferences.getUserId()
+        val token = authPreferences.accessToken.first()
+
+        val resp = api.getContacts(userId, "$BEARER_PREFIX$token")
+        if (!resp.isSuccessful) {
+            val raw = resp.errorBody()?.string()
+            throw Exception(parseErrorMessage(raw, resp.code()))
+        }
+
+        val body = resp.body()
+        if (body?.status != "success" || body.data == null) {
+            throw Exception(body?.message ?: "Unknown error")
+        }
+
+        val contacts = body.data.contacts.map { it.toContact() }.distinctBy { it.id }
+        local.saveApiMyContactsCache(contacts)
+    }
+
+    override suspend fun refreshAllUsers(): Result<Unit> = runCatching {
+        val token = authPreferences.accessToken.first()
+        val bearer =  "$BEARER_PREFIX$token"
+
+        val resp = usersApi.getAllUsers(bearer)
+        if (!resp.isSuccessful) {
+            val raw = resp.errorBody()?.string()
+            throw Exception(parseErrorMessage(raw, resp.code()))
+        }
+
+        val body = resp.body()
+        if (body?.status != "success" || body.data == null) {
+            throw Exception(body?.message ?: "Unknown error")
+        }
+//        val rawBody = resp.body()
+//        Log.d("RAW_USERS", rawBody.toString())
+
+        val users = body.data.users.map { it.toContact() }.distinctBy { it.id }
+        local.saveApiAllUsersCache(users)
+    }
+
+    override suspend fun addContactOfflineFirst(contact: Contact): Result<Unit> = runCatching {
+        val current = local.apiMyContactsCache.first()
+        local.saveApiMyContactsCache((current + contact).distinctBy { it.id })
+
+        val userId = authPreferences.getUserId()
+        val token = authPreferences.accessToken.first()
+
+        val resp = api.addContact(userId,  "$BEARER_PREFIX$token", AddContactBody(contactId = contact.id))
+        if (!resp.isSuccessful) {
+            val raw = resp.errorBody()?.string()
+            throw Exception(parseErrorMessage(raw, resp.code()))
+        }
+
+        val body = resp.body()
+        if (body?.status != "success" || body.data == null) {
+            throw Exception(body?.message ?: "Unknown error")
+        }
+
+        val serverMine = body.data.contacts.map { it.toContact() }.distinctBy { it.id }
+        local.saveApiMyContactsCache(serverMine)
+    }
+
+    override suspend fun deleteContactOfflineFirst(contactId: Int): Result<Unit> = runCatching {
+        val current = local.apiMyContactsCache.first()
+        local.saveApiMyContactsCache(current.filterNot { it.id == contactId })
+
+        val userId = authPreferences.getUserId()
+        val token = authPreferences.accessToken.first()
+
+        val resp = api.deleteContact(userId, contactId,  "$BEARER_PREFIX$token")
+        if (!resp.isSuccessful) {
+            val raw = resp.errorBody()?.string()
+            throw Exception(parseErrorMessage(raw, resp.code()))
+        }
+
+        val body = resp.body()
+        if (body?.status != "success" || body.data == null) {
+            throw Exception(body?.message ?: "Unknown error")
+        }
+
+        val serverMine = body.data.contacts.map { it.toContact() }.distinctBy { it.id }
+        local.saveApiMyContactsCache(serverMine)
+    }
+
+    override suspend fun loadContactsPhone(): List<Contact> {
+        if (!SHOW_PHONEBOOK) return emptyList()
+
+        val systemContacts = contactDataSource.fetchContacts()
+
+        val cached = local.phonebookAvatarCache.first()
+        val avatarMap = cached.associateBy({ it.id }, { it.avatarUrl })
+
+        var changed = false
+        val updatedCache = cached.toMutableList()
+
+        val resultRaw = systemContacts.map { c ->
+            val rawId = c.id
+            val fromCache = avatarMap[rawId]
+            val finalAvatar = when {
+                !fromCache.isNullOrBlank() -> fromCache
+                !c.avatarUrl.isNullOrBlank() -> c.avatarUrl
+                else -> {
+                    val generated = generateAvatarUrl(rawId)
+                    upsertAvatarCache(updatedCache, rawId, generated)
+                    changed = true
+                    generated
+                }
+            }
+            c.copy(avatarUrl = finalAvatar)
+        }
+
+        if (changed) {
+            local.savePhonebookAvatarCache(updatedCache.distinctBy { it.id })
+        }
+
+        return resultRaw.map { it.copy(id = it.id + PHONEBOOK_ID_OFFSET) }
+    }
+
+    override val showPhonebook: Flow<Boolean> = flowOf(true)
+
+    override suspend fun setShowPhonebook(value: Boolean) {}
+
+    override val visibleContacts: Flow<List<Contact>> = combine(
+        local.apiMyContactsCache,
+        local.localAddedContacts,
+        showPhonebook,
+        phonebookCache,
+    ) { apiMine, localAdded, showPb, phonebook ->
+
+        val merged = if (showPb) apiMine + localAdded + phonebook
+        else apiMine + localAdded
+
+        merged.distinctBy { it.id }
+    }
+
+    override suspend fun refreshVisibleContacts(): Result<Unit> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun loadContactsLocal(): List<Contact> = local.localAddedContacts.first()
+
+    override suspend fun addContactLocal(contact: Contact) {
+        val current = local.localAddedContacts.first().toMutableList()
+        val idx = current.indexOfFirst { it.id == contact.id }
+
+        if (idx >= 0) current[idx] = mergeKeepTextAndAvatar(current[idx], contact)
+        else current.add(contact)
+
+        local.saveLocalAddedContacts(current.distinctBy { it.id })
+    }
+
+    override suspend fun deleteContactLocal(contactId: Int): Boolean {
+        val current = local.localAddedContacts.first()
+        if (current.none { it.id == contactId }) return false
+        local.saveLocalAddedContacts(current.filterNot { it.id == contactId })
+        return true
+    }
+
+    override suspend fun setContactAvatar(contactId: Int, avatarUrl: String?) {
+        val rawId =
+            if (contactId >= PHONEBOOK_ID_OFFSET) contactId - PHONEBOOK_ID_OFFSET else abs(contactId)
+
+        val current = local.phonebookAvatarCache.first().toMutableList()
+        upsertAvatarCache(current, rawId, avatarUrl)
+        local.savePhonebookAvatarCache(current.distinctBy { it.id })
+    }
+
+    override suspend fun findContactById(id: Int): Contact? {
+        if (id >= PHONEBOOK_ID_OFFSET) {
+            val phone = loadContactsPhone()
+            return phone.firstOrNull { it.id == id }
+        }
+
+        local.apiAllUsersCache.first().firstOrNull { it.id == id }?.let { return it }
+        local.apiMyContactsCache.first().firstOrNull { it.id == id }?.let { return it }
+        local.localAddedContacts.first().firstOrNull { it.id == id }?.let { return it }
+
+        return loadContactsPhone().firstOrNull { it.id == id + PHONEBOOK_ID_OFFSET }
+    }
+}
+
+private fun upsertAvatarCache(list: MutableList<Contact>, contactId: Int, avatarUrl: String?) {
+    val idx = list.indexOfFirst { it.id == contactId }
+    if (idx >= 0) {
+        val old = list[idx]
+        list[idx] = old.copy(avatarUrl = avatarUrl)
+    } else {
+        list.add(Contact(id = contactId, name = "", subtitle = "", avatarUrl = avatarUrl))
+    }
+}
+
+private fun mergeKeepTextAndAvatar(old: Contact, fresh: Contact): Contact = old.copy(
+    name = fresh.name.takeIf { it.isNotBlank() } ?: old.name,
+    subtitle = fresh.subtitle.takeIf { it.isNotBlank() } ?: old.subtitle,
+    avatarUrl = fresh.avatarUrl ?: old.avatarUrl,
+    transitionName = fresh.transitionName ?: old.transitionName,
+)
+
+private fun parseErrorMessage(raw: String?, code: Int): String {
+    if (raw.isNullOrBlank()) return "HTTP $code"
+    return try {
+        val obj = JSONObject(raw)
+        obj.optString("message").takeIf { it.isNotBlank() } ?: raw
+    } catch (_: Exception) {
+        raw
+    }
+}
+
+private fun generateAvatarUrl(contactId: Int): String =
+    "https://api.dicebear.com/9.x/lorelei-neutral/png?seed=contact_$contactId"

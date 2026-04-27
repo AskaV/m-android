@@ -18,21 +18,14 @@ object MyProfileContract {
 
     sealed interface Event {
         data object Load : Event
-
         data object Refresh : Event
-
         data object EditProfileClicked : Event
-
         data object ViewContactsClicked : Event
-
         data object LogoutClicked : Event
 
         data object ErrorShown : Event
-
         data object MarkCompleted : Event
-
         data object SignUpFinished : Event
-
         data class ProfileSaved(
             val username: String,
             val career: String,
@@ -43,14 +36,9 @@ object MyProfileContract {
     }
 
     sealed interface Effect {
-        data class ShowMessage(
-            val messageKey: TextKey,
-        ) : Effect
-
+        data class ShowMessage(val messageKey: TextKey) : Effect
         data object NavigateToEditProfile : Effect
-
         data object NavigateToContacts : Effect
-
         data object NavigateToAuth : Effect
     }
 }

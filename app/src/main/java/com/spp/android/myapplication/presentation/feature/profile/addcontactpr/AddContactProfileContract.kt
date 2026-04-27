@@ -16,14 +16,9 @@ object AddContactProfileContract {
     )
 
     sealed interface Event {
-        data class Load(
-            val id: Int,
-        ) : Event
-
+        data class Load(val id: Int, ) : Event
         data object BackClicked : Event
-
         data object MessageClicked : Event
-
         data object AddToContactsClicked : Event
 
         data object ErrorShown : Event
@@ -32,8 +27,6 @@ object AddContactProfileContract {
     sealed interface Effect {
         data object NavigateBack : Effect
 
-        data class ShowMessage(
-            val message: String,
-        ) : Effect
+        data class ShowMessage(val message: String, ) : Effect
     }
 }

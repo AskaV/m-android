@@ -1,6 +1,6 @@
 package com.spp.android.myapplication.presentation.feature.contacts.components
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -32,8 +32,13 @@ fun ContactsHeader(
     onBack: () -> Unit = {},
     onSearchClick: () -> Unit = {},
     showAddHeaderRow: Boolean,
+    onAddContactClick: () -> Unit = {},
     onAddContactsClick: () -> Unit = {},
     reserveAddRowSpace: Boolean = false,
+    isSearchOpen: Boolean = false,
+    query: String = "",
+    onQueryChange: (String) -> Unit = {},
+    onSearchClose: () -> Unit = {},
 ) {
     val pad = dimensionResource(id = R.dimen.spacer_medium)
     val spaceM = dimensionResource(id = R.dimen.spacer_medium)
@@ -51,21 +56,32 @@ fun ContactsHeader(
             Box(
                 Modifier.fillMaxWidth().padding(horizontal = pad, vertical = spaceM),
             ) {
-                IconButton(onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                }
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.align(Alignment.Center),
-                )
-                IconButton(
-                    onClick = onSearchClick,
-                    modifier = Modifier.align(Alignment.CenterEnd),
-                ) {
-                    Icon(Icons.Filled.Search, contentDescription = "Search")
+                if (isSearchOpen) {
+                    SearchField(
+                        query = query,
+                        onQueryChange = onQueryChange,
+                        onClose = onSearchClose,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                } else {
+                    IconButton(onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleLarge,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+
+                    IconButton(
+                        onClick = onSearchClick,
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                    ) {
+                        Icon(Icons.Filled.Search, contentDescription = "Search")
+                    }
                 }
             }
 
@@ -74,18 +90,14 @@ fun ContactsHeader(
                     text = AppText.Contacts.ADD.text(),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = addRowMinHeight)
-                            .padding(vertical = spaceM, horizontal = pad)
-                            .clickable(onClick = onAddContactsClick),
+                    modifier = Modifier.fillMaxWidth().heightIn(min = addRowMinHeight)
+                        .padding(vertical = spaceM, horizontal = pad).combinedClickable(
+                            onClick = onAddContactsClick, onLongClick = onAddContactClick
+                        ),
                 )
             } else if (reserveAddRowSpace) {
                 Spacer(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(addRowMinHeight)
+                    Modifier.fillMaxWidth().height(addRowMinHeight)
                         .padding(vertical = spaceM, horizontal = pad),
                 )
             }
@@ -111,6 +123,19 @@ private fun ContactsHeaderPreviewUsers() {
         ContactsHeader(
             title = "Users",
             showAddHeaderRow = false,
+        )
+    }
+}
+
+@PreviewPhones
+@Composable
+private fun ContactsHeaderPreviewSearch() {
+    MyApplicationTheme {
+        ContactsHeader(
+            title = "Users",
+            showAddHeaderRow = true,
+            isSearchOpen = true,
+            query = "Ava",
         )
     }
 }

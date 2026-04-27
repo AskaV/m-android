@@ -1,8 +1,10 @@
 package com.spp.android.myapplication.presentation.feature.profile.addcontactpr
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.AddContactProfileContract.Effect.NavigateBack
@@ -14,20 +16,17 @@ import com.spp.android.myapplication.presentation.feature.profile.addcontactpr.A
 
 @Composable
 fun AddContactProfileScreen(
-    contactId: Int = 0,
+    contactId: Int,
     onBack: () -> Unit = {},
-    vm: AddContactProfileViewModel = hiltViewModel(),
+    viewModel: AddContactProfileViewModel = hiltViewModel(),
 ) {
-    val state by vm.state.collectAsStateWithLifecycle()
-
-    LaunchedEffect(contactId) { vm.onEvent(Load(contactId)) }
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    LaunchedEffect(contactId) { viewModel.onEvent(Load(contactId)) }
     LaunchedEffect(Unit) {
-        vm.effect.collect { effect ->
+        viewModel.effect.collect { effect ->
             when (effect) {
-                is ShowMessage -> {
-                    effect.message
-                }
-
+                is ShowMessage -> Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 is NavigateBack -> onBack()
             }
         }
@@ -35,8 +34,8 @@ fun AddContactProfileScreen(
 
     AddContactProfileScreenContent(
         state = state,
-        onBack = { vm.onEvent(BackClicked) },
-        onMessage = { vm.onEvent(MessageClicked) },
-        onAddToContacts = { vm.onEvent(AddToContactsClicked) },
+        onBack = { viewModel.onEvent(BackClicked) },
+        onMessage = { viewModel.onEvent(MessageClicked) },
+        onAddToContacts = { viewModel.onEvent(AddToContactsClicked) },
     )
 }

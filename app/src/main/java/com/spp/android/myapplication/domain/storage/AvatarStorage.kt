@@ -11,7 +11,7 @@ import javax.inject.Inject
 class AvatarStorage
     @Inject
     constructor(
-        @ApplicationContext private val context: Context,
+        @param:ApplicationContext private val context: Context,
     ) {
         suspend fun saveAvatarFromUri(uriString: String): String =
             withContext(Dispatchers.IO) {

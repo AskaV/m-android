@@ -2,6 +2,8 @@ package com.spp.android.myapplication.presentation.feature.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spp.android.myapplication.data.storage.AuthPreferences
+import com.spp.android.myapplication.domain.repository.AuthRepository
 import com.spp.android.myapplication.domain.storage.LocalStorage
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.Clear
 import com.spp.android.myapplication.presentation.feature.auth.login.LoginContract.Event.EmailBlur
@@ -31,7 +33,11 @@ class LoginViewModel
     @Inject
     constructor(
         private val localStorage: LocalStorage,
+        private val authRepository: AuthRepository,
+        private val authPreferences: AuthPreferences,
     ) : ViewModel() {
+        private val useRemote = true
+
         private val _state = MutableStateFlow(LoginContract.State())
         val state: StateFlow<LoginContract.State> = _state.asStateFlow()
 
@@ -89,26 +95,39 @@ class LoginViewModel
 
         private fun submit() =
             viewModelScope.launch {
-                val emailErrKey = Validate.email(_state.value.email.trim())
-                val passErrKey = Validate.password(_state.value.password)
+                val email = _state.value.email.trim()
+                val password = _state.value.password
+
+                val emailErrKey = Validate.email(email)
+                val passErrKey = Validate.password(password)
 
                 if (emailErrKey != null || passErrKey != null) {
                     updateState { copy(emailErrorKey = emailErrKey, passwordErrorKey = passErrKey) }
                     return@launch
                 }
 
-                updateState { copy(isLoading = true, errorKey = null) }
+                updateState { copy(isLoading = true, errorKey = null, error = null) }
 
                 runCatching {
+                    if (useRemote) {
+                        val auth = authRepository.login(email, password).getOrElse { throw it }
+
+                        authPreferences.saveTokens(auth.accessToken, auth.refreshToken)
+                        authPreferences.saveUserId(auth.user.id)
+                    }
+
                     if (_state.value.rememberMe) {
-                        localStorage.saveUser(_state.value.email.trim(), true)
+                        localStorage.saveUser(email, true)
                     } else {
                         localStorage.saveUser("", false)
                     }
                 }.onSuccess {
                     _effect.send(LoginContract.Effect.NavigateToHome)
-                }.onFailure {
-                    updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR) }
+                    println("LOGIN: userId=${authPreferences.userId.first()} accessLen=${authPreferences.accessToken.first().length}")
+                }.onFailure { e ->
+                    val msg = e.message?.takeIf { it.isNotBlank() } ?: "Unauthorized"
+                    updateState { copy(errorKey = AppText.OtherInfo.UNKNOWN_ERROR, error = msg) }
+                    _effect.send(LoginContract.Effect.ShowToast(msg))
                 }
 
                 updateState { copy(isLoading = false) }
